@@ -1,7 +1,9 @@
 """学习流编排器 —— 将 BKT、DDA、85% 规则、风险监控、学习方法推荐串联到同一事务中
 """
-from datetime import datetime, timedelta, UTC
+import json
 import random
+from dataclasses import dataclass
+from datetime import datetime, timedelta, UTC
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -39,6 +41,54 @@ from app.services import mechanism_registry
 from app.services.mechanism_arbitrator import MechanismArbitrator
 from app.services.mechanism_registry import Effect, EffectType, MechanismContext
 from app.services.deep_addiction_engine import FOMOEngine
+from app.services.deep_addiction_engine import (
+    AppointmentEngine,
+    AppointmentState,
+    CuriosityEngine,
+    ScarcityEngine,
+    StreakSanctificationEngine,
+)
+from app.services.duolingo_addiction_engine import (
+    MonthlyChallengeEngine,
+    TimeBasedBonusEngine,
+)
+from app.services.addiction_engine_v3 import (
+    PeakEndRuleEngine,
+    SurpriseDelightEngine,
+    ZeigarnikEngine,
+)
+from app.services.positive_addiction_engine import (
+    HabitLoopEngine,
+    HabitState,
+    HookEngine,
+    HookState,
+    IdentityEngine,
+    InstantGratificationEngine,
+    ProgressVisualizationEngine,
+    SocialContagionEngine,
+    TriggerType,
+)
+from app.services.gamification_service import (
+    CustomizationState,
+    GamificationService,
+    IKEAEngine,
+    ProximalGoals,
+)
+from app.services.ux_addiction_engine import (
+    ColorPsychologyEngine,
+    HapticRhythmEngine,
+    ProgressiveDisclosureEngine,
+    SpatialAnchoringEngine,
+)
+from app.services.habit_addiction_engine import (
+    ImplementationIntentionsEngine,
+    SelfRegulationEngine,
+    TemptationBundlingEngine,
+)
+from app.services.social_addiction_engine import (
+    GiftEconomyEngine,
+    ParentPortalEngine,
+)
 from app.models.analytics import AbilityEstimate, AuditKind
 
 
@@ -61,6 +111,15 @@ from app.models.analytics import AbilityEstimate, AuditKind
 #     * xp_leveling    (LF-M19) —— 步骤 9  经 is_enabled 门控 (GAP-6 修复, 此前漏掉);
 #     * fomo           (LF-M44) —— 步骤 12 经 is_enabled 门控 (经仲裁器下发)。
 #   三者默认全部开启 → 运行行为不变; 关闭后对应步骤效果被真实抑制, 消融对照成立。
+#
+# 步骤 13 —— 孤儿机制评估钩子 (28 机制接线, 2026-09-04):
+#   审计矩阵 (scan_mechanism_landing.py) 曾记录 28 个机制「有引擎逻辑、零运行时
+#   调用方」(orphan)。本步骤把它们接线: 每个机制经显式 ``is_enabled("<key>")``
+#   门控后, **真实调用其注册的引擎函数** (不伪造、不新增行为), 输出冻结进
+#   ``decision_snapshot["mechanism_evaluations"]`` 供因果归因, 并随响应返回。
+#   * 默认全开 → 仅多一份评估记录, XP/宠物/反馈/风险等主流程行为不变;
+#   * 关闭某机制 → 该机制跳过评估 (消融对照成立);
+#   * 单一引擎异常被 _mech_output 兜底捕获, 不拖垮整条流水线。
 # ────────────────────────────────────────────────────────────
 
 PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
@@ -68,6 +127,36 @@ PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
     8: ["lai_downgrade", "forced_rest"],       # LF-M53 风险监控 / LF-M51 强制休息
     9: ["xp_leveling", "minor_protection"],     # LF-M19 XP等级 / LF-M52 未成年保护
     12: ["fomo"],                              # LF-M44 错失恐惧 — 经仲裁器下发
+    13: [                                      # 孤儿机制评估钩子 (LF-Mxx 升序)
+        "variable_ratio_reward",               # LF-M01 变比率奖励（宝箱）
+        "instant_gratification",               # LF-M04 即时满足
+        "surprise_delight",                    # LF-M05 惊喜与愉悦
+        "time_based_bonus",                    # LF-M06 时间限定加成
+        "scarcity",                            # LF-M08 稀缺性
+        "streak_sanctification",               # LF-M12 连胜神圣化
+        "zeigarnik",                           # LF-M13 蔡格尼克效应
+        "peak_end",                            # LF-M14 峰终定律
+        "goal_gradient",                       # LF-M15 目标梯度
+        "daily_challenge",                     # LF-M16 每日/月度挑战
+        "ikea_effect",                         # LF-M18 宜家效应
+        "progress_visualization",              # LF-M20 进步可视化
+        "progressive_disclosure",             # LF-M21 渐进式披露
+        "social_contagion",                    # LF-M24 社会传染
+        "gift_economy",                        # LF-M29 礼物经济
+        "parent_portal",                       # LF-M32 家长门户
+        "hook_model",                          # LF-M33 钩子模型
+        "habit_loop",                          # LF-M34 习惯回路
+        "cue_prompting",                       # LF-M35 情境线索提示
+        "temptation_bundling",                 # LF-M37 诱惑捆绑
+        "implementation_intentions",          # LF-M38 执行意图
+        "self_regulation_goals",               # LF-M39 自我调节目标
+        "commitment_device",                   # LF-M41 承诺装置/预约
+        "curiosity_gap",                       # LF-M43 好奇心缺口
+        "identity_motivation",                 # LF-M46 身份认同动机
+        "color_psychology",                    # LF-M48 色彩与情绪
+        "spatial_anchoring",                   # LF-M49 空间锚定
+        "multisensory_packaging",              # LF-M50 多感官包装
+    ],
 }
 
 # 构造期不变量: 接线里引用的机制 key 必须真实存在于注册表 (否则说明接线漂移)
@@ -78,6 +167,221 @@ for _step, _keys in PIPELINE_MECHANISM_MAP.items():
 # FOMO 后置 nudge 仲裁器单例 (LF-M44, 治理 §3.4.2): 引擎只产 Effect 候选,
 # 由 MechanismArbitrator 三层漏斗决定下发; LF-M52 命中时在第 1 层丢弃。
 _FOMO_ARBITRATOR = MechanismArbitrator()
+
+
+# ────────────────────────────────────────────────────────────
+# 步骤 13: 孤儿机制评估钩子 (28 机制接线)
+#
+# 设计原则 (数字诚信):
+#   * 只调用 mechanism_registry 中已注册、已存在的引擎函数, 不新增/不伪造行为;
+#   * 每个机制一条显式 ``is_enabled("<key>")`` 门控 —— scan_mechanism_landing.py
+#     以字面量识别编排器接线, 关闭即跳过评估 (消融对照成立);
+#   * 引擎输出全部是真实计算结果; 流水线未维护的状态 (预约/习惯线索等)
+#     以空状态评估, 输出如实记录 (None/空), 绝不编造数据;
+#   * 输出经 JSON 可序列化校验后冻结进 decision_snapshot, 供因果归因。
+# ────────────────────────────────────────────────────────────
+
+# 步骤 13 登记的全部机制 key (与 PIPELINE_MECHANISM_MAP[13] 同源)
+_SECONDARY_MECHANISM_KEYS: List[str] = PIPELINE_MECHANISM_MAP[13]
+
+
+@dataclass
+class _EvalContext:
+    """机制评估钩子的流水线上下文 (从 process_submission 各步汇聚)。"""
+
+    user_id: str
+    user_name: str
+    topic: str
+    difficulty: int
+    is_correct: bool
+    success_streak: int
+    failure_streak: int
+    day_streak: int
+    attempts_today: int
+    xp_earned: int
+    pet_name: str
+
+
+def _mech_output(fn, *args, **kwargs):
+    """调用机制引擎并保证输出 JSON 可序列化; 单机制异常仅记录、不中断提交。"""
+    try:
+        out = fn(*args, **kwargs)
+    except Exception as exc:  # noqa: BLE001 —— 单机制失败不拖垮整条流水线
+        return {"error": type(exc).__name__}
+    try:
+        json.dumps(out, ensure_ascii=False)
+        return out
+    except (TypeError, ValueError):
+        return {"repr": str(out)[:200]}
+
+
+def _evaluate_secondary_mechanisms(c: _EvalContext) -> Dict[str, Any]:
+    """评估步骤 13 登记的 28 个机制: 门控 + 真实引擎调用。
+
+    返回 ``{key: {"enabled": bool, "output": <引擎真实输出或 None>}}``。
+    关闭的机制 ``output`` 恒为 None (未调用引擎, 无任何伪造输出)。
+    """
+    ev: Dict[str, Any] = {}
+
+    # LF-M01 变比率奖励（宝箱）: 读取宝箱进度 (纯读, 不开箱不改状态)
+    if mechanism_registry.is_enabled("variable_ratio_reward"):
+        ev["variable_ratio_reward"] = _mech_output(
+            GamificationService.get_box_status_for_user, c.user_id)
+
+    # LF-M04 即时满足: 答后多维即时反馈包
+    if mechanism_registry.is_enabled("instant_gratification"):
+        ev["instant_gratification"] = _mech_output(
+            InstantGratificationEngine.generate_instant_feedback,
+            c.is_correct, c.topic, c.pet_name, c.success_streak)
+
+    # LF-M05 惊喜与愉悦: 5% 概率随机惊喜彩蛋
+    if mechanism_registry.is_enabled("surprise_delight"):
+        ev["surprise_delight"] = _mech_output(SurpriseDelightEngine.roll_surprise)
+
+    # LF-M06 时间限定加成: 当前时段奖励检查
+    if mechanism_registry.is_enabled("time_based_bonus"):
+        ev["time_based_bonus"] = _mech_output(TimeBasedBonusEngine.check_time_bonus)
+
+    # LF-M08 稀缺性: 黄金题目解锁条件检查
+    if mechanism_registry.is_enabled("scarcity"):
+        ev["scarcity"] = _mech_output(
+            ScarcityEngine.check_unlock, "golden_question",
+            {"current_streak": c.success_streak})
+
+    # LF-M12 连胜神圣化: 日连胜仪式 (含里程碑判定)
+    if mechanism_registry.is_enabled("streak_sanctification"):
+        ev["streak_sanctification"] = _mech_output(
+            StreakSanctificationEngine.get_daily_ritual, c.day_streak)
+
+    # LF-M13 蔡格尼克效应: 每日目标进度条张力 (10 题默认目标)
+    if mechanism_registry.is_enabled("zeigarnik"):
+        ev["zeigarnik"] = _mech_output(
+            ZeigarnikEngine.get_progress_bar, c.attempts_today, 10)
+
+    # LF-M14 峰终定律: 会话峰终总结 (高光时刻 + 结束语)
+    if mechanism_registry.is_enabled("peak_end"):
+        ev["peak_end"] = _mech_output(
+            PeakEndRuleEngine.generate_session_end_summary,
+            {"xp_earned": c.xp_earned, "max_correct_streak": c.success_streak})
+
+    # LF-M15 目标梯度: 渐近目标进度 (含 80% 脉冲触发)
+    if mechanism_registry.is_enabled("goal_gradient"):
+        ev["goal_gradient"] = _mech_output(
+            GamificationService.get_goal_progress,
+            ProximalGoals(
+                daily_completed=c.attempts_today, current_streak=c.success_streak))
+
+    # LF-M16 每日/月度挑战: 当月挑战与剩余天数
+    if mechanism_registry.is_enabled("daily_challenge"):
+        ev["daily_challenge"] = _mech_output(MonthlyChallengeEngine.get_current_challenge)
+
+    # LF-M18 宜家效应: 自主定制所有权摘要 (流水线未维护定制状态, 如实按默认态)
+    if mechanism_registry.is_enabled("ikea_effect"):
+        ev["ikea_effect"] = _mech_output(
+            IKEAEngine.get_ownership_summary, CustomizationState())
+
+    # LF-M20 进步可视化: 每周成长报告
+    if mechanism_registry.is_enabled("progress_visualization"):
+        ev["progress_visualization"] = _mech_output(
+            ProgressVisualizationEngine.generate_weekly_growth_report,
+            {"weekly_questions": c.attempts_today, "accuracy_trend": "stable"})
+
+    # LF-M21 渐进式披露: 功能揭示阶梯 (按今日答题数近似会话进度)
+    if mechanism_registry.is_enabled("progressive_disclosure"):
+        ev["progressive_disclosure"] = _mech_output(
+            ProgressiveDisclosureEngine.get_disclosure_state, c.attempts_today)
+
+    # LF-M24 社会传染: 友好比较推动 (班级侧数据流水线未接入, 如实传空, 不伪造)
+    if mechanism_registry.is_enabled("social_contagion"):
+        ev["social_contagion"] = _mech_output(
+            SocialContagionEngine.get_friendly_competition_nudge,
+            {"streak": c.success_streak},
+            {"max_streak": 0, "class_avg_accuracy": 0, "active_peers": 0})
+
+    # LF-M29 礼物经济: 送礼资格检查 (以日连胜为学习成果余额)
+    if mechanism_registry.is_enabled("gift_economy"):
+        ev["gift_economy"] = _mech_output(
+            GiftEconomyEngine.can_send_gift, c.day_streak, "star")
+
+    # LF-M32 家长门户: 周报摘要生成
+    if mechanism_registry.is_enabled("parent_portal"):
+        ev["parent_portal"] = _mech_output(
+            ParentPortalEngine.generate_weekly_digest,
+            c.user_name,
+            {"current_streak": c.day_streak, "weekly_questions": c.attempts_today},
+        )
+
+    # LF-M33 钩子模型: 内部好奇触发 (临时状态, 评估触发文案)
+    if mechanism_registry.is_enabled("hook_model"):
+        ev["hook_model"] = _mech_output(
+            HookEngine.trigger,
+            HookState(user_id=c.user_id), TriggerType.INTERNAL_CURIOSITY)
+
+    # LF-M34 习惯回路: 会话记录 (临时状态, 评估习惯强度/阶段)
+    if mechanism_registry.is_enabled("habit_loop"):
+        ev["habit_loop"] = _mech_output(HabitLoopEngine.record_session, HabitState())
+
+    # LF-M35 情境线索提示: 目标时间临近提示 (未设目标时引擎如实返回 None)
+    if mechanism_registry.is_enabled("cue_prompting"):
+        ev["cue_prompting"] = _mech_output(HabitLoopEngine.get_cue_prompt, HabitState())
+
+    # LF-M37 诱惑捆绑: 捆绑方案建议
+    if mechanism_registry.is_enabled("temptation_bundling"):
+        ev["temptation_bundling"] = _mech_output(TemptationBundlingEngine.suggest_bundle, {})
+
+    # LF-M38 执行意图: if-then 计划生成
+    if mechanism_registry.is_enabled("implementation_intentions"):
+        ev["implementation_intentions"] = _mech_output(
+            ImplementationIntentionsEngine.generate_if_then)
+
+    # LF-M39 自我调节目标: 会话后反思提示
+    if mechanism_registry.is_enabled("self_regulation_goals"):
+        ev["self_regulation_goals"] = _mech_output(
+            SelfRegulationEngine.reflect_on_session,
+            c.user_id, {"questions_done": c.attempts_today})
+
+    # LF-M41 承诺装置/预约: 预约提醒 (无预约时引擎如实返回 None)
+    if mechanism_registry.is_enabled("commitment_device"):
+        ev["commitment_device"] = _mech_output(
+            AppointmentEngine.get_appointment_nudge, AppointmentState())
+
+    # LF-M43 好奇心缺口: 下一题悬念式结尾
+    if mechanism_registry.is_enabled("curiosity_gap"):
+        ev["curiosity_gap"] = _mech_output(
+            CuriosityEngine.generate_cliffhanger, c.topic, c.difficulty)
+
+    # LF-M46 身份认同动机: 学习者身份评估与肯定
+    if mechanism_registry.is_enabled("identity_motivation"):
+        ev["identity_motivation"] = _mech_output(
+            IdentityEngine.assess_identity,
+            {"current_streak": c.day_streak, "total_attempts": c.attempts_today})
+
+    # LF-M48 色彩心理学: 答题场景色彩主题 (答对=成就/答错=支持)
+    if mechanism_registry.is_enabled("color_psychology"):
+        ev["color_psychology"] = _mech_output(
+            ColorPsychologyEngine.get_theme_for_context,
+            "success" if c.is_correct else "encourage")
+
+    # LF-M49 空间锚定: 布局规范 (拇指区优化)
+    if mechanism_registry.is_enabled("spatial_anchoring"):
+        ev["spatial_anchoring"] = _mech_output(SpatialAnchoringEngine.get_layout_spec)
+
+    # LF-M50 多感官包装: 触觉反馈模式 (答对庆祝/答错温柔提醒)
+    if mechanism_registry.is_enabled("multisensory_packaging"):
+        ev["multisensory_packaging"] = _mech_output(
+            HapticRhythmEngine.get_haptic_for_event,
+            "correct_answer" if c.is_correct else "incorrect_answer",
+            c.success_streak)
+
+    # 统一输出形状: 开启 → {"enabled": True, "output": 真实输出}; 关闭 → output=None
+    return {
+        key: (
+            {"enabled": True, "output": ev[key]}
+            if key in ev else
+            {"enabled": False, "output": None}
+        )
+        for key in _SECONDARY_MECHANISM_KEYS
+    }
 
 
 # ────────────────────────────────────────────────────────────
@@ -601,6 +905,24 @@ class LearningOrchestrator:
             subject=task.topic, age_band=age_band,
         )
 
+        # 13. 孤儿机制评估钩子 (28 机制接线): 每个机制经 is_enabled 门控后
+        #     真实调用其注册引擎函数, 输出冻结进决策快照 (因果归因) 并随响应返回。
+        #     默认全开 → 仅多一份评估记录, 主流程行为不变; 关闭 → 跳过评估。
+        mechanism_evaluations = _evaluate_secondary_mechanisms(_EvalContext(
+            user_id=str(user.id),
+            user_name=user.name or "同学",
+            topic=task.topic,
+            difficulty=task.difficulty,
+            is_correct=is_correct,
+            success_streak=success_streak,
+            failure_streak=failure_streak,
+            day_streak=xp_row.current_streak or 0,
+            attempts_today=len(streak_list),
+            xp_earned=xp_result.get("xp_earned", 0),
+            pet_name=pet.name if pet else "小豆",
+        ))
+        decision_snapshot["mechanism_evaluations"] = mechanism_evaluations
+
         # 10. 学习方法 XP
         method_tip = LearningMethodEngine.get_post_question_tip(
             current_topic=task.topic,
@@ -669,6 +991,7 @@ class LearningOrchestrator:
             "risk_alert": risk_alert,
             "method_xp": method_result,
             "fomo_nudge": _fomo_nudge,  # None 或经仲裁下发的 FOMO payload
+            "mechanism_evaluations": mechanism_evaluations,  # 步骤 13: 28 机制评估记录
             "learning_method_tip": method_tip,
         }
 

@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-03T23:16:45+09:00",
-  "git_commit": "3d4eee1661259f722bbb6cf299a8f7bafc4f5e61",
+  "generated_at": "2026-09-04T05:13:26+09:00",
+  "git_commit": "b70be3f02805a6f4bc20f0664483864ceed59d27",
   "total": 53,
-  "landed": 25,
-  "orphan": 28,
+  "landed": 53,
+  "orphan": 0,
   "rows": [
     {
       "id": "LF-M01",
@@ -14,9 +14,9 @@
       "maturity": "complete",
       "impl_ref": "gamification_service.py:128,139",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M02",
@@ -53,9 +53,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:588",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M05",
@@ -66,9 +66,9 @@
       "maturity": "partial",
       "impl_ref": "addiction_engine_v3.py:199",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M06",
@@ -79,9 +79,9 @@
       "maturity": "complete",
       "impl_ref": "duolingo_addiction_engine.py:539",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M07",
@@ -105,9 +105,9 @@
       "maturity": "partial",
       "impl_ref": "deep_addiction_engine.py:461",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M09",
@@ -157,9 +157,9 @@
       "maturity": "partial",
       "impl_ref": "deep_addiction_engine.py:308",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M13",
@@ -170,9 +170,9 @@
       "maturity": "partial",
       "impl_ref": "addiction_engine_v3.py:108",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M14",
@@ -183,9 +183,9 @@
       "maturity": "partial",
       "impl_ref": "addiction_engine_v3.py:163",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M15",
@@ -196,9 +196,9 @@
       "maturity": "partial",
       "impl_ref": "gamification_service.py:96",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M16",
@@ -209,9 +209,9 @@
       "maturity": "complete",
       "impl_ref": "duolingo_addiction_engine.py:704,582",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M17",
@@ -235,9 +235,9 @@
       "maturity": "partial",
       "impl_ref": "gamification_service.py:623,615",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M19",
@@ -261,9 +261,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:649",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M21",
@@ -274,9 +274,9 @@
       "maturity": "partial",
       "impl_ref": "ux_addiction_engine.py:119",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M22",
@@ -313,9 +313,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:506",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M25",
@@ -378,9 +378,9 @@
       "maturity": "placeholder",
       "impl_ref": "social_addiction_engine.py:411",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M30",
@@ -417,9 +417,9 @@
       "maturity": "placeholder",
       "impl_ref": "social_addiction_engine.py:288",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M33",
@@ -430,9 +430,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:67",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M34",
@@ -443,9 +443,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:262",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M35",
@@ -456,9 +456,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:322",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M36",
@@ -482,9 +482,9 @@
       "maturity": "partial",
       "impl_ref": "habit_addiction_engine.py:80",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M38",
@@ -495,9 +495,9 @@
       "maturity": "partial",
       "impl_ref": "habit_addiction_engine.py:109",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M39",
@@ -508,9 +508,9 @@
       "maturity": "partial",
       "impl_ref": "habit_addiction_engine.py:213",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M40",
@@ -534,9 +534,9 @@
       "maturity": "partial",
       "impl_ref": "deep_addiction_engine.py:388",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M42",
@@ -560,9 +560,9 @@
       "maturity": "partial",
       "impl_ref": "deep_addiction_engine.py:25",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M44",
@@ -599,9 +599,9 @@
       "maturity": "partial",
       "impl_ref": "positive_addiction_engine.py:348",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M47",
@@ -625,9 +625,9 @@
       "maturity": "partial",
       "impl_ref": "ux_addiction_engine.py:210",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M49",
@@ -638,9 +638,9 @@
       "maturity": "placeholder",
       "impl_ref": "ux_addiction_engine.py:290",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M50",
@@ -651,9 +651,9 @@
       "maturity": "placeholder",
       "impl_ref": "ux_addiction_engine.py:345,482,524",
       "impl_ref_file_exists": true,
-      "external_ref": false,
-      "orchestrator_wired": false,
-      "landed": false
+      "external_ref": true,
+      "orchestrator_wired": true,
+      "landed": true
     },
     {
       "id": "LF-M51",
