@@ -2,7 +2,7 @@
 """
 from datetime import datetime, timedelta, UTC
 import random
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -31,6 +31,7 @@ from app.services.progression_repository import (
     load_xp_state,
     to_xp_state,
     save_xp_state,
+    save_skill_tree,
     record_learning_event,
 )
 from app.services.learning_event_builder import build_submission_events
@@ -62,6 +63,25 @@ PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
 for _step, _keys in PIPELINE_MECHANISM_MAP.items():
     for _k in _keys:
         mechanism_registry.get(_k)  # 未注册即抛 KeyError
+
+
+# ────────────────────────────────────────────────────────────
+# 技能树 → 仓储层格式转换 (纯函数, 便于单测)
+#
+# SkillTreeEngine.get_skill_tree 返回的是前端友好的分类结构, 而
+# progression_repository.save_skill_tree 需要 {skill_id: {proficiency, level, total_uses}}。
+# 这里把引擎结果压平成仓储层期望的形状 (proficiency 由 level/10 近似, 0~1)。
+# ────────────────────────────────────────────────────────────
+
+def _skilltree_repo_format(tree: dict) -> Dict[str, Dict[str, Any]]:
+    out = {}
+    for sid, s in tree.items():
+        out[sid] = {
+            "proficiency": round(float(s.get("level", 1)) / 10.0, 3),
+            "level": int(s.get("level", 1)),
+            "total_uses": int(s.get("times_used", 0)),
+        }
+    return out
 
 
 class LearningOrchestrator:
@@ -527,6 +547,12 @@ class LearningOrchestrator:
         method_result = SkillTreeEngine.use_skill(
             str(user.id), method_tip.get("method", "retrieval_practice"), effectiveness=1.0, db=db
         )
+
+        # 自愈式技能树持久化: use_skill 保持同步且不落库, 此处接管的协程把
+        # 最新技能树 upsert 到 user_skill_tree (db 为 None 时跳过, 兼容无 DB 路径)。
+        if db is not None:
+            tree = SkillTreeEngine.get_skill_tree(str(user.id))
+            await save_skill_tree(db, str(user.id), _skilltree_repo_format(tree))
 
         await db.flush()
 

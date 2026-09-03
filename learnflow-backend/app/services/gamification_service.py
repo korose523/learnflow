@@ -20,6 +20,8 @@ from datetime import datetime, UTC, timedelta
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 
+from app.services.state_store import StateStore, MemoryStateStore
+
 
 # ─── 奖励类型 ───────────────────────────────────────
 
@@ -199,13 +201,17 @@ class GamificationService:
     整合所有7大引擎的后端逻辑。
     """
 
-    BOX_STATES: Dict[str, TreasureBoxState] = {}
+    # 宝箱状态容器 —— 迁移到可插拔 StateStore 后端 (LF-M01 示范)
+    # 默认 MemoryStateStore 与改造前行为一致；生产可注入 JSONFileStateStore / SQL。
+    BOX_STATES: StateStore = MemoryStateStore()
 
     @classmethod
     def get_box_state_for_user(cls, user_id: str) -> TreasureBoxState:
-        if user_id not in cls.BOX_STATES:
-            cls.BOX_STATES[user_id] = TreasureBoxState()
-        return cls.BOX_STATES[user_id]
+        state = cls.BOX_STATES.get(user_id)
+        if state is None:
+            state = TreasureBoxState()
+            cls.BOX_STATES.set(user_id, state)
+        return state
 
     @classmethod
     def open_box_for_user(cls, user_id: str, pet_name: str = "小豆", current_topic: str = "") -> dict:
