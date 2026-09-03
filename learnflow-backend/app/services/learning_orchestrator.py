@@ -31,7 +31,9 @@ from app.services.progression_repository import (
     load_xp_state,
     to_xp_state,
     save_xp_state,
+    record_learning_event,
 )
+from app.services.learning_event_builder import build_submission_events
 from app.services import mechanism_registry
 from app.models.analytics import AbilityEstimate, AuditKind
 
@@ -300,6 +302,9 @@ class LearningOrchestrator:
         # 1. 判断对错
         is_correct = cls._compare_answer(answer, task.correct_answer)
 
+        # 会话标识: 前端可传入 session_id 串联同一学习会话; 否则回退到用户级 id
+        session_id = req.get("session_id") or f"u{user.id}"
+
         # 2. 创建答题记录
         attempt = Attempt(
             user_id=user.id,
@@ -395,6 +400,18 @@ class LearningOrchestrator:
             else:
                 break
 
+        # 决策快照: 冻结本次提交涉及的机制决策输入, 供因果归因 (论文可复现性)。
+        # success_streak / failure_streak 在 step 7 才计算, 故快照在此处构造;
+        # risk_level / xp_suppressed 在 step 8 / step 9 之后回填。
+        decision_snapshot = {
+            "is_correct": is_correct,
+            "risk_level": None,
+            "xp_suppressed": False,
+            "success_streak": success_streak,
+            "failure_streak": failure_streak,
+            "mechanism_toggles": {},
+        }
+
         ctx = FeedbackContext(
             is_correct=is_correct,
             student_name=user.name,
@@ -439,6 +456,9 @@ class LearningOrchestrator:
                 "should_rest": risk_assessment.should_force_rest,
             }
 
+        # 回填风险等级到决策快照 (即使未触发告警, 也记录评估等级用于因果归因)
+        decision_snapshot["risk_level"] = risk_assessment.level.value
+
         # 9. XP 奖励
         #    修复伪持久化：原先此处 `XPState()` 每次请求从零构造，结果只写进
         #    响应体、从不落库，导致用户 XP/等级/连胜在每次提交后归零。
@@ -476,6 +496,9 @@ class LearningOrchestrator:
             )
             xp_result = XPEngine.award_xp(xp_state, event_type, streak=success_streak)
 
+        # 回填奖励抑制标记到决策快照
+        decision_snapshot["xp_suppressed"] = reward_suppressed
+
         # 连胜维护（v1 中 success_streak 为临时计算，同样不落库）
         if is_correct:
             xp_row.current_streak = (xp_row.current_streak or 0) + 1
@@ -502,10 +525,30 @@ class LearningOrchestrator:
             is_correct=is_correct,
         )
         method_result = SkillTreeEngine.use_skill(
-            str(user.id), method_tip.get("method", "retrieval_practice"), effectiveness=1.0
+            str(user.id), method_tip.get("method", "retrieval_practice"), effectiveness=1.0, db=db
         )
 
         await db.flush()
+
+        # 学习事件埋点: 把本次提交拆解为 attempt / risk_assessment / xp_award /
+        # method_xp 四类事件并落库 (record_learning_event 此前从未被调用)。
+        # 仅当 db 可用时执行; decision_snapshot 已含风险等级与奖励抑制标记,
+        # 以及 success/failure 连胜, 供因果归因冻结决策输入。
+        if db is not None:
+            events = build_submission_events(
+                str(user.id),
+                session_id,
+                str(task.id),
+                is_correct,
+                risk_level=decision_snapshot.get("risk_level"),
+                xp_suppressed=decision_snapshot["xp_suppressed"],
+                success_streak=success_streak,
+                failure_streak=failure_streak,
+                method_skill=method_tip.get("method"),
+                decision_snapshot=decision_snapshot,
+            )
+            for ev in events:
+                await record_learning_event(db, **ev)
 
         # 11. 提交作答后失效相关缓存键（看板 + 能力估计）
         await invalidate_dashboard(user.id)

@@ -199,8 +199,14 @@ class SkillTreeEngine:
 
     @classmethod
     def use_skill(cls, user_id: str, skill_id: str,
-                   effectiveness: float = 1.0) -> dict:
-        """使用某个学习技能 — 获得XP"""
+                   effectiveness: float = 1.0,
+                   db: Optional["AsyncSession"] = None) -> dict:
+        """使用某个学习技能 — 获得XP
+
+        ``db`` 为可选参数: 预留给调用方 (learning_orchestrator) 传入会话以便
+        自愈式持久化 (PLAYER_SKILLS 当前为进程内字典, 重启即丢)。保持同步签名
+        以维持既有调用方兼容; 真正落库由接管的协程负责, 此处仅透传占位。
+        """
         skills = cls.PLAYER_SKILLS.get(user_id)
         if not skills:
             skills = cls.init_player_skills(user_id)
