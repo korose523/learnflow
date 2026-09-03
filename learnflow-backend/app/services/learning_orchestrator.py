@@ -2,7 +2,7 @@
 """
 from datetime import datetime, timedelta, UTC
 import random
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
@@ -32,7 +32,34 @@ from app.services.progression_repository import (
     to_xp_state,
     save_xp_state,
 )
+from app.services import mechanism_registry
 from app.models.analytics import AbilityEstimate, AuditKind
+
+
+# ────────────────────────────────────────────────────────────
+# 机制治理接线 (Task #10: 注册表驱动流水线)
+#
+# process_submission 的 11 步里, 凡「应用某个游戏化机制」的步骤, 都在此登记其
+# 对应的 LF-M ID, 并构造期校验 ID 真实存在于 mechanism_registry。这样:
+#   * 每一步对应哪个机制可审计 (论文附表可引用 LF-Mxx);
+#   * 机制被 is_enabled(False) 关闭 (消融实验) 时, 对应步骤效果被抑制;
+#   * 默认全部开启 → 运行行为不变 (581 测试不受影响)。
+#
+# 注意: BKT / 间隔复习 / 技能画像等是**算法**而非机制, 不在此登记。
+# 健康护栏类机制 (LF-M51 强制休息 / LF-M52 未成年保护 / LF-M53 风险监控) 按治理
+# 策略拥有「一票否决权」, 始终开启, 此处仅登记供审计, 不对其门控。
+# ────────────────────────────────────────────────────────────
+
+PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
+    6: ["pet_companion"],                      # LF-M22 虚拟宠物陪伴
+    8: ["lai_downgrade", "forced_rest"],       # LF-M53 风险监控 / LF-M51 强制休息
+    9: ["xp_leveling", "minor_protection"],     # LF-M19 XP等级 / LF-M52 未成年保护
+}
+
+# 构造期不变量: 接线里引用的机制 key 必须真实存在于注册表 (否则说明接线漂移)
+for _step, _keys in PIPELINE_MECHANISM_MAP.items():
+    for _k in _keys:
+        mechanism_registry.get(_k)  # 未注册即抛 KeyError
 
 
 class LearningOrchestrator:
@@ -327,9 +354,11 @@ class LearningOrchestrator:
         db.add(spaced_review)
         await db.flush()
 
-        # 6. 宠物更新
+        # 6. 宠物更新 (LF-M22 虚拟宠物陪伴)
+        #    注册表门控: 该机制被 is_enabled(False) 关闭 (消融实验) 时跳过成长更新,
+        #    默认开启 → 行为不变。
         pet = await cls._ensure_pet(user, db)
-        if pet:
+        if pet and mechanism_registry.is_enabled("pet_companion"):
             if is_correct:
                 pet_event = PetService.calculate_correct_answer(
                     difficulty=task.difficulty,

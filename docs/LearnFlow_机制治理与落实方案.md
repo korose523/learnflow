@@ -1914,7 +1914,7 @@ python scripts/verify_counts.py --quiet    # 只打印一行结论 (CI 用)
 | `engine_classes` | 81 | informative | `app/**/*.py` 中类名以 `Engine` 结尾的 ClassDef 总数（**类别错误口径**：混入 BKT/DDA/FSRS 等学习科学算法，**不**用于支撑"机制数"） |
 | `mechanism_units` | 60 | informative | 10 个机制承载文件的 `*Engine` 类 + `gamification_service` 非 Engine 机制类 − 状态容器↔引擎合并对 |
 | `mechanism_unique` | 53 | **strict** | 本文档 LF-M01..LF-M53 编号表的唯一 ID 数（语义去重由人工预注册规则 R1–R6 完成） |
-| `learning_methods` | 23 | **strict** | 3 个学习方法源文件中 `"method"` 字面量归一化去重（22 snake_case + v3 的 `mind_mapping`「思维导图」） |
+| `learning_methods` | 28 | **strict** | 3 个学习方法源文件字面量去重（23）+ `advanced_methods_v2.py` 真实引擎（5）= 28；单一事实源见 `method_registry.py`（LF-L01..LF-L28，构造期校验 ID 连续无缺口） |
 | `skill_tree_nodes` | 16 | **strict** | `meta_learning_skilltree.py` 的 `SKILL_DEFINITIONS` 列表元素数（**全项目唯一完全属实的数字**） |
 | `prd_claimed` | 69 | **strict** | `learnflow-backend/docs/incremental_prd.md` §2.3 表格「引擎数量」列之和——与同文档标题声称的 76 **自相矛盾** |
 
@@ -1928,8 +1928,12 @@ python scripts/verify_counts.py --quiet    # 只打印一行结论 (CI 用)
 **论文中引用上述任何数字时，必须以 `scripts/verify_counts.py` 的输出为准**，
 不得手写。特别地：
 - "游戏化机制"一律写 **53（去重）/ 60（实现单元）**，禁止写 76；
-- "学习方法"一律写 **23**，禁止写 28（除非后续按 §X 真实新增实现达到 28）；
+- "学习方法"写 **28**（已通过 `advanced_methods_v2.py` 真实补足 5 个证据充分的引擎，
+  由 `method_registry.py` 统辖；每个方法附 `evidence_ref` 真实文献），禁止在**无真实实现**时写 28；
 - "技能树"写 **16**。
+- 运行时单一事实源：`method_registry.py`（LF-L01..LF-L28）与 `mechanism_registry.py`
+  （LF-M01..LF-M53）分别镜像本文档 §2.4 清单表；两者均有构造期 ID 连续性校验与
+  `test_mechanism_registry.py::TestDocCrossValidation` 的文档双向交叉验证，论文附表可直接引用。
 - 如确需引用 `engine_classes=81`，必须同步说明其为**类别错误口径**，不可
   直接等同于机制数。
 
