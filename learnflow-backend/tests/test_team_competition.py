@@ -124,7 +124,7 @@ class TestMVPEngine:
         from app.services.team_competition_engine import TeamManagementEngine, MVPEngine
         team = TeamManagementEngine.create_team("MVP队", "MVP", "mvp_c", "小明")
         TeamManagementEngine.join_team(team.id, "mvp_m", "小红")
-        team = TeamManagementEngine.TEAMS[team.id]
+        team = TeamManagementEngine.TEAMS.get(team.id)
         team.members[0].contribution_xp = 500
         team.members[1].contribution_xp = 300
         result = MVPEngine.calculate_mvp(team)

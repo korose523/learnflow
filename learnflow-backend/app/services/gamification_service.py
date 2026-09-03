@@ -511,12 +511,16 @@ class SessionMemory:
 
 
 class PeakEndEngine:
-    _active_sessions: Dict[str, SessionMemory] = {}
+    # 会话记忆容器 —— 迁移到可插拔 StateStore 后端（对齐 BOX_STATES 示范）
+    # 值为 SessionMemory 且被调用方就地累加（record_answer），改用 JSONFileStateStore
+    # 会丢失就地修改，故沿用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    _active_sessions: StateStore = MemoryStateStore()
 
     @classmethod
     def start_session(cls, user_id: str) -> SessionMemory:
         mem = SessionMemory(session_start=datetime.now(UTC))
-        cls._active_sessions[user_id] = mem
+        cls._active_sessions.set(user_id, mem)
         return mem
 
     @classmethod
@@ -541,7 +545,8 @@ class PeakEndEngine:
 
     @classmethod
     def end_session(cls, user_id: str, pet_name: str = "小豆") -> dict:
-        mem = cls._active_sessions.pop(user_id, None)
+        mem = cls._active_sessions.get(user_id)
+        cls._active_sessions.delete(user_id)
         if not mem or mem.total_attempts == 0:
             return {"has_session": False}
         accuracy = round(mem.total_correct / max(mem.total_attempts, 1) * 100)
@@ -582,7 +587,10 @@ class UnfinishedTask:
 
 
 class ZeigarnikEngine:
-    _unfinished: Dict[str, UnfinishedTask] = {}
+    # 未完成任务容器 —— 迁移到可插拔 StateStore 后端
+    # 值为 UnfinishedTask 且 get_reminder 就地累加 reminder_count，同上沿用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    _unfinished: StateStore = MemoryStateStore()
 
     @classmethod
     def save_unfinished(cls, user_id: str, task_id: str, topic: str,
@@ -590,9 +598,9 @@ class ZeigarnikEngine:
         existing = cls._unfinished.get(user_id)
         if existing and existing.task_id == task_id:
             return
-        cls._unfinished[user_id] = UnfinishedTask(
+        cls._unfinished.set(user_id, UnfinishedTask(
             task_id=task_id, topic=topic, difficulty=difficulty,
-            started_at=datetime.now(UTC), reason=reason)
+            started_at=datetime.now(UTC), reason=reason))
 
     @classmethod
     def get_reminder(cls, user_id: str, pet_name: str = "小豆") -> Optional[dict]:
@@ -612,7 +620,7 @@ class ZeigarnikEngine:
     def clear_unfinished(cls, user_id: str, task_id: str):
         existing = cls._unfinished.get(user_id)
         if existing and existing.task_id == task_id:
-            del cls._unfinished[user_id]
+            cls._unfinished.delete(user_id)
 
 
 # ─── 10. 宜家效应 (IKEA Effect) ───────────────

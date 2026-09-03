@@ -165,7 +165,7 @@ class TestZeigarnikEngine:
                                started_at=datetime.now(UTC),
                                reminder_count=3,
                                last_reminded_at=datetime.now(UTC) - timedelta(hours=10))
-        ZeigarnikEngine._unfinished["u_max"] = task
+        ZeigarnikEngine._unfinished.set("u_max", task)
         reminder = ZeigarnikEngine.get_reminder("u_max")
         assert reminder is None
 

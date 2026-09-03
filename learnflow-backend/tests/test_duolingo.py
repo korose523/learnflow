@@ -110,7 +110,7 @@ class TestFriendQuestEngine:
         from app.services.duolingo_addiction_engine import FriendQuestEngine, FriendQuest
         quest = FriendQuest(id="fq_test", participants=["u1", "u2"],
                              goal_xp=100, start_date="", end_date="")
-        FriendQuestEngine.ACTIVE_QUESTS["fq_test"] = quest
+        FriendQuestEngine.ACTIVE_QUESTS.set("fq_test", quest)
         result = FriendQuestEngine.contribute_xp("fq_test", "u1", 50)
         assert result["contributed"]
         assert quest.current_xp == 50
@@ -119,7 +119,7 @@ class TestFriendQuestEngine:
         from app.services.duolingo_addiction_engine import FriendQuestEngine, FriendQuest
         quest = FriendQuest(id="fq_comp", participants=["u1", "u2"],
                              goal_xp=50, start_date="", end_date="")
-        FriendQuestEngine.ACTIVE_QUESTS["fq_comp"] = quest
+        FriendQuestEngine.ACTIVE_QUESTS.set("fq_comp", quest)
         result = FriendQuestEngine.contribute_xp("fq_comp", "u1", 60)
         assert result["completed"]
 

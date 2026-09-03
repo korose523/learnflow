@@ -4,6 +4,12 @@ from datetime import datetime, UTC, timedelta
 from unittest.mock import AsyncMock, MagicMock
 
 
+def _reset_store(store):
+    """清空 StateStore —— 容器迁移后替代原先的 dict.clear()"""
+    for key in store.keys():
+        store.delete(key)
+
+
 class TestOnboardingService:
     """用户初始化统一服务测试"""
 
@@ -233,8 +239,8 @@ class TestTeamCompetition:
     def test_create_team_succeeds(self):
         from app.services.team_competition_engine import TeamManagementEngine
 
-        TeamManagementEngine.TEAMS.clear()
-        TeamManagementEngine.PLAYER_TEAMS.clear()
+        _reset_store(TeamManagementEngine.TEAMS)
+        _reset_store(TeamManagementEngine.PLAYER_TEAMS)
         team = TeamManagementEngine.create_team("LearnFlow", "LF", "user-1", "Captain")
         assert team.name == "LearnFlow"
         assert team.tag == "LF"
@@ -243,8 +249,8 @@ class TestTeamCompetition:
     def test_join_team_adds_member(self):
         from app.services.team_competition_engine import TeamManagementEngine
 
-        TeamManagementEngine.TEAMS.clear()
-        TeamManagementEngine.PLAYER_TEAMS.clear()
+        _reset_store(TeamManagementEngine.TEAMS)
+        _reset_store(TeamManagementEngine.PLAYER_TEAMS)
         team = TeamManagementEngine.create_team("LearnFlow", "LF", "user-1", "Captain")
         result = TeamManagementEngine.join_team(team.id, "user-2", "Member")
         assert result["success"] is True
@@ -265,7 +271,7 @@ class TestSkillTree:
     def test_init_player_skills_unlocks_basic_methods(self):
         from app.services.meta_learning_skilltree import SkillTreeEngine
 
-        SkillTreeEngine.PLAYER_SKILLS.clear()
+        _reset_store(SkillTreeEngine.PLAYER_SKILLS)
         skills = SkillTreeEngine.init_player_skills("user-1")
         assert skills["active_recall"].unlocked is True
         assert skills["retrieval_practice"].unlocked is True
@@ -273,7 +279,7 @@ class TestSkillTree:
     def test_use_skill_gains_xp(self):
         from app.services.meta_learning_skilltree import SkillTreeEngine
 
-        SkillTreeEngine.PLAYER_SKILLS.clear()
+        _reset_store(SkillTreeEngine.PLAYER_SKILLS)
         SkillTreeEngine.init_player_skills("user-1")
         result = SkillTreeEngine.use_skill("user-1", "active_recall")
         assert result["used"] is True
@@ -282,7 +288,7 @@ class TestSkillTree:
     def test_get_skill_tree_returns_categories(self):
         from app.services.meta_learning_skilltree import SkillTreeEngine
 
-        SkillTreeEngine.PLAYER_SKILLS.clear()
+        _reset_store(SkillTreeEngine.PLAYER_SKILLS)
         tree = SkillTreeEngine.get_skill_tree("user-1")
         assert "categories" in tree
         assert "meta_level" in tree

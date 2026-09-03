@@ -22,6 +22,8 @@ from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import random
 
+from app.services.state_store import StateStore, MemoryStateStore
+
 
 # ═══════════════════════════════════════════════════════════
 # 1. XP 系统 — 经验引擎
@@ -466,13 +468,16 @@ class FriendQuestEngine:
         {"goal_xp": 50, "duration_days": 1, "name": "今日之约", "reward": "10 XP"},
     ]
 
-    ACTIVE_QUESTS: Dict[str, FriendQuest] = {}
+    # 好友任务容器 —— 迁移到可插拔 StateStore 后端
+    # 值为 FriendQuest 且 contribute_xp 就地累加 current_xp/contribution，沿用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    ACTIVE_QUESTS: StateStore = MemoryStateStore()
 
     @classmethod
     def create_quest(cls, user1_id: str, user2_id: str) -> FriendQuest:
         """创建好友任务"""
         template = random.choice(cls.QUEST_TEMPLATES)
-        quest_id = f"fq_{len(cls.ACTIVE_QUESTS) + 1}"
+        quest_id = f"fq_{len(cls.ACTIVE_QUESTS.keys()) + 1}"
         today = datetime.now(UTC).strftime("%Y-%m-%d")
         end = (datetime.now(UTC) + timedelta(days=template["duration_days"])).strftime("%Y-%m-%d")
 
@@ -485,7 +490,7 @@ class FriendQuestEngine:
             end_date=end,
             reward=template["reward"],
         )
-        cls.ACTIVE_QUESTS[quest_id] = quest
+        cls.ACTIVE_QUESTS.set(quest_id, quest)
         return quest
 
     @classmethod

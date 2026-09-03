@@ -22,6 +22,8 @@ from typing import Dict, List, Optional, Tuple
 import random
 import uuid
 
+from app.services.state_store import StateStore, MemoryStateStore
+
 
 # ═══════════════════════════════════════════════════════════
 # 1. 排位段位 — Rank Tier System
@@ -289,8 +291,13 @@ class TeamManagementEngine:
     """战队管理引擎"""
 
     MAX_MEMBERS = 10
-    TEAMS: Dict[str, Team] = {}
-    PLAYER_TEAMS: Dict[str, str] = {}  # user_id → team_id
+    # 战队容器 —— 迁移到可插拔 StateStore 后端（对齐 BOX_STATES 示范）
+    # TEAMS 的值为 Team 且被 TeamLeagueEngine/MVPEngine 就地累加（total_xp、members），
+    # JSON 后端会丢失就地修改；PLAYER_TEAMS 虽为 str→str 可序列化，但与 TEAMS 同事务
+    # 写入（create/join/leave），单独落库会在重启后留下悬空 team_id，故两者统一用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    TEAMS: StateStore = MemoryStateStore()
+    PLAYER_TEAMS: StateStore = MemoryStateStore()  # user_id → team_id
 
     @classmethod
     def create_team(cls, name: str, tag: str, captain_id: str,
@@ -303,8 +310,8 @@ class TeamManagementEngine:
         captain = TeamMember(user_id=captain_id, name=captain_name, role="captain")
         team = Team(id=team_id, name=name, tag=tag, captain_id=captain_id,
                      members=[captain])
-        cls.TEAMS[team_id] = team
-        cls.PLAYER_TEAMS[captain_id] = team_id
+        cls.TEAMS.set(team_id, team)
+        cls.PLAYER_TEAMS.set(captain_id, team_id)
         return team
 
     @classmethod
@@ -317,12 +324,12 @@ class TeamManagementEngine:
         if len(team.members) >= cls.MAX_MEMBERS:
             return {"success": False, "message": f"战队已满 ({cls.MAX_MEMBERS}人)"}
 
-        if user_id in cls.PLAYER_TEAMS:
+        if cls.PLAYER_TEAMS.get(user_id) is not None:
             return {"success": False, "message": "你已加入其他战队，请先退出"}
 
         member = TeamMember(user_id=user_id, name=name)
         team.members.append(member)
-        cls.PLAYER_TEAMS[user_id] = team_id
+        cls.PLAYER_TEAMS.set(user_id, team_id)
         return {"success": True, "message": f"成功加入 {team.name} [{team.tag}]！", "team": cls.get_team_info(team)}
 
     @classmethod
@@ -332,15 +339,15 @@ class TeamManagementEngine:
         if not team_id:
             return {"success": False, "message": "你不在任何战队中"}
 
-        team = cls.TEAMS[team_id]
+        team = cls.TEAMS.get(team_id)
         if team.captain_id == user_id and len(team.members) > 1:
             return {"success": False, "message": "队长需要先移交队长或解散战队"}
 
         team.members = [m for m in team.members if m.user_id != user_id]
-        del cls.PLAYER_TEAMS[user_id]
+        cls.PLAYER_TEAMS.delete(user_id)
 
         if not team.members:
-            del cls.TEAMS[team_id]
+            cls.TEAMS.delete(team_id)
 
         return {"success": True, "message": "已离开战队"}
 
@@ -369,7 +376,7 @@ class TeamManagementEngine:
     @classmethod
     def list_teams(cls, page: int = 1, page_size: int = 10) -> dict:
         """战队列表"""
-        teams = list(cls.TEAMS.values())
+        teams = [cls.TEAMS.get(k) for k in cls.TEAMS.keys()]
         teams.sort(key=lambda t: t.total_xp, reverse=True)
         start = (page - 1) * page_size
         return {
@@ -418,8 +425,8 @@ class TeamLeagueEngine:
     @classmethod
     def get_subject_leaderboard(cls, subject: str) -> dict:
         """获取某科目的战队排行榜"""
-        teams = [t for t in TeamManagementEngine.TEAMS.values()
-                  if t.subject_scores.get(subject, 0) > 0]
+        teams = [TeamManagementEngine.TEAMS.get(k) for k in TeamManagementEngine.TEAMS.keys()]
+        teams = [t for t in teams if t.subject_scores.get(subject, 0) > 0]
         teams.sort(key=lambda t: t.subject_scores.get(subject, 0), reverse=True)
 
         return {
@@ -435,7 +442,8 @@ class TeamLeagueEngine:
     @classmethod
     def get_global_leaderboard(cls) -> dict:
         """获取全局战队排行榜"""
-        teams = sorted(TeamManagementEngine.TEAMS.values(),
+        teams = sorted((TeamManagementEngine.TEAMS.get(k)
+                        for k in TeamManagementEngine.TEAMS.keys()),
                        key=lambda t: t.total_xp, reverse=True)
         return {
             "rankings": [
@@ -449,7 +457,8 @@ class TeamLeagueEngine:
     def weekly_settlement(cls) -> dict:
         """每周结算（降级/升级）"""
         results = []
-        teams = sorted(TeamManagementEngine.TEAMS.values(),
+        teams = sorted((TeamManagementEngine.TEAMS.get(k)
+                        for k in TeamManagementEngine.TEAMS.keys()),
                        key=lambda t: t.total_xp, reverse=True)
 
         for i, team in enumerate(teams):
@@ -556,7 +565,10 @@ class TeamMatch:
 class TeamMatchEngine:
     """战队对抗赛引擎"""
 
-    MATCHES: Dict[str, TeamMatch] = {}
+    # 对抗赛容器 —— 迁移到可插拔 StateStore 后端
+    # 值为 TeamMatch 且 contribute_to_match 就地累加 score/participants，沿用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    MATCHES: StateStore = MemoryStateStore()
 
     @classmethod
     def create_match(cls, team_a_id: str, team_b_id: str,
@@ -567,10 +579,10 @@ class TeamMatchEngine:
         if not team_a or not team_b:
             return {"success": False, "message": "战队不存在"}
 
-        match_id = f"m_{len(cls.MATCHES) + 1}"
+        match_id = f"m_{len(cls.MATCHES.keys()) + 1}"
         match = TeamMatch(id=match_id, team_a_id=team_a_id, team_b_id=team_b_id,
                            subject=subject, duration_hours=duration_hours)
-        cls.MATCHES[match_id] = match
+        cls.MATCHES.set(match_id, match)
 
         return {
             "success": True,

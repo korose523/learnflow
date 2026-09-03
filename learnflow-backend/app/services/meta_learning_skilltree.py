@@ -21,6 +21,8 @@ from typing import Dict, List, Optional, Tuple
 import hashlib
 import random
 
+from app.services.state_store import StateStore, MemoryStateStore
+
 
 # ═══════════════════════════════════════════════════════════
 # 1. 学习技能定义 — 16种方法的RPG属性
@@ -160,7 +162,12 @@ class SkillTreeEngine:
     管理16个学习技能的升级、解锁、组合加成。
     """
 
-    PLAYER_SKILLS: Dict[str, Dict[str, LearningSkill]] = {}
+    # 技能树引擎内缓存 —— 迁移到可插拔 StateStore 后端
+    # 真正的落库已由 progression_repository.save_skill_tree 在 orchestrator 侧承担，
+    # 此容器仅为进程内缓存；值为 LearningSkill 且 use_skill 就地累加 xp/level，
+    # 故显式保持内存语义（MemoryStateStore），不改动 save_skill_tree / get_skill_tree 路径。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    PLAYER_SKILLS: StateStore = MemoryStateStore()
 
     @classmethod
     def init_player_skills(cls, user_id: str) -> Dict[str, LearningSkill]:
@@ -194,7 +201,7 @@ class SkillTreeEngine:
                 skill.unlocked = all_unlocked
 
             skills[skill.skill_id] = skill
-        cls.PLAYER_SKILLS[user_id] = skills
+        cls.PLAYER_SKILLS.set(user_id, skills)
         return skills
 
     @classmethod
@@ -204,7 +211,7 @@ class SkillTreeEngine:
         """使用某个学习技能 — 获得XP
 
         ``db`` 为可选参数: 预留给调用方 (learning_orchestrator) 传入会话以便
-        自愈式持久化 (PLAYER_SKILLS 当前为进程内字典, 重启即丢)。保持同步签名
+        自愈式持久化 (PLAYER_SKILLS 为 StateStore 内存后端, 重启即丢)。保持同步签名
         以维持既有调用方兼容; 真正落库由接管的协程负责, 此处仅透传占位。
         """
         skills = cls.PLAYER_SKILLS.get(user_id)

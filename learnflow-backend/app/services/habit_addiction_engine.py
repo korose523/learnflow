@@ -19,6 +19,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, UTC
 from typing import Dict, List, Optional, Any
 
+from app.services.state_store import StateStore, MemoryStateStore
+
 
 # ═══════════════════════════════════════════════════════════
 # 1. 习惯叠加引擎
@@ -213,7 +215,10 @@ class SelfRegulationGoal:
 class SelfRegulationEngine:
     """自我调节学习引擎：目标设定、监控、反思"""
 
-    GOALS: Dict[str, List[SelfRegulationGoal]] = {}
+    # 自我调节目标容器 —— 迁移到可插拔 StateStore 后端
+    # 值为 List[SelfRegulationGoal]，monitor_progress 就地修改 goal.progress，沿用内存后端。
+    # TODO(persist): add asdict serialization for JSONFileStateStore
+    GOALS: StateStore = MemoryStateStore()
 
     @classmethod
     def set_goal(cls, user_id: str, goal_id: str, description: str,
@@ -223,7 +228,11 @@ class SelfRegulationEngine:
             id=goal_id, user_id=user_id, description=description,
             target_value=target_value, unit=unit, deadline=deadline,
         )
-        cls.GOALS.setdefault(user_id, []).append(goal)
+        goals = cls.GOALS.get(user_id)
+        if goals is None:
+            goals = []
+            cls.GOALS.set(user_id, goals)
+        goals.append(goal)
         return {
             "method": "目标设定",
             "goal": {
@@ -239,7 +248,7 @@ class SelfRegulationEngine:
     @classmethod
     def monitor_progress(cls, user_id: str, goal_id: str, current_value: float) -> Dict[str, Any]:
         """更新进度并反馈"""
-        goals = cls.GOALS.get(user_id, [])
+        goals = cls.GOALS.get(user_id) or []
         goal = next((g for g in goals if g.id == goal_id), None)
         if not goal:
             return {"error": "目标不存在"}
