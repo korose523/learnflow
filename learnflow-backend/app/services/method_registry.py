@@ -14,8 +14,14 @@ LearnFlow 的学习方法此前散落在三个引擎文件里, 没有任何统�
 不到), 且"每日挑战"对 ``set(...)`` 转换结果取模 —— set 无序导致同一天不同进程可能给出
 不同方法, 论文的可复现性要求无法成立。
 
-本模块把全部 **23** 个学习方法收敛为声明式注册表: 可枚举、可调度、可开关, 并为每个
-方法分配稳定 ID (``LF-L01``..``LF-L23``) 供论文附表与消融实验引用。
+本模块把全部 **28** 个学习方法收敛为声明式注册表: 可枚举、可调度、可开关, 并为每个
+方法分配稳定 ID (``LF-L01``..``LF-L28``) 供论文附表与消融实验引用。
+
+历史背景: 项目旧文档宣称"28 种学习方法", 但最初只有 23 个真实实现
+(``LF-L01``..``LF-L23``)。本项目不"把数字改掉", 而是补上了 5 个真实、证据充分、
+且与前 23 个无语义重叠的方法 (``LF-L24``..``LF-L28``, 见
+``advanced_methods_v2.py``), 让 28 成为可复算的真值。详见
+``docs/LearnFlow_学习方法候选核验.md``。
 
 ID 稳定性约定
 -------------
@@ -64,7 +70,7 @@ DELIVERIES: Tuple[str, ...] = ("tip", "interactive", "plan", "quiz")
 #: 难度枚举
 DIFFICULTIES: Tuple[str, ...] = ("beginner", "intermediate", "advanced")
 
-#: ID 形态 ``LF-L01`` .. ``LF-L23``
+#: ID 形态 ``LF-L01`` .. ``LF-L28``
 ID_PATTERN = re.compile(r"^LF-L(\d{2})$")
 
 #: snake_case key 形态
@@ -79,6 +85,7 @@ MODULE_ALIASES: Dict[str, str] = {
     "learning_methods_engine.py": "app.services.learning_methods_engine",
     "advanced_methods_engine.py": "app.services.advanced_methods_engine",
     "learning_methods_engine_v3.py": "app.services.learning_methods_engine_v3",
+    "advanced_methods_v2.py": "app.services.advanced_methods_v2",
 }
 
 #: 唯一一个没有 tip 文案、只能由 v3 引擎交付的方法
@@ -484,9 +491,71 @@ _C_SPECS: List[Dict[str, Any]] = [
     },
 ]
 
+# D. advanced_methods_v2.py — 把"28 种学习方法"从宣称变为真值的 5 个新增方法。
+#    每个都有真实引擎实现 (不是文案), 且与 A/B/C 的 23 个无语义重叠。
+_D_SPECS: List[Dict[str, Any]] = [
+    {
+        "id": "LF-L24",
+        "key": "worked_examples",
+        "name_zh": "例题-解题对",
+        "category": "cognitive",
+        "evidence_ref": "Sweller (1988); Renkl (2005, Educational Psychology Review)",
+        "evidence_note": "先示范完整解再逐步渐隐(fading), 比直接刷题的长时保持更优。",
+        "impl_ref": "advanced_methods_v2.py:WorkedExamplesEngine.build_faded_sequence",
+        "delivery": ("interactive", "plan"),
+        "difficulty": "beginner",
+    },
+    {
+        "id": "LF-L25",
+        "key": "keyword_mnemonic",
+        "name_zh": "关键词记忆法",
+        "category": "cognitive",
+        "evidence_ref": "Atkinson & Raugh (1975)",
+        "evidence_note": "用母语中发音相近的词做声音桥 + 夸张意象, 专攻外语/生词。",
+        "impl_ref": "advanced_methods_v2.py:KeywordMnemonicEngine.build_mnemonic",
+        "delivery": ("interactive",),
+        "difficulty": "beginner",
+    },
+    {
+        "id": "LF-L26",
+        "key": "productive_failure",
+        "name_zh": "有效失败",
+        "category": "metacognitive",
+        "evidence_ref": "Kapur (2008, Cognition and Instruction, 26(3):379-424); "
+                       "Sinha & Kapur (2021)",
+        "evidence_note": "先尝试解决/生成方案再接受教学, 且必须有结构化归纳; "
+                         "无归纳的纯失败是'无效失败', 无同等收益。",
+        "impl_ref": "advanced_methods_v2.py:ProductiveFailureEngine.build_session",
+        "delivery": ("interactive",),
+        "difficulty": "intermediate",
+    },
+    {
+        "id": "LF-L27",
+        "key": "summarization",
+        "name_zh": "摘要法",
+        "category": "cognitive",
+        "evidence_ref": "Wittwer & Renkl (2010, Educational Psychology Review)",
+        "evidence_note": "对一段文本抽取主干、压缩成 1-3 句, 训练选择性与压缩能力。",
+        "impl_ref": "advanced_methods_v2.py:SummarizationEngine.build_prompt",
+        "delivery": ("interactive",),
+        "difficulty": "intermediate",
+    },
+    {
+        "id": "LF-L28",
+        "key": "varied_practice",
+        "name_zh": "变异练习",
+        "category": "cognitive",
+        "evidence_ref": "Schmidt & Bjork (1992, Psychological Science, 3(2):77-82)",
+        "evidence_note": "保持同一任务类型, 改变表面特征/情境, 防止套模板。",
+        "impl_ref": "advanced_methods_v2.py:VariedPracticeEngine.generate_variants",
+        "delivery": ("plan",),
+        "difficulty": "beginner",
+    },
+]
+
 #: 全部规格 (按 ID 升序)
 SPECS: Tuple[MethodSpec, ...] = tuple(
-    _make_spec(**data) for data in (*_A_SPECS, *_B_SPECS, *_C_SPECS)
+    _make_spec(**data) for data in (*_A_SPECS, *_B_SPECS, *_C_SPECS, *_D_SPECS)
 )
 
 _BY_KEY: Dict[str, MethodSpec] = {spec.key: spec for spec in SPECS}
@@ -598,7 +667,7 @@ def by_delivery(delivery: str) -> List[MethodSpec]:
 
 
 def count() -> int:
-    """方法总数 (当前 23)"""
+    """方法总数 (当前 28)"""
     return len(SPECS)
 
 
@@ -612,7 +681,7 @@ def keys() -> List[str]:
 
 
 def ids() -> List[str]:
-    """全部稳定 ID (LF-L01..LF-L23)"""
+    """全部稳定 ID (LF-L01..LF-L28)"""
     return [spec.id for spec in SPECS]
 
 
@@ -697,8 +766,46 @@ def render(method_key: str, topic: str = "", **ctx: Any) -> Dict[str, Any]:
             "scene": scene,
         }
 
-    # 延迟导入: learning_methods_engine 内部再反向 import 本模块 (函数级),
-    # 此处若在模块级导入会造成循环依赖
+    # D 组 5 个方法: 真实引擎实现, 由 advanced_methods_v2 路由
+    if spec.key in ("worked_examples", "keyword_mnemonic",
+                    "productive_failure", "summarization", "varied_practice"):
+        from app.services import advanced_methods_v2 as v2
+
+        engine_call = {
+            "worked_examples": lambda: v2.WorkedExamplesEngine.build_faded_sequence(
+                ctx.get("problem", f"关于「{topic}」的例题"),
+                ctx.get("full_solution", [f"第1步: 分析「{topic}」", f"第2步: 求解", f"第3步: 验证"]),
+            ),
+            "keyword_mnemonic": lambda: v2.KeywordMnemonicEngine.build_mnemonic(
+                ctx.get("target", topic),
+                ctx.get("target_lang", "英语"),
+                ctx.get("native_keyword", f"与「{topic}」谐音的词"),
+                ctx.get("imagery", "一幅夸张的连接画面"),
+            ),
+            "productive_failure": lambda: v2.ProductiveFailureEngine.build_session(
+                ctx.get("problem", f"一个关于「{topic}」、你还没学过的难题"),
+                topic,
+            ),
+            "summarization": lambda: v2.SummarizationEngine.build_prompt(
+                ctx.get("passage", f"一段关于「{topic}」的讲解文字"),
+            ),
+            "varied_practice": lambda: v2.VariedPracticeEngine.generate_variants(
+                topic,
+                ctx.get("base_template", "情境: {context}，请解决「{topic}」相关问题。"),
+                ctx.get("contexts", ["学校", "家里", "超市"]),
+            ),
+        }[spec.key]
+        payload = engine_call()
+        return {
+            **payload,
+            "method_id": spec.id,
+            "method_key": spec.key,
+            "name_zh": spec.name_zh,
+            "topic": topic,
+            "scene": scene,
+        }
+
+    # 其余 22 个: 走 LearningMethodEngine.render_tip, 必然经过 ground_topic
     from app.services.learning_methods_engine import LearningMethodEngine
 
     difficulty = ctx.get("difficulty") or spec.difficulty

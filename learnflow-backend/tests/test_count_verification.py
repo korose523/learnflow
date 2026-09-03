@@ -3,15 +3,16 @@
 为什么存在这个测试
 -------------------
 LearnFlow 历史文档宣称「76 种机制 / 28 种学习方法」, 但真实口径分别为
-60 实现单元 / 53 去重机制 / 23 学习方法。这种虚高数字一旦写进论文, 审稿人
-一次 grep 即可证伪。本测试不去「证明数字对」, 而是把**已登记口径**逐条钉死,
-并显式断言 PRD 内部自相矛盾 (prd_claimed != engine_classes), 防止有人偷偷改回
-76 却没同步改代码 —— 那样 CI 会变红, 提醒口径漂移。
+60 实现单元 / 53 去重机制 / 28 学习方法 (其中 23 为三源文件字面量去重,
+差额 5 来自 advanced_methods_v2 补上的真实引擎, 由 method_registry 统辖)。
+这种虚高数字一旦写进论文, 审稿人一次 grep 即可证伪。本测试不去「证明数字对」,
+而是把**已登记口径**逐条钉死, 并显式断言 PRD 内部自相矛盾 (prd_claimed !=
+engine_classes), 防止有人偷偷改回 76 却没同步改代码 —— 那样 CI 会变红, 提醒口径漂移。
 
 约定
 ----
 登记口径的唯一真源是 ``scripts/verify_counts.py`` 的 ``REGISTERED`` 常量。本测试
-只断言「稳定关系」, 不把易波动的 engine_classes(81) 这种数字硬编码成断言, 避免
+只断言「稳定关系」, 不把易波动的 engine_classes(86) 这种数字硬编码成断言, 避免
 正常重构 (新增一个 *Engine 类) 就随机变红、导致团队学会无视红灯。
 """
 import json
@@ -40,10 +41,10 @@ def _load_module():
 # 1. 已登记口径逐条钉死
 # ────────────────────────────────────────────────────────────
 
-def test_learning_methods_is_23():
+def test_learning_methods_is_28():
     mod = _load_module()
     counts = mod.collect_all()
-    assert counts["learning_methods"]["value"] == 23
+    assert counts["learning_methods"]["value"] == 28
 
 
 def test_skill_tree_nodes_is_16():

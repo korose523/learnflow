@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-03T19:34:13+09:00",
-  "git_commit": "2c6972e223caba4a53745d889a43ca840aa4eb8f",
+  "generated_at": "2026-09-03T19:52:17+09:00",
+  "git_commit": "41d2dd8cffd28d1c95d0d2bb94c1767cdb17a604",
   "python_version": "3.13.14",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
     "engine_classes": {
-      "value": 81,
-      "unique_class_names": 80,
+      "value": 86,
+      "unique_class_names": 85,
       "duplicate_class_names": [
         "ZeigarnikEngine"
       ],
@@ -17,6 +17,7 @@
         "app/services/positive_addiction_engine.py": 6,
         "app/services/team_competition_engine.py": 6,
         "app/services/addiction_engine_v3.py": 5,
+        "app/services/advanced_methods_v2.py": 5,
         "app/services/gamification_service.py": 5,
         "app/services/habit_addiction_engine.py": 5,
         "app/services/learning_methods_engine_v3.py": 5,
@@ -97,7 +98,39 @@
       "definition": "治理方案 LF-M01..LF-Mnn 编号表中的唯一机制 ID 数（语义去重由人工预注册规则 R1–R6 完成）"
     },
     "learning_methods": {
-      "value": 23,
+      "value": 28,
+      "registry_count": 28,
+      "registry_ids": [
+        "LF-L01",
+        "LF-L02",
+        "LF-L03",
+        "LF-L04",
+        "LF-L05",
+        "LF-L06",
+        "LF-L07",
+        "LF-L08",
+        "LF-L09",
+        "LF-L10",
+        "LF-L11",
+        "LF-L12",
+        "LF-L13",
+        "LF-L14",
+        "LF-L15",
+        "LF-L16",
+        "LF-L17",
+        "LF-L18",
+        "LF-L19",
+        "LF-L20",
+        "LF-L21",
+        "LF-L22",
+        "LF-L23",
+        "LF-L24",
+        "LF-L25",
+        "LF-L26",
+        "LF-L27",
+        "LF-L28"
+      ],
+      "literal_scan_unique": 23,
       "snake_case_ids": 23,
       "non_snake_ids": [],
       "ids": [
@@ -132,7 +165,7 @@
       },
       "method_tips_entries": 16,
       "method_tips_unique_keys": 15,
-      "definition": "3 个学习方法源文件中 'method' 字面量归一化去重后的规范 id 数（22 个 snake_case + v3 的 mind_mapping『思维导图』）"
+      "definition": "权威来源 = app/services/method_registry.py 中 LF-L01..LF-L28 的登记条目数（用 AST 静态提取dict 的 'id' 字段，不扫源码文本）；3 个学习方法源文件的字面量去重（23）是其子集，差额 5 来自 advanced_methods_v2 的真实新增引擎，二者由同一注册表统辖，故『28 种学习方法』可被一条命令复算。"
     },
     "skill_tree_nodes": {
       "value": 16,
@@ -210,9 +243,9 @@
   },
   "registered": {
     "engine_classes": {
-      "registered": 81,
+      "registered": 86,
       "strict": false,
-      "note": "informative：新增一个 *Engine 类是正常的工程演进，不应让 CI 变红；但登记值应定期复核。"
+      "note": "informative：新增一个 *Engine 类是正常的工程演进，不应让 CI 变红；但登记值应定期复核。当前 86 = 基线 81 + advanced_methods_v2 的 5 个真实引擎（WorkedExamples/KeywordMnemonic/ProductiveFailure/Summarization/VariedPractice），与『28 种学习方法』的注册表口径一致。"
     },
     "mechanism_units": {
       "registered": 60,
@@ -225,9 +258,9 @@
       "note": "strict：这是论文 Table 1 的数字，被引用即必须可复算。"
     },
     "learning_methods": {
-      "registered": 23,
+      "registered": 28,
       "strict": true,
-      "note": "strict：，论文统一写法口径（22 个 snake_case + v3 的「思维导图」）。"
+      "note": "strict：论文统一写法口径（22 个 snake_case + v3 的「思维导图」+ advanced_methods_v2 的 5 个真实新增方法, 使 28 成为可复算真值）。"
     },
     "skill_tree_nodes": {
       "registered": 16,
@@ -247,8 +280,8 @@
   "verdict": {
     "engine_classes": {
       "status": "verified",
-      "registered": 81,
-      "actual": 81,
+      "registered": 86,
+      "actual": 86,
       "delta": 0,
       "strict": false,
       "notes": ""
@@ -271,8 +304,8 @@
     },
     "learning_methods": {
       "status": "verified",
-      "registered": 23,
-      "actual": 23,
+      "registered": 28,
+      "actual": 28,
       "delta": 0,
       "strict": true,
       "notes": ""

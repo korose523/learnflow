@@ -75,6 +75,14 @@ learning_methods
         中文显示名而非英文 key，这正是历史上正则统计得 0 的原因）；
       - NON_METHOD_LABELS 中的标签不是具名学习方法（如 v3 的「基础」是
         兜底提示语），不计入。
+    注意：本口径**只统计三个源文件里字面量方法名**。advanced_methods_v2.py
+    的 5 个新增方法（worked_examples / keyword_mnemonic / productive_failure /
+    summarization / varied_practice）没有在源文件里留 `"method"` 字面量，因此
+    **不会**被 AST 扫描计入——它们由 method_registry 的 LF-L24..LF-L28 显式
+    登记。所以本脚本复算的是 23，而 method_registry.count() 返回 28。两者之差
+    （5）正是高级_methods_v2 的新增量，已在 method_registry 模块 docstring 注明。
+    若未来把 5 个新增也补进源文件字面量，需同步更新 LEARNING_METHOD_SOURCES
+    与本登记口径，否则会重复计数。
 
 skill_tree_nodes
     `app/services/meta_learning_skilltree.py` 中 `SKILL_DEFINITIONS` 列表的
@@ -115,6 +123,7 @@ GOVERNANCE_DOC = PROJECT_ROOT / "docs" / "LearnFlow_机制治理与落实方案.
 PRD_DOC = BACKEND_ROOT / "docs" / "incremental_prd.md"
 SKILLTREE_SRC = APP_DIR / "services" / "meta_learning_skilltree.py"
 GAMIFICATION_SRC = APP_DIR / "services" / "gamification_service.py"
+METHOD_REGISTRY_SRC = APP_DIR / "services" / "method_registry.py"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 登记口径（registered baseline）
@@ -131,10 +140,12 @@ GAMIFICATION_SRC = APP_DIR / "services" / "gamification_service.py"
 
 REGISTERED: Dict[str, Dict[str, Any]] = {
     "engine_classes": {
-        "registered": 81,
+        "registered": 86,
         "strict": False,
         "note": "informative：新增一个 *Engine 类是正常的工程演进，不应让 CI 变红；"
-                "但登记值应定期复核。",
+                "但登记值应定期复核。当前 86 = 基线 81 + advanced_methods_v2 的 5 个"
+                "真实引擎（WorkedExamples/KeywordMnemonic/ProductiveFailure/"
+                "Summarization/VariedPractice），与『28 种学习方法』的注册表口径一致。",
     },
     "mechanism_units": {
         "registered": 60,
@@ -149,9 +160,10 @@ REGISTERED: Dict[str, Dict[str, Any]] = {
         "note": "strict：这是论文 Table 1 的数字，被引用即必须可复算。",
     },
     "learning_methods": {
-        "registered": 23,
+        "registered": 28,
         "strict": True,
-        "note": "strict：，论文统一写法口径（22 个 snake_case + v3 的「思维导图」）。",
+        "note": "strict：论文统一写法口径（22 个 snake_case + v3 的「思维导图」"
+                "+ advanced_methods_v2 的 5 个真实新增方法, 使 28 成为可复算真值）。",
     },
     "skill_tree_nodes": {
         "registered": 16,
@@ -431,6 +443,30 @@ def _canonical_method_id(raw: str) -> Optional[str]:
     return CN_METHOD_ALIAS.get(label, label)
 
 
+_LF_ID_RE = re.compile(r"^LF-L\d{2}$")
+
+
+def _iter_lf_ids(tree: ast.AST) -> List[str]:
+    """从 AST 中精确提取方法注册表的规范 id。
+
+    只匹配「dict 中 key 为 'id' 且 value 形如 'LF-Lxx'」的常量对，不扫源码文本、
+    也不把模块/函数 docstring 里的 'LF-Lxx' 算进来。与全程 AST 静态解析口径一致。
+    """
+    out: List[str] = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Dict):
+            for k, v in zip(node.keys, node.values):
+                if (
+                    isinstance(k, ast.Constant)
+                    and k.value == "id"
+                    and isinstance(v, ast.Constant)
+                    and isinstance(v.value, str)
+                    and _LF_ID_RE.match(v.value)
+                ):
+                    out.append(v.value)
+    return out
+
+
 def count_learning_methods() -> Dict[str, Any]:
     canonical: List[str] = []
     raw_labels: Dict[str, List[str]] = {}
@@ -463,8 +499,22 @@ def count_learning_methods() -> Dict[str, Any]:
 
     uniq = sorted(set(canonical))
     snake = sorted(x for x in uniq if re.fullmatch(r"[a-z0-9_]+", x))
+
+    # 权威总数来自方法注册表（单一事实源）。注册表用声明式 SPECS 登记了
+    # LF-L01..LF-L28，其中 LF-L24..LF-L28 是 advanced_methods_v2 的 5 个真实
+    # 新增引擎；3 个学习方法源文件的字面量去重（23）是其子集。两者由同一注册表
+    # 统辖，差额 5 即 v2 引擎——这是「28 种学习方法」可被一条命令复算的根。
+    if not METHOD_REGISTRY_SRC.is_file():
+        raise VerifyError(f"方法注册表源文件缺失：{METHOD_REGISTRY_SRC}")
+    reg_tree = _parse_python(METHOD_REGISTRY_SRC)
+    lf_ids = sorted(set(_iter_lf_ids(reg_tree)), key=lambda s: int(s[4:]))
+    registry_count = len(lf_ids)
+
     return {
-        "value": len(uniq),
+        "value": registry_count,
+        "registry_count": registry_count,
+        "registry_ids": lf_ids,
+        "literal_scan_unique": len(uniq),
         "snake_case_ids": len(snake),
         "non_snake_ids": sorted(set(uniq) - set(snake)),
         "ids": uniq,
@@ -472,8 +522,11 @@ def count_learning_methods() -> Dict[str, Any]:
         "method_tips_entries": tips_entries,
         "method_tips_unique_keys": tips_unique,
         "definition": (
-            "3 个学习方法源文件中 'method' 字面量归一化去重后的规范 id 数"
-            "（22 个 snake_case + v3 的 mind_mapping『思维导图』）"
+            "权威来源 = app/services/method_registry.py 中 LF-L01..LF-L28 的登记条目数"
+            "（用 AST 静态提取dict 的 'id' 字段，不扫源码文本）；"
+            "3 个学习方法源文件的字面量去重（23）是其子集，"
+            "差额 5 来自 advanced_methods_v2 的真实新增引擎，"
+            "二者由同一注册表统辖，故『28 种学习方法』可被一条命令复算。"
         ),
     }
 

@@ -28,6 +28,7 @@ _MODULE_BY_SHORT_NAME = {
     "learning_methods_engine.py": "app.services.learning_methods_engine",
     "advanced_methods_engine.py": "app.services.advanced_methods_engine",
     "learning_methods_engine_v3.py": "app.services.learning_methods_engine_v3",
+    "advanced_methods_v2.py": "app.services.advanced_methods_v2",
 }
 
 
@@ -70,20 +71,20 @@ def _frozen_datetime_cls(day: date):
 # ────────────────────────────────────────────────────────────
 
 class TestRegistryIntegrity:
-    def test_count_is_23(self, registry):
-        assert registry.count() == 23
+    def test_count_is_28(self, registry):
+        assert registry.count() == 28
 
     def test_keys_unique_and_snake_case(self, registry):
         all_keys = registry.keys()
-        assert len(all_keys) == 23
-        assert len(set(all_keys)) == 23, "method key 存在重复"
+        assert len(all_keys) == 28
+        assert len(set(all_keys)) == 28, "method key 存在重复"
         for key in all_keys:
             assert key == key.lower() and key.replace("_", "").isalnum(), f"非 snake_case: {key}"
 
     def test_ids_contiguous_no_gap(self, registry):
         ids = registry.ids()
-        assert len(set(ids)) == 23, "方法 ID 存在重复"
-        assert ids == [f"LF-L{i:02d}" for i in range(1, 24)], f"ID 有缺口或错位: {ids}"
+        assert len(set(ids)) == 28, "方法 ID 存在重复"
+        assert ids == [f"LF-L{i:02d}" for i in range(1, 29)], f"ID 有缺口或错位: {ids}"
 
     def test_all_specs_have_required_fields(self, registry):
         required = ("id", "key", "name_zh", "category", "evidence_ref",
@@ -100,7 +101,7 @@ class TestRegistryIntegrity:
 
     def test_catalog_rows_shape(self, registry):
         rows = registry.catalog_rows()
-        assert len(rows) == 23
+        assert len(rows) == 28
         for row in rows:
             assert set(row) == {
                 "id", "key", "name_zh", "category", "evidence_ref", "impl_ref",
@@ -109,7 +110,7 @@ class TestRegistryIntegrity:
 
     def test_category_and_delivery_queries(self, registry):
         buckets = [registry.by_category(c) for c in registry.CATEGORIES]
-        assert sum(len(b) for b in buckets) == 23, "分类未覆盖全部方法"
+        assert sum(len(b) for b in buckets) == 28, "分类未覆盖全部方法"
         for spec in registry.all_methods():
             assert spec in registry.by_category(spec.category)
             for delivery in spec.delivery:
@@ -213,7 +214,7 @@ class TestRender:
                 registry.render(key, "代数")
             assert registry.is_enabled(key) is False
             assert key in registry.disabled_keys()
-            assert len(registry.enabled_methods()) == 22
+            assert len(registry.enabled_methods()) == 27
         finally:
             registry.set_enabled(key, True)
         assert registry.is_enabled(key) is True
@@ -238,7 +239,7 @@ class TestDailyChallengeReproducibility:
         from app.services import learning_methods_engine as engine
 
         monkeypatch.setattr(engine, "datetime", _frozen_datetime_cls(date(2026, 3, 15)))
-        expected_key = registry.keys()[date(2026, 3, 15).toordinal() % 23]
+        expected_key = registry.keys()[date(2026, 3, 15).toordinal() % 28]
 
         results = {
             engine.LearningMethodEngine.get_daily_method_challenge("u1")["method"]
@@ -246,12 +247,12 @@ class TestDailyChallengeReproducibility:
         }
         assert results == {expected_key}
 
-    def test_full_pool_reachable_within_23_days(self, registry, monkeypatch):
-        """23 天周期内 23 个方法都要轮到 —— 证明思维导图进得来"""
+    def test_full_pool_reachable_within_28_days(self, registry, monkeypatch):
+        """28 天周期内 28 个方法都要轮到 —— 证明 5 个 v2 真实引擎也进得来"""
         from app.services import learning_methods_engine as engine
 
         seen = set()
-        for offset in range(23):
+        for offset in range(28):
             day = date(2026, 1, 1).fromordinal(date(2026, 1, 1).toordinal() + offset)
             monkeypatch.setattr(engine, "datetime", _frozen_datetime_cls(day))
             seen.add(engine.LearningMethodEngine.get_daily_method_challenge("u1")["method"])
@@ -295,14 +296,24 @@ class TestLookupSemantics:
             registry.by_delivery("not_a_delivery")
 
     def test_method_tips_still_appendable(self, registry):
-        """advanced_methods_engine 依赖 METHOD_TIPS 可被 append"""
+        """advanced_methods_engine 依赖 METHOD_TIPS 可被 append。
+
+        注意: mind_mapping (LF-L23) 与 D 组 5 个真实引擎 (worked_examples /
+        keyword_mnemonic / productive_failure / summarization / varied_practice)
+        不走 METHOD_TIPS, 此处跳过它们, 只校验 22 个 tip 类方法。
+        """
         from app.services.learning_methods_engine import METHOD_TIPS
 
         assert isinstance(METHOD_TIPS, list)
         assert len(METHOD_TIPS) == 23, "METHOD_TIPS 应含 16 条 A + 7 条 B"
         tip_methods = {t["method"] for t in METHOD_TIPS}
+        _NON_TIP_KEYS = {
+            "mind_mapping",
+            "worked_examples", "keyword_mnemonic", "productive_failure",
+            "summarization", "varied_practice",
+        }
         for key in registry.keys():
-            if key == "mind_mapping":
+            if key in _NON_TIP_KEYS:
                 continue
             assert key in tip_methods, f"{key} 在 METHOD_TIPS 里找不到"
 
