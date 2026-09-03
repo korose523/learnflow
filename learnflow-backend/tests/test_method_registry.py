@@ -14,6 +14,12 @@ import pytest
 from app.services import method_registry
 
 
+@pytest.fixture
+def registry():
+    """注册表本身即单一事实源, 测试直接引用该模块"""
+    return method_registry
+
+
 # ────────────────────────────────────────────────────────────
 # 工具: 独立解析 impl_ref (不复用 registry 的 resolver, 避免自证)
 # ────────────────────────────────────────────────────────────
@@ -121,11 +127,9 @@ class TestRegistryIntegrity:
 # ────────────────────────────────────────────────────────────
 
 class TestImplRefResolves:
-    @pytest.mark.parametrize("spec", [
-        pytest.param(s, id=s.id) for s in __import__(
-            "app.services.method_registry", fromlist=["SPECS"]
-        ).SPECS
-    ])
+    @pytest.mark.parametrize(
+        "spec", [pytest.param(s, id=s.id) for s in method_registry.SPECS]
+    )
     def test_impl_ref_points_to_real_symbol(self, spec):
         obj = _resolve(spec.impl_ref)
         assert obj is not None
@@ -159,11 +163,9 @@ class TestImplRefResolves:
 # ────────────────────────────────────────────────────────────
 
 class TestRender:
-    @pytest.mark.parametrize("key", sorted(
-        s.key for s in __import__(
-            "app.services.method_registry", fromlist=["SPECS"]
-        ).SPECS
-    ))
+    @pytest.mark.parametrize(
+        "key", sorted(s.key for s in method_registry.SPECS)
+    )
     def test_render_all_methods(self, registry, key):
         result = registry.render(key, "分数运算", sub_topics=["通分", "约分"])
         assert isinstance(result, dict)

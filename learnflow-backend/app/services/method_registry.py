@@ -532,17 +532,21 @@ def resolve_impl_ref(impl_ref: str) -> Any:
     module = importlib.import_module(full_module)
 
     obj: Any = None
-    for token in _IMPL_TOKEN_PATTERN.finditer(path):
-        name, index = token.group("name"), token.group("index")
-        if obj is None:
-            if name is None:
-                raise ValueError(f"impl_ref 必须以符号名开头: {impl_ref!r}")
-            obj = getattr(module, name)
-            continue
-        if name is not None:
-            obj = getattr(obj, name)
-        else:
-            obj = obj[int(index)]
+    try:
+        for token in _IMPL_TOKEN_PATTERN.finditer(path):
+            name, index = token.group("name"), token.group("index")
+            if obj is None:
+                if name is None:
+                    raise ValueError(f"impl_ref 必须以符号名开头: {impl_ref!r}")
+                obj = getattr(module, name)
+                continue
+            if name is not None:
+                obj = getattr(obj, name)
+            else:
+                obj = obj[int(index)]
+    except (AttributeError, IndexError, KeyError) as exc:
+        # 符号不存在 / 下标越界 / dict 缺键 —— 统一为解析失败, 不让底层异常泄漏
+        raise ValueError(f"impl_ref 解析失败: {impl_ref!r} ({exc.__class__.__name__}: {exc})")
     if obj is None:
         raise ValueError(f"impl_ref 未解析出任何符号: {impl_ref!r}")
     return obj

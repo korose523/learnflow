@@ -1879,4 +1879,58 @@ LF-M{nn}
 
 **文档结束｜撰写人：严复核（robustness-auditor）｜v1.0｜2026-09-02**
 
+---
+
+## 附：数字诚信复算说明
+
+> 本节为 v1.1 追加（2026-09-03）。目的不是"把数字改掉"，而是让**任何被论文
+> 引用的工程数字都能被一条命令复算出来**——这是本标准配置抵御审稿人一击致命
+> 核查的底层机制。
+
+### 为什么需要这个脚本
+
+历史文档宣称「76 种游戏化机制」「28 种学习方法」，两个数字在任意一层口径下
+都不成立（见 §口径）。若论文直接引用，审稿人一次 `grep` 即可证伪，并连带
+质疑全文其他数字。因此本项目的立场是：**数字必须经得起命令级复算**，而非
+依赖作者口述。
+
+### 复算命令
+
+```bash
+cd learnflow-backend
+python scripts/verify_counts.py            # 打印分层报告 + 写 JSON 印章
+python scripts/verify_counts.py --quiet    # 只打印一行结论 (CI 用)
+```
+
+零依赖（仅标准库 `ast`/`json`/`re`/`subprocess`），审稿人 clone 仓库后无需
+`pip install` 即可运行。脚本**只用 AST 静态解析、不 import 任何 app 代码**，
+避免正则统计的历史口径分歧（v3 方法名是中文字符串，英文正则得 0；`METHOD_TIPS`
+是 list 不是 dict）。
+
+### 六个数字的当前取值与口径定义（2026-09-03 登记）
+
+| 指标 | 值 | 级别 | 口径定义 |
+|---|---:|---|---|
+| `engine_classes` | 81 | informative | `app/**/*.py` 中类名以 `Engine` 结尾的 ClassDef 总数（**类别错误口径**：混入 BKT/DDA/FSRS 等学习科学算法，**不**用于支撑"机制数"） |
+| `mechanism_units` | 60 | informative | 10 个机制承载文件的 `*Engine` 类 + `gamification_service` 非 Engine 机制类 − 状态容器↔引擎合并对 |
+| `mechanism_unique` | 53 | **strict** | 本文档 LF-M01..LF-M53 编号表的唯一 ID 数（语义去重由人工预注册规则 R1–R6 完成） |
+| `learning_methods` | 23 | **strict** | 3 个学习方法源文件中 `"method"` 字面量归一化去重（22 snake_case + v3 的 `mind_mapping`「思维导图」） |
+| `skill_tree_nodes` | 16 | **strict** | `meta_learning_skilltree.py` 的 `SKILL_DEFINITIONS` 列表元素数（**全项目唯一完全属实的数字**） |
+| `prd_claimed` | 69 | **strict** | `learnflow-backend/docs/incremental_prd.md` §2.3 表格「引擎数量」列之和——与同文档标题声称的 76 **自相矛盾** |
+
+- **strict** 指标若与登记值不符，`verify_counts.py` 以退出码 1 报 `discrepancy`，
+  门禁变红。改代码必须同步改 `scripts/verify_counts.py` 的 `REGISTERED` 常量。
+- **informative** 指标（`engine_classes` / `mechanism_units`）随正常重构合法波动，
+  只报告不判失败——避免一次常规重构就让 CI 随机变红、使团队学会无视红灯。
+
+### 声明
+
+**论文中引用上述任何数字时，必须以 `scripts/verify_counts.py` 的输出为准**，
+不得手写。特别地：
+- "游戏化机制"一律写 **53（去重）/ 60（实现单元）**，禁止写 76；
+- "学习方法"一律写 **23**，禁止写 28（除非后续按 §X 真实新增实现达到 28）；
+- "技能树"写 **16**。
+- 如确需引用 `engine_classes=81`，必须同步说明其为**类别错误口径**，不可
+  直接等同于机制数。
+
 > **最后一句审计师的话**：这份方案里最有价值的不是注册表代码，也不是样本量公式，而是 §1.5 的那个判断——**把 76 变成一个研究问题，而不是一个需要掩盖的错误**。其余一切都建立在这个判断之上。如果团队决定反过来做（想办法让 76 成立），请明确告知我，我会撤回本报告的全部学术转化建议，并保留在论文中署反对意见的权利。
