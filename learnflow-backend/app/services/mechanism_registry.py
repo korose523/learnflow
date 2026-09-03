@@ -35,8 +35,9 @@ impl_ref 的语义差异（重要）
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
-from typing import Any, Dict, Iterable, List, Tuple
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 
 # ---------------------------------------------------------------------------
@@ -69,6 +70,51 @@ IMPL_REF_PATTERN = re.compile(r"^[\w./\-]+\.py(:\d+(,\d+)*)?$|^[\w]+:\d+$")
 
 class MechanismDisabledError(RuntimeError):
     """机制被显式关闭（消融实验用）时仍尝试调度的错误"""
+
+
+# ---------------------------------------------------------------------------
+# 干预产物类型 (供仲裁器使用)
+# ---------------------------------------------------------------------------
+
+
+class EffectType(str, Enum):
+    """机制执行的产出类型 —— 仲裁器据此分类处理"""
+
+    NUDGE = "nudge"
+    REMINDER = "reminder"
+    NOTIFICATION = "notification"
+    PROMPT = "prompt"
+    BADGE = "badge"
+    REWARD = "reward"
+
+
+@dataclass
+class Effect:
+    """机制执行的产出（候选干预）。
+
+    机制引擎**只产出 Effect 候选, 不直接下发用户可见文案**; 最终是否下发由
+    ``mechanism_arbitrator.MechanismArbitrator`` 的三层漏斗决定。这是把
+    "FOMO 拉回" 与 "防沉迷推开" 收敛到单一决策入口的关键设计（见治理方案 §3.3）。
+    """
+
+    mechanism_id: str
+    effect_type: EffectType
+    payload: Dict[str, Any]
+    priority: int = 50
+    cost: float = 1.0
+    user_visible: bool = True
+    health_critical: bool = False
+    # 语义方向 (approach=拉回加时 / withdraw=推开休息 / neutral), 仲裁冲突消解用
+    direction: str = "neutral"
+
+
+@dataclass
+class MechanismContext:
+    """一次仲裁的上下文（谁、哪个会话、审计轨迹累积）"""
+
+    user_id: str
+    session_id: Optional[str] = None
+    trace: List[str] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -502,6 +548,7 @@ def enabled_mechanisms() -> List[MechanismSpec]:
 __all__ = [
     "STAGES", "CATEGORIES", "DISPOSITIONS", "MATURITY",
     "MechanismSpec", "MechanismDisabledError",
+    "EffectType", "Effect", "MechanismContext",
     "SPECS", "all_mechanisms", "get", "get_by_id",
     "by_stage", "by_category", "by_disposition",
     "count", "keys", "ids", "catalog_rows",
