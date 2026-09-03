@@ -1,0 +1,254 @@
+2026-06-20 17:07:44,262 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-06-20 17:07:44,262 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2026-06-20 17:07:44,262 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,263 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("users")
+2026-06-20 17:07:44,263 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,264 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("pet_profiles")
+2026-06-20 17:07:44,264 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,264 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("pet_profiles")
+2026-06-20 17:07:44,264 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,265 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("tasks")
+2026-06-20 17:07:44,265 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,265 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("tasks")
+2026-06-20 17:07:44,265 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("attempts")
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("attempts")
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("spaced_reviews")
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("spaced_reviews")
+2026-06-20 17:07:44,266 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("student_skill_profiles")
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("student_skill_profiles")
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("consent_records")
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("consent_records")
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("alerts")
+2026-06-20 17:07:44,267 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("alerts")
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("feedback_scripts")
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("feedback_scripts")
+2026-06-20 17:07:44,268 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-06-20 17:07:44,269 INFO sqlalchemy.engine.Engine 
+CREATE TABLE users (
+	id VARCHAR(36) NOT NULL, 
+	email VARCHAR(255) NOT NULL, 
+	phone VARCHAR(20), 
+	hashed_password VARCHAR(255) NOT NULL, 
+	name VARCHAR(100) NOT NULL, 
+	role VARCHAR(7) NOT NULL, 
+	grade VARCHAR(20), 
+	school_id VARCHAR(50), 
+	parent_id VARCHAR(36), 
+	is_active BOOLEAN, 
+	consents JSON, 
+	created_at DATETIME, 
+	updated_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (phone), 
+	FOREIGN KEY(parent_id) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,269 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-06-20 17:07:44,274 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_users_email ON users (email)
+2026-06-20 17:07:44,274 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-06-20 17:07:44,278 INFO sqlalchemy.engine.Engine 
+CREATE TABLE feedback_scripts (
+	id VARCHAR(36) NOT NULL, 
+	category VARCHAR(50) NOT NULL, 
+	sub_category VARCHAR(50), 
+	text TEXT NOT NULL, 
+	author VARCHAR(100), 
+	reviewer VARCHAR(100), 
+	review_status VARCHAR(20), 
+	version INTEGER, 
+	is_active BOOLEAN, 
+	ab_test_group VARCHAR(20), 
+	created_at DATETIME, 
+	updated_at DATETIME, 
+	PRIMARY KEY (id)
+)
+
+
+2026-06-20 17:07:44,278 INFO sqlalchemy.engine.Engine [no key 0.00015s] ()
+2026-06-20 17:07:44,281 INFO sqlalchemy.engine.Engine CREATE INDEX ix_feedback_scripts_category ON feedback_scripts (category)
+2026-06-20 17:07:44,281 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-06-20 17:07:44,285 INFO sqlalchemy.engine.Engine 
+CREATE TABLE pet_profiles (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	name VARCHAR(50), 
+	breed VARCHAR(6) NOT NULL, 
+	level INTEGER, 
+	mood VARCHAR(11), 
+	understanding FLOAT, 
+	persistence FLOAT, 
+	creativity FLOAT, 
+	collaboration FLOAT, 
+	visuals_state JSON, 
+	created_at DATETIME, 
+	updated_at DATETIME, 
+	PRIMARY KEY (id), 
+	UNIQUE (user_id), 
+	FOREIGN KEY(user_id) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,285 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-06-20 17:07:44,289 INFO sqlalchemy.engine.Engine 
+CREATE TABLE tasks (
+	id VARCHAR(36) NOT NULL, 
+	title VARCHAR(200), 
+	content TEXT NOT NULL, 
+	content_type VARCHAR(20), 
+	topic VARCHAR(100) NOT NULL, 
+	difficulty INTEGER NOT NULL, 
+	correct_answer TEXT NOT NULL, 
+	explanation TEXT, 
+	hint_levels JSON, 
+	time_estimate INTEGER, 
+	source VARCHAR(100), 
+	created_by VARCHAR(36), 
+	is_approved BOOLEAN, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(created_by) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,290 INFO sqlalchemy.engine.Engine [no key 0.00024s] ()
+2026-06-20 17:07:44,293 INFO sqlalchemy.engine.Engine CREATE INDEX ix_tasks_topic ON tasks (topic)
+2026-06-20 17:07:44,293 INFO sqlalchemy.engine.Engine [no key 0.00006s] ()
+2026-06-20 17:07:44,296 INFO sqlalchemy.engine.Engine 
+CREATE TABLE student_skill_profiles (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	skill_dim VARCHAR(100) NOT NULL, 
+	score FLOAT, 
+	confidence FLOAT, 
+	total_attempts INTEGER, 
+	correct_attempts INTEGER, 
+	mastery FLOAT, 
+	updated_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,296 INFO sqlalchemy.engine.Engine [no key 0.00006s] ()
+2026-06-20 17:07:44,300 INFO sqlalchemy.engine.Engine CREATE INDEX ix_student_skill_profiles_user_id ON student_skill_profiles (user_id)
+2026-06-20 17:07:44,300 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-06-20 17:07:44,303 INFO sqlalchemy.engine.Engine 
+CREATE TABLE consent_records (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	consent_type VARCHAR(16) NOT NULL, 
+	consented_at DATETIME NOT NULL, 
+	revoked_at DATETIME, 
+	granted_by VARCHAR(36), 
+	ip_address VARCHAR(45), 
+	extra_data JSON, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(granted_by) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,303 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-06-20 17:07:44,307 INFO sqlalchemy.engine.Engine CREATE INDEX ix_consent_records_user_id ON consent_records (user_id)
+2026-06-20 17:07:44,307 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-06-20 17:07:44,310 INFO sqlalchemy.engine.Engine 
+CREATE TABLE alerts (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	alert_type VARCHAR(19) NOT NULL, 
+	severity VARCHAR(6), 
+	title VARCHAR(200) NOT NULL, 
+	description TEXT, 
+	data_snapshot JSON, 
+	is_resolved BOOLEAN, 
+	resolved_by VARCHAR(36), 
+	resolved_at DATETIME, 
+	notified_teacher BOOLEAN, 
+	notified_parent BOOLEAN, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(resolved_by) REFERENCES users (id)
+)
+
+
+2026-06-20 17:07:44,310 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-06-20 17:07:44,313 INFO sqlalchemy.engine.Engine CREATE INDEX ix_alerts_user_id ON alerts (user_id)
+2026-06-20 17:07:44,313 INFO sqlalchemy.engine.Engine [no key 0.00006s] ()
+2026-06-20 17:07:44,317 INFO sqlalchemy.engine.Engine 
+CREATE TABLE attempts (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	task_id VARCHAR(36) NOT NULL, 
+	answer TEXT NOT NULL, 
+	is_correct BOOLEAN NOT NULL, 
+	time_spent INTEGER, 
+	hints_used INTEGER, 
+	difficulty_at_time INTEGER, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(task_id) REFERENCES tasks (id)
+)
+
+
+2026-06-20 17:07:44,317 INFO sqlalchemy.engine.Engine [no key 0.00010s] ()
+2026-06-20 17:07:44,322 INFO sqlalchemy.engine.Engine CREATE INDEX ix_attempts_user_id ON attempts (user_id)
+2026-06-20 17:07:44,322 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-06-20 17:07:44,325 INFO sqlalchemy.engine.Engine 
+CREATE TABLE spaced_reviews (
+	id VARCHAR(36) NOT NULL, 
+	user_id VARCHAR(36) NOT NULL, 
+	task_id VARCHAR(36) NOT NULL, 
+	review_number INTEGER, 
+	scheduled_date DATETIME NOT NULL, 
+	completed_date DATETIME, 
+	result BOOLEAN, 
+	next_interval_days FLOAT, 
+	created_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(task_id) REFERENCES tasks (id)
+)
+
+
+2026-06-20 17:07:44,325 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-06-20 17:07:44,329 INFO sqlalchemy.engine.Engine CREATE INDEX ix_spaced_reviews_user_id ON spaced_reviews (user_id)
+2026-06-20 17:07:44,329 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-06-20 17:07:44,332 INFO sqlalchemy.engine.Engine COMMIT
+2026-06-20 17:07:44,334 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-06-20 17:07:44,344 INFO sqlalchemy.engine.Engine SELECT count(tasks.id) AS count_1 
+FROM tasks
+2026-06-20 17:07:44,344 INFO sqlalchemy.engine.Engine [generated in 0.00022s] ()
+2026-06-20 17:07:45,063 INFO sqlalchemy.engine.Engine INSERT INTO users (id, email, phone, hashed_password, name, role, grade, school_id, parent_id, is_active, consents, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20 17:07:45,063 INFO sqlalchemy.engine.Engine [generated in 0.00021s (insertmanyvalues) 1/1 (unordered)] ('e2a6cf50-4ccf-421b-8d1e-195d626b4d6d', 'admin@learnflow.com', None, '$2b$12$VR.FKesmAmYJCMEO/IfNAOdr7xwJJSCSgtcdZ3ca5vCbmphFq93i.', '系统管理员', 'ADMIN', None, None, None, 1, '{}', '2026-06-20 09:07:45.063777', '2026-06-20 09:07:45.063779', '57f61f82-bed1-4486-b14a-5c96ebdf1a3b', 'teacher@learnflow.com', None, '$2b$12$qhPduDBuo2OJY.VboRQTneY/Nfzay0qcK7ZGajSgKcVkQwepUT8kW', '张老师', 'TEACHER', None, None, None, 1, '{}', '2026-06-20 09:07:45.063784', '2026-06-20 09:07:45.063785', 'ff790ec8-12cb-4535-8b39-547347cdb7c6', 'student@learnflow.com', None, '$2b$12$1icRFVnsOqEoR9djAFVEYOblkn.eatelfd46OT4p4XRGBdgjTLlIG', '小明', 'STUDENT', '五年级', None, None, 1, '{}', '2026-06-20 09:07:45.063787', '2026-06-20 09:07:45.063788', '0f62266b-7a9d-446a-94c3-3de01d014f4d', 'parent@learnflow.com', None, '$2b$12$7K1nsdqRKwycJhpv.ZIP0uzBjvgSXr5Gkp30tRLMiQT1Byaj0NJuC', '小明爸爸', 'PARENT', None, None, None, 1, '{}', '2026-06-20 09:07:45.063791', '2026-06-20 09:07:45.063791')
+2026-06-20 17:07:45,066 INFO sqlalchemy.engine.Engine INSERT INTO feedback_scripts (id, category, sub_category, text, author, reviewer, review_status, version, is_active, ab_test_group, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ? ... 495 characters truncated ...  ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20 17:07:45,066 INFO sqlalchemy.engine.Engine [generated in 0.00032s (insertmanyvalues) 1/1 (unordered)] ('5da0fd61-d716-4f6e-83c2-6b3565302f55', 'correct', None, '✨ 思路很清晰！你正在强化{concept}的神经回路。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066218', '2026-06-20 09:07:45.066223', 'f879f72e-8ff4-47cc-9a13-a53aaac01978', 'correct', None, '🎯 答对了！这证明你对{concept}的理解又深了一层。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066250', '2026-06-20 09:07:45.066252', '24e4a8dd-513b-4fb3-bfed-fc3ea29d7365', 'correct', None, '💡 很好！这正是{concept}的核心思维。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066267', '2026-06-20 09:07:45.066268', '70e426a1-916e-4629-90a2-ac8e37afe838', 'incorrect', None, '🔍 不错的尝试！差一步，你的大脑现在正在学习如何避免这个错误。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066270', '2026-06-20 09:07:45.066270', '8e28cd2b-85e5-4c80-8c12-ec41a688c55c', 'incorrect' ... 116 parameters truncated ... '2026-06-20 09:07:45.066293', '2026-06-20 09:07:45.066293', 'dff1f80d-c7ed-4153-a4e3-b3be00f99183', 'identity', None, '你正在变成一个更全面的学习者。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066295', '2026-06-20 09:07:45.066295', 'd99508f9-efe5-49aa-94ba-b89b17be586b', 'identity', None, '每一个小挑战都让你更强——这就是自我实现的样子。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066298', '2026-06-20 09:07:45.066298', '74c7db3e-8e13-4ee1-b29d-3a2f3108818a', 'relaxation', None, '花30秒，跟着呼吸放松。深呼吸，有节奏地吸气…呼气…', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066300', '2026-06-20 09:07:45.066301', 'c00d078e-9d62-49cf-a915-0916851263ee', 'relaxation', None, '闭上眼睛，感受呼吸。吸气时想象知识流入，呼气时放下紧张。', 'system', None, 'approved', 1, 1, None, '2026-06-20 09:07:45.066303', '2026-06-20 09:07:45.066303')
+2026-06-20 17:07:45,068 INFO sqlalchemy.engine.Engine INSERT INTO tasks (id, title, content, content_type, topic, difficulty, correct_answer, explanation, time_estimate, source, created_by, is_approved, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20 17:07:45,068 INFO sqlalchemy.engine.Engine [generated in 0.00017s (insertmanyvalues) 1/1 (unordered)] ('c8deaffd-1506-4337-823b-5c00f8798d88', None, '解方程：2x + 5 = 13', 'text', '一元一次方程', 3, '4', '移项：2x = 13 - 5 = 8，两边除以2：x = 4', 120, 'system', None, 1, '2026-06-20 09:07:45.068089', 'd5b87dcc-f836-4478-ad26-3ab0f200382d', None, '解方程：3(x - 2) = 2x + 1', 'text', '一元一次方程', 5, '7', '展开：3x - 6 = 2x + 1，移项：x = 7', 120, 'system', None, 1, '2026-06-20 09:07:45.068094', '119287f1-0db6-4628-9193-9310c950dfe1', None, '小明买了3支笔和2个本子共花了19元，已知每支笔3元，求每个本子多少元？', 'text', '一元一次方程', 7, '5', '设本子x元：3×3 + 2x = 19，9 + 2x = 19，x = 5', 120, 'system', None, 1, '2026-06-20 09:07:45.068096', '034e24cb-ea55-438a-9fc0-59c2e4ed1923', None, '计算：1/2 + 1/3 = ?', 'text', '分数运算', 4, '5/6', '通分：3/6 + 2/6 = 5/6', 120, 'system', None ... 4 parameters truncated ... '计算：(2/3) ÷ (4/5) = ?', 'text', '分数运算', 6, '5/6', '除以分数等于乘以倒数：2/3 × 5/4 = 10/12 = 5/6', 120, 'system', None, 1, '2026-06-20 09:07:45.068102', '41106a4e-ffff-438b-8788-0293e5c33682', None, '一个三角形的三个角分别是30°、60°和多少度？', 'text', '几何', 4, '90', '三角形内角和为180°，180 - 30 - 60 = 90°', 120, 'system', None, 1, '2026-06-20 09:07:45.068104', '55b571cb-6619-47f8-b160-6f8a2b95264b', None, '一个圆的半径是5cm，它的面积是多少平方厘米？（π取3.14）', 'text', '几何', 6, '78.5', '面积 = πr² = 3.14 × 25 = 78.5 cm²', 120, 'system', None, 1, '2026-06-20 09:07:45.068106', '5cad0aa0-e268-4cf3-ba51-3df600c740d2', None, '商店打八折出售一件衣服，打折后价格为160元，原价是多少？', 'text', '百分比', 5, '200', '设原价x：0.8x = 160，x = 200', 120, 'system', None, 1, '2026-06-20 09:07:45.068108')
+2026-06-20 17:07:45,069 INFO sqlalchemy.engine.Engine UPDATE users SET parent_id=?, updated_at=? WHERE users.id = ?
+2026-06-20 17:07:45,069 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ('0f62266b-7a9d-446a-94c3-3de01d014f4d', '2026-06-20 09:07:45.069124', 'ff790ec8-12cb-4535-8b39-547347cdb7c6')
+2026-06-20 17:07:45,070 INFO sqlalchemy.engine.Engine INSERT INTO pet_profiles (id, user_id, name, breed, level, mood, understanding, persistence, creativity, collaboration, visuals_state, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-06-20 17:07:45,070 INFO sqlalchemy.engine.Engine [generated in 0.00014s] ('01c3d772-fdcb-48a8-9118-5a6541b656d2', 'ff790ec8-12cb-4535-8b39-547347cdb7c6', '小豆', 'CAT', 1, 'HAPPY', 50.0, 50.0, 50.0, 50.0, '{}', '2026-06-20 09:07:45.069990', '2026-06-20 09:07:45.069991')
+2026-06-20 17:07:45,070 INFO sqlalchemy.engine.Engine COMMIT
+种子数据创建完成！
+  管理员: admin@learnflow.com
+  教师:   teacher@learnflow.com
+  学生:   student@learnflow.com
+  家长:   parent@learnflow.com
+  密码已随机生成，请通过环境变量 SEED_*_PASSWORD 设置
+  题目:   8 道
+  文案:   18 条

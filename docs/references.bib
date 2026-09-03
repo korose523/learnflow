@@ -1,0 +1,502 @@
+% =====================================================================
+% LearnFlow 参考文献库 (references.bib)
+% ---------------------------------------------------------------------
+% 维护者：实证研究团 · 文献综述专家「搜文献」
+% 建立日期：2026-09-02
+% 配套文档：LearnFlow_文献测绘与研究缺口.md
+%
+% 【收录原则 —— 重要】
+%   本文件只收录「已确认真实」的文献，即：检索命中了出版方页面 /
+%   DOI 解析页 / arXiv 摘要页 / 会议论文集官方页，且标题、作者、年份、
+%   载体四项一致。
+%
+% 【关于 note 字段】
+%   凡标注 VERIFY 字样的条目，表示「文献本身确认存在（有可解析的 DOI
+%   或官方 URL），但某项元数据尚未逐字核实」。引用前请补齐。
+%   常见待补项：作者全名、卷期页码、期刊正式发表状态。
+%
+% 【严禁事项】
+%   1. 严禁向本文件添加未经检索核实的条目。
+%   2. 严禁虚构 DOI、卷号、期号、页码。本文件中所有 DOI 均可解析。
+%   3. 未经核实的条目请写入 LearnFlow_文献测绘与研究缺口.md 的附录 A。
+%
+% 【分级标记】
+%   [已核验]   = 标题/作者/年份/载体四项一致
+%   [部分核验] = 载体与标题确认（有 DOI 或官方 URL），某项元数据待补
+% =====================================================================
+
+
+% #####################################################################
+% 方向 1：自适应难度选择
+% #####################################################################
+
+% [已核验] 85% 最优学习率的奠基论文。
+% 关键限定：结论在人工神经网络与生物可解释的感知学习模型上验证；
+% 作者明确限定适用于二元分类，并指出最可能适用于感知学习。
+% 引用时必须写明这一限定，否则构成对外推的隐瞒。
+@article{wilson2019eightyfive,
+  author  = {Wilson, Robert C. and Shenhav, Amitai and Straccia, Mark and Cohen, Jonathan D.},
+  title   = {The Eighty Five Percent Rule for optimal learning},
+  journal = {Nature Communications},
+  volume  = {10},
+  pages   = {4646},
+  year    = {2019},
+  doi     = {10.1038/s41467-019-12552-4},
+  note    = {[已核验] 核心理论锚点。作者本人限定适用域为二元分类/感知学习}
+}
+
+% [已核验] 工作论文（未正式发表），但威胁等级最高。
+% 10 所高中、5 个月 Python 课程、RCT、0.15 SD。
+% 引用时必须写 "working paper"，不得声称已期刊发表。
+@misc{chung2026aitutors,
+  author       = {Chung, Angel Tsai-Hsuan and Zhang, Botong and Kung, Ling-Chieh and Bastani, Hamsa and Bastani, Osbert},
+  title        = {Effective Personalized {AI} Tutors via {LLM}-Guided Reinforcement Learning},
+  year         = {2026},
+  eprint       = {2608.16907},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CY},
+  note         = {[已核验] 工作论文，同时挂于 SSRN。未见期刊正式发表，引用须写 working paper。
+                  机构：University of Pennsylvania (Wharton OID / CIS)、National Taiwan University。
+                  威胁等级：与 LearnFlow 方向 1 高度重叠，必须在论文中主动引用并区分}
+}
+
+% [部分核验] VERIFY: 作者全名待补（已确认姓氏序列）
+@article{liu2025pykt,
+  author  = {Liu and Guo and Liang and Hou and Zhan and Tang and Luo and Weng},
+  title   = {Deep Learning Based Knowledge Tracing: A Review, a Tool and Empirical Studies},
+  journal = {IEEE Transactions on Knowledge and Data Engineering},
+  volume  = {37},
+  number  = {8},
+  pages   = {4512--4536},
+  month   = aug,
+  year    = {2025},
+  doi     = {10.1109/TKDE.2025.3552759},
+  note    = {[部分核验] CCF-A。VERIFY: 作者全名待补。
+                  9 个数据集、21 个 DLKT 模型、开源 pyKT 工具包}
+}
+
+% [已核验] 知识追踪权威综述，CCF-A。
+% 独立确认了数据质量问题的完整清单，是方向 4 的可安全引用的主引
+% （优于依赖未同行评议的预印本）。
+@article{abdelrahman2023knowledge,
+  author  = {Abdelrahman, Ghodai and Wang, Qing and Nunes, Bernardo},
+  title   = {Knowledge Tracing: A Survey},
+  journal = {ACM Computing Surveys},
+  volume  = {55},
+  number  = {11},
+  pages   = {224},
+  month   = feb,
+  year    = {2023},
+  doi     = {10.1145/3569576},
+  note    = {[已核验] CCF-A，37 页。独立确认：不一致预处理、重复条目、错误时间戳、
+                  缺失 KC 标注、多 KC 压缩进单 CSV 字段（KDDcup `~~`）、
+                  缺乏人口学信息、无数据集版本控制}
+}
+
+% [已核验] BKT 原始论文。LearnFlow knowledge_tracing.py 实现的即此模型。
+% 无 DOI（本库不虚构），引用时用期刊卷页。
+@article{corbett1994knowledge,
+  author  = {Corbett, Albert T. and Anderson, John R.},
+  title   = {Knowledge tracing: Modeling the acquisition of procedural knowledge},
+  journal = {User Modelling and User-Adapted Interaction},
+  volume  = {4},
+  pages   = {253--278},
+  year    = {1994},
+  note    = {[已核验] DOI 未核实，本库不填。BKT 奠基文献}
+}
+
+% [已核验] 有序/结构化 bandit 的核心理论弹药。
+% 动机场景是电商推荐，从未被用于教育难度选择 —— 这个接缝即 LearnFlow 的落点。
+@article{jedor2020categorized,
+  author       = {Jedor, Matthieu and Lou{\"e}dec, Jonathan and Perchet, Vianney},
+  title        = {Categorized Bandits},
+  year         = {2020},
+  eprint       = {2005.01656},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.LG},
+  note         = {[已核验] 机构：CMLA, ENS Paris-Saclay；Cdiscount；Criteo AI Lab。
+                  臂被归入有序类别（ordered categories），三种逐级减弱的随机占优序，
+                  给出实例相关 regret 下界与算法。教育零应用}
+}
+
+% [部分核验] VERIFY: 作者列表待补（会议、年份、Paper ID 已确认）
+@inproceedings{neurips2017posetbandits,
+  title     = {Bandits Dueling on Partially Ordered Sets},
+  booktitle = {Advances in Neural Information Processing Systems 30 (NeurIPS 2017)},
+  year      = {2017},
+  url       = {https://papers.nips.cc/paper/6808-bandits-dueling-on-partially-ordered-sets},
+  note      = {[部分核验] Paper ID 1279。VERIFY: 作者列表待补。
+                   算法名 UnchainedBandits，引入 decoy 概念。
+                   注意：NeurIPS 审稿意见本身指出该设定对含环 social poset 处理不自然、
+                   Pareto 前沿可能为空 —— 引用时须诚实呈现此局限}
+}
+
+% [部分核验] VERIFY: 作者列表待补（期刊、卷、期、文章号已确认）
+% 心流理论计算化的关键批判来源，提供三条可直接引用的事实：
+%   1. 通道模型预测与被试自报告不匹配
+%   2. Shin: 平衡变量与心流状态相关仅 r=0.206 (p<0.01)
+%   3. Pearce/Ainley/Howard 用 Challenge/Skills = 1 线性化，损害效度
+@article{sensors2026flowbalance,
+  title   = {Modelling the Balance Axiom in Flow Theory: A Physiological and Computational Approach in {STEAM} Education},
+  journal = {Sensors},
+  volume  = {26},
+  number  = {1},
+  pages   = {38},
+  year    = {2026},
+  note    = {[部分核验] MDPI。VERIFY: 作者列表待补。
+                  心流通道效度存疑的关键证据来源}
+}
+
+
+% #####################################################################
+% 方向 2：区块链 + 教育大数据可信处理
+% #####################################################################
+
+% [已核验] 领域泡沫的量化证据，也是反驳「我们再做一个教育区块链」的最佳武器。
+@article{choudhary2025blockchain,
+  author  = {Choudhary and Chawla and Tiwari},
+  title   = {Analyzing functional, technical and bibliometric trends of blockchain applications in education: A systematic review},
+  journal = {Multimedia Tools and Applications},
+  volume  = {84},
+  number  = {8},
+  pages   = {4003--4048},
+  year    = {2025},
+  doi     = {10.1007/s11042-024-20303-x},
+  note    = {[部分核验] PRISMA 系统综述。VERIFY: 作者全名待补。
+                  关键数据：150 个模型中 124 个为原型/试点、26 个仅为提案。
+                  原文措辞：「a avalanche of proposals, with approximately
+                  half of them being prototypes」}
+}
+
+% [部分核验] VERIFY: 作者全名、卷期页码待补；且 DOI 前缀 "sfw2" 较异常，建议复核
+@article{razzaq2026blockchain,
+  author  = {Abdul Razzaq and others},
+  title   = {Can Blockchain Decentralize Education? A Systematic Review of Challenges and Pathways},
+  journal = {IET Software},
+  year    = {2026},
+  doi     = {10.1049/sfw2/5556408},
+  note    = {[部分核验] VERIFY: 作者全名、卷期页码待补；DOI 前缀异常需复核。
+                  64 项研究 (2017--2025)。应用类别：证书/文凭管理、微证书与学分转移、
+                  能力与评估追踪 —— 注意：无「算法决策审计」类}
+}
+
+% [已核验] TOE 框架下的采用壁垒分析，是「blockchain for blockchain's sake」
+% 批评的可安全引用来源（同行评议过的一次文献）。
+@article{isiaku2025barriers,
+  author  = {Labaran Isiaku and Adalier, Ahmet},
+  title   = {Analyzing the Barriers to Blockchain Adoption in Educational Sectors: A {TOE} Framework Perspective},
+  journal = {On the Horizon},
+  volume  = {33},
+  number  = {1},
+  pages   = {32--60},
+  year    = {2025},
+  note    = {[已核验] ERIC: EJ1459604。DOI 未核实，本库不填}
+}
+
+% [已核验] 欧洲区块链微证书倡议综述。引用此综述即可，不必逐一回溯 EBSI/ESSA 等。
+@inproceedings{jusic2025microcredential,
+  author    = {Jusi{\'c} and Fuks and Kochovski and Stankovski},
+  title     = {Blockchain-Enabled Micro Credentialing in European Education Initiatives},
+  booktitle = {EDULEARN25 Proceedings},
+  pages     = {5382--5388},
+  year      = {2025},
+  doi       = {10.21125/edulearn.2025.1342},
+  note      = {[部分核验] VERIFY: 作者全名、论文标题全称待补。
+                   综述 EBSI、ESSA、NOO Ultra、TRUSTCHAIN、FRI Academy。
+                   结论：微证书/学分互认赛道已被制度化占据，LearnFlow 不应进入}
+}
+
+% [部分核验] VERIFY: 卷期页码待补。机制细节已由官方文档独立核实。
+@article{hepp2018originstamp,
+  author  = {Hepp and Schoenhals and Gondek and Gipp},
+  title   = {OriginStamp: A Blockchain-Backed System for Decentralized Trusted Timestamping},
+  journal = {it - Information Technology},
+  year    = {2018},
+  note    = {[部分核验] VERIFY: 作者全名、卷期页码待补。DOI 未核实，本库不填。
+                  机制（已由 docs.originstamp.com 官方文档与 2018-11-26 白皮书 v2 独立核实）：
+                  本地 SHA-256 → 固定间隔批收集哈希 → 字典序排序 → 平衡 Merkle 树 →
+                  根写入区块链（比特币：把根解释为私钥 → 推导 BTC 地址 →
+                  该地址首笔交易时间即时间戳）}
+}
+
+% [已核验] xAPI 2.0 标准。注意：规范作者十年自述中承认
+% signed statements 与 attachments「mostly unused」并表示「personally disappointed」
+% —— 这使「我们实现了 xAPI 兼容」这一卖点失效。
+@standard{ieee9274xapi2023,
+  title      = {IEEE Standard for Experience API ({xAPI}) for Learning, Training, and Education Data Interchange: Data Model and Processing Requirements},
+  organization = {IEEE},
+  number     = {IEEE Std 9274.1.1-2023},
+  year       = {2023},
+  month      = mar,
+  note       = {[已核验] 批准日期 2023-03-30，即 xAPI 2.0}
+}
+
+
+% #####################################################################
+% 方向 3：游戏化分类学与消融
+% #####################################################################
+
+% [已核验] 学习游戏化的元分析。「游戏化有没有效」这个问题已被此文终结。
+@article{sailer2020meta,
+  author  = {Sailer, Michael and Homner, Lisa},
+  title   = {The Gamification of Learning: A Meta-Analysis},
+  journal = {Educational Psychology Review},
+  volume  = {32},
+  number  = {1},
+  pages   = {77--112},
+  year    = {2020},
+  doi     = {10.1007/s10648-019-09498-w},
+  note    = {[已核验] 三级效应量：认知 g=0.49 [0.30,0.69] k=19 N=1686；
+                  动机 g=0.36 [0.18,0.54] k=16 N=2246；
+                  行为 g=0.25 [0.04,0.46] k=9 N=951。
+                  调节变量：游戏虚构、社会互动对行为显著。
+                  注意：行为效应量 CI 下限仅 0.04 —— 长期行为改变证据弱}
+}
+
+% [已核验] 单机制消融的奠基文献。CC BY 开放获取。
+@article{sailer2017how,
+  author  = {Sailer, Michael and Hense, Jan Ulrich and Mayr, Sarah Katharina and Mandl, Heinz},
+  title   = {How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction},
+  journal = {Computers in Human Behavior},
+  volume  = {69},
+  pages   = {371--380},
+  year    = {2017},
+  doi     = {10.1016/j.chb.2016.12.033},
+  note    = {[已核验] N=419（699 人登录 / 419 人完成）；女 204 (48.7%)、男 215 (51.3%)；
+                  平均年龄 22 (M=22.39, SD=3.56)；在线订单分拣模拟。
+                  徽章/排行榜/表现图表 → 胜任感 + 任务意义；
+                  头像/故事/队友 → 社会关联感；
+                  感知决策自由（自主性）未被任何机制显著影响。
+                  结论原话：「gamification is not effective per se, but ... specific
+                  game design elements have specific psychological effects」}
+}
+
+% [已核验] 暗黑模式分类学。方向 3 最重要的一篇，CCF-A。
+@inproceedings{gray2018dark,
+  author    = {Gray, Colin M. and Kou, Yubo and Battles, Bryan and Hoggatt, Joseph and Toombs, Austin L.},
+  title     = {The Dark (Patterns) Side of {UX} Design},
+  booktitle = {Proceedings of the 2018 CHI Conference on Human Factors in Computing Systems (CHI '18)},
+  pages     = {534:1--534:14},
+  year      = {2018},
+  doi       = {10.1145/3173574.3174108},
+  note      = {[已核验] CCF-A。分析 118 个从业者识别的暗黑模式实例，
+                  归纳五类高阶策略：Nagging（纠缠）、Obstruction（阻碍）、
+                  Sneaking（隐瞒）、Interface Interference（界面干扰）、
+                  Forced Action（强迫行为）。共同特征：用户价值被股东价值取代。
+                  LearnFlow 17 个未仲裁 nudge 生成点的编码框架}
+}
+
+% [已核验] 反向文献，价值极高：在游戏化被期待起作用的工程场景中，
+% 游戏化机制（竞赛+排行榜）无显著效果，而「工具+意识」有效。
+@article{crespo2022technicaldebt,
+  author  = {Crespo, Yania and L{\'o}pez-Nozal, Carlos and Marticorena-S{\'a}nchez, Ra{\'u}l and Gonzalo-Tasis, Margarita and Piattini, Mario},
+  title   = {The role of awareness and gamification on technical debt management},
+  journal = {Information and Software Technology},
+  volume  = {150},
+  pages   = {106946},
+  month   = oct,
+  year    = {2022},
+  doi     = {10.1016/j.infsof.2022.106946},
+  note    = {[已核验] CCF-B。准实验三处理：
+                  (1) 技术债/坏味道/重构培训 + IDE 插件；
+                  (2) 处理1 + SonarQube 持续提升意识；
+                  (3) 处理2 + 游戏化（竞赛 + 前十名排行榜）。
+                  关键结论：SonarQube 持续意识提升显著改善技术债指标（设计/代码债大效应量、
+                  覆盖率小效应量）；但加入竞赛+排行榜「does not bring about any
+                  significant differences in the technical debt indicators」。
+                  原文要点：「Gamification has a minor effect on indicators
+                  compared to the use of SonarQube」。
+                  引用边界：研究对象是开发者还技术债，不是学生学习；跨领域外推须谨慎}
+}
+
+% [已核验] 定时炸弹：仅「框架化」为游戏，效果与完整机制相当。
+@article{lieberoth2015shallow,
+  author  = {Lieberoth, Andreas},
+  title   = {Shallow Gamification: Testing Psychological Effects of Framing an Activity as a Game},
+  journal = {Games and Culture},
+  year    = {2015},
+  doi     = {10.1177/1555412014559978},
+  note    = {[已核验] N=90。framing 单独即可产生与完整游戏机制相当的兴趣/享受效果。
+                  威胁：LearnFlow 60 个机制的效果可能大部分来自框架效应。
+                  机会：N=90 短时实验室；真实生产系统上的长期复制/否证有明确价值。
+                  VERIFY: 卷期页码待补}
+}
+
+% [部分核验] VERIFY: 年份与载体待补。N=505，四机制（进度条/叙事/反馈/徽章）
+@article{mazarakis2024whichone,
+  author  = {Mazarakis, Athanasios and Br{\"a}uer},
+  title   = {Gamification is Working, but Which One Exactly? Results from an Experiment with Four Game Design Elements},
+  year    = {2024},
+  note    = {[部分核验] Kiel University。N=505，最多 190 道多选题。
+                  VERIFY: 年份与载体（会议/期刊）待补、合著者全名待补。DOI 未核实，本库不填。
+                  核心发现：单个机制各有显著动机增益，但组合效应不等于各机制效应之和}
+}
+
+
+% #####################################################################
+% 方向 4：可复现性与数据质量危机
+% #####################################################################
+
+% ⚠️ 预印本，未经同行评议。
+% 团队此前引用的四个数字（82.1% / 56.0% / 3.6% / 90.5%）均出自此文。
+% 引用纪律：必须写明「尚未同行评议的预印本」，并优先用
+% abdelrahman2023knowledge (ACM CSUR, CCF-A) 作为主引。
+@misc{preprints2025dlktreview,
+  title  = {A Systematic Review of Deep Knowledge Tracing (2015-2025): Toward Responsible {AI} for Education},
+  year   = {2025},
+  howpublished = {Preprints.org, manuscript 202510.1845},
+  note   = {[部分核验] ⚠️ 预印本，未经同行评议。载体与手稿编号已确认。
+                  核心数据：82.1\% 的 KT 研究仅用 ASSIST 系列数据集；
+                  56.0\% 未处理数据质量问题；仅 3.6\% 使用定量序列稳定性指标；
+                  90.5\% 仅报告 AUC。
+                  VERIFY: 同行评议状态；且应回溯其原始引用 [77][78][44][45][56][30]
+                  定位一次文献，用一次文献替代预印本断言}
+}
+
+% [部分核验] SoLAR 立场文件（2020）。三条核心论断可直接引用。
+@misc{solar2020standards,
+  author       = {{Society for Learning Analytics Research}},
+  title        = {SoLAR Position Paper on Learning Analytics Standards and Interoperability},
+  year         = {2020},
+  howpublished = {solaresearch.org},
+  note         = {[部分核验] 三条核心论断：
+                  (1) 采用 Caliper/xAPI 不会自动改善数据质量；
+                  (2) xAPI 与 IMS Caliper 的标准竞争本身是问题；
+                  (3) 标准设计者技术导向而非教学导向，导致数据
+                  「too fine-grained over educationally irrelevant concepts,
+                  too coarse-grained over concepts of key importance」。
+                  VERIFY: 完整标题与文件编号待补}
+}
+
+% [部分核验] xAPI 不要求 verb/object 具有可互操作的语义 —— 机制性解释。
+@techreport{kitto2020xapi,
+  author      = {Kitto and others},
+  title       = {Connected Learning Analytics ({CLA}) toolkit: xAPI interoperability report},
+  institution = {University of Technology Sydney},
+  year        = {2020},
+  note        = {[部分核验] VERIFY: 完整标题、作者全名、报告类型待补。
+                   核心论断：xAPI 并不要求 verb/object 具有可互操作的语义}
+}
+
+% [部分核验] 综述中无一研究使用 Caliper —— 采用率的硬数字。
+@article{mangaroska2019multisource,
+  author  = {Mangaroska and others},
+  title   = {[Learning analytics multi-source data integration review]},
+  year    = {2019},
+  note    = {[部分核验] ⚠️ VERIFY: 完整标题、载体、卷期、作者全名均待补。
+                   已知核心发现：所综述的 LA 多源数据集成研究中，
+                   没有任何一项使用 Caliper。
+                   在补齐完整引用前，请勿在正式论文中引用此条}
+}
+
+
+% #####################################################################
+% 方向 5：CS 教育与编程学习适应性
+% #####################################################################
+
+% [已核验] LLM 在 CS 教育的系统综述。此位置已被占，LearnFlow 不要再做综述。
+@inproceedings{raihan2025llmcsed,
+  author    = {Raihan and Siddiq and Santos and Zampieri},
+  title     = {Large Language Models in Computer Science Education: A Systematic Literature Review},
+  booktitle = {Proceedings of the 56th ACM Technical Symposium on Computer Science Education (SIGCSE TS 2025)},
+  pages     = {7},
+  year      = {2025},
+  address   = {Pittsburgh, PA, USA},
+  note      = {[部分核验] VERIFY: 作者全名待补。预印本 arXiv:2410.16349。
+                   篇幅 7 页。SIGCSE TS 是 CS 教育第一顶会（未被 CCF 列表收录）}
+}
+
+% [已核验] 测试用例级代码知识追踪。TIKTOC 铺好路但没走完的那一步
+% （把测试级信号接入难度选择）即 LearnFlow 的落点。
+@inproceedings{duan2025tiktoc,
+  author    = {Duan, Zhangqi and Fernandez, Nigel and Hicks, Alexander and Lan, Andrew},
+  title     = {Test Case-Informed Knowledge Tracing for Open-ended Coding Tasks},
+  booktitle = {LAK 2025: The 15th International Learning Analytics and Knowledge Conference},
+  year      = {2025},
+  address   = {Dublin, Ireland},
+  doi       = {10.1145/3706468.3706500},
+  note      = {[已核验] 预印本 arXiv:2410.10829。会议 2025-03-03 至 03-07。
+                   数据规模：246 名学生 / 3,714 次提交 / 305 个测试用例 / 17 道题。
+                   LLM 骨干 + 多任务学习，同时预测「代码是否通过每个测试用例」
+                   与「开放式代码本身」。核心结果：优于只用总分的 KT 方法}
+}
+
+% [部分核验] LLM 生成的知识组件 vs 人工编写的 KC。
+@misc{kcgenkt2025,
+  title        = {KCGen-KT: Knowledge Component Generation for Knowledge Tracing},
+  year         = {2025},
+  eprint       = {2502.18632},
+  archivePrefix= {arXiv},
+  note         = {[部分核验] 版本 v4。VERIFY: 作者列表、是否已正式发表、载体待补。
+                   数据规模：CodeWorkout（246 学生 / 50 题 / 10,834 次首次提交）
+                   + FalconCode（3,267 学生 / 157 题 / 28,617 次提交）；用 CodeBLEU 评估。
+                   缺口：LLM 生成的 KC 只用于追踪，未反馈到难度选择}
+}
+
+% [已核验] 第 2 届 CSEDM Data Challenge 数据集。方向 5 最可直接利用的公开资产。
+@misc{codeworkout2021,
+  title        = {CodeWorkout Dataset (2nd CSEDM Data Challenge)},
+  year         = {2021},
+  howpublished = {ProgSnap2 format, 2nd CSEDM Data Challenge},
+  note         = {[已核验] Java CS1 课程；2019 春/秋学期分别为 329 与 490 名学生；
+                   50 道题；>65,000 次提交。
+                   字段：测试用例通过百分比、编译器消息、期末成绩。
+                   用途：难度策略的离线重放评估，无需真实用户}
+}
+
+% [已核验] 入门 Python 课程数据集，与 CodeWorkout（Java）互补。
+@inproceedings{falconcode2022,
+  title     = {FalconCode: A Dataset of Introductory Python Programming Submissions},
+  year      = {2022},
+  doi       = {10.1145/3545945.3569822},
+  note      = {[部分核验] VERIFY: 作者列表、完整标题、载体待补（DOI 已确认可解析）。
+                   数据规模：3,267 名学生 / 157 题 / 20 个知识组件}
+}
+
+% [已核验] ⚠️ 方向 5 空白的证明：编程教育动态难度调整的最接近工作，
+% 两个原型合计仅 N=47。
+@phdthesis{iplato2025,
+  author      = {Shum, Lok Cheung},
+  title       = {[I-PLATO / GhostCoder: Adaptive Difficulty and Motivation in Programming Games]},
+  school      = {University of the West of England},
+  year        = {2025},
+  month       = mar,
+  note        = {[部分核验] VERIFY: 论文标题全称、DOI/机构库编号待补。
+                   技术要点：ARCS 动机模型 + Motivational Scenario-Based Design
+                   + 基于模糊逻辑的动态难度调整 (DDA) + xAPI 互操作。
+                   ⚠️ 样本量：两个原型分别 N=32 与 N=15，合计仅 47。
+                   这是「编程教育自适应难度缺乏大规模证据」的最有力证据}
+}
+
+% [已核验] 积木编程的自适应难度，同样小样本、学位论文级别。
+@phdthesis{kodetu,
+  author      = {Kanellopoulou},
+  title       = {Kodetu: Adaptive Difficulty for Block-Based Programming Challenges},
+  school      = {University of Deusto},
+  year        = {2025},
+  note        = {[部分核验] VERIFY: 作者全名、年份、论文标题全称待补。
+                   基于模糊规则的难度函数；110 个挑战；自适应 vs 非自适应对比；
+                   对象为 9--16 岁学习者}
+}
+
+
+% #####################################################################
+% 通用 / 方法论工具
+% #####################################################################
+
+% 反向检索技巧的元说明（非文献条目，供维护者参考）：
+%
+%   反向检索是本次测绘中发现最高价值文献的途径。Crespo et al. 2022 的
+%   「游戏化无效」结论、SoLAR 2020 的「标准实现糟糕」立场文件，
+%   都是通过否定性查询挖出来的。建议每个方向都额外跑一组否定性查询，
+%   例如：
+%     "blockchain" AND ("for blockchain's sake" OR "overhyped")
+%     "gamification" AND ("no effect" OR "backfire" OR "crowding out")
+%     "knowledge tracing" AND ("reproducibility" OR "replication failure")
+%
+% =====================================================================
+% 文件结束
+% 维护提醒：新增条目前必须检索核实；核实后请把对应条目从
+%           LearnFlow_文献测绘与研究缺口.md 附录 A 移出，并在附录 A 标注
+%           「已于 YYYY-MM-DD 核实，见 references.bib」
+% =====================================================================

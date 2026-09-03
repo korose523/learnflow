@@ -1,0 +1,148 @@
+classDiagram
+    class User {
+        +str id
+        +str email
+        +str hashed_password
+        +str name
+        +UserRole role
+        +str grade
+        +str parent_id
+        +bool is_active
+        +dict consents
+        +relationship pet
+        +relationship skill_profile
+    }
+    class PetProfile {
+        +str id
+        +str user_id
+        +str name = "小豆"
+        +PetBreed breed = CAT
+        +int level = 1
+        +PetMood mood = HAPPY
+        +float understanding = 50.0
+        +float persistence = 50.0
+        +float creativity = 50.0
+        +float collaboration = 50.0
+        +dict visuals_state
+        +total_score() float
+        +dominant_trait() str
+        +get_level_progress() float
+    }
+    class Task {
+        +str id
+        +str title
+        +str content
+        +str topic
+        +int difficulty
+        +str correct_answer
+        +str explanation
+        +bool is_approved
+        +str source
+        +str created_by
+    }
+    class Attempt {
+        +str id
+        +str user_id
+        +str task_id
+        +str answer
+        +bool is_correct
+        +int time_spent
+        +int hints_used
+        +int difficulty_at_time
+    }
+    class SpacedReview {
+        +str id
+        +str user_id
+        +str task_id
+        +int review_number
+        +datetime scheduled_date
+        +datetime completed_date
+        +bool result
+        +float next_interval_days
+    }
+    class StudentSkillProfile {
+        +str id
+        +str user_id
+        +str skill_dim
+        +float score = 50.0
+        +float confidence = 0.5
+        +int total_attempts
+        +int correct_attempts
+        +float mastery
+        +success_rate() float
+    }
+    class Alert {
+        +str id
+        +str user_id
+        +AlertType alert_type
+        +AlertSeverity severity
+        +str title
+        +str description
+        +bool is_resolved
+        +str resolved_by
+    }
+    class OnboardingService {
+        +ensure_default_pet(user, db) PetProfile
+        +ensure_default_skill_profile(user, db) StudentSkillProfile
+        +ensure_default_consents(user, db) None
+        +bind_demo_parent(user, db) User
+        +onboard(user, db) dict
+    }
+    class LearningOrchestrator {
+        +build_next_task(user, topic, db) NextTaskResponse
+        +process_submission(user, task, req, db) SubmitAnswerResponse
+        +_compute_fused_difficulty(bkt, dda, optimal) int
+        +_build_risk_snapshot(user, db) UsageSnapshot
+    }
+    class BKTEngine {
+        +update(state, skill_dim, is_correct) SkillState
+        +recommend_difficulty(skill) int
+        +get_skill_report(state) dict
+    }
+    class DDAEngine {
+        +calculate(recent_results, current_difficulty) DDAResult
+    }
+    class OptimalDifficultyEngine {
+        +compute_optimal_difficulty(theta, sigma, recent_rate, n) DifficultyResult
+    }
+    class RiskMonitor {
+        +assess(snapshots) RiskAssessment
+        +check_consecutive_failure(count) dict
+        +check_repeated_skill(skills) dict
+    }
+    class SpacedRepetitionService {
+        +calculate_next_review(review_number, was_correct, interval) dict
+        +get_due_reviews(reviews, now) list
+    }
+    class PetService {
+        +calculate_correct_answer(difficulty, hints, is_retry, is_creative) PetUpdateEvent
+        +calculate_wrong_answer(difficulty, chosen_recovery) PetUpdateEvent
+        +apply_update(pet, event) PetProfile
+    }
+    class GamificationService {
+        +get_streak(user_id) dict
+        +get_xp(user_id) dict
+        +get_leaderboard() list
+        +get_skill_tree(user_id) dict
+        +open_box(user_id) dict
+    }
+
+    User "1" -- "1" PetProfile : has
+    User "1" -- "*" StudentSkillProfile : has
+    User "1" -- "*" Attempt : makes
+    Task "1" -- "*" Attempt : attempted
+    User "1" -- "*" SpacedReview : has
+    User "1" -- "*" Alert : has
+    OnboardingService ..> User : creates/updates
+    OnboardingService ..> PetProfile : creates
+    OnboardingService ..> StudentSkillProfile : creates
+    LearningOrchestrator ..> BKTEngine : uses
+    LearningOrchestrator ..> DDAEngine : uses
+    LearningOrchestrator ..> OptimalDifficultyEngine : uses
+    LearningOrchestrator ..> RiskMonitor : uses
+    LearningOrchestrator ..> SpacedRepetitionService : uses
+    LearningOrchestrator ..> PetService : uses
+    LearningOrchestrator ..> GamificationService : uses
+    StudentAPI ..> LearningOrchestrator : depends
+    StudentAPI ..> OnboardingService : depends
+    AuthAPI ..> OnboardingService : depends

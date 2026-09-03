@@ -1,0 +1,25 @@
+{
+  "envId": "learnflow-d5gapot1tc7d4debd",
+  "version": "2.0",
+  "$schema": "https://framework-1258016615.tcloudbaseapp.com/cloudbaserc-json-schema/v2/validator.json",
+  "cloudrun": {
+    "name": "learnflow-api",
+    "dockerfile": "Dockerfile",
+    "port": 80,
+    "minCount": 0,
+    "maxCount": 2,
+    "cpu": 0.25,
+    "mem": 0.5,
+    "environment": {
+      "ENVIRONMENT": "production",
+      "PORT": "80",
+      "DATABASE_URL": "sqlite+aiosqlite:///./learnflow.db",
+      "JWT_SECRET_KEY": "learnflow-production-jwt-secret-key-2026-06",
+      "REDIS_URL": "redis://localhost:6379/0",
+      "SEED_ADMIN_PASSWORD": "Admin123!",
+      "SEED_TEACHER_PASSWORD": "Teacher123!",
+      "SEED_STUDENT_PASSWORD": "Student123!",
+      "SEED_PARENT_PASSWORD": "Parent123!"
+    }
+  }
+}

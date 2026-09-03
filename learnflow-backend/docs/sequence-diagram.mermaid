@@ -1,0 +1,114 @@
+sequenceDiagram
+    participant C as 前端 LearningSession
+    participant S as StudentAPI
+    participant DB as AsyncSession
+    participant U as User
+    participant A as Attempt
+    participant SP as StudentSkillProfile
+    participant LO as LearningOrchestrator
+    participant BKT as BKTEngine
+    participant DDA as DDAEngine
+    participant OD as OptimalDifficultyEngine
+    participant RM as RiskMonitor
+    participant LM as LearningMethodEngine
+    participant T as Task
+
+    C->>S: GET /student/next-task?topic=...
+    S->>DB: get_db()
+    S->>U: get_current_user()
+
+    S->>A: 查询最近 20 条答题记录
+    A-->>S: List[Attempt]
+
+    S->>SP: 查询该知识点技能画像
+    SP-->>S: StudentSkillProfile(score, success_rate)
+
+    S->>LO: build_next_task(user_id, topic, attempts, skill)
+
+    LO->>BKT: batch_update(skill_dim, attempts)
+    BKT-->>LO: SkillState(p_mastery, recommended_difficulty)
+
+    LO->>OD: compute_optimal_difficulty(theta, recent_success_rate)
+    OD-->>LO: DifficultyResult(optimal_d, zone, expected_success)
+
+    LO->>DDA: calculate(recent_results, current_difficulty)
+    DDA-->>LO: DDAResult(difficulty, direction, pet_reaction)
+
+    LO->>LO: fused_difficulty = blend(BKT, DDA, 85%)
+
+    LO->>RM: check_consecutive_failure / repeated_skill
+    RM-->>LO: risk_signals
+
+    LO->>LM: recommend_method(topic, difficulty, mastery)
+    LM-->>LO: learning_tip
+
+    S->>T: 查询 difficulty=fused_difficulty 且已审核题目
+    T-->>S: Task
+
+    S-->>C: NextTaskResponse(task, dda, bkt, learning_tip, risk)
+
+%% ============================================================
+%% POST /student/submit-answer
+%% ============================================================
+
+sequenceDiagram
+    participant C as 前端 LearningSession
+    participant S as StudentAPI
+    participant DB as AsyncSession
+    participant T as Task
+    participant A as Attempt
+    participant SP as StudentSkillProfile
+    participant BKT as BKTEngine
+    participant SR as SpacedRepetitionService
+    participant PS as PetService
+    participant FS as FeedbackService
+    participant RM as RiskMonitor
+    participant XP as XPEngine
+    participant LM as MetaLearningSkillTree
+    participant Al as Alert
+
+    C->>S: POST /student/submit-answer
+    S->>DB: get_db()
+    S->>T: 查询题目
+
+    S->>S: normalize_answer()
+    S->>S: is_correct = compare
+
+    S->>A: 创建 Attempt(user_id, task_id, answer, is_correct, time_spent, ...)
+    DB->>A: INSERT
+
+    S->>SP: 查询/创建 StudentSkillProfile(skill_dim)
+    SP->>SP: total_attempts += 1; correct_attempts += 1 if is_correct
+    SP->>SP: score = success_rate * 100
+
+    S->>BKT: update(state, skill_dim, is_correct)
+    BKT-->>S: p_mastery
+    SP->>SP: mastery = p_mastery
+
+    S->>SR: calculate_next_review(review_number, is_correct, current_interval)
+    SR-->>S: {next_review_date, next_interval_days}
+    S->>SR: 创建 SpacedReview(user_id, task_id, scheduled_date, next_interval_days)
+    DB->>SR: INSERT
+
+    S->>PS: calculate_correct_answer / calculate_wrong_answer
+    PS->>PS: apply_update(pet)
+    DB->>PS: UPDATE pet_profiles
+
+    S->>FS: generate_task_feedback(context)
+    FS-->>S: feedback + recovery_options + learning_method_tip
+
+    S->>RM: assess(snapshots) / check_consecutive_failure
+    RM-->>S: RiskAssessment
+    alt risk_level >= WARNING
+        S->>Al: 创建 Alert(user_id, alert_type, severity, title)
+        DB->>Al: INSERT
+    end
+
+    S->>XP: award_xp(state, event_type, streak)
+    XP-->>S: xp_earned, leveled_up
+
+    S->>LM: add_skill_xp(method_id, xp)
+    LM-->>S: skill_update
+
+    S->>DB: commit
+    S-->>C: SubmitAnswerResponse(...)
