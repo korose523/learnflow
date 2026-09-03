@@ -48,12 +48,19 @@ from app.models.analytics import AbilityEstimate, AuditKind
 # process_submission 的 11 步机制 + 1 个后置 nudge 仲裁步里, 凡「应用某个游戏化机制」
 # 的步骤, 都在此登记其对应的 LF-M ID, 并构造期校验 ID 真实存在于 mechanism_registry。这样:
 #   * 每一步对应哪个机制可审计 (论文附表可引用 LF-Mxx);
-#   * 机制被 is_enabled(False) 关闭 (消融实验) 时, 对应步骤效果被抑制;
-#   * 默认全部开启 → 运行行为不变 (581 测试不受影响)。
+#   * 机制被 is_enabled(False) 关闭 (消融实验) 时, 对应步骤效果被**真实抑制**;
+#   * 默认全部开启 → 运行行为不变 (677 测试不受影响)。
 #
 # 注意: BKT / 间隔复习 / 技能画像等是**算法**而非机制, 不在此登记。
-# 健康护栏类机制 (LF-M51 强制休息 / LF-M52 未成年保护 / LF-M53 风险监控) 按治理
-# 策略拥有「一票否决权」, 始终开启, 此处仅登记供审计, 不对其门控。
+# 门控一致性 (GAP-6 修复后):
+#   健康护栏类机制 (LF-M51 forced_rest 强制休息 / LF-M52 minor_protection 未成年保护
+#   / LF-M53 lai_downgrade 风险监控) 按治理策略拥有「一票否决权」, **始终开启、
+#   exempt from ablation gating** —— 此处仅登记供审计, 不对其调用 is_enabled 门控。
+#   可被 is_enabled 真实门控、从而在消融实验中按需抑制的机制只有三个:
+#     * pet_companion  (LF-M22) —— 步骤 6  经 is_enabled 门控;
+#     * xp_leveling    (LF-M19) —— 步骤 9  经 is_enabled 门控 (GAP-6 修复, 此前漏掉);
+#     * fomo           (LF-M44) —— 步骤 12 经 is_enabled 门控 (经仲裁器下发)。
+#   三者默认全部开启 → 运行行为不变; 关闭后对应步骤效果被真实抑制, 消融对照成立。
 # ────────────────────────────────────────────────────────────
 
 PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
@@ -505,6 +512,18 @@ class LearningOrchestrator:
             if random.random() > reward_decision["trigger_probability"]:
                 reward_suppressed = True
 
+        # GAP-6 修复：xp_leveling (LF-M19) 消融门控。
+        # 该机制被 is_enabled(False) 关闭（消融实验）时，跳过 award_xp，产出零化的
+        # xp_result，使「关闭 LF-M19」能真正抑制等级成长；默认开启 → 行为不变。
+        # 注意：健康护栏 (LF-M51/52/53) 按治理策略始终开启、不受此门控（exempt）。
+        xp_leveling_enabled = mechanism_registry.is_enabled("xp_leveling")
+
+        # event_type 在任一分支都可能用于审计，统一在此计算
+        event_type = XPEventType.PERFECT_LESSON if is_correct and hints_used == 0 else (
+            XPEventType.HARD_CORRECT if is_correct and task.difficulty >= 7 else
+            XPEventType.LESSON_COMPLETE
+        )
+
         if reward_suppressed:
             # 不调用 award_xp，状态原样保留（仅更新连胜后由下方 save 统一回写）
             xp_result = {
@@ -517,15 +536,24 @@ class LearningOrchestrator:
                 "has_boost": xp_state.boost_remaining_minutes > 0,
                 "message": "休息一下，知识已经在你脑中沉淀。",
             }
+        elif not xp_leveling_enabled:
+            # 机制已关闭（消融实验对照）：跳过 award_xp，状态原样保留
+            xp_result = {
+                "xp_earned": 0,
+                "total_xp": xp_state.total_xp,
+                "today_xp": xp_state.today_xp,
+                "weekly_xp": xp_state.weekly_xp,
+                "leveled_up": False,
+                "new_level": None,
+                "has_boost": xp_state.boost_remaining_minutes > 0,
+                "message": "（机制已关闭）实验对照",
+            }
         else:
-            event_type = XPEventType.PERFECT_LESSON if is_correct and hints_used == 0 else (
-                XPEventType.HARD_CORRECT if is_correct and task.difficulty >= 7 else
-                XPEventType.LESSON_COMPLETE
-            )
             xp_result = XPEngine.award_xp(xp_state, event_type, streak=success_streak)
 
-        # 回填奖励抑制标记到决策快照
-        decision_snapshot["xp_suppressed"] = reward_suppressed
+        # 回填奖励抑制标记到决策快照（未成年冷却 或 xp_leveling 关闭 均视为 XP 被抑制）
+        xp_suppressed_effective = reward_suppressed or not xp_leveling_enabled
+        decision_snapshot["xp_suppressed"] = xp_suppressed_effective
 
         # 12. FOMO 后置 nudge 仲裁 (LF-M44, 治理 §3.4.2): 引擎只产 Effect 候选,
         # 由 MechanismArbitrator 三层漏斗决定下发; 未成年保护 (LF-M52) 命中时在第 1 层丢弃。
@@ -567,7 +595,7 @@ class LearningOrchestrator:
             input_json={"is_correct": is_correct, "difficulty": task.difficulty, "event_type": event_type.value if hasattr(event_type, "value") else str(event_type)},
             output_json={
                 "xp_earned": xp_result.get("xp_earned"),
-                "suppressed": reward_suppressed,
+                "suppressed": xp_suppressed_effective,
                 "trigger_probability": reward_decision["trigger_probability"],
             },
             subject=task.topic, age_band=age_band,
