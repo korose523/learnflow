@@ -1,0 +1,121 @@
+# =============================================================================
+# 预注册文件: prereg/ablation_design_v1.yaml
+#
+# LearnFlow 机制消融实验 —— 分层门控 (hierarchical gatekeeping) 设计预注册
+# 对应治理文档 §6.1.3 / §6.3.2。本文件在「数据收集前」冻结；任何事后修改都会
+# 破坏 confirmatory 研究的 FWER 控制承诺，必须重新走 IRB 审批。
+#
+# 数字诚信约束：机制总数 = 53 (LF-M01..LF-M53)，绝不可写作 76。
+# 整群随机设计效应 DEFF = 1 + (m-1)·ρ = 1 + (30-1)·0.05 = 2.45。
+# =============================================================================
+
+design:
+  name: "LearnFlow 机制消融实验（层级门控设计）"
+  version: "v1"
+  preregistered_at: "<必须在数据收集前冻结: ISO-8601 时间戳>"
+  registry_fingerprint: "<占位: 冻结前由 mechanism_registry.registry_fingerprint() 填充，保证机制集可复现>"
+  unit_of_randomization: "mixed"          # D 类整群(班级级); A/B/C/E/F/G 用户级 (见 §6.5)
+  primary_metric: "knowledge_mastery_growth"
+  secondary_metrics:
+    - "retention_rate"
+    - "intrinsic_motivation_ratio"
+    - "lai_score"
+    - "risk_score"
+  burn_in_days: 14                        # novelty 消退期，数据剔除
+  observation_days: 56                    # 8 周观测
+  total_days: 70
+  analysis: "分层线性模型 (HLM) / 增长曲线模型，估计 day_index 斜率；ITT + CACE"
+  estimand: "complier-average causal effect (CACE)，因沾染不可避免"
+
+# 整群随机设计效应 (DEFF) —— 样本量计算的核心修正项
+deff:
+  cluster_size: 30                        # m: 每班人数
+  icc: 0.05                              # ρ: 组内相关系数
+  value: 2.45                            # DEFF = 1 + (m-1)*ρ
+  note: "忽略 DEFF 是原框架最隐蔽的统计错误；样本量需 ×2.45"
+
+# α 分配（FWER 强控制到 0.05，Dmitrienko & Tamhane 2009）
+alpha_allocations:
+  familywise_error_rate: 0.05
+  gate0:
+    tests: 1
+    alpha: 0.05
+    correction: none
+  gate1:
+    tests: 8                             # 类别 A–H 分组消融
+    correction: holm
+    alpha_family: 0.05
+    alpha_prime: 0.00625                 # 0.05 / 8
+  gate2:
+    tests: 12                            # 仅 Gate 1 显著类别内机制 (保守估计)
+    correction: holm
+    alpha_family: 0.05
+    alpha_prime: 0.004167                # 0.05 / 12
+  gate2_5:
+    tests: 3                             # 预注册 ≤3 对 2×2 交互
+    correction: holm
+    alpha_family: 0.05
+    alpha_prime: 0.0167                  # 0.05 / 3
+
+# 分层门控检验序
+gates:
+  - level: 0
+    name: "omnibus"
+    tests: 1
+    alpha: 0.05
+    arms:
+      - name: all_off
+        toggles: {all_53: false}         # 仅保留 H 类健康护栏 (伦理硬约束)
+      - name: all_on
+        toggles: {}
+    stop_if_null: true                   # H0 不显著 → STOP，整套游戏化视为无效
+
+  - level: 1
+    name: "category_ablation"
+    tests: 8
+    correction: holm
+    alpha_prime: 0.00625
+    arms:
+      - {name: ctrl}
+      - {name: off_A, toggles_by_category: [retention]}   # A 行为主义·强化与奖励
+      - {name: off_B, toggles_by_category: [retention]}   # B 承诺·损失与目标梯度
+      - {name: off_C, toggles_by_category: [selfreg]}     # C 自我决定论
+      - {name: off_D, toggles_by_category: [retention]}   # D 社会影响与社会学习
+      - {name: off_E, toggles_by_category: [retention]}   # E 习惯形成与自我调节
+      - {name: off_F, toggles_by_category: [motivation]}  # F 情绪与动机触发
+      - {name: off_G, toggles_by_category: [cognition]}   # G UX 微交互与认知负荷
+      # H 类健康护栏 (LF-M51/LF-M52/LF-M53) 永不关闭 —— 伦理硬约束，单臂不可消融
+    note: "Holm 逐步拒绝；仅对被拒绝的类别进入 Gate 2"
+
+  - level: 2
+    name: "mechanism_within_category"
+    tests: 12                            # 仅 Gate 1 显著类别进入
+    correction: holm
+    alpha_prime: 0.004167
+    note: "进入条件与进入的类别必须在 Gate 1 结果锁定后、Gate 2 数据收集前记录"
+    entry_condition: "conditional_on_gate1_rejected"
+
+  - level: 2.5
+    name: "preregistered_interactions"
+    tests: 3
+    correction: holm
+    alpha_prime: 0.0167
+    design: "2x2 between-subject factorial"
+    pairs:                               # 预注册的交互对（不得事后添加）
+      - [LF-M11, LF-M09]                 # 连胜 × 损失厌恶 (预期次可加/冗余)
+      - [LF-M27, LF-M23]                 # 排行榜 × 社会认同 (N-effect 调节)
+      - [LF-M01, LF-M14]                 # 变比率奖励 × 峰终 (体验评价交互)
+
+# 停止规则 (安全 + 伦理)
+stopping_rules:
+  health_veto: "健康一票否决：实验组 risk_score 均值 > 70 或 addiction_index > 0.6 即停"
+  gate0_null_stop: "Gate 0 不显著 → 整体 STOP，不再进入 Gate 1"
+  futility: "中期分析显示任一主要终点功效 < 0.5 时提前停 (alpha 消耗预算内)"
+  safety_sample_floor: "treatment 健康指标样本 < 10 不触发安全判定 (避免小样本误停)"
+
+# IRB 排除项（伦理审查硬性约束）
+irb_exclusions:
+  minors: "未成年用户 (age < 18) 排除出消融主分析；仅进入 LF-M52 奖励冷却观测"
+  lai_high_risk: "LAI 高风险用户 (lai_score < 30) 不进入机制关闭臂；健康护栏 LF-M51/LF-M52/LF-M53 恒开"
+  health_category_never_ablated: "H 类 (LF-M51/LF-M52/LF-M53) 任何消融臂均保持开启"
+  informed_consent: "所有参与者需签署知情同意；可随时退出且不损失学习进度"

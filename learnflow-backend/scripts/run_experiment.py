@@ -44,7 +44,8 @@ def _parse_toggles(s) -> dict:
     return json.loads(s)
 
 
-def run(spec: dict, store_path: str, advance_to: str | None) -> dict:
+def run(spec: dict, store_path: str, advance_to: str | None = None,
+        off_category: str | None = None, force: bool = False) -> dict:
     fw = ABTestFramework(store=JSONFileExperimentStore(store_path))
 
     metric_type = spec.get("metric_type", "continuous")
@@ -63,13 +64,18 @@ def run(spec: dict, store_path: str, advance_to: str | None) -> dict:
         cluster_size=cluster_size, icc=icc,
     )
 
+    # GAP-1: 类别级消融预设 —— --off-category 合并「整类机制 = False」
+    toggles = _parse_toggles(spec.get("mechanism_toggles", "{}"))
+    if off_category:
+        toggles.update(fw.toggles_for_category(off_category))
+
     exp = fw.create_experiment(
         name=spec["name"],
         description=spec.get("description", ""),
         parameter_name=spec.get("parameter_name", ""),
         control_value=spec.get("control_value"),
         treatment_value=spec.get("treatment_value"),
-        mechanism_toggles=_parse_toggles(spec.get("mechanism_toggles", "{}")),
+        mechanism_toggles=toggles,
         primary_metric=spec.get("primary_metric", "knowledge_mastery_growth"),
         secondary_metrics=spec.get("secondary_metrics", []),
         alpha_alloc=alpha,
@@ -81,14 +87,27 @@ def run(spec: dict, store_path: str, advance_to: str | None) -> dict:
     )
     fw.set_required_n(exp.id, plan.required_n_per_group, deff=plan.deff)
 
+    # GAP-7: --advance-to 默认尊重真实样本量门槛 (required_n_per_group)；
+    # 仅 --force 时强制推进（绕过门槛，便于演示/编排）。
     if advance_to:
         order = ["shadow", "canary", "ramping", "full"]
         target = order.index(advance_to)
-        cur = 0
-        # 强制推进到目标（绕过样本量门槛，便于演示/编排）
+        cur = order.index(exp.phase.value)
         while cur < target:
-            fw.advance_phase(exp.id, force=True)
-            cur += 1
+            prev = exp.phase
+            fw.advance_phase(exp.id, force=force)
+            exp = fw.get_experiment(exp.id)
+            if order.index(exp.phase.value) == cur:
+                # 未推进（门槛未达且非强制）：停止，避免死循环
+                if not force:
+                    print(
+                        f"[warn] 阶段推进在 {prev.value} 处被样本量门槛拦截"
+                        f"(需 >= required_n_per_group={exp.required_n_per_group})；"
+                        f"使用 --force 可强制推进。",
+                        file=sys.stderr,
+                    )
+                break
+            cur = order.index(exp.phase.value)
 
     summary = fw.get_experiment_summary(exp.id)
     return {
@@ -114,8 +133,12 @@ def main() -> int:
     ap.add_argument("--power", type=float, default=0.80)
     ap.add_argument("--cluster-size", type=int, default=30)
     ap.add_argument("--icc", type=float, default=0.05)
+    ap.add_argument("--off-category", default=None,
+                    help="消融预设：关闭一整类机制 (A–H 或注册表类别名，如 retention)")
     ap.add_argument("--advance-to", default=None,
                     choices=["shadow", "canary", "ramping", "full"])
+    ap.add_argument("--force", action="store_true",
+                    help="--advance-to 强制推进，忽略真实样本量门槛 (required_n_per_group)")
     args = ap.parse_args()
 
     if args.spec:
@@ -137,7 +160,7 @@ def main() -> int:
             "icc": args.icc,
         }
 
-    result = run(spec, args.store, args.advance_to)
+    result = run(spec, args.store, args.advance_to, args.off_category, args.force)
     print(json.dumps(result, ensure_ascii=False, indent=2, default=str))
     return 0
 

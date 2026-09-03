@@ -36,6 +36,33 @@ import json
 import os
 
 
+# ---------------------------------------------------------------------------
+# 类别级消融预设 (GAP-1): 8 个治理字母 A–H → 5 个注册表类别
+# ---------------------------------------------------------------------------
+# 治理文档把 53 个机制分成 8 组 (A–H)。本映射把每个字母解析到**单一**注册表类别，
+# 供 ``toggles_for_category`` 一次性关闭整类机制（消融实验用）。
+#   A 行为主义·强化与奖励        → retention
+#   B 承诺·损失与目标梯度        → retention
+#   C 自我决定论 (自主/胜任/关联) → selfreg
+#   D 社会影响与社会学习          → retention (社会类跨 retention/motivation，取多数)
+#   E 习惯形成与自我调节          → retention
+#   F 情绪与动机触发              → motivation
+#   G UX 微交互与认知负荷         → cognition
+#   H 健康护栏与伦理              → health (消融中单臂永不关闭：伦理硬约束)
+# 注意：映射到的类别返回该类别**全部**机制 (by_category)，不止该字母的子集；
+#       这是 GAP 规格要求的「关掉一整类」语义。H 类在消融中保持开启。
+_GOVERNANCE_LETTER_TO_CATEGORY = {
+    "A": "retention",
+    "B": "retention",
+    "C": "selfreg",
+    "D": "retention",
+    "E": "retention",
+    "F": "motivation",
+    "G": "cognition",
+    "H": "health",
+}
+
+
 class ExperimentPhase(str, Enum):
     """实验阶段"""
     SHADOW = "shadow"        # 影子模式：计算但不执行
@@ -515,6 +542,31 @@ class ABTestFramework:
             return True
         return exp.mechanism_toggles.get(mechanism_id, True)
 
+    def toggles_for_category(self, category_letter: str) -> Dict[str, bool]:
+        """类别级消融预设：返回「关闭整类机制」的 toggle 字典 (GAP-1)。
+
+        接受两种输入：
+          - 注册表类别名: retention / motivation / selfreg / cognition / health
+          - 治理字母 A–H（按 ``_GOVERNANCE_LETTER_TO_CATEGORY`` 映射到类别）
+        返回形如 ``{lf_id: False for 该类别每个机制}``，可直接并入
+        ``Experiment.mechanism_toggles``，实现「一次性关掉一整类」的消融。
+
+        Example:
+            off_B = fw.toggles_for_category("B")   # 全部 承诺/损失/梯度 机制 = False
+        """
+        from app.services import mechanism_registry
+        key = (category_letter or "").strip().lower()
+        if key in mechanism_registry.CATEGORIES:
+            cat = key
+        elif key.upper() in _GOVERNANCE_LETTER_TO_CATEGORY:
+            cat = _GOVERNANCE_LETTER_TO_CATEGORY[key.upper()]
+        else:
+            raise ValueError(
+                f"非法类别/字母: {category_letter!r}；可选注册表类别 "
+                f"{mechanism_registry.CATEGORIES} 或字母 A–H"
+            )
+        return {spec.id: False for spec in mechanism_registry.by_category(cat)}
+
     def set_required_n(self, experiment_id: str, n: int, deff: float = 1.0) -> None:
         """由功效分析回填样本量（§3.4.2 改造 1）。"""
         exp = self._store.load_experiment(experiment_id)
@@ -572,7 +624,13 @@ class ABTestFramework:
             exp.started_at = datetime.now(UTC)
         elif exp.phase == ExperimentPhase.CANARY:
             treatment_count = sum(1 for r in exp.results if r.group == "treatment")
-            if not force and treatment_count < exp.min_sample_per_group:
+            # GAP-7: 真实门槛 = 功效分析写入的 required_n_per_group；
+            # 仅当该字段为 0/None（未做功效分析）时，才退回 deprecated 的
+            # min_sample_per_group 兼容值。
+            threshold = (exp.required_n_per_group
+                         if (exp.required_n_per_group or 0) > 0
+                         else exp.min_sample_per_group)
+            if not force and treatment_count < threshold:
                 return exp.phase  # 样本不足，暂不推进
             exp.phase = ExperimentPhase.RAMPING
             exp.traffic_percentage = 0.25  # 25%
