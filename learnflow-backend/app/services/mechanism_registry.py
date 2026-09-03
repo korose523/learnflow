@@ -117,6 +117,46 @@ class MechanismContext:
     trace: List[str] = field(default_factory=list)
 
 
+def registry_fingerprint() -> str:
+    """注册表版本指纹 —— 实验可复现性锚点 (§3.4.2)。
+
+    由「机制总数 + 全部 ID 的有序拼接」求短哈希得到。实验创建时写入
+    ``Experiment.registry_fingerprint``，复盘时可核验实验所针对的机制集与
+    当前注册表是否一致（防止论文复现时机制集漂移）。
+    """
+    import hashlib
+    payload = f"{count()}|" + "|".join(sorted(ids()))
+    return hashlib.md5(payload.encode("utf-8")).hexdigest()[:12]
+
+
+class ABTestToggleProvider:
+    """把 ab_test_framework 适配为注册表的机制开关来源 (§3.4.2 改造 3)。
+
+    注意: 本项目的机制注册表是「声明式静态表」，不持有运行时按用户的开关状态；
+    按用户/按实验的开关向量由 A/B 框架在运行时计算。本适配器仅作为统一入口，
+    供引擎/编排器查询「某用户当前应启用哪些机制」，而无需直接依赖框架实现。
+    """
+
+    def __init__(self, framework) -> None:
+        # framework: ABTestFramework 实例（鸭子类型，避免循环导入）
+        self._fw = framework
+
+    def get_toggles(self, user_id: str) -> Dict[str, bool]:
+        return self._fw.get_mechanism_toggles(user_id)
+
+    def is_enabled(self, user_id: str, mechanism_id: str,
+                   health_critical: bool = False) -> bool:
+        if health_critical:
+            return True
+        # 合并所有生效实验的开关向量（实验覆盖 > 基线默认开启）
+        toggles = self.get_toggles(user_id)
+        return toggles.get(mechanism_id, True)
+
+    @property
+    def framework(self):
+        return self._fw
+
+
 # ---------------------------------------------------------------------------
 # 数据结构
 # ---------------------------------------------------------------------------
@@ -549,6 +589,7 @@ __all__ = [
     "STAGES", "CATEGORIES", "DISPOSITIONS", "MATURITY",
     "MechanismSpec", "MechanismDisabledError",
     "EffectType", "Effect", "MechanismContext",
+    "registry_fingerprint", "ABTestToggleProvider",
     "SPECS", "all_mechanisms", "get", "get_by_id",
     "by_stage", "by_category", "by_disposition",
     "count", "keys", "ids", "catalog_rows",
