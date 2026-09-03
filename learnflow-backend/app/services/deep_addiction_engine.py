@@ -17,6 +17,8 @@ from enum import Enum
 from typing import Dict, List, Optional
 import random
 
+from app.services.mechanism_registry import Effect, EffectType
+
 
 # ═══════════════════════════════════════════════════════════
 # 1. 好奇心缺口引擎 — Information Gap Theory
@@ -274,19 +276,33 @@ class FOMOEngine:
         return active
 
     @classmethod
-    def generate_fomo_nudge(cls, active_challenges: List[dict]) -> Optional[dict]:
-        """生成FOMO轻推"""
+    def generate_fomo_nudge(cls, active_challenges: List[dict]) -> Optional[Effect]:
+        """生成FOMO轻推 —— 产出 Effect 候选, 由 MechanismArbitrator 三层漏斗决定下发
+
+        治理 §3.4.2: FOMO (LF-M44) 不再是直接下发的用户可见文案, 而是经仲裁器的
+        Effect 候选; 未成年保护 (LF-M52) 命中时, 仲裁器第 1 层健康一票否决会丢弃它。
+        """
         if not active_challenges:
             return None
 
         best = active_challenges[0]
-        return {
+        nudge = {
             "type": "fomo",
             "message": f"⏰ {best['name']}: {best['desc']}（{best.get('time_remaining', '限时')}）",
             "urgency_level": "gentle" if "小时" in best.get("time_remaining", "") else "moderate",
             "action": "start_challenge",
             "challenge_id": best["id"],
         }
+        return Effect(
+            mechanism_id="LF-M44",
+            effect_type=EffectType.NUDGE,
+            payload=nudge,
+            priority=50,
+            cost=1.5,
+            user_visible=True,
+            health_critical=False,
+            direction="approach",
+        )
 
     @classmethod
     def generate_peer_progress_nudge(cls, peer_stats: dict) -> dict:

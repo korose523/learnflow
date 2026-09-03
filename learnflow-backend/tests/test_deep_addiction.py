@@ -71,10 +71,18 @@ class TestFOMOEngine:
 
     def test_fomo_nudge(self):
         from app.services.deep_addiction_engine import FOMOEngine
+        from app.services.mechanism_registry import Effect, EffectType
         challenges = [{"name": "周末勇士", "desc": "双倍经验", "time_remaining": "本周末结束", "id": "w1"}]
         nudge = FOMOEngine.generate_fomo_nudge(challenges)
-        assert nudge is not None
-        assert "周末勇士" in nudge["message"]
+        assert isinstance(nudge, Effect)
+        assert nudge.mechanism_id == "LF-M44"
+        assert nudge.effect_type == EffectType.NUDGE
+        assert nudge.direction == "approach"
+        assert nudge.health_critical is False
+        assert nudge.cost == 1.5
+        assert nudge.payload["type"] == "fomo"
+        assert nudge.payload["challenge_id"] == challenges[0]["id"]
+        assert "周末勇士" in nudge.payload["message"]
 
     def test_no_fomo_when_empty(self):
         from app.services.deep_addiction_engine import FOMOEngine

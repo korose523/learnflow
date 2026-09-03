@@ -36,14 +36,17 @@ from app.services.progression_repository import (
 )
 from app.services.learning_event_builder import build_submission_events
 from app.services import mechanism_registry
+from app.services.mechanism_arbitrator import MechanismArbitrator
+from app.services.mechanism_registry import Effect, EffectType, MechanismContext
+from app.services.deep_addiction_engine import FOMOEngine
 from app.models.analytics import AbilityEstimate, AuditKind
 
 
 # ────────────────────────────────────────────────────────────
 # 机制治理接线 (Task #10: 注册表驱动流水线)
 #
-# process_submission 的 11 步里, 凡「应用某个游戏化机制」的步骤, 都在此登记其
-# 对应的 LF-M ID, 并构造期校验 ID 真实存在于 mechanism_registry。这样:
+# process_submission 的 11 步机制 + 1 个后置 nudge 仲裁步里, 凡「应用某个游戏化机制」
+# 的步骤, 都在此登记其对应的 LF-M ID, 并构造期校验 ID 真实存在于 mechanism_registry。这样:
 #   * 每一步对应哪个机制可审计 (论文附表可引用 LF-Mxx);
 #   * 机制被 is_enabled(False) 关闭 (消融实验) 时, 对应步骤效果被抑制;
 #   * 默认全部开启 → 运行行为不变 (581 测试不受影响)。
@@ -57,12 +60,17 @@ PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
     6: ["pet_companion"],                      # LF-M22 虚拟宠物陪伴
     8: ["lai_downgrade", "forced_rest"],       # LF-M53 风险监控 / LF-M51 强制休息
     9: ["xp_leveling", "minor_protection"],     # LF-M19 XP等级 / LF-M52 未成年保护
+    12: ["fomo"],                              # LF-M44 错失恐惧 — 经仲裁器下发
 }
 
 # 构造期不变量: 接线里引用的机制 key 必须真实存在于注册表 (否则说明接线漂移)
 for _step, _keys in PIPELINE_MECHANISM_MAP.items():
     for _k in _keys:
         mechanism_registry.get(_k)  # 未注册即抛 KeyError
+
+# FOMO 后置 nudge 仲裁器单例 (LF-M44, 治理 §3.4.2): 引擎只产 Effect 候选,
+# 由 MechanismArbitrator 三层漏斗决定下发; LF-M52 命中时在第 1 层丢弃。
+_FOMO_ARBITRATOR = MechanismArbitrator()
 
 
 # ────────────────────────────────────────────────────────────
@@ -519,6 +527,32 @@ class LearningOrchestrator:
         # 回填奖励抑制标记到决策快照
         decision_snapshot["xp_suppressed"] = reward_suppressed
 
+        # 12. FOMO 后置 nudge 仲裁 (LF-M44, 治理 §3.4.2): 引擎只产 Effect 候选,
+        # 由 MechanismArbitrator 三层漏斗决定下发; 未成年保护 (LF-M52) 命中时在第 1 层丢弃。
+        fomo_effects: List[Effect] = []
+        if mechanism_registry.is_enabled("fomo"):
+            _fomo_cand = FOMOEngine.generate_fomo_nudge(FOMOEngine.get_active_challenges())
+            if _fomo_cand is not None:
+                fomo_effects.append(_fomo_cand)
+        # 未成年保护作为健康一票否决方: 仅当确为未成年时构造 LF-M52 健康 Effect,
+        # 触发 Layer1 把全部 approach (含 FOMO) 丢弃。
+        if anti_addiction.is_minor(age_band):
+            fomo_effects.append(Effect(
+                mechanism_id="LF-M52",
+                effect_type=EffectType.NOTIFICATION,
+                payload={"reason": "minor_protection_veto"},
+                priority=100,
+                cost=0.0,
+                user_visible=False,
+                health_critical=True,
+                direction="withdraw",
+            ))
+        _fomo_ctx = MechanismContext(user_id=str(user.id), session_id=session_id)
+        _fomo_delivered = _FOMO_ARBITRATOR.arbitrate(_fomo_ctx, fomo_effects)
+        _fomo_nudge = next(
+            (e.payload for e in _fomo_delivered if e.mechanism_id == "LF-M44"), None
+        )
+
         # 连胜维护（v1 中 success_streak 为临时计算，同样不落库）
         if is_correct:
             xp_row.current_streak = (xp_row.current_streak or 0) + 1
@@ -606,6 +640,7 @@ class LearningOrchestrator:
             },
             "risk_alert": risk_alert,
             "method_xp": method_result,
+            "fomo_nudge": _fomo_nudge,  # None 或经仲裁下发的 FOMO payload
             "learning_method_tip": method_tip,
         }
 
