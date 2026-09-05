@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-04T05:13:26+09:00",
-  "git_commit": "b70be3f02805a6f4bc20f0664483864ceed59d27",
+  "generated_at": "2026-09-05T11:38:38+09:00",
+  "git_commit": "85eafd43b0fb7da52796acd69962d91a6c6bac72",
   "total": 53,
   "landed": 53,
   "orphan": 0,
@@ -675,7 +675,7 @@
       "category": "health",
       "disposition": "K",
       "maturity": "complete",
-      "impl_ref": "anti_addiction_compliance.py:79",
+      "impl_ref": "anti_addiction_compliance.py:MinorProtectionEngine",
       "impl_ref_file_exists": true,
       "external_ref": true,
       "orchestrator_wired": true,
