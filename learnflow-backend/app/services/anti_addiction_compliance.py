@@ -52,8 +52,18 @@ class MinorProtectionConfig:
     rest_duration_adult: int = 5
 
     # 夜间禁用时段
+    #
+    # 注意：这两个钟点是**本地时间**（《未成年人网络保护条例》语境下的北京时间），
+    # 不是 UTC。换算由 night_timezone_offset 控制，见
+    # MinorProtectionEngine._is_night_time。
     night_start: int = 22
     night_end: int = 6
+
+    # 夜间时段判定的时区偏移（小时）。
+    #
+    # 默认 +8 即北京时间。服务内部时刻统一以 UTC 流转（datetime.now(UTC)），
+    # 判定夜间前需先按此偏移换算到本地钟点，否则政策会被整体错位。
+    night_timezone_offset: int = 8
 
     # 家长管控开关
     parent_managed: bool = False
@@ -165,12 +175,24 @@ class MinorProtectionEngine:
             quota.total_rest_today = 0
 
         # 1. 夜间禁用检查
-        if cls._is_night_time(cfg, now):
+        #
+        # 缺陷修复：原实现对本引擎的**全部**年龄段（含 ADULT）在 22:00-06:00
+        # 一律返回 should_block=True。与本类的定位（《未成年人网络保护条例》、
+        # 类名 MinorProtectionEngine、其余限额均按年龄段分档）不符，属越权阻断：
+        # 成年学习者在夜间会被完全禁止学习。
+        #
+        # 现改为仅对未成年保护对象生效；成年人仍会在返回值中收到
+        # night_time 标记，可供上层做温和提示（当前不阻断）。
+        is_minor = cls.is_minor(quota.age_group)
+        is_night = cls._is_night_time(cfg, now)
+        if is_night and is_minor:
             return {
                 "status": SessionStatus.NIGHT_BLOCKED,
                 "message": "现在是休息时间（22:00-06:00）。明天再来学习吧，好的睡眠能帮你更好地记住知识！",
                 "should_block": True,
                 "rest_minutes": 0,
+                "night_time": is_night,
+                "is_minor": is_minor,
             }
 
         # 2. 每日上限检查
@@ -185,6 +207,8 @@ class MinorProtectionEngine:
                 "rest_minutes": 0,
                 "daily_remaining": 0,
                 "daily_remaining_pct": 0,
+                "night_time": is_night,
+                "is_minor": is_minor,
             }
 
         # 3. 连续使用检查
@@ -198,6 +222,8 @@ class MinorProtectionEngine:
                 "should_block": True,
                 "rest_minutes": rest_minutes,
                 "rest_activities": cls._get_rest_activities(),
+                "night_time": is_night,
+                "is_minor": is_minor,
             }
 
         return {
@@ -205,6 +231,8 @@ class MinorProtectionEngine:
             "message": "",
             "should_block": False,
             "rest_minutes": 0,
+            "night_time": is_night,
+            "is_minor": is_minor,
             "daily_remaining": daily_limit - quota.daily_minutes_used,
             "daily_remaining_pct": round((1 - quota.daily_minutes_used / daily_limit) * 100),
         }
@@ -229,9 +257,32 @@ class MinorProtectionEngine:
 
     @classmethod
     def _is_night_time(cls, config: MinorProtectionConfig, current_time: Optional[datetime] = None) -> bool:
+        """夜间时段判定。
+
+        缺陷修复 —— 原实现直接以 ``now.hour`` 与 ``night_start/night_end`` 比较，
+        而 ``now`` 默认来自 ``datetime.now(UTC)``，即 **UTC 小时**；但
+        ``night_start=22 / night_end=6`` 是《未成年人网络保护条例》语境下的
+        **本地（北京时间）** 钟点。对 UTC+8 的中国用户，原实现的实际效果是：
+
+            阻断 06:00–14:00（北京时间，上午/中午的正常学习时段），
+            却在真正的深夜 22:00–06:00 放行。
+
+        即政策被整体错位 8 小时，方向完全相反。这是本模块最严重的正确性缺陷。
+
+        现按 ``config.night_timezone_offset`` 把 UTC 换算为本地小时后再比较。
+
+        时刻约定：
+            - ``current_time`` 为 timezone-aware → 先归一到 UTC，再施加偏移；
+            - ``current_time`` 为 naive → 视为调用方已给本地时刻，直接使用其小时
+              （向后兼容既有调用与测试）。
+        """
         now = current_time or datetime.now(UTC)
+        if now.tzinfo is not None:
+            hour = (now.astimezone(UTC).hour + config.night_timezone_offset) % 24
+        else:
+            hour = now.hour
         start = config.parent_custom_night_start or config.night_start
-        return now.hour >= start or now.hour < config.night_end
+        return hour >= start or hour < config.night_end
 
     @classmethod
     def _get_rest_activities(cls) -> list:

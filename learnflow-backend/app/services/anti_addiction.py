@@ -109,3 +109,128 @@ def hook_habit_orchestrator(session_minutes: float, age_band: str) -> Optional[d
     except Exception as e:
         logger.debug("HabitAddictionOrchestrator 联动跳过：%s", e)
     return None
+
+
+# ══════════════════════════════════════════════════════════════
+# 未成年保护合规引擎委托 (LF-M52)
+#
+# 历史缺陷（治理审计发现）：
+#   机制注册表 mechanism_registry 把 LF-M52「未成年保护」的 impl_ref 指向
+#   anti_addiction_compliance.MinorProtectionEngine，但生产代码中该引擎
+#   **零调用方**——编排器只使用了本模块上方的粗粒度规则（25 分钟会话重置 +
+#   未成年奖励冷却），导致：
+#     (a) 注册表宣称 LF-M52 已落地，实际实现从未运行（审计可被证伪）；
+#     (b) 运行中的实现缺少「每日时长上限」与「夜间禁用」两项合规硬要求。
+#
+# 修复方式：把本模块确立为未成年保护的**唯一对外门面**，对外暴露统一的
+# minor_protection_decision()，内部委托 MinorProtectionEngine 执行配额校验。
+# 本模块原有的粗粒度规则（变比率概率、奖励冷却）继续保留，与合规校验互补
+# 而非重复——前者约束"奖励强度"，后者约束"使用时长"。
+#
+# 依赖项 anti_addiction_compliance 仅依赖标准库，不存在循环导入风险。
+# ══════════════════════════════════════════════════════════════
+
+from app.services.anti_addiction_compliance import (
+    AgeGroup,
+    MinorProtectionEngine,
+    UsageQuota,
+)
+
+# 学段 → 合规年龄段。
+# 依据：中国学制入学年龄与年级的常规对应关系。小学跨越 6–12 岁（同时覆盖
+# AgeGroup.CHILD 的 <8 与 PRE_TEEN 的 8–13），此处按学段主体人群归入
+# PRE_TEEN，其每日/连续上限已足够保守（见 MinorProtectionConfig）。
+_GRADE_BAND_TO_AGE_GROUP = {
+    GradeBand.PRIMARY.value: AgeGroup.PRE_TEEN,
+    GradeBand.JUNIOR.value: AgeGroup.TEEN,
+    GradeBand.SENIOR.value: AgeGroup.LATE_TEEN,
+    GradeBand.OTHER.value: AgeGroup.ADULT,
+}
+
+
+def to_age_group(age_band: str) -> AgeGroup:
+    """学段 → 合规年龄段。
+
+    未知学段（OTHER / 空值）按 **成人** 处理，即不施加未成年限制。
+    这是一个**保守方向的取舍**：宁可漏限，不可误限成年用户的正常使用。
+    若未来 User 模型补充出生日期字段，应改用真实年龄而非学段推断。
+    """
+    return _GRADE_BAND_TO_AGE_GROUP.get(age_band, AgeGroup.ADULT)
+
+
+def minor_protection_decision(
+    user_id: str,
+    age_band: str,
+    daily_minutes: float = 0.0,
+    consecutive_minutes: Optional[float] = None,
+    now: Optional[datetime] = None,
+) -> dict:
+    """LF-M52 未成年保护合规决策——编排器访问未成年保护的唯一入口。
+
+    委托 MinorProtectionEngine.check_session 执行三级检查：
+      1. 夜间禁用（22:00–06:00）
+      2. 每日时长上限（按年龄段分档）
+      3. 连续学习上限（按年龄段分档，超限则要求强制休息）
+
+    Args:
+        user_id: 用户标识（用于构造 UsageQuota）
+        age_band: 学段，取值见 GradeBand（由 infer_age_band 产出）
+        daily_minutes: 当日已用学习分钟数
+        consecutive_minutes: 连续学习分钟数。为 None 时以 daily_minutes 兜底
+            —— 见下方「已知限制」。
+        now: 当前时刻，可注入以便测试夜间时段（生产为 None → 取系统时间）
+
+    Returns:
+        {
+            "age_band": str,          # 输入学段
+            "age_group": str,         # 映射后的合规年龄段
+            "is_minor": bool,         # 是否未成年保护对象
+            "status": str,            # SessionStatus 值
+            "should_block": bool,     # 是否应阻断后续投入型反馈
+            "message": str,           # 面向用户的解释性文案（阻断时非空）
+            "rest_minutes": int,      # 要求的休息时长
+            "daily_limit": int,       # 该年龄段每日上限
+            "consecutive_limit": int, # 该年龄段连续上限
+            "daily_minutes_used": float,
+            "consecutive_minutes_used": float,
+        }
+
+    已知限制（必须如实记录，不得在论文中隐去）：
+        UsageQuota.consecutive_minutes 当前**没有真实的会话时钟**支撑。
+        编排器的 risk_snapshot.total_minutes 是「当日累计估算」（当日答题数 × 3
+        分钟/题），并非「自上次休息以来的连续时长」。因此当调用方不显式传入
+        consecutive_minutes 时，此处以当日累计值兜底，会把「早读 20 分钟 + 晚读
+        20 分钟」误判为「连续 40 分钟」，产生**假阳性**的强制休息要求。
+        该偏差方向是保守的（宁可多要求休息），但不精确；引入真实会话时钟
+        （记录 last_rest_at 并按会话计时）前，论文中不得声称已精确测量连续时长。
+    """
+    age_group = to_age_group(age_band)
+    consecutive = float(
+        consecutive_minutes if consecutive_minutes is not None else daily_minutes or 0.0
+    )
+    quota = UsageQuota(
+        user_id=str(user_id),
+        age_group=age_group,
+        daily_minutes_used=float(daily_minutes or 0.0),
+        consecutive_minutes=consecutive,
+    )
+
+    verdict = MinorProtectionEngine.check_session(quota, None, now)
+
+    status = verdict.get("status")
+    return {
+        "age_band": age_band,
+        "age_group": age_group.value,
+        "is_minor": bool(MinorProtectionEngine.is_minor(age_group)),
+        "status": status.value if hasattr(status, "value") else str(status),
+        "should_block": bool(verdict.get("should_block", False)),
+        "message": verdict.get("message", "") or "",
+        "rest_minutes": int(verdict.get("rest_minutes", 0) or 0),
+            "daily_limit": int(quota.daily_limit or 0),
+            "consecutive_limit": int(quota.consecutive_limit or 0),
+            "daily_minutes_used": round(float(daily_minutes or 0.0), 1),
+            "consecutive_minutes_used": round(consecutive, 1),
+            # 夜间时段标记：成年人不会被阻断，但上层可据此做温和提示
+            "night_time": bool(verdict.get("night_time", False)),
+            "daily_remaining": verdict.get("daily_remaining"),
+    }

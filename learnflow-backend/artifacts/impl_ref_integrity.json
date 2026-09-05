@@ -1,0 +1,379 @@
+{
+  "total": 53,
+  "ok": 43,
+  "warning": 10,
+  "hard_error": 0,
+  "rows": [
+    {
+      "id": "LF-M01",
+      "impl_ref": "gamification_service.py:128,139",
+      "file": "gamification_service.py",
+      "status": "BLANK",
+      "detail": "行号 128 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M02",
+      "impl_ref": "gamification_service.py:139",
+      "file": "gamification_service.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M03",
+      "impl_ref": "gamification_service.py:460",
+      "file": "gamification_service.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M04",
+      "impl_ref": "positive_addiction_engine.py:588",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M05",
+      "impl_ref": "addiction_engine_v3.py:199",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M06",
+      "impl_ref": "duolingo_addiction_engine.py:539",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 539 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M07",
+      "impl_ref": "deep_addiction_engine.py:116",
+      "file": "deep_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 116 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M08",
+      "impl_ref": "deep_addiction_engine.py:461",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M09",
+      "impl_ref": "addiction_engine_v3.py:7",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M10",
+      "impl_ref": "addiction_engine_v3.py:36",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M11",
+      "impl_ref": "duolingo_addiction_engine.py:316",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 316 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M12",
+      "impl_ref": "deep_addiction_engine.py:308",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M13",
+      "impl_ref": "addiction_engine_v3.py:108",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M14",
+      "impl_ref": "addiction_engine_v3.py:163",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M15",
+      "impl_ref": "gamification_service.py:96",
+      "file": "gamification_service.py",
+      "status": "BLANK",
+      "detail": "行号 96 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M16",
+      "impl_ref": "duolingo_addiction_engine.py:704,582",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 704 为空行(疑似漂移); 行号 582 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M17",
+      "impl_ref": "habit_addiction_engine.py:159",
+      "file": "habit_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M18",
+      "impl_ref": "gamification_service.py:623,615",
+      "file": "gamification_service.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M19",
+      "impl_ref": "duolingo_addiction_engine.py:55",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 55 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M20",
+      "impl_ref": "positive_addiction_engine.py:649",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M21",
+      "impl_ref": "ux_addiction_engine.py:119",
+      "file": "ux_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M22",
+      "impl_ref": "pet_service.py",
+      "file": "pet_service.py",
+      "status": "OK",
+      "detail": "仅文件级引用"
+    },
+    {
+      "id": "LF-M23",
+      "impl_ref": "gamification_service.py:659",
+      "file": "gamification_service.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M24",
+      "impl_ref": "positive_addiction_engine.py:506",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M25",
+      "impl_ref": "deep_addiction_engine.py:292",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M26",
+      "impl_ref": "positive_addiction_engine.py:538",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M27",
+      "impl_ref": "duolingo_addiction_engine.py:208",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 208 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M28",
+      "impl_ref": "social_addiction_engine.py:55",
+      "file": "social_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M29",
+      "impl_ref": "social_addiction_engine.py:411",
+      "file": "social_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M30",
+      "impl_ref": "duolingo_addiction_engine.py:455",
+      "file": "duolingo_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 455 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M31",
+      "impl_ref": "team_competition_engine.py:103,288,389,487,556,651",
+      "file": "team_competition_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M32",
+      "impl_ref": "social_addiction_engine.py:288",
+      "file": "social_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M33",
+      "impl_ref": "positive_addiction_engine.py:67",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M34",
+      "impl_ref": "positive_addiction_engine.py:262",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M35",
+      "impl_ref": "positive_addiction_engine.py:322",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M36",
+      "impl_ref": "habit_addiction_engine.py:27",
+      "file": "habit_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M37",
+      "impl_ref": "habit_addiction_engine.py:80",
+      "file": "habit_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M38",
+      "impl_ref": "habit_addiction_engine.py:109",
+      "file": "habit_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M39",
+      "impl_ref": "habit_addiction_engine.py:213",
+      "file": "habit_addiction_engine.py",
+      "status": "BLANK",
+      "detail": "行号 213 为空行(疑似漂移)"
+    },
+    {
+      "id": "LF-M40",
+      "impl_ref": "meta_learning_skilltree.py:157",
+      "file": "meta_learning_skilltree.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M41",
+      "impl_ref": "deep_addiction_engine.py:388",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M42",
+      "impl_ref": "addiction_engine_v3.py:51",
+      "file": "addiction_engine_v3.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M43",
+      "impl_ref": "deep_addiction_engine.py:25",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M44",
+      "impl_ref": "deep_addiction_engine.py:238",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M45",
+      "impl_ref": "deep_addiction_engine.py:542",
+      "file": "deep_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M46",
+      "impl_ref": "positive_addiction_engine.py:348",
+      "file": "positive_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M47",
+      "impl_ref": "ux_addiction_engine.py:24",
+      "file": "ux_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M48",
+      "impl_ref": "ux_addiction_engine.py:210",
+      "file": "ux_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M49",
+      "impl_ref": "ux_addiction_engine.py:290",
+      "file": "ux_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M50",
+      "impl_ref": "ux_addiction_engine.py:345,482,524",
+      "file": "ux_addiction_engine.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M51",
+      "impl_ref": "feedback_service.py:198",
+      "file": "feedback_service.py",
+      "status": "OK",
+      "detail": "行号在有效范围内"
+    },
+    {
+      "id": "LF-M52",
+      "impl_ref": "anti_addiction_compliance.py:MinorProtectionEngine",
+      "file": "anti_addiction_compliance.py",
+      "status": "OK",
+      "detail": "符号级引用已校验"
+    },
+    {
+      "id": "LF-M53",
+      "impl_ref": "learning_addiction_index.py",
+      "file": "learning_addiction_index.py",
+      "status": "OK",
+      "detail": "仅文件级引用"
+    }
+  ]
+}

@@ -21,13 +21,19 @@ from app.models.task import Task
 BACKEND_ROOT = Path(__file__).resolve().parent.parent
 
 
-def _load_scan_module():
-    """从脚本文件加载 scan_mechanism_landing 模块（不依赖 conftest / 包结构）。"""
-    script = BACKEND_ROOT / "scripts" / "scan_mechanism_landing.py"
-    spec = importlib.util.spec_from_file_location("scan_mechanism_landing", script)
+def _load_script(filename: str):
+    """从 scripts/ 加载指定脚本为模块（不依赖 conftest / 包结构）。"""
+    script = BACKEND_ROOT / "scripts" / filename
+    spec = importlib.util.spec_from_file_location(
+        "lf_script_" + Path(filename).stem, script)
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     return mod
+
+
+def _load_scan_module():
+    """加载 scan_mechanism_landing 模块。"""
+    return _load_script("scan_mechanism_landing.py")
 
 
 def test_scan_produces_53_rows():
@@ -93,16 +99,16 @@ async def test_xp_leveling_gate_suppresses():
         user = await db.get(User, "lf-xp-test-user")
         task = await db.get(Task, "lf-xp-test-task")
 
-        # 桩掉与 xp_leveling 门控无关的下游写入（均为既有代码路径、非本任务范围）：
-        #   * record_learning_event —— learning_events 表 SQLite 复合主键不兼容建表；
-        #   * SkillTreeEngine.get_skill_tree —— 返回结构与 _skilltree_repo_format 既有不匹配，
-        #     返回 {} 即可使 save_skill_tree 空转，隔离本测试关注的门控逻辑。
+        # 桩掉与 xp_leveling 门控无关的下游写入：
+        #   * record_learning_event —— learning_events 表 SQLite 复合主键不兼容建表。
+        #
+        # 注：此处原还有一处 SkillTreeEngine.get_skill_tree 桩，用于规避
+        # 「引擎视图结构 vs _skilltree_repo_format 期望扁平结构」不兼容导致的
+        # AttributeError（P0，凡 db 非 None 的提交必崩）。该缺陷已修复，桩随之
+        # 移除 —— 本测试因此同时覆盖技能树真实落库路径。
         with patch(
             "app.services.learning_orchestrator.record_learning_event",
             new=AsyncMock(),
-        ), patch(
-            "app.services.learning_orchestrator.SkillTreeEngine.get_skill_tree",
-            new=lambda uid: {},
         ):
             # 1) 默认开启 → 应当授予 XP
             enabled_resp = await LearningOrchestrator.process_submission(
@@ -129,3 +135,23 @@ async def test_xp_leveling_gate_suppresses():
                 mechanism_registry.set_enabled("xp_leveling", True)
 
     await engine.dispose()
+
+
+def test_impl_ref_has_no_hard_errors():
+    """impl_ref 引用完整性：不得存在文件缺失 / 行号越界 / 形态非法。
+
+    ``scripts/check_impl_ref.py`` 把「行号静默漂移」这一失效模式变成可复算的
+    红灯。软警告（BLANK，行号落在空行）不判失败——既有条目中一部分锚定在
+    分隔注释行上，需人工确认后再批量修正。
+    """
+    mod = _load_script("check_impl_ref.py")
+    services_dir = BACKEND_ROOT / "app" / "services"
+
+    from app.services.mechanism_registry import all_mechanisms
+    rows = [mod.check_one(m.id, m.impl_ref, services_dir) for m in all_mechanisms()]
+
+    assert len(rows) == 53
+    hard = [r for r in rows if r["status"] in ("MISSING", "OUT_OF_RANGE", "UNPARSEABLE")]
+    assert hard == [], "存在硬错误的 impl_ref: " + "; ".join(
+        f"{r['id']} {r['impl_ref']} ({r['detail']})" for r in hard
+    )

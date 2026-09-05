@@ -27,6 +27,18 @@ impl_ref 的语义差异（重要）
 宽松）, 不做 importlib 符号解析——机制级别的「实现真实性」由治理文档的 grep 核验与
 ``verify_counts.py`` 的 AST 复算共同保证。
 
+impl_ref 的行号漂移风险（已知技术债）
+----------------------------------
+``file.py:line`` 形式的行号会随源码编辑**静默失效**——任何在被引用位置上方的
+插入/删除都会使行号指向错误内容，而本注册表与 ``scan_mechanism_landing.py``
+都**不校验行号**（后者只取 ``:`` 之前的文件名）。这直接损害论文的可追溯性：
+审稿人按 impl_ref 定位时会看到无关代码。
+
+约定：
+  * **新增或修改条目时优先使用符号级引用** ``file.py:SymbolName``，抗漂移；
+  * 既有行号条目保留原样，但由 ``scripts/check_impl_ref.py`` 定期复算并报告
+    漂移，不静默容忍。
+
 与 verify_counts.py 的关系
 -------------------------
 ``verify_counts.py`` 的 ``mechanism_unique=53`` 是从治理文档 AST 复算得来, 是本注册表的
@@ -64,8 +76,21 @@ ID_PATTERN = re.compile(r"^LF-M(\d{2})$")
 #: snake_case key 形态
 KEY_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
-#: impl_ref 形态（宽松: file.py:line[,line] 或 file.py 或简写 ux:345；只校验非空与基本形态）
-IMPL_REF_PATTERN = re.compile(r"^[\w./\-]+\.py(:\d+(,\d+)*)?$|^[\w]+:\d+$")
+#: impl_ref 形态（宽松，只校验非空与基本形态）。
+#:
+#: 允许以下写法：
+#:   ``file.py``                   仅文件
+#:   ``file.py:123``               行号
+#:   ``file.py:123,456``           多位置（canonical + 重复实现）
+#:   ``file.py:Symbol``            符号级（**推荐**，抗行号漂移）
+#:   ``file.py:123,Symbol``        混合
+#:   ``ux:345``                    历史简写
+#:
+#: 冒号后每个逗号分段可以是纯数字行号，也可以是标识符符号名。
+IMPL_REF_PATTERN = re.compile(
+    r"^[\w./\-]+\.py(?::(?:\d+|[A-Za-z_]\w*)(?:,\s*(?:\d+|[A-Za-z_]\w*))*$)?"  # file.py[:段(,段)*]
+    r"|^[\w]+:\d+$"                                                            # 历史简写 ux:345
+)
 
 
 class MechanismDisabledError(RuntimeError):
@@ -459,7 +484,9 @@ _SPECS_DATA: List[Dict[str, Any]] = [
      "disposition": "K", "maturity": "partial", "notes": "一票否决权"},
     {"id": "LF-M52", "key": "minor_protection", "name_zh": "未成年保护与奖励冷却",
      "name_en": "Minor Protection & Reward Cooldown", "stage": "during", "category": "health",
-     "theory_ref": "监管合规 + Griffiths 2005", "impl_ref": "anti_addiction_compliance.py:79",
+     "theory_ref": "监管合规 + Griffiths 2005",
+     # 符号级引用（非行号）—— 见模块 docstring「impl_ref 行号漂移风险」
+     "impl_ref": "anti_addiction_compliance.py:MinorProtectionEngine",
      "disposition": "K", "maturity": "complete", "notes": "一票否决权"},
     {"id": "LF-M53", "key": "lai_downgrade", "name_zh": "LAI 自适应降级",
      "name_en": "LAI Adaptive Downgrade", "stage": "ambient", "category": "health",

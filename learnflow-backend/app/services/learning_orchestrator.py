@@ -387,20 +387,61 @@ def _evaluate_secondary_mechanisms(c: _EvalContext) -> Dict[str, Any]:
 # ────────────────────────────────────────────────────────────
 # 技能树 → 仓储层格式转换 (纯函数, 便于单测)
 #
-# SkillTreeEngine.get_skill_tree 返回的是前端友好的分类结构, 而
-# progression_repository.save_skill_tree 需要 {skill_id: {proficiency, level, total_uses}}。
-# 这里把引擎结果压平成仓储层期望的形状 (proficiency 由 level/10 近似, 0~1)。
+# 本函数是 **双形状适配器**, 同时接受两种入参:
+#
+#   1) 引擎视图结构 (SkillTreeEngine.get_skill_tree 的返回值):
+#      {"meta_level": int, "meta_title": str, "total_times_used": int,
+#       "categories": {<cat>: [ {"id": skill_id, "level": int,
+#                                "times_used": int, ...}, ... ]},
+#       "combo_bonus": ...}
+#      —— 需先按 categories 展平, 取每项的 "id" 作为 skill_id。
+#
+#   2) 扁平结构 (既有调用方与单测使用):
+#      {skill_id: {"level": int, "times_used": int}}
+#
+# progression_repository.save_skill_tree 需要
+# {skill_id: {proficiency, level, total_uses}}; proficiency 由 level/10 近似 (0~1)。
+#
+# 历史缺陷: 早期实现只按 (2) 处理, 却被调用点喂以 (1), 首个键 "meta_level" 的值为
+# int, 触发 AttributeError: 'int' object has no attribute 'get' —— 凡 db 非 None
+# 的提交路径必崩。此处按 "categories" 键做形状判别以同时兼容两者。
 # ────────────────────────────────────────────────────────────
 
 def _skilltree_repo_format(tree: dict) -> Dict[str, Dict[str, Any]]:
-    out = {}
-    for sid, s in tree.items():
-        out[sid] = {
-            "proficiency": round(float(s.get("level", 1)) / 10.0, 3),
-            "level": int(s.get("level", 1)),
-            "total_uses": int(s.get("times_used", 0)),
+    if not tree:
+        return {}
+
+    def _pack(level: Any, times_used: Any) -> Dict[str, Any]:
+        lvl = int(level) if level is not None else 1
+        return {
+            "proficiency": round(lvl / 10.0, 3),
+            "level": lvl,
+            "total_uses": int(times_used or 0),
         }
-    return out
+
+    # 形状 (1): 引擎视图结构 —— 按 categories 展平
+    categories = tree.get("categories")
+    if isinstance(categories, dict):
+        out: Dict[str, Dict[str, Any]] = {}
+        for entries in categories.values():
+            if not isinstance(entries, (list, tuple)):
+                continue
+            for s in entries:
+                if not isinstance(s, dict):
+                    continue
+                sid = s.get("id") or s.get("skill_id")
+                if not sid:
+                    continue
+                out[str(sid)] = _pack(s.get("level", 1), s.get("times_used", 0))
+        return out
+
+    # 形状 (2): 扁平结构
+    out2: Dict[str, Dict[str, Any]] = {}
+    for sid, s in tree.items():
+        if not isinstance(s, dict):
+            continue
+        out2[str(sid)] = _pack(s.get("level", 1), s.get("times_used", 0))
+    return out2
 
 
 class LearningOrchestrator:
@@ -798,6 +839,25 @@ class LearningOrchestrator:
         # 回填风险等级到决策快照 (即使未触发告警, 也记录评估等级用于因果归因)
         decision_snapshot["risk_level"] = risk_assessment.level.value
 
+        # 8b. 未成年保护合规校验 (LF-M52)。
+        #
+        # 治理审计发现的历史缺陷：机制注册表把 LF-M52 的 impl_ref 指向
+        # anti_addiction_compliance.MinorProtectionEngine，但该引擎在生产代码中
+        # **零调用方**——编排器此前只使用 anti_addiction 的粗粒度规则（25 分钟会话
+        # 重置），缺少「每日时长上限」与「夜间禁用」两项合规硬要求，形成
+        # "注册表宣称已落地、实现从未运行" 的可证伪缺口。
+        #
+        # 现经 anti_addiction.minor_protection_decision 门面委托真实引擎执行三级
+        # 校验。健康护栏类机制按治理策略 exempt，不受消融门控影响。
+        minor_protection = anti_addiction.minor_protection_decision(
+            user_id=str(user.id),
+            age_band=age_band,
+            daily_minutes=risk_snapshot.total_minutes,
+            # 无真实会话时钟，以当日累计值兜底 —— 局限见门面 docstring
+            consecutive_minutes=None,
+        )
+        decision_snapshot["minor_protection"] = minor_protection
+
         # 9. XP 奖励
         #    修复伪持久化：原先此处 `XPState()` 每次请求从零构造，结果只写进
         #    响应体、从不落库，导致用户 XP/等级/连胜在每次提交后归零。
@@ -815,6 +875,13 @@ class LearningOrchestrator:
             # 变比率触发：仅在概率内给予强奖励，否则冷却（不重复强奖励）
             if random.random() > reward_decision["trigger_probability"]:
                 reward_suppressed = True
+
+        # 8b 续：合规校验判定阻断（夜间禁用 / 每日上限 / 连续超限）时同样抑制奖励。
+        # 设计取舍 —— 不拦截"提交"本身：答题记录与 BKT 更新必须完成，否则会污染
+        # 学习记录与能力估计；被抑制的是**投入型反馈**（XP、FOMO nudge），即成瘾
+        # 机制的驱动端。这与既有 reward_suppressed 的语义一致。
+        if minor_protection["should_block"]:
+            reward_suppressed = True
 
         # GAP-6 修复：xp_leveling (LF-M19) 消融门控。
         # 该机制被 is_enabled(False) 关闭（消融实验）时，跳过 award_xp，产出零化的
@@ -866,13 +933,24 @@ class LearningOrchestrator:
             _fomo_cand = FOMOEngine.generate_fomo_nudge(FOMOEngine.get_active_challenges())
             if _fomo_cand is not None:
                 fomo_effects.append(_fomo_cand)
-        # 未成年保护作为健康一票否决方: 仅当确为未成年时构造 LF-M52 健康 Effect,
-        # 触发 Layer1 把全部 approach (含 FOMO) 丢弃。
-        if anti_addiction.is_minor(age_band):
+        # 未成年保护作为健康一票否决方: 由 8b 的真实合规引擎结论驱动。
+        # 原实现仅凭 `is_minor(age_band)` 这一粗粒度学段布尔值构造 Effect，
+        # 未使用 LF-M52 声明的实现（MinorProtectionEngine）。现改为：
+        #   - 确为未成年 **且** 合规校验判定阻断 → 构造健康 Effect，
+        #     触发 Layer1 把全部 approach（含 FOMO）丢弃；
+        #   - 未成年但未触发阻断 → 不否决，避免过度抑制正常学习。
+        # payload 携带真实状态与文案，便于离线审计与论文归因。
+        if minor_protection["is_minor"] and minor_protection["should_block"]:
             fomo_effects.append(Effect(
                 mechanism_id="LF-M52",
                 effect_type=EffectType.NOTIFICATION,
-                payload={"reason": "minor_protection_veto"},
+                payload={
+                    "reason": "minor_protection_veto",
+                    "status": minor_protection["status"],
+                    "age_group": minor_protection["age_group"],
+                    "message": minor_protection["message"],
+                    "rest_minutes": minor_protection["rest_minutes"],
+                },
                 priority=100,
                 cost=0.0,
                 user_visible=False,
@@ -992,6 +1070,7 @@ class LearningOrchestrator:
             "method_xp": method_result,
             "fomo_nudge": _fomo_nudge,  # None 或经仲裁下发的 FOMO payload
             "mechanism_evaluations": mechanism_evaluations,  # 步骤 13: 28 机制评估记录
+            "minor_protection": minor_protection,  # 步骤 8b: LF-M52 合规校验结论
             "learning_method_tip": method_tip,
         }
 
