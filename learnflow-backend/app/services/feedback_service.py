@@ -6,12 +6,15 @@
 - 所有暗示文案透明、可选、可关闭
 - 重复成就的刺激逐步衰减，首次突破保持强反馈
 """
+import logging
 import random
 from dataclasses import dataclass, field
 from typing import Optional, List
 from enum import Enum
 
 from app.services.learning_methods_engine import LearningMethodEngine
+
+logger = logging.getLogger(__name__)
 
 
 class FeedbackCategory(str, Enum):
@@ -244,7 +247,22 @@ class FeedbackService:
 
     @classmethod
     def _get_learning_method_tip(cls, topic: str, is_correct: bool) -> dict:
-        """获取学习方法提示"""
+        """获取学习方法提示。
+
+        缺陷修复：原实现在引擎抛异常时返回一个**与真实输出同形**的兜底字典
+        ``{"method": "retrieval_practice", ...}``，不带任何标记。该字典会经
+        ``build_feedback`` 与编排器直接作为 ``learning_method_tip`` 进入响应体
+        与埋点快照。
+
+        后果：学习方法推荐是本项目的**核心实验变量**之一。引擎故障时产生的
+        兜底值会被静默混入真实推荐数据，且恒定偏向 ``retrieval_practice``，
+        导致该方法的出现频率被系统性高估——而事后无法从数据本身分辨哪些是
+        真推荐、哪些是故障兜底。
+
+        现为兜底结果加 ``fallback: True`` 标记并记录日志，使其在数据分析阶段
+        可被过滤或单独统计。字段集也与正常路径对齐（补 ``icon``/``action``
+        为 None），避免下游因缺键而行为不一致。
+        """
         try:
             tip = LearningMethodEngine.get_post_question_tip(topic, is_correct)
             return {
@@ -253,9 +271,21 @@ class FeedbackService:
                 "icon": tip.get("icon"),
                 "short": tip.get("short"),
                 "action": tip.get("action"),
+                "fallback": False,
             }
-        except Exception:
-            return {"method": "retrieval_practice", "title": "检索练习", "short": "做题本身就是学习"}
+        except Exception as exc:  # noqa: BLE001 —— 提示不应阻断反馈主流程
+            logger.warning(
+                "学习方法提示生成失败, 已降级为兜底值 (topic=%r, is_correct=%s): %s",
+                topic, is_correct, exc,
+            )
+            return {
+                "method": "retrieval_practice",
+                "title": "检索练习",
+                "icon": None,
+                "short": "做题本身就是学习",
+                "action": None,
+                "fallback": True,
+            }
 
     @classmethod
     def _get_encouragement(cls, failure_streak: int) -> str:

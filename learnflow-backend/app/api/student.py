@@ -1,4 +1,6 @@
 """学生端 API：仪表盘、学习任务流、宠物、DDA、反馈、复习"""
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +17,8 @@ from app.services.feedback_service import FeedbackService
 from app.services.risk_monitor import RiskMonitor
 from app.services.learning_orchestrator import LearningOrchestrator
 from app.services import cache as cache_service
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/student", tags=["学生端"])
 
@@ -123,7 +127,19 @@ async def get_next_task(
     try:
         result = await LearningOrchestrator.build_next_task(user, topic, db)
         return result
+    except HTTPException:
+        raise
     except Exception as e:
+        # 缺陷修复：原实现把**任意**异常一律映射为 404「暂无匹配难度的题目」，
+        # 且不写服务端日志。后果是编程错误（AttributeError / TypeError / 形状
+        # 不匹配等）与真实的「无匹配题目」在客户端完全无法区分，服务端也留不下
+        # 任何痕迹——故障只能靠用户反馈发现。
+        #
+        # 这里保留 404 语义（前端已按 404 处理空态，改动状态码会破坏兼容性），
+        # 但补上服务端完整堆栈，使被掩盖的缺陷可追溯。
+        logger.error(
+            "next-task 生成失败 (user=%s, topic=%r): %s", user.id, topic, e, exc_info=True
+        )
         raise HTTPException(status_code=404, detail=str(e) or "暂无匹配难度的题目")
 
 

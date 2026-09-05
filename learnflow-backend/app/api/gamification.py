@@ -1,4 +1,5 @@
 """学生端游戏化 API：连胜、XP、排行榜、战队、技能树、宝箱、记忆宫殿、LAI仪表盘、A/B测试"""
+import logging
 from datetime import datetime, UTC, timedelta
 from collections import defaultdict
 
@@ -30,6 +31,8 @@ from app.services.learning_addiction_index import (
     LearningAddictionIndex, lai_engine, LAIAssessment,
 )
 from app.services.ab_test_framework import ab_test_framework, ExperimentPhase
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/student/gamification", tags=["游戏化"])
 
@@ -73,7 +76,18 @@ async def get_streak(
         # fetchall -> list[tuple], 每项第0位为 created_at
         rows = attempts.fetchall()
         dates = [r[0].date() for r in rows if r[0]]
-    except Exception:
+    except Exception as exc:  # noqa: BLE001 —— 连胜展示不应因查询故障而 500
+        # 缺陷修复：原实现静默吞掉**数据库查询**异常，并返回一份与「用户真的
+        # 没有学习记录」完全相同的响应（message 同为「目前暂无学习记录」）。
+        # 后果：真实的 DB 故障、查询错误与真实的零连胜在客户端无从区分，服务端
+        # 也不留痕迹——连胜数是本研究的关键行为指标，被污染的取值无法识别。
+        #
+        # 这里保留兼容性的降级响应，但补服务端日志，并在响应中置
+        # degraded=True 以便调用方/数据分析阶段识别。
+        logger.warning(
+            "连胜数据查询失败, 已降级为默认值 (user=%s): %s",
+            getattr(user, "id", None), exc, exc_info=True,
+        )
         return {
             "current_streak": state.current_streak,
             "best_streak": state.current_streak,
@@ -82,6 +96,7 @@ async def get_streak(
             "message": "目前暂无学习记录",
             "fire_level": 1,
             "fire_icons": "🔥",
+            "degraded": True,
         }
 
     if not dates:
