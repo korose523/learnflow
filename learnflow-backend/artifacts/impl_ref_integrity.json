@@ -1,15 +1,15 @@
 {
   "total": 53,
-  "ok": 43,
-  "warning": 10,
+  "ok": 53,
+  "warning": 0,
   "hard_error": 0,
   "rows": [
     {
       "id": "LF-M01",
-      "impl_ref": "gamification_service.py:128,139",
+      "impl_ref": "gamification_service.py:GamificationService",
       "file": "gamification_service.py",
-      "status": "BLANK",
-      "detail": "行号 128 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M02",
@@ -41,17 +41,17 @@
     },
     {
       "id": "LF-M06",
-      "impl_ref": "duolingo_addiction_engine.py:539",
+      "impl_ref": "duolingo_addiction_engine.py:TimeBasedBonusEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 539 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M07",
-      "impl_ref": "deep_addiction_engine.py:116",
+      "impl_ref": "deep_addiction_engine.py:CollectionEngine",
       "file": "deep_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 116 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M08",
@@ -76,10 +76,10 @@
     },
     {
       "id": "LF-M11",
-      "impl_ref": "duolingo_addiction_engine.py:316",
+      "impl_ref": "duolingo_addiction_engine.py:DuolingoStreakEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 316 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M12",
@@ -104,17 +104,17 @@
     },
     {
       "id": "LF-M15",
-      "impl_ref": "gamification_service.py:96",
+      "impl_ref": "gamification_service.py:GamificationService.get_goal_progress",
       "file": "gamification_service.py",
-      "status": "BLANK",
-      "detail": "行号 96 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M16",
-      "impl_ref": "duolingo_addiction_engine.py:704,582",
+      "impl_ref": "duolingo_addiction_engine.py:MonthlyChallengeEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 704 为空行(疑似漂移); 行号 582 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M17",
@@ -132,10 +132,10 @@
     },
     {
       "id": "LF-M19",
-      "impl_ref": "duolingo_addiction_engine.py:55",
+      "impl_ref": "duolingo_addiction_engine.py:XPEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 55 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M20",
@@ -188,10 +188,10 @@
     },
     {
       "id": "LF-M27",
-      "impl_ref": "duolingo_addiction_engine.py:208",
+      "impl_ref": "duolingo_addiction_engine.py:LeagueEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 208 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M28",
@@ -209,10 +209,10 @@
     },
     {
       "id": "LF-M30",
-      "impl_ref": "duolingo_addiction_engine.py:455",
+      "impl_ref": "duolingo_addiction_engine.py:FriendQuestEngine",
       "file": "duolingo_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 455 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M31",
@@ -272,10 +272,10 @@
     },
     {
       "id": "LF-M39",
-      "impl_ref": "habit_addiction_engine.py:213",
+      "impl_ref": "habit_addiction_engine.py:SelfRegulationEngine",
       "file": "habit_addiction_engine.py",
-      "status": "BLANK",
-      "detail": "行号 213 为空行(疑似漂移)"
+      "status": "OK",
+      "detail": "符号级引用已校验"
     },
     {
       "id": "LF-M40",

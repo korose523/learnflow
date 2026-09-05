@@ -18,9 +18,13 @@
 判据
 ----
 * ``MISSING``  —— impl_ref 指向的文件在 app/services 下不存在（硬错误）
-* ``OUT_OF_RANGE`` —— 行号超出文件实际行数（硬错误）
+* ``OUT_OF_RANGE`` —— 行号超出文件实际行数，或符号未定义（硬错误）
 * ``BLANK``    —— 行号落在空行（几乎必然已漂移，警告）
 * ``OK``       —— 其余情况（含符号级引用、注释分隔行等可接受锚点）
+
+符号级引用支持点分路径 ``file.py:Class.method``：首段须为顶层 class/def，
+后续各段须以 def 形式出现。**不能整串做子串匹配**——源文件里不存在
+``GamificationService.get_goal_progress`` 这样的连续文本，整串匹配会误报。
 
 行内容是否为「定义行」只作提示，不判失败——既有条目中相当一部分锚定在分隔
 注释行（如 ``# ═════ ... ═════``）上，这是当初人工 grep 核验时的合理选择。
@@ -108,10 +112,21 @@ def check_one(mech_id: str, impl_ref: str, services_dir: Path) -> Dict:
             elif not lines[ln - 1].strip():
                 problems.append(f"行号 {ln} 为空行(疑似漂移)")
         else:
-            # 符号级引用：校验该符号确实出现在文件中
+            # 符号级引用：校验该符号确实在文件中被定义。
+            #
+            # 支持点分路径（``Class.method``）。不能整串做子串匹配——源文件里
+            # 不存在 ``GamificationService.get_goal_progress`` 这样的连续文本，
+            # 整串匹配会误报「符号未出现」。改为：
+            #   * 首段必须是顶层 class/def；
+            #   * 后续各段必须在文件中以 def 形式出现（缩进不限）。
             symbol_seen = True
-            if not any(p in ln for ln in lines):
-                problems.append(f"符号 {p!r} 未在文件中出现")
+            segments = p.split(".")
+            head, tail = segments[0], segments[1:]
+            if not any(re.search(rf"^(class|def)\s+{re.escape(head)}\b", ln) for ln in lines):
+                problems.append(f"符号 {head!r} 未在文件中定义")
+            for seg in tail:
+                if not any(re.search(rf"^\s*def\s+{re.escape(seg)}\b", ln) for ln in lines):
+                    problems.append(f"方法 {seg!r} 未在文件中定义 (来自 {p!r})")
 
     if problems:
         row["status"] = "OUT_OF_RANGE" if any("越界" in x for x in problems) else "BLANK"
