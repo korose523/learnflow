@@ -73,3 +73,8 @@ tmp_*.json
 # 注：artifacts/ 目录刻意**不**忽略——它是论文可复现性印章的存放处，
 #     需要随代码一起归档（Zenodo 归档时会连同提交哈希一起冻结）。
 # !artifacts/
+
+# 例外：artifacts/state/ 是 LEARNFLOW_STATE_BACKEND=json 时的运行时状态落盘目录，
+# 存放的是被试的实时游戏化状态（连胜、宝箱进度、每日挑战等）——属于**研究原始数据**，
+# 受伦理与数据最小化约束，绝不可随代码归档或推送到公开仓库。
+learnflow-backend/artifacts/state/
