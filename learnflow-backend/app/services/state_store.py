@@ -122,7 +122,10 @@ class JSONFileStateStore(StateStore):
 
     每次写入都以「临时文件 + os.replace 原子替换」刷盘，避免半写损坏；
     值为任意 JSON 可序列化对象（``ensure_ascii=False`` 以保留中文）。
-    生产可替换为 SQLStateStore（建表见 scripts/schema_core_assets.sql）。
+    生产可替换为 SQLStateStore（可执行建表见
+    scripts/schema_core_assets.mysql.sql 与 scripts/schema_core_assets.sqlite.sql，
+    分别面向 MySQL 8.0 与 SQLite 3 环境；原 scripts/schema_core_assets.sql 为
+    Postgres 方言，在 MySQL/SQLite 环境下不可直接执行，仅作论文附录归档）。
     """
 
     def __init__(self, path: str) -> None:

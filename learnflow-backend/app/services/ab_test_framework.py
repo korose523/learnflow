@@ -34,6 +34,28 @@ import random
 import hashlib
 import json
 import os
+import logging
+
+from sqlalchemy import (
+    Column,
+    String,
+    Text,
+    Integer,
+    Boolean,
+    Numeric,
+    DateTime,
+    JSON,
+    MetaData,
+    Table,
+    insert,
+    select,
+    update,
+    delete,
+    create_engine,
+)
+from sqlalchemy.exc import IntegrityError
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -319,7 +341,10 @@ class MemoryExperimentStore(ExperimentStore):
 class JSONFileExperimentStore(ExperimentStore):
     """JSON 文件后端 —— 真正落库，进程重启不丢，满足 90 天追踪与可复现性。
 
-    生产可替换为 SQLExperimentStore（建表见 scripts/schema_core_assets.sql）。
+    生产可替换为 SQLExperimentStore（可执行建表见
+    scripts/schema_core_assets.mysql.sql 与 scripts/schema_core_assets.sqlite.sql，
+    分别面向 MySQL 8.0 与 SQLite 3 环境；原 scripts/schema_core_assets.sql 为
+    Postgres 方言，在 MySQL/SQLite 环境下不可直接执行，仅作论文附录归档）。
     """
 
     def __init__(self, path: str) -> None:
@@ -384,6 +409,376 @@ class JSONFileExperimentStore(ExperimentStore):
 
     def close(self) -> None:
         self._flush()
+
+
+# ---------------------------------------------------------------------------
+# SQL 落库后端（§4.2.3，生产可替换 JSONFileExperimentStore）
+# ---------------------------------------------------------------------------
+
+# 模块级 MetaData：所有 SQLExperimentStore 实例共享同一份表定义，
+# 由 create_all(checkfirst=True) 保证幂等（重复建表不报错）。
+# 统一用 SQLAlchemy Core 的方言无关类型（JSON / DateTime / Numeric ...），
+# 由 SQLAlchemy 按运行时的数据库方言生成对应 DDL——
+#   MySQL   → JSON / DATETIME / DECIMAL
+#   SQLite  → TEXT / DATETIME / NUMERIC
+# 这样一套代码同时支持生产 MySQL 与测试 SQLite，不写死 Postgres 专有类型
+# （JSONB / TIMESTAMPTZ / BIGSERIAL）。字段语义对齐
+# scripts/schema_core_assets.sql 的 experiments / experiment_assignments，
+# 复杂字段（mechanism_toggles、metrics、results 等）以 JSON 列序列化落库，
+# 读回时还原成 Experiment 实例（嵌套 dataclass / Enum 不退化）。
+metadata = MetaData()
+
+experiments = Table(
+    "experiments", metadata,
+    Column("id", String(255), primary_key=True),
+    Column("name", String(255), nullable=False),
+    Column("description", Text, nullable=False, default=""),
+    Column("parameter_name", String(255), nullable=False, default=""),
+    # control_value / treatment_value 为兼容旧字段，类型任意，用 JSON 列原样保留
+    Column("control_value", JSON, nullable=True),
+    Column("treatment_value", JSON, nullable=True),
+    Column("mechanism_toggles", JSON, nullable=False),
+    Column("primary_metric", String(255), nullable=False,
+           default="knowledge_mastery_growth"),
+    Column("secondary_metrics", JSON, nullable=False),
+    Column("alpha_alloc", Numeric(18, 8), nullable=False, default=0.05),
+    Column("gate_level", Integer, nullable=False, default=1),
+    Column("mde", Numeric(18, 8), nullable=False, default=0.3),
+    Column("required_n_per_group", Integer, nullable=False, default=0),
+    Column("icc_assumed", Numeric(18, 8), nullable=False, default=0.05),
+    Column("cluster_randomized", Boolean, nullable=False, default=True),
+    Column("deff", Numeric(18, 8), nullable=False, default=1.0),
+    Column("phase", String(31), nullable=False, default="shadow"),
+    Column("traffic_percentage", Numeric(18, 8), nullable=False, default=0.0),
+    Column("metrics", JSON, nullable=False),
+    Column("results", JSON, nullable=False),
+    Column("safety_stop_triggered", Boolean, nullable=False, default=False),
+    Column("safety_stop_reason", Text, nullable=False, default=""),
+    Column("created_at", DateTime, nullable=False),
+    Column("started_at", DateTime, nullable=True),
+    Column("completed_at", DateTime, nullable=True),
+    Column("min_sample_per_group", Integer, nullable=False, default=100),
+    Column("tracking_days", Integer, nullable=False, default=90),
+    # registry_fingerprint 是可复现性锚点，务必保留
+    Column("registry_fingerprint", String(255), nullable=False, default=""),
+)
+
+experiment_assignments = Table(
+    "experiment_assignments", metadata,
+    Column("experiment_id", String(255), primary_key=True),
+    Column("user_id", String(255), primary_key=True),
+    Column("cluster_id", String(255), nullable=True),
+    # 用 group_name 而非 group，规避 group 是 SQL 保留字
+    Column("group_name", String(63), nullable=False),
+    Column("assigned_at", DateTime, nullable=False),
+)
+
+
+def _strip_tz(value: Optional[datetime]) -> Optional[datetime]:
+    """写库前把时区信息去掉，统一以 naive UTC 存储，规避 SQLite/MySQL 时区往返差异。"""
+    if value is None:
+        return None
+    if value.tzinfo is not None:
+        return value.astimezone(UTC).replace(tzinfo=None)
+    return value
+
+
+def _normalize_dt(value: Optional[datetime]) -> Optional[datetime]:
+    """读回的时间戳统一补齐 UTC 时区（SQLite 可能返回 naive）。"""
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        return value.replace(tzinfo=UTC)
+    return value
+
+
+def _create_engine(url: str):
+    """构造同步引擎。
+
+    - 配置里的 DATABASE_URL 默认是 mysql+aiomysql（异步驱动），同步落库需换成
+      pymysql；若未安装 pymysql 则在此不报错，仅在真正连接时暴露（测试走 SQLite 不受影响）。
+    - SQLite 加 timeout，缓解多连接/多实例并发下的 'database is locked'。
+    """
+    if url.startswith("mysql+aiomysql"):
+        url = "mysql+pymysql" + url[len("mysql+aiomysql"):]
+    connect_args: dict = {}
+    if url.startswith("sqlite"):
+        connect_args["timeout"] = 30
+    return create_engine(url, future=True, connect_args=connect_args)
+
+
+class SQLExperimentStore(ExperimentStore):
+    """SQL 落库后端 —— 真正持久化，跨进程/跨重启不丢，支撑 90 天追踪与可复现性。
+
+    用 SQLAlchemy Core 定义表结构，方言无关：生产 MySQL、测试 SQLite 同一套代码。
+    复杂字段（嵌套 dataclass 的 metrics/results、Enum 的 phase、JSON 的
+    mechanism_toggles）以 JSON 列序列化；读回时还原，不退化成 dict/字符串。
+
+    容错策略（与项目既有风格一致）：
+    - 非关键读取/写入失败：记 warning，降级返回（不让调用方崩溃）；
+    - ``save_assignment`` 失败：记 **error** 并**重新抛出**——分组若静默丢失，
+      被试会被重复随机分组，污染实验内部效度，属不可逆损伤，必须让调用方感知。
+    """
+
+    def __init__(self, database_url: str) -> None:
+        self._database_url = database_url
+        self._engine = _create_engine(database_url)
+        self._ensure_schema()
+
+    def _ensure_schema(self) -> None:
+        try:
+            metadata.create_all(self._engine, checkfirst=True)
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore 建表失败（可能数据库不可用）url=%s",
+                self._database_url, exc_info=True,
+            )
+
+    # ---- 序列化：Experiment <-> 行 ----
+    def _to_row(self, exp: Experiment) -> dict:
+        return {
+            "id": exp.id,
+            "name": exp.name,
+            "description": exp.description,
+            "parameter_name": exp.parameter_name,
+            "control_value": exp.control_value,
+            "treatment_value": exp.treatment_value,
+            "mechanism_toggles": dict(exp.mechanism_toggles),
+            "primary_metric": exp.primary_metric,
+            "secondary_metrics": list(exp.secondary_metrics),
+            "alpha_alloc": exp.alpha_alloc,
+            "gate_level": exp.gate_level,
+            "mde": exp.mde,
+            "required_n_per_group": exp.required_n_per_group,
+            "icc_assumed": exp.icc_assumed,
+            "cluster_randomized": exp.cluster_randomized,
+            "deff": exp.deff,
+            "phase": exp.phase.value,
+            "traffic_percentage": exp.traffic_percentage,
+            # 嵌套 dataclass 先转 dict 再交 JSON 列序列化还原
+            "metrics": [m.to_dict() for m in exp.metrics],
+            "results": [r.to_dict() for r in exp.results],
+            "safety_stop_triggered": exp.safety_stop_triggered,
+            "safety_stop_reason": exp.safety_stop_reason,
+            "created_at": _strip_tz(exp.created_at),
+            "started_at": _strip_tz(exp.started_at),
+            "completed_at": _strip_tz(exp.completed_at),
+            "min_sample_per_group": exp.min_sample_per_group,
+            "tracking_days": exp.tracking_days,
+            "registry_fingerprint": exp.registry_fingerprint,
+        }
+
+    def _to_experiment(self, row) -> Experiment:
+        return Experiment(
+            id=row.id,
+            name=row.name,
+            description=row.description,
+            parameter_name=row.parameter_name or "",
+            control_value=row.control_value,
+            treatment_value=row.treatment_value,
+            mechanism_toggles=dict(row.mechanism_toggles or {}),
+            primary_metric=row.primary_metric,
+            secondary_metrics=list(row.secondary_metrics or []),
+            alpha_alloc=float(row.alpha_alloc) if row.alpha_alloc is not None else 0.05,
+            gate_level=int(row.gate_level),
+            mde=float(row.mde) if row.mde is not None else 0.3,
+            required_n_per_group=int(row.required_n_per_group),
+            icc_assumed=float(row.icc_assumed) if row.icc_assumed is not None else 0.05,
+            cluster_randomized=bool(row.cluster_randomized),
+            deff=float(row.deff) if row.deff is not None else 1.0,
+            phase=ExperimentPhase(row.phase),
+            traffic_percentage=float(row.traffic_percentage)
+            if row.traffic_percentage is not None else 0.0,
+            metrics=[ExperimentMetric.from_dict(m) for m in (row.metrics or [])],
+            results=[ExperimentResult.from_dict(r) for r in (row.results or [])],
+            safety_stop_triggered=bool(row.safety_stop_triggered),
+            safety_stop_reason=row.safety_stop_reason or "",
+            created_at=_normalize_dt(row.created_at),
+            started_at=_normalize_dt(row.started_at),
+            completed_at=_normalize_dt(row.completed_at),
+            min_sample_per_group=int(row.min_sample_per_group),
+            tracking_days=int(row.tracking_days),
+            registry_fingerprint=row.registry_fingerprint or "",
+        )
+
+    # ---- ExperimentStore 接口 ----
+    def save_experiment(self, exp: Experiment) -> None:
+        values = self._to_row(exp)
+        try:
+            with self._engine.begin() as conn:
+                conn.execute(insert(experiments).values(**values))
+        except IntegrityError:
+            # 同 id 已存在：覆盖更新（实验配置被修订时）
+            try:
+                with self._engine.begin() as conn:
+                    conn.execute(
+                        update(experiments)
+                        .where(experiments.c.id == exp.id)
+                        .values(**values)
+                    )
+            except Exception:
+                logger.warning(
+                    "SQLExperimentStore.save_experiment 更新失败 exp_id=%s", exp.id,
+                    exc_info=True,
+                )
+                return
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.save_experiment 落库失败 exp_id=%s", exp.id,
+                exc_info=True,
+            )
+            return
+
+    def load_experiment(self, exp_id: str) -> Optional[Experiment]:
+        try:
+            with self._engine.connect() as conn:
+                row = conn.execute(
+                    select(experiments).where(experiments.c.id == exp_id)
+                ).mappings().first()
+            if row is None:
+                return None
+            return self._to_experiment(row)
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.load_experiment 读取失败 exp_id=%s", exp_id,
+                exc_info=True,
+            )
+            return None
+
+    def list_experiments(self) -> List[Experiment]:
+        try:
+            with self._engine.connect() as conn:
+                rows = conn.execute(select(experiments)).mappings().all()
+            return [self._to_experiment(r) for r in rows]
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.list_experiments 读取失败", exc_info=True
+            )
+            return []
+
+    def delete_experiment(self, exp_id: str) -> None:
+        try:
+            with self._engine.begin() as conn:
+                conn.execute(
+                    experiments.delete().where(experiments.c.id == exp_id)
+                )
+                # 同时清除该实验的分组，避免留下孤儿分组污染后续组间对比
+                conn.execute(
+                    experiment_assignments.delete().where(
+                        experiment_assignments.c.experiment_id == exp_id
+                    )
+                )
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.delete_experiment 删除失败 exp_id=%s", exp_id,
+                exc_info=True,
+            )
+
+    def save_assignment(self, exp_id: str, user_id: str,
+                        group: str, cluster_id: Optional[str] = None) -> None:
+        values = {
+            "experiment_id": exp_id,
+            "user_id": user_id,
+            "cluster_id": cluster_id,
+            "group_name": group,
+            "assigned_at": _strip_tz(datetime.now(UTC)),
+        }
+        try:
+            with self._engine.begin() as conn:
+                conn.execute(insert(experiment_assignments).values(**values))
+        except IntegrityError:
+            # 同一 (experiment_id, user_id) 重复写入：覆盖，被试只能属于一个组
+            try:
+                with self._engine.begin() as conn:
+                    conn.execute(
+                        update(experiment_assignments)
+                        .where(
+                            (experiment_assignments.c.experiment_id == exp_id)
+                            & (experiment_assignments.c.user_id == user_id)
+                        )
+                        .values(
+                            cluster_id=cluster_id,
+                            group_name=group,
+                            assigned_at=values["assigned_at"],
+                        )
+                    )
+            except Exception:
+                logger.error(
+                    "SQLExperimentStore.save_assignment 覆盖写入失败 "
+                    "exp_id=%s user_id=%s",
+                    exp_id, user_id, exc_info=True,
+                )
+                raise
+        except Exception:
+            # 分组是唯一不可静默吞掉的写入：丢失会导致被试被重复随机分组，
+            # 直接破坏实验内部效度，必须让调用方知道。
+            logger.error(
+                "SQLExperimentStore.save_assignment 分组写入失败，被试可能未被正确记录 "
+                "exp_id=%s user_id=%s",
+                exp_id, user_id, exc_info=True,
+            )
+            raise
+
+    def load_assignments(self, exp_id: str) -> Dict[str, Dict[str, str]]:
+        try:
+            with self._engine.connect() as conn:
+                rows = conn.execute(
+                    select(experiment_assignments).where(
+                        experiment_assignments.c.experiment_id == exp_id
+                    )
+                ).mappings().all()
+            return {
+                r["user_id"]: {
+                    "group": r["group_name"],
+                    "cluster_id": r["cluster_id"] or "",
+                }
+                for r in rows
+            }
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.load_assignments 读取失败 exp_id=%s", exp_id,
+                exc_info=True,
+            )
+            return {}
+
+    def close(self) -> None:
+        try:
+            self._engine.dispose()
+        except Exception:
+            logger.warning(
+                "SQLExperimentStore.close 释放引擎失败", exc_info=True
+            )
+
+
+def default_experiment_store() -> ExperimentStore:
+    """按环境变量 ``LEARNFLOW_EXPERIMENT_BACKEND`` 选择实验落库后端。
+
+    - ``memory``（默认）：``MemoryExperimentStore()``，与改造前行为完全一致；
+    - ``json``：``JSONFileExperimentStore(path=<后端根>/artifacts/experiments.json)``；
+    - ``sql``：``SQLExperimentStore(database_url=...)``，URL 优先取
+      ``LEARNFLOW_EXPERIMENT_DB_URL``，没有则回落到配置 ``DATABASE_URL``；
+    - 未知取值：记 warning 并回退 ``MemoryExperimentStore()``。
+
+    **默认必须是 memory**，保证 761 个既有测试行为完全不变。将来切换后端只改此一处。
+    """
+    backend = os.environ.get("LEARNFLOW_EXPERIMENT_BACKEND", "memory").strip().lower()
+    if backend == "memory":
+        return MemoryExperimentStore()
+    if backend == "json":
+        backend_root = os.path.dirname(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        )
+        path = os.path.join(backend_root, "artifacts", "experiments.json")
+        return JSONFileExperimentStore(path=path)
+    if backend == "sql":
+        from app.core.config import settings  # 延迟导入，避免模块加载副作用
+
+        url = os.environ.get("LEARNFLOW_EXPERIMENT_DB_URL") or settings.DATABASE_URL
+        return SQLExperimentStore(database_url=url)
+    logger.warning(
+        "未知的 LEARNFLOW_EXPERIMENT_BACKEND=%r，回退 MemoryExperimentStore", backend
+    )
+    return MemoryExperimentStore()
 
 
 class ABTestFramework:

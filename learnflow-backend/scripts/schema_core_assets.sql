@@ -1,3 +1,10 @@
+-- [2026-09-06 追加说明] 本文件为 Postgres 方言原稿（JSONB/TIMESTAMPTZ/BIGSERIAL/now()），
+--   仅作论文方法学附录归档；项目实际环境为 MySQL（见 app/core/config.py:32），
+--   Postgres 原稿无法直接执行。可在 MySQL 8.0 / SQLite 3 真正执行的等价版本见：
+--     - scripts/schema_core_assets.mysql.sql   (MySQL 8.0)
+--     - scripts/schema_core_assets.sqlite.sql  (SQLite 3)
+--   验证方式见 scripts/verify_schema_portable.py。
+-- ===========================================================================
 -- LearnFlow 核心资产持久化 DDL (治理方案 §4.2)
 -- 说明: 本文件为「数据落库」改造的建表脚本，提交即作为论文方法学附录与可复现性交付物。
 --       生产执行需配合 Alembic 迁移；实验框架当前以 JSONFileExperimentStore 落库，

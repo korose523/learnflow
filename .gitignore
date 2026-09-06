@@ -78,3 +78,7 @@ tmp_*.json
 # 存放的是被试的实时游戏化状态（连胜、宝箱进度、每日挑战等）——属于**研究原始数据**，
 # 受伦理与数据最小化约束，绝不可随代码归档或推送到公开仓库。
 learnflow-backend/artifacts/state/
+
+# 同理：LEARNFLOW_EXPERIMENT_BACKEND=json 时的实验落盘文件，
+# 含被试分组信息（谁被分到 control/treatment），同样属研究原始数据，不可归档。
+learnflow-backend/artifacts/experiments.json
