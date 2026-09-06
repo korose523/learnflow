@@ -20,7 +20,7 @@ from datetime import datetime, UTC, timedelta
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 
-from app.services.state_store import StateStore, MemoryStateStore
+from app.services.state_store import StateStore, MemoryStateStore, default_state_store
 
 
 # ─── 奖励类型 ───────────────────────────────────────
@@ -201,9 +201,10 @@ class GamificationService:
     整合所有7大引擎的后端逻辑。
     """
 
-    # 宝箱状态容器 —— 迁移到可插拔 StateStore 后端 (LF-M01 示范)
-    # 默认 MemoryStateStore 与改造前行为一致；生产可注入 JSONFileStateStore / SQL。
-    BOX_STATES: StateStore = MemoryStateStore()
+    # 宝箱状态容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 TreasureBoxState；open_box / should_open_box 就地修改 state，
+    # 已在 open_box_for_user 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    BOX_STATES: StateStore = default_state_store("box_states", value_type=TreasureBoxState)
 
     @classmethod
     def get_box_state_for_user(cls, user_id: str) -> TreasureBoxState:
@@ -216,7 +217,10 @@ class GamificationService:
     @classmethod
     def open_box_for_user(cls, user_id: str, pet_name: str = "小豆", current_topic: str = "") -> dict:
         state = cls.get_box_state_for_user(user_id)
-        return cls.open_box(state, pet_name=pet_name, current_topic=current_topic)
+        result = cls.open_box(state, pet_name=pet_name, current_topic=current_topic)
+        # 就地修改后回写：open_box 会改 state（计数/奖励/进度），JSON 后端只有 set 才刷盘
+        cls.BOX_STATES.set(user_id, state)
+        return result
 
     @classmethod
     def get_box_status_for_user(cls, user_id: str) -> dict:
@@ -511,11 +515,10 @@ class SessionMemory:
 
 
 class PeakEndEngine:
-    # 会话记忆容器 —— 迁移到可插拔 StateStore 后端（对齐 BOX_STATES 示范）
-    # 值为 SessionMemory 且被调用方就地累加（record_answer），改用 JSONFileStateStore
-    # 会丢失就地修改，故沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    _active_sessions: StateStore = MemoryStateStore()
+    # 会话记忆容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 SessionMemory；record_answer 就地累加 total_attempts 等字段，
+    # 已在 record_answer 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    _active_sessions: StateStore = default_state_store("_active_sessions", value_type=SessionMemory)
 
     @classmethod
     def start_session(cls, user_id: str) -> SessionMemory:
@@ -542,6 +545,8 @@ class PeakEndEngine:
             if score > mem.peak_positive_score:
                 mem.peak_positive_score = score
                 mem.peak_positive = f"连续答对{streak}题，{pet_name}为你欢呼！"
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls._active_sessions.set(user_id, mem)
 
     @classmethod
     def end_session(cls, user_id: str, pet_name: str = "小豆") -> dict:
@@ -587,10 +592,10 @@ class UnfinishedTask:
 
 
 class ZeigarnikEngine:
-    # 未完成任务容器 —— 迁移到可插拔 StateStore 后端
-    # 值为 UnfinishedTask 且 get_reminder 就地累加 reminder_count，同上沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    _unfinished: StateStore = MemoryStateStore()
+    # 未完成任务容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 UnfinishedTask；get_reminder 就地累加 reminder_count / last_reminded_at，
+    # 已在 get_reminder 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    _unfinished: StateStore = default_state_store("_unfinished", value_type=UnfinishedTask)
 
     @classmethod
     def save_unfinished(cls, user_id: str, task_id: str, topic: str,
@@ -609,6 +614,8 @@ class ZeigarnikEngine:
             return None
         task.reminder_count += 1
         task.last_reminded_at = datetime.now(UTC)
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls._unfinished.set(user_id, task)
         return {
             "has_unfinished": True, "topic": task.topic,
             "difficulty": task.difficulty, "task_id": task.task_id,

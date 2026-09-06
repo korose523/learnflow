@@ -23,7 +23,7 @@ from datetime import datetime, UTC
 from typing import Dict, List, Optional
 import random
 
-from app.services.state_store import StateStore, MemoryStateStore
+from app.services.state_store import StateStore, MemoryStateStore, default_state_store
 
 
 # ═══════════════════════════════════════════════════════════
@@ -412,10 +412,10 @@ class MemoryPalaceEngine:
     不是一次性教完——而是在每次遇到新知识点时逐步构建。
     """
 
-    # 记忆宫殿容器 —— 迁移到可插拔 StateStore 后端
-    # 值为 MemoryPalace 且 place_knowledge 就地修改 locations/total_items，沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    PALACES: StateStore = MemoryStateStore()
+    # 记忆宫殿容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 MemoryPalace；place_knowledge 就地改 locations 中 dict 与 total_items，
+    # 已在 place_knowledge 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    PALACES: StateStore = default_state_store("palaces", value_type=MemoryPalace)
     PALACE_TEMPLATES = [
         {"name": "我的卧室", "locations": ["门口", "书桌", "床", "衣柜", "窗户", "书架"]},
         {"name": "从家到学校的路", "locations": ["家门口", "公交站", "十字路口", "便利店", "校门口", "教室"]},
@@ -451,6 +451,8 @@ class MemoryPalaceEngine:
         empty_slot["image_prompt"] = f"想象 {concept}: {description}"
         empty_slot["placed_at"] = datetime.now(UTC).isoformat()
         palace.total_items += 1
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls.PALACES.set(user_id, palace)
 
         return {
             "placed": True,

@@ -19,7 +19,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, UTC
 from typing import Dict, List, Optional, Any
 
-from app.services.state_store import StateStore, MemoryStateStore
+from app.services.state_store import StateStore, MemoryStateStore, default_state_store
 
 
 # ═══════════════════════════════════════════════════════════
@@ -215,10 +215,10 @@ class SelfRegulationGoal:
 class SelfRegulationEngine:
     """自我调节学习引擎：目标设定、监控、反思"""
 
-    # 自我调节目标容器 —— 迁移到可插拔 StateStore 后端
-    # 值为 List[SelfRegulationGoal]，monitor_progress 就地修改 goal.progress，沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    GOALS: StateStore = MemoryStateStore()
+    # 自我调节目标容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 List[SelfRegulationGoal]；set_goal 追加 / monitor_progress 就地改 goal.progress，
+    # 两处均已通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    GOALS: StateStore = default_state_store("goals", value_type=List[SelfRegulationGoal])
 
     @classmethod
     def set_goal(cls, user_id: str, goal_id: str, description: str,
@@ -233,6 +233,9 @@ class SelfRegulationEngine:
             goals = []
             cls.GOALS.set(user_id, goals)
         goals.append(goal)
+        # 就地修改后回写：JSON 后端只有 set 才刷盘（若上面新建了 goals 也已 set 过一次，
+        # 此处确保追加的 goal 也落盘），内存后端本句无副作用
+        cls.GOALS.set(user_id, goals)
         return {
             "method": "目标设定",
             "goal": {
@@ -253,6 +256,8 @@ class SelfRegulationEngine:
         if not goal:
             return {"error": "目标不存在"}
         goal.progress = min(1.0, current_value / goal.target_value)
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls.GOALS.set(user_id, goals)
         remaining = goal.target_value - current_value
         return {
             "method": "进度监控",

@@ -22,7 +22,7 @@ from typing import Dict, List, Optional, Tuple
 import random
 import uuid
 
-from app.services.state_store import StateStore, MemoryStateStore
+from app.services.state_store import StateStore, MemoryStateStore, default_state_store
 
 
 # ═══════════════════════════════════════════════════════════
@@ -291,13 +291,13 @@ class TeamManagementEngine:
     """战队管理引擎"""
 
     MAX_MEMBERS = 10
-    # 战队容器 —— 迁移到可插拔 StateStore 后端（对齐 BOX_STATES 示范）
-    # TEAMS 的值为 Team 且被 TeamLeagueEngine/MVPEngine 就地累加（total_xp、members），
-    # JSON 后端会丢失就地修改；PLAYER_TEAMS 虽为 str→str 可序列化，但与 TEAMS 同事务
-    # 写入（create/join/leave），单独落库会在重启后留下悬空 team_id，故两者统一用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    TEAMS: StateStore = MemoryStateStore()
-    PLAYER_TEAMS: StateStore = MemoryStateStore()  # user_id → team_id
+    # 战队容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # TEAMS 的值为 Team；create_team/join_team/leave_team/record_team_contribution 均
+    # 就地修改 Team（members、total_xp、subject_scores、member.contribution_xp），各处均
+    # 已通过 store.set 回写，故可安全切到 JSON 文件后端落盘。PLAYER_TEAMS 值为纯 str
+    # （user_id → team_id），无就地修改，传 value_type=None。
+    TEAMS: StateStore = default_state_store("teams", value_type=Team)
+    PLAYER_TEAMS: StateStore = default_state_store("player_teams", value_type=None)  # user_id → team_id
 
     @classmethod
     def create_team(cls, name: str, tag: str, captain_id: str,
@@ -330,6 +330,8 @@ class TeamManagementEngine:
         member = TeamMember(user_id=user_id, name=name)
         team.members.append(member)
         cls.PLAYER_TEAMS.set(user_id, team_id)
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls.TEAMS.set(team_id, team)
         return {"success": True, "message": f"成功加入 {team.name} [{team.tag}]！", "team": cls.get_team_info(team)}
 
     @classmethod
@@ -348,6 +350,9 @@ class TeamManagementEngine:
 
         if not team.members:
             cls.TEAMS.delete(team_id)
+        else:
+            # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+            cls.TEAMS.set(team_id, team)
 
         return {"success": True, "message": "已离开战队"}
 
@@ -416,6 +421,8 @@ class TeamLeagueEngine:
                 member.contribution_xp += xp_earned
                 break
 
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        TeamManagementEngine.TEAMS.set(team_id, team)
         return {
             "recorded": True,
             "team_xp": team.total_xp,
@@ -565,10 +572,10 @@ class TeamMatch:
 class TeamMatchEngine:
     """战队对抗赛引擎"""
 
-    # 对抗赛容器 —— 迁移到可插拔 StateStore 后端
-    # 值为 TeamMatch 且 contribute_to_match 就地累加 score/participants，沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    MATCHES: StateStore = MemoryStateStore()
+    # 对抗赛容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 TeamMatch；contribute_to_match 就地累加 score/participants，超时分支还会改
+    # status，已在 contribute_to_match 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    MATCHES: StateStore = default_state_store("matches", value_type=TeamMatch)
 
     @classmethod
     def create_match(cls, team_a_id: str, team_b_id: str,
@@ -605,6 +612,8 @@ class TeamMatchEngine:
         # 检查比赛是否超时
         if (datetime.now(UTC) - match.start_time).total_seconds() > match.duration_hours * 3600:
             match.status = "completed"
+            # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+            cls.MATCHES.set(match_id, match)
             return {"contributed": False, "message": "比赛时间已到"}
 
         if team_id == match.team_a_id:
@@ -616,6 +625,8 @@ class TeamMatchEngine:
         else:
             return {"contributed": False, "message": "该战队不在这场比赛中"}
 
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls.MATCHES.set(match_id, match)
         return {
             "contributed": True,
             "score_a": match.score_a,

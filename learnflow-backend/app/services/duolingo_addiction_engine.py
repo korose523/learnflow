@@ -22,7 +22,7 @@ from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import random
 
-from app.services.state_store import StateStore, MemoryStateStore
+from app.services.state_store import StateStore, MemoryStateStore, default_state_store
 
 
 # ═══════════════════════════════════════════════════════════
@@ -468,10 +468,10 @@ class FriendQuestEngine:
         {"goal_xp": 50, "duration_days": 1, "name": "今日之约", "reward": "10 XP"},
     ]
 
-    # 好友任务容器 —— 迁移到可插拔 StateStore 后端
-    # 值为 FriendQuest 且 contribute_xp 就地累加 current_xp/contribution，沿用内存后端。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
-    ACTIVE_QUESTS: StateStore = MemoryStateStore()
+    # 好友任务容器 —— 可插拔 StateStore 后端（按 LEARNFLOW_STATE_BACKEND 选择）
+    # 值为 FriendQuest；contribute_xp 就地累加 current_xp/contribution/completed，
+    # 已在 contribute_xp 中通过 store.set 回写，故可安全切到 JSON 文件后端落盘。
+    ACTIVE_QUESTS: StateStore = default_state_store("active_quests", value_type=FriendQuest)
 
     @classmethod
     def create_quest(cls, user1_id: str, user2_id: str) -> FriendQuest:
@@ -502,6 +502,8 @@ class FriendQuestEngine:
 
         quest.current_xp += xp
         quest.contribution[user_id] = quest.contribution.get(user_id, 0) + xp
+        # 就地修改后回写：JSON 后端只有 set 才刷盘，内存后端本句无副作用
+        cls.ACTIVE_QUESTS.set(quest_id, quest)
 
         if quest.current_xp >= quest.goal_xp:
             quest.completed = True

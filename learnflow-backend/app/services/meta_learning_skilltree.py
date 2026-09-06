@@ -162,11 +162,11 @@ class SkillTreeEngine:
     管理16个学习技能的升级、解锁、组合加成。
     """
 
-    # 技能树引擎内缓存 —— 迁移到可插拔 StateStore 后端
-    # 真正的落库已由 progression_repository.save_skill_tree 在 orchestrator 侧承担，
-    # 此容器仅为进程内缓存；值为 LearningSkill 且 use_skill 就地累加 xp/level，
-    # 故显式保持内存语义（MemoryStateStore），不改动 save_skill_tree / get_skill_tree 路径。
-    # TODO(persist): add asdict serialization for JSONFileStateStore
+    # 技能树引擎内缓存 —— 显式保持内存语义（MemoryStateStore，不切 default_state_store）
+    # 真正的落库已由 progression_repository.save_skill_tree 在 orchestrator 侧承担
+    # （DB 模型见 app/models/progression.py:SkillTreeState），此容器仅为进程内缓存。
+    # 若也切到 JSON 后端，会出现「内存缓存 + JSON 文件 + DB」三份真相来源，重启后
+    # 以哪份为准无法判定，反而制造数据不一致，故刻意保持 MemoryStateStore。
     PLAYER_SKILLS: StateStore = MemoryStateStore()
 
     @classmethod
