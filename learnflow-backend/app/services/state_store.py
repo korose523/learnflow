@@ -17,7 +17,17 @@ import os
 import re
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import Any, Callable, Dict, List, Optional, get_type_hints
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Union,
+    get_args,
+    get_origin,
+    get_type_hints,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -156,11 +166,18 @@ class JSONFileStateStore(StateStore):
 
 
 class DataclassJSONStateStore(JSONFileStateStore):
-    """支持 dataclass 值的 JSON 文件后端。
+    """支持 dataclass 值、且支持泛型容器值的 JSON 文件后端。
 
-    在 ``JSONFileStateStore`` 的原子刷盘基础上，增加 dataclass 的序列化/反序列化：
-    ``set`` 时把 dataclass 实例转成 dict 落库；``get`` 时（若构造时给定 ``value_type``）
-    把读回的 dict 还原成 ``value_type(**data)`` 实例。
+    在 ``JSONFileStateStore`` 的原子刷盘基础上，增加值的序列化/反序列化：
+    ``set`` 时把 dataclass 实例（及嵌套的 Enum/datetime/set/容器）转成 JSON 原生结构
+    落库；``get`` 时（若构造时给定 ``value_type``）按注解还原：
+
+    - ``value_type`` 为普通 dataclass：把读回的 dict 还原成 ``value_type(**data)`` 实例；
+    - ``value_type`` 为泛型容器注解（``List[X]`` / ``Dict[K, V]`` / ``Optional[X]`` /
+      ``Set[X]`` / ``Tuple[X, ...]``）：整体按容器注解逐元素还原，例如
+      ``value_type=List[SelfRegulationGoal]`` 时读回的 list 中每个元素都会被还原成
+      ``SelfRegulationGoal`` 实例。嵌套组合（``Optional[List[X]]``、
+      ``Dict[str, List[X]]``）同样层层还原。
 
     ⚠️ 就地修改（in-place mutation）陷阱（务必阅读）：
 
@@ -175,8 +192,8 @@ class DataclassJSONStateStore(JSONFileStateStore):
 
     容错策略（状态存储失败绝不让主流程 500）：
     - ``set`` 时遇到不可序列化的值，回退用 ``str()`` 兜底，不抛异常；
-    - ``get`` 时遇到字段增减 / 类型不匹配 / 数据损坏，记 warning 并回退返回
-      原始 dict 或 None，不让调用方崩溃。
+    - ``get`` 时遇到字段增减 / 类型不匹配 / 数据损坏 / 注解解析失败，记 warning 并
+      回退返回原始值（dict / list / 字符串 / None），不让调用方崩溃。
     """
 
     def __init__(self, path: str, value_type: Optional[type] = None) -> None:
@@ -220,19 +237,55 @@ class DataclassJSONStateStore(JSONFileStateStore):
 
         除顶层构造外，还会按字段类型注解做**类型感知还原**：
         ``datetime`` ← ISO 字符串、``Enum`` ← 其 value、``set``/``tuple`` ← list、
-        嵌套 dataclass ← dict（递归）。
+        嵌套 dataclass ← dict（递归）。此外已覆盖泛型容器：
+
+        - ``Optional[X]``（即 ``Union[X, None]``）：value 非 None 时按 ``X`` 还原，
+          None 原样返回；多于一个有效类型（真 Union）则原样返回，不瞎猜；
+        - ``List[X]`` / ``Set[X]`` / ``Tuple[X, ...]``：逐元素按 ``X`` 还原（嵌套
+          ``List[List[X]]``、``Optional[List[X]]`` 之类也层层还原）；
+        - ``Dict[K, V]``：只对 value 递归（key 必为字符串，强行还原 key 反而出错）；
+        - 顶层 ``value_type`` 本身为泛型容器注解（如 ``List[SelfRegulationGoal]``）
+          时，整体交给 ``_coerce_to_hint`` 还原，不要求 raw 是 dict。
 
         为什么必须做：时间戳与研究数据强相关，若 ``created_at`` 读回后仍是字符串，
-        所有基于时间的比较/排序/聚合都会在下游静默出错。同理 Enum 字段若退化成裸
-        字符串，``is`` 比较与 ``.value`` 访问都会失败。
+        所有基于时间的比较/排序/聚合都会在下游静默出错；同理 ``List[SomeDataclass]``
+        若退化成 ``List[dict]``，下游访问 ``.user_id`` 等属性会直接 ``AttributeError``，
+        这正是本次修复要消除的线上崩溃缺口。Enum 字段若退化成裸 value，``is`` 比较
+        与 ``.value`` 访问也都会失败。
 
-        容错：任何一步解析失败都退化为原始值并记 warning，**绝不让调用方崩溃**。
-        未能覆盖的情形（如 ``Optional[datetime]``、``List[SomeDataclass]``）
-        会保留为 JSON 原生结构。
+        容错：任何一步解析失败、注解解析失败或数据形状异常都退化为原始值并记
+        warning，**绝不让调用方崩溃**；状态存储的失败绝不能让学生的答题提交返回 500。
         """
         if self._value_type is None:
             return raw
+
+        # 顶层 value_type 是泛型容器注解（List[...] / Dict[...] / Optional[...] /
+        # Set[...] / Tuple[...] 等，``get_origin`` 非 None）时，整个 ``raw`` 就是容器
+        # 本体（可能是 list / dict / None），不能走「``value_type(**data)`` 这种按字段
+        # 构造 dataclass」的路线，必须整体交给 ``_coerce_to_hint`` 逐元素还原。
+        # 这正是 ``GOALS`` 这类「值本身就是 ``List[X]``」容器的形态。
+        if get_origin(self._value_type) is not None:
+            try:
+                return _coerce_to_hint(raw, self._value_type)
+            except Exception:
+                logger.warning(
+                    "DataclassJSONStateStore: 泛型容器值还原失败，返回原始值；"
+                    "value_type=%s，raw=%r",
+                    self._value_type,
+                    raw,
+                    exc_info=True,
+                )
+                return raw
+
+        # 以下为「普通 dataclass」语义：raw 必须是 dict。
         if not isinstance(raw, dict):
+            # 形状异常（如数据损坏导致非 dict），容错返回原始值，不让调用方崩溃。
+            logger.warning(
+                "DataclassJSONStateStore: %s 期望 dict，但读到 %s，返回原始值；raw=%r",
+                getattr(self._value_type, "__name__", self._value_type),
+                type(raw).__name__,
+                raw,
+            )
             return raw
         try:
             hints = _resolve_hints(self._value_type)
@@ -332,6 +385,53 @@ def _coerce_to_hint(value: Any, hint: Any) -> Any:
             return hint(value)
         if hint is tuple and isinstance(value, list):
             return tuple(value)
+    except Exception:
+        return value
+
+    # 泛型容器：Optional[X] / List[X] / Dict[K,V] / Set[X] / Tuple[X,...]
+    # 用 typing.get_origin / get_args 解析。Python 3.13 下 ``typing.List[X]`` 与
+    # 内置 ``list[X]`` 的 get_origin 都返回内置 list，下面统一按 ``list`` 判断即可。
+    try:
+        origin = get_origin(hint)
+        if origin is not None:
+            args = get_args(hint)
+
+            # Optional[X] == Union[X, None]：先过滤掉 NoneType，剩一个就按它还原
+            if origin is Union:
+                real = [a for a in args if a is not type(None)]
+                if len(real) == 1:
+                    # 递归：让 Optional[List[X]] / Optional[Dict[...]] 也层层还原
+                    return _coerce_to_hint(value, real[0])
+                # 真 Union（多于一个有效类型）：不瞎猜，原样返回
+                return value
+
+            # List[X]（也可写 typing.List[X]）；裸 list（args 为空）逐元素按 None 还原即原样
+            if origin in (list, List) and isinstance(value, list):
+                elem = args[0] if args else None
+                return [_coerce_to_hint(v, elem) for v in value]
+
+            # Dict[K, V]：只对 value 递归（key 必为字符串，强行还原反而出错）
+            if origin in (dict, Dict) and isinstance(value, dict):
+                val_hint = args[1] if len(args) >= 2 else None
+                return {k: _coerce_to_hint(v, val_hint) for k, v in value.items()}
+
+            # Set[X] / FrozenSet[X]：从 list 逐元素还原（裸 set 由上方分支处理）
+            if origin in (set, frozenset) and isinstance(value, list):
+                elem = args[0] if args else None
+                return hint(_coerce_to_hint(v, elem) for v in value)
+
+            # Tuple[X, ...]（变长）/ Tuple[X1, X2, ...]（定长）：从 list/tuple 还原
+            if origin is tuple and isinstance(value, (list, tuple)):
+                if len(args) == 2 and args[1] is Ellipsis:
+                    elem = args[0]
+                    return tuple(_coerce_to_hint(v, elem) for v in value)
+                return tuple(
+                    _coerce_to_hint(v, args[i] if i < len(args) else None)
+                    for i, v in enumerate(value)
+                )
+
+            # 其他未覆盖的泛型（如裸 dict 无 args 等）原样返回
+            return value
     except Exception:
         return value
 
