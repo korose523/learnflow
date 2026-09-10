@@ -109,7 +109,7 @@ learnflow-backend/app/
 ├── platform/               # L2 支撑层（新增）
 │   ├── registry/           # 机制注册表（解决 A2）
 │   │   ├── mechanism.py    # 抽象基类与声明式注册
-│   │   ├── catalog.py      # LF-M01..LF-M53 目录
+│   │   ├── catalog.py      # LF-M01..LF-M54 目录
 │   │   └── loader.py       # 自动发现与装配
 │   ├── events/             # 事件总线 + schema（解决 A4）
 │   │   ├── schema.py       # LearningEvent v1 定义
@@ -221,7 +221,7 @@ CREATE TABLE attempts (
 | `skill_tree_state` | 16 技能树（`meta_learning_skilltree.py:163`） | P0 |
 | `experiments` / `experiment_assignments` / `experiment_metrics` | `ab_test_framework.py:104-105` | P0 |
 | `mechanism_state` | 机制通用状态 KV（替代 11 个内存字典） | P0 |
-| `mechanism_catalog` | LF-M01..LF-M53 元数据（类别、理论来源、开关） | P0 |
+| `mechanism_catalog` | LF-M01..LF-M54 元数据（类别、理论来源、开关） | P0 |
 | `intervention_log` | 每次干预的记录（谁、何时、哪个机制、是否被仲裁拦截） | P1 |
 | `placement_sessions` | `placement_test_engine.py`（当前全流程不可恢复） | P1 |
 | `onboarding_progress` | `onboarding_engine.py` | P1 |
@@ -425,7 +425,7 @@ S0 ─→ S1 ─→ S2 ─→ S4
 | R3 | 过度工程，工期失控 | 高 | 高 | 严守"不动算法核心"原则；每阶段设可演示里程碑 |
 | R4 | 区块链模块沦为摆设 | 中 | 高 | 见区块链专项文档的降级方案；先做 Merkle 锚定最小版 |
 | R5 | 真实用户招募失败 | 中 | **致命** | 尽早启动 IRB；准备公开数据集离线验证作为后备主证据 |
-| R6 | 论文数字与代码不符被审稿人发现 | 中 | 高 | 机制编号体系 LF-M01..LF-M53 建立后，文档与代码双向可查 |
+| R6 | 论文数字与代码不符被审稿人发现 | 中 | 高 | 机制编号体系 LF-M01..LF-M54 建立后，文档与代码双向可查 |
 
 ---
 
