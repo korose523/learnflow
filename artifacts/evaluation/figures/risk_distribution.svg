@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" font-family="Segoe UI, sans-serif">
+<text x="300.0" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#1f2937">各场景 LAI 风险等级分布（堆叠）</text>
+<line x1="60" y1="50" x2="60" y2="300" stroke="#9ca3af"/>
+<line x1="60" y1="300" x2="580" y2="300" stroke="#9ca3af"/>
+<text x="52" y="304.0" text-anchor="end" font-size="11" fill="#6b7280">0</text>
+<line x1="60" y1="300.0" x2="580" y2="300.0" stroke="#eef2f7"/>
+<text x="52" y="241.5" text-anchor="end" font-size="11" fill="#6b7280">165</text>
+<line x1="60" y1="237.5" x2="580" y2="237.5" stroke="#eef2f7"/>
+<text x="52" y="179.0" text-anchor="end" font-size="11" fill="#6b7280">330</text>
+<line x1="60" y1="175.0" x2="580" y2="175.0" stroke="#eef2f7"/>
+<text x="52" y="116.5" text-anchor="end" font-size="11" fill="#6b7280">495</text>
+<line x1="60" y1="112.5" x2="580" y2="112.5" stroke="#eef2f7"/>
+<text x="52" y="54.0" text-anchor="end" font-size="11" fill="#6b7280">660</text>
+<line x1="60" y1="50.0" x2="580" y2="50.0" stroke="#eef2f7"/>
+<rect x="137.0" y="287.5" width="96.3" height="12.5" fill="#3FA66A"/>
+<rect x="137.0" y="99.2" width="96.3" height="188.3" fill="#F2C14E"/>
+<rect x="137.0" y="72.7" width="96.3" height="26.5" fill="#E08A3C"/>
+<text x="185.2" y="318.0" text-anchor="middle" font-size="11" fill="#374151">C0 基线</text>
+<text x="185.2" y="334.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">n=600</text>
+<rect x="310.4" y="285.2" width="96.3" height="14.8" fill="#3FA66A"/>
+<rect x="310.4" y="98.1" width="96.3" height="187.1" fill="#F2C14E"/>
+<rect x="310.4" y="72.7" width="96.3" height="25.4" fill="#E08A3C"/>
+<text x="358.5" y="318.0" text-anchor="middle" font-size="11" fill="#374151">C1 班级宠物</text>
+<text x="358.5" y="334.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">n=600</text>
+<rect x="483.7" y="284.5" width="96.3" height="15.5" fill="#3FA66A"/>
+<rect x="483.7" y="92.8" width="96.3" height="191.7" fill="#F2C14E"/>
+<rect x="483.7" y="72.7" width="96.3" height="20.1" fill="#E08A3C"/>
+<text x="531.9" y="318.0" text-anchor="middle" font-size="11" fill="#374151">C2 全抗成瘾层</text>
+<text x="531.9" y="334.0" text-anchor="middle" font-size="11" font-weight="700" fill="#1f2937">n=600</text>
+<rect x="60" y="27" width="11" height="11" fill="#3FA66A"/>
+<text x="75" y="36" font-size="10" fill="#374151">L1 正常</text>
+<rect x="155" y="27" width="11" height="11" fill="#F2C14E"/>
+<text x="170" y="36" font-size="10" fill="#374151">L2 关注</text>
+<rect x="250" y="27" width="11" height="11" fill="#E08A3C"/>
+<text x="265" y="36" font-size="10" fill="#374151">L3 深度</text>
+<rect x="345" y="27" width="11" height="11" fill="#E0533D"/>
+<text x="360" y="36" font-size="10" fill="#374151">L4 病理</text>
+</svg>

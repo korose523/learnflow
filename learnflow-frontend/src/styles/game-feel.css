@@ -1,0 +1,116 @@
+/* =========================================================
+   LearnFlow 游戏化视觉升级 (Spec §10)
+   依据研究结论落地「游戏感 / Juiciness」：
+   - 游戏感要素 (Tutsplus): 即时反馈、微交互、进度变化防腻、成功庆祝
+   - 心理学 (GameFlow + SDT): 情感化角色(陪伴感/归属感)、心流、能力反馈
+   - 2025 视觉趋势 (Behance): 柔光氛围球(diffuse-light)、玻璃拟态、活泼排版
+   - 伦理游戏化 (Nir Eyal / McGonigal): 仅用于「庆祝掌握 / 自我拓展」，
+     绝不使用损失厌恶连胜、付费墙、负罪感等黑暗模式(dark patterns)。
+   全局尊重 prefers-reduced-motion（见 index.css 兜底规则）与用户手动减弱开关。
+   ========================================================= */
+
+/* ---------- 柔光氛围球 (diffuse-light orbs) ---------- */
+.lf-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(46px);
+  opacity: 0.45;
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+@keyframes lf-orb-float-a {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(34px, -38px) scale(1.06); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes lf-orb-float-b {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-40px, 30px) scale(1.05); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* ---------- 按钮按压回弹 (press juice) ---------- */
+.lf-btn, .btn, .lf-card.tap-target {
+  -webkit-tap-highlight-color: transparent;
+}
+.lf-btn:active, .btn:active, .lf-card.tap-target:active {
+  transform: scale(0.965);
+  transition: transform 0.08s ease;
+}
+
+/* ---------- 弹入 (pop entrance) ---------- */
+@keyframes lf-pop-in {
+  0%   { transform: scale(0.9); opacity: 0; }
+  60%  { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.lf-pop { animation: lf-pop-in 0.36s var(--lf-ease, cubic-bezier(.22,1,.36,1)) both; }
+
+/* ---------- 漂浮轻晃 (bob) ---------- */
+@keyframes lf-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.lf-bob { animation: lf-bob 3.4s ease-in-out infinite; }
+
+/* ---------- 呼吸光环 (glow ring) ---------- */
+@keyframes lf-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(59, 169, 201, 0.35); }
+  50%      { box-shadow: 0 0 0 10px rgba(59, 169, 201, 0); }
+}
+.lf-glow { animation: lf-glow 2.6s ease-in-out infinite; }
+
+/* ---------- 轻微摇晃（答错时温和反馈，非惩罚性） ---------- */
+@keyframes lf-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.lf-shake { animation: lf-shake 0.4s ease-in-out; }
+
+/* ---------- 玻璃拟态 (glassmorphism) ---------- */
+.lf-glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 34px rgba(44, 110, 143, 0.14);
+}
+
+/* ---------- 进度条流光 (shimmer) ---------- */
+.lf-shimmer-fill { position: relative; overflow: hidden; }
+.lf-shimmer-fill::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.5) 50%, transparent 80%);
+  transform: translateX(-100%);
+  animation: lf-shimmer-move 1.7s linear infinite;
+}
+@keyframes lf-shimmer-move { to { transform: translateX(100%); } }
+
+/* ---------- 标题旁的活泼装饰点 ---------- */
+.lf-deco-dots { display: inline-flex; gap: 5px; align-items: center; }
+.lf-deco-dots span {
+  width: 7px; height: 7px; border-radius: 50%; display: inline-block;
+  animation: lf-bob 2.8s ease-in-out infinite;
+}
+.lf-deco-dots span:nth-child(2) { animation-delay: 0.4s; }
+.lf-deco-dots span:nth-child(3) { animation-delay: 0.8s; }
+
+/* ---------- 陪伴型吉祥物（情感化角色，固定左下角） ---------- */
+.lf-mascot {
+  position: fixed;
+  left: 22px;
+  bottom: 24px;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+@media (max-width: 768px) {
+  .lf-mascot { bottom: 84px; left: 14px; }
+}

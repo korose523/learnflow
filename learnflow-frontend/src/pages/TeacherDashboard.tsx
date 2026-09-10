@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { teacherApi } from '../services/api';
 import { AlertTriangle, CheckCircle2, TrendingUp, Users, Lightbulb, Plus, Search, X, BookOpen, ShieldAlert } from 'lucide-react';
 
@@ -31,6 +32,7 @@ interface Suggestion {
 }
 
 export default function TeacherDashboard() {
+  const navigate = useNavigate();
   const [data, setData] = useState<{ total_students: number; class_avg_score: number; students: Student[]; alerts: AlertItem[] } | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(true);
@@ -118,7 +120,7 @@ export default function TeacherDashboard() {
     <div style={{ textAlign: 'center', padding: 80 }}>
       <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>教师仪表盘无法加载</div>
       <div style={{ color: '#64748b', marginBottom: 20 }}>{error || '请检查网络或稍后重试'}</div>
-      <button className="btn btn-primary" onClick={loadDashboard}>重试</button>
+      <button className="lf-btn lf-btn-primary" onClick={loadDashboard}>重试</button>
     </div>
   );
 
@@ -126,9 +128,14 @@ export default function TeacherDashboard() {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700 }}>👩‍🏫 班级仪表盘</h1>
-        <button className="btn btn-primary" onClick={() => setShowCreateTask(true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Plus size={18} /> 创建题目
-        </button>
+        <div style={{ display: 'flex', gap: 10 }}>
+          <button className="lf-btn lf-btn-primary" onClick={() => setShowCreateTask(true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <Plus size={18} /> 创建题目
+          </button>
+          <button className="lf-btn" onClick={() => navigate('/teacher/class-pet')} style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#EAF6FB', color: '#2C6E8F' }}>
+            🐾 班级宠物园
+          </button>
+        </div>
       </div>
 
       {/* Tab 切换 */}
@@ -142,9 +149,9 @@ export default function TeacherDashboard() {
           <button
             key={key}
             onClick={() => setActiveTab(key as any)}
-            className="btn"
+            className="lf-btn"
             style={{
-              background: activeTab === key ? '#6366f1' : '#f1f5f9',
+              background: activeTab === key ? '#2C6E8F' : '#f1f5f9',
               color: activeTab === key ? 'white' : '#64748b',
               display: 'flex', alignItems: 'center', gap: 6, fontSize: 14,
             }}
@@ -157,29 +164,29 @@ export default function TeacherDashboard() {
       {activeTab === 'overview' && (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 20 }}>
-            <div className="card" style={{ textAlign: 'center' }}>
-              <Users size={24} color="#6366f1" style={{ marginBottom: 8 }} />
+            <div className="lf-card" style={{ textAlign: 'center' }}>
+              <Users size={24} color="#2C6E8F" style={{ marginBottom: 8 }} />
               <div style={{ fontSize: 28, fontWeight: 700 }}>{data.total_students}</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>学生总数</div>
             </div>
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="lf-card" style={{ textAlign: 'center' }}>
               <TrendingUp size={24} color="#22c55e" style={{ marginBottom: 8 }} />
               <div style={{ fontSize: 28, fontWeight: 700, color: '#22c55e' }}>{data.class_avg_score}</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>班级均分</div>
             </div>
-            <div className="card" style={{ textAlign: 'center' }}>
-              <CheckCircle2 size={24} color="#6366f1" style={{ marginBottom: 8 }} />
+            <div className="lf-card" style={{ textAlign: 'center' }}>
+              <CheckCircle2 size={24} color="#2C6E8F" style={{ marginBottom: 8 }} />
               <div style={{ fontSize: 28, fontWeight: 700 }}>{suggestions.filter((s) => s.severity === 'green').length}</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>表现优异</div>
             </div>
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="lf-card" style={{ textAlign: 'center' }}>
               <AlertTriangle size={24} color="#ef4444" style={{ marginBottom: 8 }} />
               <div style={{ fontSize: 28, fontWeight: 700, color: '#ef4444' }}>{suggestions.filter((s) => s.severity === 'red').length}</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>需要关注</div>
             </div>
           </div>
 
-          <div className="card" style={{ marginBottom: 20 }}>
+          <div className="lf-card" style={{ marginBottom: 20 }}>
             <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>📋 学生掌握度</h2>
             <StudentTable students={data.students} onSelect={openStudentDetail} />
           </div>
@@ -187,14 +194,14 @@ export default function TeacherDashboard() {
       )}
 
       {activeTab === 'students' && (
-        <div className="card">
+        <div className="lf-card">
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>📋 学生掌握度</h2>
           <StudentTable students={data.students} onSelect={openStudentDetail} />
         </div>
       )}
 
       {activeTab === 'alerts' && (
-        <div className="card">
+        <div className="lf-card">
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>🚨 风险告警</h2>
           {data.alerts.length === 0 ? (
             <p style={{ color: '#64748b' }}>暂无未处理告警</p>
@@ -206,7 +213,7 @@ export default function TeacherDashboard() {
                     <div style={{ fontWeight: 600, fontSize: 14 }}>{alert.student_name} — {alert.title}</div>
                     <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>{alert.type} · {new Date(alert.created_at).toLocaleString()}</div>
                   </div>
-                  <button className="btn" style={{ background: '#f1f5f9', color: '#64748b' }} onClick={() => resolveAlert(alert.id)}>已处理</button>
+                  <button className="lf-btn" style={{ background: '#f1f5f9', color: '#64748b' }} onClick={() => resolveAlert(alert.id)}>已处理</button>
                 </div>
               ))}
             </div>
@@ -215,7 +222,7 @@ export default function TeacherDashboard() {
       )}
 
       {activeTab === 'ai' && (
-        <div className="card">
+        <div className="lf-card">
           <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
             <Lightbulb size={18} color="#f59e0b" /> AI 教学建议
           </h2>
@@ -228,7 +235,7 @@ export default function TeacherDashboard() {
                   <div style={{ fontWeight: 600, fontSize: 14 }}>{s.student_name}</div>
                   <div style={{ fontSize: 13, color: '#64748b', marginTop: 2 }}>{s.reason}</div>
                   {s.suggested_difficulty && (
-                    <button className="btn" style={{ marginTop: 8, background: '#eef2ff', color: '#6366f1', fontSize: 13 }} onClick={() => applyDifficulty(s.student_id, s.suggested_difficulty!)}>
+                    <button className="lf-btn" style={{ marginTop: 8, background: 'var(--lf-sem-hint-soft)', color: '#2C6E8F', fontSize: 13 }} onClick={() => applyDifficulty(s.student_id, s.suggested_difficulty!)}>
                       应用建议难度 {s.suggested_difficulty}
                     </button>
                   )}
@@ -242,8 +249,8 @@ export default function TeacherDashboard() {
       {/* 学生详情弹窗 */}
       {selectedStudent && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-          <div className="card" style={{ width: 700, maxHeight: '80vh', overflow: 'auto', position: 'relative' }}>
-            <button style={{ position: 'absolute', top: 16, right: 16 }} className="btn btn-ghost" onClick={() => setSelectedStudent(null)}><X size={18} /></button>
+          <div className="lf-card" style={{ width: 700, maxHeight: '80vh', overflow: 'auto', position: 'relative' }}>
+            <button style={{ position: 'absolute', top: 16, right: 16 }} className="lf-btn lf-btn-ghost" onClick={() => setSelectedStudent(null)}><X size={18} /></button>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 4 }}>{selectedStudent.student.name} 的学习画像</h2>
             <p style={{ color: '#64748b', fontSize: 13, marginBottom: 16 }}>{selectedStudent.student.grade}</p>
 
@@ -275,7 +282,7 @@ export default function TeacherDashboard() {
             {aiLoading ? (
               <div style={{ padding: 12, background: '#f8fafc', borderRadius: 10, marginBottom: 16, color: '#64748b' }}>AI 分析加载中...</div>
             ) : aiAnalysis ? (
-              <div style={{ padding: 12, background: '#eef2ff', borderRadius: 10, marginBottom: 16 }}>
+              <div style={{ padding: 12, background: 'var(--lf-sem-hint-soft)', borderRadius: 10, marginBottom: 16 }}>
                 <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>🤖 AI 分析</h3>
                 <p style={{ fontSize: 13, color: '#64748b' }}>{aiAnalysis.recommended_action || aiAnalysis.risk_reasons?.join('；') || '暂无分析'}</p>
               </div>
@@ -298,8 +305,8 @@ export default function TeacherDashboard() {
       {/* 创建题目弹窗 */}
       {showCreateTask && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-          <div className="card" style={{ width: 500, position: 'relative' }}>
-            <button style={{ position: 'absolute', top: 16, right: 16 }} className="btn btn-ghost" onClick={() => setShowCreateTask(false)}><X size={18} /></button>
+          <div className="lf-card" style={{ width: 500, position: 'relative' }}>
+            <button style={{ position: 'absolute', top: 16, right: 16 }} className="lf-btn lf-btn-ghost" onClick={() => setShowCreateTask(false)}><X size={18} /></button>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
               <BookOpen size={18} /> 创建新题目
             </h2>
@@ -313,7 +320,7 @@ export default function TeacherDashboard() {
               </div>
               <input className="input" placeholder="正确答案" value={createTaskForm.correct_answer} onChange={(e) => setCreateTaskForm({ ...createTaskForm, correct_answer: e.target.value })} required />
               <textarea className="input" placeholder="解析（可选）" rows={2} value={createTaskForm.explanation} onChange={(e) => setCreateTaskForm({ ...createTaskForm, explanation: e.target.value })} />
-              <button type="submit" className="btn btn-primary">提交审核</button>
+              <button type="submit" className="lf-btn lf-btn-primary">提交审核</button>
               {createTaskMessage && <p style={{ fontSize: 13, color: createTaskMessage.includes('失败') ? '#ef4444' : '#22c55e' }}>{createTaskMessage}</p>}
             </form>
           </div>
@@ -322,7 +329,7 @@ export default function TeacherDashboard() {
 
       {studentDetailLoading && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
-          <div className="card">加载学生详情中...</div>
+          <div className="lf-card">加载学生详情中...</div>
         </div>
       )}
     </div>
@@ -357,7 +364,7 @@ function StudentTable({ students, onSelect }: { students: Student[]; onSelect: (
               {s.has_alerts ? <AlertTriangle size={16} color="#ef4444" /> : <CheckCircle2 size={16} color="#22c55e" />}
             </td>
             <td style={{ padding: '10px 8px' }}>
-              <button className="btn" style={{ padding: '6px 12px', fontSize: 12, background: '#eef2ff', color: '#6366f1' }} onClick={() => onSelect(s.id)}>
+              <button className="lf-btn" style={{ padding: '6px 12px', fontSize: 12, background: 'var(--lf-sem-hint-soft)', color: '#2C6E8F' }} onClick={() => onSelect(s.id)}>
                 <Search size={14} /> 详情
               </button>
             </td>

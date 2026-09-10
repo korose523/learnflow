@@ -129,7 +129,7 @@ export default function LoginPage() {
                 className="card-dark"
                 style={{
                   padding: '24px 16px', cursor: 'pointer', textAlign: 'center',
-                  border: active ? '2px solid #8B5CF6' : '1px solid #27273B',
+                  border: active ? '2px solid #2C6E8F' : '1px solid #27273B',
                   display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8,
                   transition: 'all 0.2s',
                 }}
@@ -161,7 +161,7 @@ export default function LoginPage() {
                 flex: 1, padding: '10px 0', border: 'none', borderRadius: 10,
                 cursor: 'pointer', fontFamily: "'Montserrat', sans-serif",
                 fontWeight: 700, fontSize: 14,
-                background: !showRegister ? '#8B5CF6' : '#27273B',
+                background: !showRegister ? '#2C6E8F' : '#27273B',
                 color: !showRegister ? 'white' : '#94A3B8',
                 transition: 'all 0.15s',
               }}>登录</button>
@@ -170,7 +170,7 @@ export default function LoginPage() {
                 flex: 1, padding: '10px 0', border: 'none', borderRadius: 10,
                 cursor: 'pointer', fontFamily: "'Montserrat', sans-serif",
                 fontWeight: 700, fontSize: 14,
-                background: showRegister ? '#8B5CF6' : '#27273B',
+                background: showRegister ? '#2C6E8F' : '#27273B',
                 color: showRegister ? 'white' : '#94A3B8',
                 transition: 'all 0.15s',
               }}>注册</button>
@@ -188,7 +188,7 @@ export default function LoginPage() {
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                   placeholder="密码" style={inputInnerStyle} />
               </div>
-              <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', height: 48, justifyContent: 'center', fontSize: 16 }}>
+              <button type="submit" disabled={loading} className="lf-btn lf-btn-primary" style={{ width: '100%', height: 48, justifyContent: 'center', fontSize: 16 }}>
                 {loading ? '登录中...' : '🚀 开始冒险'}
               </button>
             </form>
@@ -214,7 +214,7 @@ export default function LoginPage() {
                 <input value={regGrade} onChange={e => setRegGrade(e.target.value)}
                   placeholder="年级（选填）" style={inputInnerStyle} />
               </div>
-              <button type="submit" disabled={loading} className="btn btn-primary" style={{ width: '100%', height: 48, justifyContent: 'center', fontSize: 16 }}>
+              <button type="submit" disabled={loading} className="lf-btn lf-btn-primary" style={{ width: '100%', height: 48, justifyContent: 'center', fontSize: 16 }}>
                 {loading ? '注册中...' : '注册并进入 LearnFlow'}
               </button>
             </form>

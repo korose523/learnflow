@@ -236,3 +236,59 @@ export const k12Api = {
   curriculum: (params?: { subject?: string; grade?: string }) =>
     api.get('/k12/curriculum', { params, cache: true }),
 };
+
+// ── AI 实时分析层（消费 /api/v1/analytics，无鉴权，依赖内存特征存储）──
+// 注意：这些端点由 analytics.py 的内存单例服务提供，需先 /ingest 事件才能产生风险。
+export const analyticsApi = {
+  /** 批量摄入行为事件（演示：可先用 seedDemoEvents 灌入合成数据） */
+  ingest: (events: any[]) => api.post('/analytics/ingest', { events }),
+  /** 单事件在线更新，返回该生实时风险 */
+  studentEvent: (userId: string, event: any) =>
+    api.post(`/analytics/student/${userId}/event`, { event }),
+  /** 单生风险快照：ml_risk(0-1) / risk_tier(0-3) / top_factors */
+  studentRisk: (userId: string) => api.get(`/analytics/student/${userId}/risk`),
+  /** 班级风险：mean_risk / students / distribution(t0-t3) */
+  classRisk: (classId: string, userIds?: string[]) =>
+    api.get(`/analytics/class/${classId}/risk`, { params: userIds ? { user_ids: userIds } : {} }),
+  /** 班级早期预警：threshold 之上且按风险降序的 warnings 列表 */
+  earlyWarning: (classId: string, threshold = 0.5, userIds?: string[]) =>
+    api.get(`/analytics/class/${classId}/early-warning`, {
+      params: userIds ? { threshold, user_ids: userIds } : { threshold },
+    }),
+};
+
+// ── LAI 学习成瘾化指数（论文核心构念：0-100 健康分 + L1-L4 风险档 + 五维 + 自动干预）──
+// 端点位于 /api/v1/student/gamification（需登录），baseURL 已为 /api/v1。
+export const laiApi = {
+  /** 当前用户（或家长/老师查看某学生）的学习成瘾化指数仪表盘 */
+  dashboard: (studentId?: string) =>
+    api.get('/student/gamification/lai/dashboard', { params: studentId ? { student_id: studentId } : {}, cache: false }),
+  /** 提交五维自评/日志数据，计算一次 LAI 评估 */
+  assess: (payload: {
+    daily_minutes?: number; session_minutes?: number; night_ratio?: number;
+    content_attention_ratio?: number; leaderboard_views?: number;
+    planned_stop_failures?: number; intrinsic_motivation_ratio?: number;
+    external_reward_dependency?: number; time_perception_bias?: number;
+    sleep_impact?: number; social_impact?: number; age_group?: string;
+  }) => api.post('/student/gamification/lai/assess', payload),
+};
+
+// ── LF-M54 班级宠物园（积分养宠系统的班级聚合与师/班干部操作）──
+// 真实「班级电子养宠」：每生一只专属宠物，用行为积分喂养；班级宠物园为聚合视图。
+export const classPetApi = {
+  /** 班级宠物园视图（学生/老师可见）：排行榜、形态分布、凝聚力、连接质量 */
+  garden: (classId: string) =>
+    api.get(`/class-pet/${classId}/garden`, { cache: false }),
+  /** 当前学生的专属宠物 + 形态阶段 + 是否「饿肚子」 */
+  myPet: (classId: string) =>
+    api.get(`/class-pet/${classId}/my-pet`, { cache: false }),
+  /** 老师给某学生加减分（行为积分 → 喂养其专属宠物） */
+  award: (classId: string, data: { student_id: string; points: number; behavior?: string; reason?: string }) =>
+    api.post(`/class-pet/${classId}/award`, data),
+  /** 老师触发/开关每周「喂养时间」仪式 */
+  ritual: (classId: string, enabled: boolean) =>
+    api.post(`/class-pet/${classId}/ritual`, { enabled }),
+  /** 老师视图：完整班级宠物园 + 逐生宠物明细 */
+  teacher: (classId: string) =>
+    api.get(`/class-pet/${classId}/teacher`, { cache: false }),
+};

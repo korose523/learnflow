@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Heart, Brain, Lightbulb, Users } from 'lucide-react';
+import { useMotionPref } from '../../contexts/MotionContext';
+import Celebration from '../common/Celebration';
+import { EASE_SOFT } from '../../theme/tokens';
 
 const PET_EMOJIS: Record<string, string> = {
   cat: '🐱', dog: '🐶', rabbit: '🐰', owl: '🦉', dragon: '🐉',
@@ -42,6 +46,9 @@ const DIMENSIONS = [
 ];
 
 export default function PetCard({ pet }: PetProps) {
+  const { reduced } = useMotionPref();
+  const [petted, setPetted] = useState(false);
+
   if (!pet) {
     return (
       <div className="lf-card" style={{ textAlign: 'center', padding: 40 }}>
@@ -61,20 +68,36 @@ export default function PetCard({ pet }: PetProps) {
 
   return (
     <div className="lf-card" style={{ textAlign: 'center' }}>
-      {/* 宠物形象（圆润呼吸动画） */}
-      <div className="pet-breathing" style={{ fontSize: 64, marginBottom: 8 }}>
+      {/* 宠物形象（圆润呼吸 + 点击互动，游戏感的「即时反馈」） */}
+      <motion.button
+        type="button"
+        onClick={() => setPetted(true)}
+        aria-label={`摸摸 ${pet.name}`}
+        whileTap={reduced ? undefined : { scale: 0.88 }}
+        className="pet-breathing"
+        style={{
+          fontSize: 64, marginBottom: 8, background: 'transparent', border: 'none',
+          cursor: 'pointer', display: 'inline-flex', padding: 4, borderRadius: '50%',
+        }}
+      >
         {petEmoji}
-      </div>
+      </motion.button>
 
       <div style={{ fontSize: 18, fontWeight: 700, color: '#2C6E8F' }}>{pet.name}</div>
       <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
         Lv.{pet.level} · {mood.emoji} {mood.label}
       </div>
 
-      {/* 等级进度 */}
+      {/* 等级进度（流光 + 弹簧填充，突出「成长」而非「连胜」） */}
       <div style={{ margin: '12px 0' }}>
-        <div className="progress-bar" style={{ background: '#EAF6FB' }}>
-          <div className="progress-bar-fill" style={{ width: `${pet.level_progress}%`, background: '#3BA9C9' }} />
+        <div className="progress-bar lf-shimmer-fill" style={{ background: '#EAF6FB' }}>
+          <motion.div
+            className="progress-bar-fill"
+            initial={reduced ? false : { width: 0 }}
+            animate={{ width: `${pet.level_progress}%` }}
+            transition={{ duration: 0.8, ease: EASE_SOFT }}
+            style={{ background: 'linear-gradient(90deg, #3BA9C9, #2C6E8F)', borderRadius: 4 }}
+          />
         </div>
         <div style={{ fontSize: 11, color: '#64748b', marginTop: 4 }}>
           升级进度 {pet.level_progress}%
@@ -93,7 +116,13 @@ export default function PetCard({ pet }: PetProps) {
               <span style={{ fontSize: 12, fontWeight: 600 }}>{value}</span>
             </div>
             <div className="progress-bar" style={{ height: 6, background: '#EAF6FB', borderRadius: 999 }}>
-              <div className="progress-bar-fill" style={{ width: `${value}%`, background: color, borderRadius: 999 }} />
+              <motion.div
+                className="progress-bar-fill"
+                initial={reduced ? false : { width: 0 }}
+                animate={{ width: `${value}%` }}
+                transition={{ duration: 0.7, ease: EASE_SOFT }}
+                style={{ background: color, borderRadius: 999 }}
+              />
             </div>
           </div>
         ))}
@@ -110,6 +139,14 @@ export default function PetCard({ pet }: PetProps) {
       }}>
         🏅 主导特质：{dimensions.find(d => d.key === pet.dominant_trait)?.label || '探索者'}
       </div>
+
+      {/* 互动庆祝：用户主动「摸摸宠物」的即时正反馈（自我拓展，非强迫回流） */}
+      <Celebration
+        fire={petted}
+        emoji="💛"
+        message="和小伙伴互动了一下，心情更轻松啦～"
+        onDone={() => setPetted(false)}
+      />
     </div>
   );
 }

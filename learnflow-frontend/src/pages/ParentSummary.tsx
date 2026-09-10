@@ -144,11 +144,11 @@ export default function ParentSummary() {
             onChange={(e) => setChildId(e.target.value)}
             style={{ width: 180 }}
           />
-          <button className="btn" style={{ background: '#eef2ff', color: '#6366f1' }} onClick={() => childId && loadChildSummary(childId)}>
+          <button className="lf-btn" style={{ background: 'var(--lf-sem-hint-soft)', color: '#2C6E8F' }} onClick={() => childId && loadChildSummary(childId)}>
             查看
           </button>
           {data && (
-            <button className="btn" style={{ background: '#fef2f2', color: '#ef4444' }} onClick={handleClearChild}>
+            <button className="lf-btn" style={{ background: '#fef2f2', color: '#ef4444' }} onClick={handleClearChild}>
               解绑孩子
             </button>
           )}
@@ -156,7 +156,7 @@ export default function ParentSummary() {
       </div>
 
       {error && !data && (
-        <div className="card" style={{ background: '#fef2f2', color: '#ef4444', marginBottom: 20 }}>
+        <div className="lf-card" style={{ background: '#fef2f2', color: '#ef4444', marginBottom: 20 }}>
           {error}
           <p style={{ fontSize: 13, color: '#64748b', marginTop: 8 }}>
             演示环境可输入任意学生ID，例如从教师端获取的学生ID。
@@ -167,17 +167,17 @@ export default function ParentSummary() {
       {data && (
         <>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 20 }}>
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="lf-card" style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 4 }}>📝</div>
               <div style={{ fontSize: 28, fontWeight: 700 }}>{data.weekly.total_attempts}</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>本周做题数</div>
             </div>
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="lf-card" style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 4 }}>🎯</div>
               <div style={{ fontSize: 28, fontWeight: 700, color: '#22c55e' }}>{data.weekly.accuracy}%</div>
               <div style={{ fontSize: 13, color: '#64748b' }}>正确率</div>
             </div>
-            <div className="card" style={{ textAlign: 'center' }}>
+            <div className="lf-card" style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 4 }}>
                 {data.risk_level === 'green' ? '🟢' : data.risk_level === 'yellow' ? '🟡' : '🔴'}
               </div>
@@ -188,7 +188,7 @@ export default function ParentSummary() {
             </div>
           </div>
 
-          <div className="card" style={{ marginBottom: 20 }}>
+          <div className="lf-card" style={{ marginBottom: 20 }}>
             <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16 }}>📊 技能掌握情况</h2>
             {data.skills.map((skill) => (
               <div key={skill.skill} style={{ marginBottom: 14 }}>
@@ -210,7 +210,7 @@ export default function ParentSummary() {
           </div>
 
           {data.pet && (
-            <div className="card" style={{ marginBottom: 20 }}>
+            <div className="lf-card" style={{ marginBottom: 20 }}>
               <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12 }}>🐱 学习宠物</h2>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
                 <div style={{ fontSize: 48 }}>🐱</div>
@@ -227,7 +227,7 @@ export default function ParentSummary() {
           )}
 
           {data.alerts.length > 0 && (
-            <div className="card" style={{ marginBottom: 20, background: '#fef2f2' }}>
+            <div className="lf-card" style={{ marginBottom: 20, background: '#fef2f2' }}>
               <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12, color: '#ef4444' }}>⚠️ 风险提醒</h2>
               {data.alerts.map((a, i) => (
                 <div key={i} style={{ padding: '8px 0', borderBottom: '1px solid #fecaca', fontSize: 14 }}>
@@ -238,11 +238,11 @@ export default function ParentSummary() {
           )}
 
           <div style={{ display: 'flex', gap: 12 }}>
-            <button className="btn" style={{ background: '#eef2ff', color: '#6366f1' }} onClick={openConsent}>
+            <button className="lf-btn" style={{ background: 'var(--lf-sem-hint-soft)', color: '#2C6E8F' }} onClick={openConsent}>
               <ShieldCheck size={16} style={{ marginRight: 6 }} />
               管理同意设置
             </button>
-            <button className="btn" style={{ background: '#f0fdf4', color: '#22c55e' }} onClick={handleExport} disabled={exporting}>
+            <button className="lf-btn" style={{ background: '#f0fdf4', color: '#22c55e' }} onClick={handleExport} disabled={exporting}>
               <Download size={16} style={{ marginRight: 6 }} />
               {exporting ? '导出中...' : '导出学习数据'}
             </button>
@@ -257,7 +257,7 @@ export default function ParentSummary() {
           background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 200, padding: 20,
         }} onClick={() => setShowConsent(false)}>
-          <div className="card" style={{ maxWidth: 480, width: '100%', maxHeight: '80vh', overflow: 'auto' }} onClick={(e) => e.stopPropagation()}>
+          <div className="lf-card" style={{ maxWidth: 480, width: '100%', maxHeight: '80vh', overflow: 'auto' }} onClick={(e) => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700 }}>🛡️ 管理同意设置</h2>
               <button onClick={() => setShowConsent(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' }}>
@@ -286,7 +286,7 @@ export default function ParentSummary() {
                     </div>
                   </div>
                   <button
-                    className="btn"
+                    className="lf-btn"
                     disabled={consentLoading}
                     onClick={() => toggleConsent(type)}
                     style={{

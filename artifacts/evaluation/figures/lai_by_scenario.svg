@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" font-family="Segoe UI, sans-serif">
+<text x="280.0" y="26" text-anchor="middle" font-size="16" font-weight="700" fill="#1f2937">各场景平均 LAI（越高越健康）</text>
+<line x1="60" y1="50" x2="60" y2="290" stroke="#9ca3af"/>
+<line x1="60" y1="290" x2="540" y2="290" stroke="#9ca3af"/>
+<text x="52" y="294.0" text-anchor="end" font-size="11" fill="#6b7280">0</text>
+<line x1="60" y1="290.0" x2="540" y2="290.0" stroke="#eef2f7"/>
+<text x="52" y="234.0" text-anchor="end" font-size="11" fill="#6b7280">20</text>
+<line x1="60" y1="230.0" x2="540" y2="230.0" stroke="#eef2f7"/>
+<text x="52" y="174.0" text-anchor="end" font-size="11" fill="#6b7280">40</text>
+<line x1="60" y1="170.0" x2="540" y2="170.0" stroke="#eef2f7"/>
+<text x="52" y="114.0" text-anchor="end" font-size="11" fill="#6b7280">60</text>
+<line x1="60" y1="110.0" x2="540" y2="110.0" stroke="#eef2f7"/>
+<text x="52" y="54.0" text-anchor="end" font-size="11" fill="#6b7280">80</text>
+<line x1="60" y1="50.0" x2="540" y2="50.0" stroke="#eef2f7"/>
+<rect x="120.0" y="100.5" width="100.0" height="189.5" rx="4" fill="#3FA66A"/>
+<text x="170.0" y="94.5" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">63.2</text>
+<text x="170.0" y="308.0" text-anchor="middle" font-size="11" fill="#374151">C0 基线</text>
+<rect x="280.0" y="99.2" width="100.0" height="190.8" rx="4" fill="#3FA66A"/>
+<text x="330.0" y="93.2" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">63.6</text>
+<text x="330.0" y="308.0" text-anchor="middle" font-size="11" fill="#374151">C1 班级宠物</text>
+<rect x="440.0" y="95.7" width="100.0" height="194.3" rx="4" fill="#3FA66A"/>
+<text x="490.0" y="89.7" text-anchor="middle" font-size="12" font-weight="700" fill="#1f2937">64.8</text>
+<text x="490.0" y="308.0" text-anchor="middle" font-size="11" fill="#374151">C2 全抗成瘾层</text>
+<text x="16" y="36" font-size="11" fill="#6b7280">LAI</text>
+</svg>

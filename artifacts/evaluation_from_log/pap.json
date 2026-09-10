@@ -1,0 +1,9 @@
+{
+  "hypothesis": "抗成瘾层（LF-M54 真实连接替代 + 仲裁器风险降权）会显著提升队列平均 LAI（健康度），并降低 L3/L4 风险占比。",
+  "design": "配对反事实 in-silico ablation，同队列三条件（C0/C1/C2）",
+  "primary_outcome": "mean_lai 差异 (C2 - C0)",
+  "seed": 20260906,
+  "engine": "LearningAddictionIndex + MechanismArbitrator",
+  "data_source": "sample_log:sample_desensitized_log.csv",
+  "note": "结果完全由本文件 + 引擎代码决定，审稿人可复现。"
+}

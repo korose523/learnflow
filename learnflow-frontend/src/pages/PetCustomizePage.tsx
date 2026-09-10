@@ -77,23 +77,23 @@ export default function PetCustomizePage() {
       <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>宠物加载失败</div>
       <div style={{ color: '#64748b', marginBottom: 20 }}>{error}</div>
       <div style={{ display: 'flex', justifyContent: 'center', gap: 12 }}>
-        <button className="btn btn-primary" onClick={loadPet}>重试</button>
-        <button className="btn btn-ghost" onClick={() => navigate('/student')}>返回首页</button>
+        <button className="lf-btn lf-btn-primary" onClick={loadPet}>重试</button>
+        <button className="lf-btn lf-btn-ghost" onClick={() => navigate('/student')}>返回首页</button>
       </div>
     </div>
   );
-  if (!pet) return <div className="card">还没有宠物</div>;
+  if (!pet) return <div className="lf-card">还没有宠物</div>;
 
   const activeCosmetics = Object.keys(visuals).filter((k) => visuals[k]).map((k) => COSMETICS.find((c) => c.key === k)?.emoji).filter(Boolean).join('');
 
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <button className="btn btn-ghost" onClick={() => navigate('/student')}><ArrowLeft size={18} /></button>
+        <button className="lf-btn lf-btn-ghost" onClick={() => navigate('/student')}><ArrowLeft size={18} /></button>
         <h1 style={{ fontSize: 24, fontWeight: 700 }}>🐾 宠物装扮</h1>
       </div>
 
-      <div className="card" style={{ textAlign: 'center', marginBottom: 20 }}>
+      <div className="lf-card" style={{ textAlign: 'center', marginBottom: 20 }}>
         <div style={{ fontSize: 80, marginBottom: 8 }}>
           {PET_EMOJIS[pet.breed] || '🐱'}
           {activeCosmetics && <span style={{ fontSize: 40, marginLeft: 8 }}>{activeCosmetics}</span>}
@@ -104,9 +104,9 @@ export default function PetCustomizePage() {
         </div>
       </div>
 
-      <div className="card" style={{ marginBottom: 20 }}>
+      <div className="lf-card" style={{ marginBottom: 20 }}>
         <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Sparkles size={18} color="#6366f1" /> 宠物名字
+          <Sparkles size={18} color="#2C6E8F" /> 宠物名字
         </h2>
         <input
           className="input"
@@ -116,7 +116,7 @@ export default function PetCustomizePage() {
         />
       </div>
 
-      <div className="card" style={{ marginBottom: 20 }}>
+      <div className="lf-card" style={{ marginBottom: 20 }}>
         <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
           <Palette size={18} color="#f59e0b" /> 装扮选择
         </h2>
@@ -129,19 +129,19 @@ export default function PetCustomizePage() {
                 padding: 16,
                 borderRadius: 12,
                 border: '1px solid #e2e8f0',
-                background: visuals[c.key] ? '#eef2ff' : 'white',
+                background: visuals[c.key] ? 'var(--lf-sem-hint-soft)' : 'white',
                 cursor: 'pointer',
                 textAlign: 'center',
               }}
             >
               <div style={{ fontSize: 32, marginBottom: 4 }}>{c.emoji}</div>
-              <div style={{ fontSize: 13, color: visuals[c.key] ? '#6366f1' : '#64748b', fontWeight: visuals[c.key] ? 600 : 400 }}>{c.name}</div>
+              <div style={{ fontSize: 13, color: visuals[c.key] ? '#2C6E8F' : '#64748b', fontWeight: visuals[c.key] ? 600 : 400 }}>{c.name}</div>
             </button>
           ))}
         </div>
       </div>
 
-      <button className="btn btn-primary" onClick={handleSave} style={{ width: '100%', padding: 14, fontSize: 16 }}>
+      <button className="lf-btn lf-btn-primary" onClick={handleSave} style={{ width: '100%', padding: 14, fontSize: 16 }}>
         保存装扮
       </button>
       {message && <p style={{ marginTop: 12, textAlign: 'center', color: message.includes('失败') ? '#ef4444' : '#22c55e' }}>{message}</p>}

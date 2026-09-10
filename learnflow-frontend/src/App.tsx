@@ -17,6 +17,9 @@ const AdminPanel = lazy(() => import('./pages/AdminPanel'));
 const SkillTreePage = lazy(() => import('./pages/SkillTreePage'));
 const StreakPage = lazy(() => import('./pages/StreakPage'));
 const PetCustomizePage = lazy(() => import('./pages/PetCustomizePage'));
+const ClassPetGardenPage = lazy(() => import('./pages/ClassPetGardenPage'));
+const StudentRiskPage = lazy(() => import('./pages/StudentRiskPage'));
+const TeacherAnalyticsPage = lazy(() => import('./pages/TeacherAnalyticsPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'));
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage'));
@@ -55,11 +58,15 @@ function App() {
           <Route path="student/streak" element={<ProtectedRoute allowedRoles={['student']}><StreakPage /></ProtectedRoute>} />
           <Route path="student/team" element={<ProtectedRoute allowedRoles={['student']}><TeamPage /></ProtectedRoute>} />
           <Route path="student/pet" element={<ProtectedRoute allowedRoles={['student']}><PetCustomizePage /></ProtectedRoute>} />
+          <Route path="student/class-pet" element={<ProtectedRoute allowedRoles={['student']}><ClassPetGardenPage /></ProtectedRoute>} />
+          <Route path="student/ai-risk" element={<ProtectedRoute allowedRoles={['student']}><StudentRiskPage /></ProtectedRoute>} />
           <Route path="curriculum" element={<ProtectedRoute allowedRoles={['student', 'teacher', 'parent']}><CurriculumPage /></ProtectedRoute>} />
 
           {/* 教师端 */}
           <Route path="teacher" element={<ProtectedRoute allowedRoles={['teacher']}><TeacherDashboard /></ProtectedRoute>} />
+          <Route path="teacher/class-pet" element={<ProtectedRoute allowedRoles={['teacher']}><ClassPetGardenPage /></ProtectedRoute>} />
           <Route path="teacher/assign" element={<ProtectedRoute allowedRoles={['teacher']}><TeacherPage /></ProtectedRoute>} />
+          <Route path="teacher/ai-analytics" element={<ProtectedRoute allowedRoles={['teacher']}><TeacherAnalyticsPage /></ProtectedRoute>} />
 
           {/* 家长端 */}
           <Route path="parent" element={<ProtectedRoute allowedRoles={['parent']}><ParentPage /></ProtectedRoute>} />

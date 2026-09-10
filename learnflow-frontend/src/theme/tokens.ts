@@ -70,19 +70,22 @@ export const CHALLENGE_BAND = { low: 75, high: 85 } as const;
    两档，文字档满足 WCAG AA（≥4.5:1）。
    ========================================================= */
 
-// ── 中性色阶：文字 / 边框 / 背景 ──
+// ── 中性色阶：文字 / 边框 / 背景（与 index.css --lf-neutral-* 对齐）──
 export const NEUTRAL = {
-  ink900: '#14384A', // 主文字（深青蓝黑）
-  ink700: '#475569', // 次要文字（AA）
-  ink500: '#64748B', // 第三级文字（AA）
-  ink400: '#94A3B8', // 占位 / 禁用（仅用于非必要信息）
-  line: '#E2E8F0', // 边框线
-  surface1: '#FFFFFF', // 卡片底
-  surface2: '#F1F5F9', // 浅底（区块）
-  surface3: '#F8FAFC', // 更浅底（内嵌）
+  '50': '#F8FAFC',
+  '100': '#F1F5F9',
+  '200': '#E2E8F0',
+  '300': '#CBD5E1',
+  '400': '#94A3B8', // 占位 / 禁用（仅用于非必要信息）
+  '500': '#64748B', // 第三级文字（AA）
+  '600': '#475569', // 次要文字（AA）
+  '700': '#334155',
+  '800': '#1E293B',
+  '900': '#0F172A', // 主文字（深青蓝黑）
 } as const;
 
 // ── 语义色：fill 用于填充/图标，text 用于小字（AA），soft 用于浅底色 ──
+// 与 index.css --lf-sem-*-soft / --lf-warning-* 对齐
 export const SEMANTIC = {
   success: { fill: '#3FA66A', text: '#1F8A51', soft: '#E7F6EE' },
   hint: { fill: '#3BA9C9', text: '#1F7393', soft: '#E6F4F9' },
@@ -94,6 +97,11 @@ export const SEMANTIC = {
 // 取语义色（默认 fill 档）
 export function semantic(key: keyof typeof SEMANTIC, tier: 'fill' | 'text' | 'soft' = 'fill'): string {
   return SEMANTIC[key][tier];
+}
+
+// 取中性色
+export function neutral(step: keyof typeof NEUTRAL): string {
+  return NEUTRAL[step];
 }
 
 // ── 圆角分级 ──

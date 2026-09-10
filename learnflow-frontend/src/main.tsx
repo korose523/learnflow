@@ -7,6 +7,7 @@ import { ToastProvider } from './contexts/ToastContext';
 import { MotionProvider } from './contexts/MotionContext';
 import { ErrorBoundary } from './components/common/ErrorBoundary';
 import './styles/index.css';
+import './styles/game-feel.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

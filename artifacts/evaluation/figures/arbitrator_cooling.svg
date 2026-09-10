@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 340" font-family="Segoe UI, sans-serif">
+<text x="310.0" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">仲裁器 LAI 风险自适应降权：候选→下发</text>
+<line x1="60" y1="50" x2="60" y2="270" stroke="#9ca3af"/>
+<line x1="60" y1="270" x2="600" y2="270" stroke="#9ca3af"/>
+<rect x="82.5" y="50.0" width="45.0" height="220.0" rx="3" fill="#3FA66A"/>
+<rect x="131.5" y="270.0" width="45.0" height="0.0" rx="3" fill="#E0533D"/>
+<text x="129.5" y="286.0" text-anchor="middle" font-size="9.5" fill="#374151">LF-M44</text>
+<text x="129.5" y="300.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#E0533D">降权</text>
+<rect x="195.0" y="50.0" width="45.0" height="220.0" rx="3" fill="#3FA66A"/>
+<rect x="244.0" y="270.0" width="45.0" height="0.0" rx="3" fill="#E0533D"/>
+<text x="242.0" y="286.0" text-anchor="middle" font-size="9.5" fill="#374151">LF-M33</text>
+<text x="242.0" y="300.0" text-anchor="middle" font-size="9.5" font-weight="700" fill="#E0533D">降权</text>
+<rect x="307.5" y="50.0" width="45.0" height="220.0" rx="3" fill="#3FA66A"/>
+<rect x="356.5" y="50.0" width="45.0" height="220.0" rx="3" fill="#E0533D"/>
+<text x="354.5" y="286.0" text-anchor="middle" font-size="9.5" fill="#374151">LF-M08</text>
+<rect x="420.0" y="50.0" width="45.0" height="220.0" rx="3" fill="#3FA66A"/>
+<rect x="469.0" y="50.0" width="45.0" height="220.0" rx="3" fill="#E0533D"/>
+<text x="467.0" y="286.0" text-anchor="middle" font-size="9.5" fill="#374151">LF-M07</text>
+<rect x="532.5" y="50.0" width="45.0" height="220.0" rx="3" fill="#3FA66A"/>
+<rect x="581.5" y="50.0" width="45.0" height="220.0" rx="3" fill="#E0533D"/>
+<text x="579.5" y="286.0" text-anchor="middle" font-size="9.5" fill="#374151">LF-M35</text>
+<rect x="60" y="38" width="11" height="11" fill="#3FA66A"/><text x="75" y="48" font-size="10" fill="#374151">lai_risk=None</text>
+<rect x="170" y="38" width="11" height="11" fill="#E0533D"/><text x="185" y="48" font-size="10" fill="#374151">lai_risk=0.7</text>
+</svg>

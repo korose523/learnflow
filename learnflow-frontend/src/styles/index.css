@@ -4,25 +4,29 @@
 @tailwind utilities;
 
 :root {
-  /* 品牌色系 — 深紫蓝+金色 */
-  --primary: #8B5CF6;
-  --primary-light: #A78BFA;
-  --primary-dark: #7C3AED;
-  --secondary: #FBBF24;
+  /* 品牌色系 — 统一为青蓝（向后兼容旧 --primary 等变量名，消除紫色/靛蓝双体系）
+     说明：旧版用紫色 #8B5CF6 作主色，与 v3 的青蓝主色冲突，导致按钮/卡片两套色。
+     这里把 --primary 指向青蓝深档，使 .btn-primary/.card 等全局类自动统一为青蓝。
+     主按钮文字为白色，需用深档 #2C6E8F 才能满足 WCAG AA 对比度。 */
+  --primary: #2C6E8F;
+  --primary-light: #7CC6DD;
+  --primary-dark: #245A75;
+  --primary-50: #EAF6FB;
+  --secondary: #F59E0B;
   --secondary-dark: #D97706;
-  --success: #22C55E;
+  --success: #3FA66A;
   --success-dark: #166534;
   --warning: #F59E0B;
-  --danger: #EF4444;
+  --danger: #E0533D;
   --danger-dark: #991B1B;
 
-  /* 暗色主题 (登录页) */
+  /* 暗色主题 (登录页) — 边框改为青蓝深档，与亮色体系一致 */
   --bg-dark: #0F0F23;
   --bg-card-dark: #1E1D35;
   --bg-muted-dark: #27273B;
   --text-primary-dark: #F8FAFC;
   --text-secondary-dark: #94A3B8;
-  --border-dark: #4C1D95;
+  --border-dark: #245A75;
 
   /* 亮色主题 (仪表盘) */
   --bg-light: #F8FAFC;
@@ -76,17 +80,18 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
-  50% { box-shadow: 0 0 0 12px rgba(139, 92, 246, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(44, 110, 143, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(44, 110, 143, 0); }
 }
 
 /* ========== Claymorphism 卡片 ========== */
+/* 旧 .card（Claymorphism）阴影由紫色统一为青蓝，避免与新 .lf-card 双色 */
 .card {
   background: var(--bg-card-light);
   border-radius: var(--radius-xl);
   padding: 20px;
   box-shadow:
-    0 6px 20px rgba(139, 92, 246, 0.08),
+    0 6px 20px rgba(44, 110, 143, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
@@ -95,7 +100,7 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
   border-radius: var(--radius-2xl);
   padding: 24px;
   box-shadow:
-    0 8px 24px rgba(139, 92, 246, 0.15),
+    0 8px 24px rgba(44, 110, 143, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border-dark);
 }
@@ -127,15 +132,16 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
   align-items: center;
   gap: 8px;
 }
+/* 主按钮：青蓝渐变（与 .lf-btn-primary 视觉统一），白字满足 AA 对比度 */
 .btn-primary {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--lf-primary-low, #3BA9C9), var(--lf-primary-high, #2C6E8F));
   color: white;
-  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 6px 18px rgba(44, 110, 143, 0.30);
 }
 .btn-primary:hover {
-  background: var(--primary-dark);
+  background: linear-gradient(135deg, #46BBDD, var(--lf-primary-high, #2C6E8F));
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 10px 26px rgba(44, 110, 143, 0.40);
 }
 .btn:disabled {
   opacity: 0.6;
@@ -188,7 +194,7 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
 }
 .input:focus, .textarea:focus, select.input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+  box-shadow: 0 0 0 3px rgba(44, 110, 143, 0.14);
 }
 .input::placeholder, .textarea::placeholder {
   color: var(--text-secondary-light);
@@ -225,31 +231,11 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
   font-size: 11px;
   font-weight: 600;
 }
-.badge-primary { background: #EEF2FF; color: #6366F1; }
+/* 徽章主色：青蓝（旧 #EEF2FF/#6366F1 靛蓝，统一到主色） */
+.badge-primary { background: var(--primary-50, #EAF6FB); color: var(--lf-primary-high, #2C6E8F); }
 .badge-success { background: #F0FDF4; color: #22C55E; }
 .badge-warning { background: #FEF3C7; color: #F59E0B; }
 .badge-danger { background: #FEF2F2; color: #EF4444; }
-
-/* ========== Toast 提示 ========== */
-.toast {
-  min-width: 220px;
-  padding: 12px 16px;
-  border-radius: 14px;
-  color: white;
-  font-weight: 600;
-  box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(15, 23, 42, 0.9);
-}
-.toast-success { background: #22c55e; }
-.toast-error { background: #ef4444; }
-.toast-warning { background: #f59e0b; }
-@keyframes toast-in {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
 
 /* ========== 空状态 ========== */
 .empty-state {
@@ -364,6 +350,71 @@ h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
   --lf-ease: cubic-bezier(.22, 1, .36, 1);
   /* 焦点环（AA 对比度辅助，满足键盘可达性 AC13） */
   --lf-focus-ring: #3BA9C9;
+
+  /* ── 间距阶梯（4 的倍数，统一消灭散落魔法数字）── */
+  --lf-space-1: 4px;
+  --lf-space-2: 8px;
+  --lf-space-3: 12px;
+  --lf-space-4: 16px;
+  --lf-space-5: 20px;
+  --lf-space-6: 24px;
+  --lf-space-8: 32px;
+  --lf-space-10: 40px;
+
+  /* ── 圆角阶梯 ── */
+  --lf-radius-sm: 8px;
+  --lf-radius-md: 12px;
+  --lf-radius-lg: 16px;
+  --lf-radius-xl: 20px;
+  --lf-radius-2xl: 24px;
+  --lf-radius-full: 999px;
+
+  /* ── 层次阴影（elevation 分级）── */
+  --lf-elev-1: 0 2px 8px rgba(44, 110, 143, 0.06);   /* 静态卡片 */
+  --lf-elev-2: 0 6px 18px rgba(44, 110, 143, 0.10);  /* 悬浮/磁贴 */
+  --lf-elev-3: 0 12px 34px rgba(44, 110, 143, 0.14); /* 模态/浮层 */
+  --lf-elev-hover: 0 18px 44px rgba(44, 110, 143, 0.18);
+
+  /* ── 动效时长（framer-motion 与 CSS 共用一套）── */
+  --lf-dur-fast: 150ms;
+  --lf-dur-base: 250ms;
+  --lf-dur-slow: 450ms;
+  --lf-ease-soft: cubic-bezier(.22, 1, .36, 1);
+
+  /* ── 字号阶梯（h1–h4 / 正文 / caption）── */
+  --lf-text-xs: 12px;   /* caption */
+  --lf-text-sm: 13px;   /* 次要说明 */
+  --lf-text-base: 14px; /* 正文 */
+  --lf-text-md: 16px;   /* 小标题 */
+  --lf-text-lg: 18px;
+  --lf-text-xl: 20px;
+  --lf-text-2xl: 24px;
+  --lf-text-3xl: 30px;
+  --lf-text-micro: 11px;
+
+  /* ── 语义色（text 深一档满足 AA / soft 浅底，与 tailwind 同名 token 对齐）── */
+  --lf-sem-success-soft: #E7F6EE;
+  --lf-sem-success-text: #1F8A51;
+  --lf-sem-hint-soft: #E6F4F9;
+  --lf-sem-hint-text: #1F7393;
+  --lf-sem-risk-soft: #FCEDEC;
+  --lf-sem-risk-text: #C0392B;
+  --lf-sem-rest-soft: #F1ECFB;
+  --lf-sem-rest-text: #6D4FC0;
+  --lf-warning: #E0901A;
+  --lf-warning-soft: #FEF3C7;
+  --lf-warning-text: #B45309;
+
+  /* ── 中性色阶（文本/边框/背景）── */
+  --lf-neutral-50: #F8FAFC;
+  --lf-neutral-100: #F1F5F9;
+  --lf-neutral-200: #E2E8F0;
+  --lf-neutral-300: #CBD5E1;
+  --lf-neutral-400: #94A3B8;
+  --lf-neutral-500: #64748B;
+  --lf-neutral-600: #475569;
+  --lf-neutral-700: #334155;
+  --lf-neutral-900: #0F172A;
 }
 
 /* 中文优先可读字体（含 Noto Sans SC 回退） */
@@ -463,6 +514,10 @@ a.tap-target {
 .lf-btn-ghost:hover { background: #E2E8F0; }
 .lf-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
+/* 刷新/加载旋转动画（演示数据按钮） */
+.spin { animation: lf-spin 0.9s linear infinite; }
+@keyframes lf-spin { to { transform: rotate(360deg); } }
+
 /* 学科色徽章（全圆） */
 .lf-badge {
   display: inline-flex;
@@ -474,3 +529,199 @@ a.tap-target {
   font-weight: 600;
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
 }
+
+/* =========================================================
+   v3 整体视觉升级（Spec §9，向后兼容）
+   - 真实圆润展示字体（Baloo 2 / Nunito）+ 中文 Noto Sans SC
+   - 柔光渐变背景 + 卡片渐变描边 + 按钮微光
+   ========================================================= */
+
+/* 统一展示标题字体（覆盖上方 Montserrat，中文走 Noto Sans SC） */
+h1, h2, h3, h4, h5 {
+  font-family: 'Baloo 2', 'Nunito', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* 柔光渐变应用背景（替代纯色 #F8FAFC） */
+body {
+  background:
+    radial-gradient(1100px 560px at 100% -8%, rgba(59, 169, 201, 0.12), transparent 60%),
+    radial-gradient(900px 520px at -8% 6%, rgba(155, 126, 222, 0.10), transparent 55%),
+    linear-gradient(180deg, #F7FBFD 0%, #EEF5FA 100%);
+  background-attachment: fixed;
+}
+
+/* 童趣卡片：渐变描边 + 分层柔影 + 平滑过渡 */
+.lf-card {
+  border: 1px solid rgba(44, 110, 143, 0.08);
+  box-shadow:
+    0 10px 30px rgba(44, 110, 143, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  transition: transform 0.28s var(--lf-ease), box-shadow 0.28s var(--lf-ease), border-color 0.28s var(--lf-ease);
+}
+/* 可交互卡片悬浮抬升（仅显式标注处生效，避免与 framer-motion 冲突） */
+.lf-card-elevate { cursor: pointer; }
+.lf-card-elevate:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 44px rgba(44, 110, 143, 0.16), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  border-color: rgba(59, 169, 201, 0.4);
+}
+
+/* 主按钮：青蓝渐变 + 微光扫过 */
+.lf-btn-primary {
+  background: linear-gradient(135deg, #3BA9C9 0%, #2C6E8F 100%);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(44, 110, 143, 0.30);
+  position: relative;
+  overflow: hidden;
+}
+.lf-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -160%;
+  width: 70%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.lf-btn-primary:hover {
+  background: linear-gradient(135deg, #46BBDD 0%, #2C6E8F 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(44, 110, 143, 0.40);
+}
+.lf-btn-primary:hover::after { left: 140%; }
+.lf-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: 0 6px 18px rgba(44, 110, 143, 0.30); }
+
+/* 渐变文字（标题/品牌强调） */
+.lf-gradient-text {
+  background: linear-gradient(135deg, #2C6E8F 0%, #3BA9C9 55%, #9B7EDE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 渐隐分隔线 */
+.lf-divider {
+  height: 1px;
+  border: 0;
+  margin: 18px 0;
+  background: linear-gradient(90deg, transparent, #E3EEF3 18%, #E3EEF3 82%, transparent);
+}
+
+/* 精致滚动条 */
+* { scrollbar-width: thin; scrollbar-color: #CBD5E1 transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1; border-radius: 999px;
+  border: 2px solid transparent; background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; background-clip: content-box; }
+
+/* 统一内容容器（与 Layout main 配合） */
+.lf-container { max-width: 1200px; margin: 0 auto; width: 100%; }
+
+/* 顶部细渐变强调条（页眉/卡片组可用） */
+.lf-accent-bar {
+  height: 4px; border-radius: 999px;
+  background: linear-gradient(90deg, #3BA9C9, #9B7EDE);
+}
+
+/* 数据磁贴：渐变顶部强调条（StatTile 复用） */
+.lf-stat-tile {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #EAF2F6 !important;
+}
+.lf-stat-tile::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3BA9C9, #9B7EDE);
+}
+
+/* =========================================================
+   v4 统一设计 Token（单一事实来源，补全既有 --lf-* 命名）
+   既有页面已按 --lf-neutral-* / --lf-sem-*-soft / --lf-text-* /
+   --lf-ease-soft 等命名引用，此处把它们全部落地，消除
+   "页面已迁移、CSS 未实现"造成的样式缺失与不一致。
+   ========================================================= */
+:root {
+  /* 中性色阶：文字 / 边框 / 背景（50 最浅 → 900 最深） */
+  --lf-neutral-50: #F8FAFC;
+  --lf-neutral-100: #F1F5F9;
+  --lf-neutral-200: #E2E8F0;
+  --lf-neutral-300: #CBD5E1;
+  --lf-neutral-400: #94A3B8;
+  --lf-neutral-500: #64748B;
+  --lf-neutral-600: #475569;
+  --lf-neutral-700: #334155;
+  --lf-neutral-800: #1E293B;
+  --lf-neutral-900: #0F172A;
+
+  /* 语义色 soft 浅底（与上方 --lf-sem-* 配套） */
+  --lf-sem-success-soft: #E7F6EE;
+  --lf-sem-hint-soft: #E6F4F9;
+  --lf-sem-rest-soft: #F1ECFB;
+  --lf-sem-risk-soft: #FCEDEC;
+  --lf-sem-warning-soft: #FEF3C7;
+  /* 独立 warning 文案 / 浅底（待复习等提示文字） */
+  --lf-warning-soft: #FEF3C7;
+  --lf-warning-text: #B45309;
+
+  /* 字号阶梯（与 theme/tokens.ts TYPE 对齐） */
+  --lf-text-xs: 11px;
+  --lf-text-sm: 13px;
+  --lf-text-base: 15px;
+  --lf-text-md: 16px;
+  --lf-text-lg: 20px;
+  --lf-text-xl: 24px;
+  --lf-text-2xl: 26px;
+
+  /* 圆角分级（card/btn/badge 已在上方定义） */
+  --lf-radius-sm: 10px;
+  --lf-radius-md: 14px;
+
+  /* 动效缓动（页面引用的 --lf-ease-soft；与 --lf-ease 同曲线） */
+  --lf-ease-soft: cubic-bezier(.22, 1, .36, 1);
+
+  /* 层次 / 阴影分级（elevation） */
+  --lf-elev-flat: 0 1px 2px rgba(15, 42, 74, 0.04);
+  --lf-elev-soft: 0 4px 16px rgba(15, 42, 74, 0.06);
+  --lf-elev-raised: 0 10px 30px rgba(44, 110, 143, 0.10);
+  --lf-elev-overlay: 0 18px 44px rgba(44, 110, 143, 0.16);
+}
+
+/* 旧品牌色重新指向青蓝体系（遗留 .card / .btn 兼容，避免紫色突兀） */
+:root {
+  --primary: #3BA9C9;
+  --primary-light: #7CC6DD;
+  --primary-dark: #2C6E8F;
+  --secondary: #9B7EDE;
+  --success: var(--lf-sem-success);
+  --warning: #E0901A;
+  --danger: var(--lf-sem-risk);
+  --shadow-purple: 0 6px 20px rgba(44, 110, 143, 0.15);
+}
+
+/* ── 语义文字 / 底色工具类（统一调用，消灭散落魔法数字）── */
+.lf-text-primary { color: var(--lf-primary-high); }
+.lf-text-secondary { color: var(--lf-neutral-600); }
+.lf-text-muted { color: var(--lf-neutral-400); }
+.lf-border { border: 1px solid var(--lf-neutral-200); }
+
+.lf-bg-surface-2 { background: var(--lf-neutral-100); }
+.lf-bg-surface-3 { background: var(--lf-neutral-50); }
+
+.lf-text-success { color: var(--lf-sem-success); }
+.lf-text-hint { color: var(--lf-sem-hint); }
+.lf-text-rest { color: var(--lf-sem-rest); }
+.lf-text-risk { color: var(--lf-sem-risk); }
+.lf-text-warning { color: var(--lf-warning-text); }
+
+.lf-bg-success-soft { background: var(--lf-sem-success-soft); }
+.lf-bg-hint-soft { background: var(--lf-sem-hint-soft); }
+.lf-bg-rest-soft { background: var(--lf-sem-rest-soft); }
+.lf-bg-risk-soft { background: var(--lf-sem-risk-soft); }
+.lf-bg-warning-soft { background: var(--lf-sem-warning-soft); }

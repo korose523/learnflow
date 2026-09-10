@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "title": "LearnFlow 抗成瘾层计算式评估 (in-silico ablation)",
+    "source": "sample_log:sample_desensitized_log.csv",
+    "seed": 20260906,
+    "N": 120,
+    "declaration": "计算式/设计验证，非田野实验",
+    "class_cohesion": 78.0,
+    "class_active_ratio": 0.75,
+    "class_pet_connection_quality": 0.771
+  },
+  "high_risk_rescue": {
+    "c0_high_risk_count": 16,
+    "rescued_count": 2,
+    "rescue_rate_pct": 12.5
+  },
+  "scenarios": {
+    "C0_baseline": {
+      "n": 120,
+      "mean_lai": 59.79,
+      "median_lai": 59.75,
+      "sd_lai": 9.73,
+      "dim_means": {
+        "time": 63.7,
+        "motivation": 41.7,
+        "control": 64.2,
+        "cognition": 79.9,
+        "function": 62.1
+      },
+      "tier_counts": {
+        "L1_NORMAL": 0,
+        "L2_WATCH": 104,
+        "L3_DEEP": 16,
+        "L4_PATHOLOGICAL": 0
+      },
+      "pct_reduce_gamification": 50.8,
+      "pct_notify_guardian": 13.3
+    },
+    "C1_classpet": {
+      "n": 120,
+      "mean_lai": 60.24,
+      "median_lai": 60.21,
+      "sd_lai": 9.74,
+      "dim_means": {
+        "time": 63.7,
+        "motivation": 43.1,
+        "control": 64.2,
+        "cognition": 79.9,
+        "function": 63.2
+      },
+      "tier_counts": {
+        "L1_NORMAL": 0,
+        "L2_WATCH": 105,
+        "L3_DEEP": 15,
+        "L4_PATHOLOGICAL": 0
+      },
+      "pct_reduce_gamification": 50.8,
+      "pct_notify_guardian": 12.5
+    },
+    "C2_full": {
+      "n": 120,
+      "mean_lai": 61.56,
+      "median_lai": 61.65,
+      "sd_lai": 9.38,
+      "dim_means": {
+        "time": 63.7,
+        "motivation": 47.5,
+        "control": 64.2,
+        "cognition": 82.1,
+        "function": 63.2
+      },
+      "tier_counts": {
+        "L1_NORMAL": 1,
+        "L2_WATCH": 105,
+        "L3_DEEP": 14,
+        "L4_PATHOLOGICAL": 0
+      },
+      "pct_reduce_gamification": 43.3,
+      "pct_notify_guardian": 11.7
+    }
+  },
+  "arbitrator_ablation": {
+    "candidates": [
+      "LF-M44",
+      "LF-M33",
+      "LF-M08",
+      "LF-M07",
+      "LF-M35"
+    ],
+    "delivered_lai_none": [
+      "LF-M07",
+      "LF-M08",
+      "LF-M33",
+      "LF-M35",
+      "LF-M44"
+    ],
+    "delivered_lai_high": [
+      "LF-M07",
+      "LF-M08",
+      "LF-M35"
+    ],
+    "dropped_by_risk": [
+      "LF-M33",
+      "LF-M44"
+    ],
+    "count_none": 5,
+    "count_high": 3
+  },
+  "delta": {
+    "C1_minus_C0_mean_lai": 0.45,
+    "C2_minus_C0_mean_lai": 1.77,
+    "C2_minus_C1_mean_lai": 1.32
+  }
+}

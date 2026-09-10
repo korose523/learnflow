@@ -4,7 +4,9 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar,
 } from 'recharts';
 import { CalendarDays, Clock, ShieldAlert, ShieldCheck, Gauge } from 'lucide-react';
-import { parentApi } from '../services/api';
+import { parentApi, laiApi } from '../services/api';
+import LAIHealthCard from '../components/common/LAIHealthCard';
+import MascotBubble from '../components/common/MascotBubble';
 import { useAuth } from '../contexts/AuthContext';
 import { useMotionPref } from '../contexts/MotionContext';
 import { EASE_SOFT, subjectColor, subjectMeta } from '../theme/tokens';
@@ -26,6 +28,7 @@ export default function ParentPage() {
   const { user } = useAuth();
   const { reduced } = useMotionPref();
   const [report, setReport] = useState<WeeklyReport | null>(null);
+  const [lai, setLai] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   // 家长端：孩子 id（演示用，可在真实环境从 /parent/children 选取）
@@ -34,10 +37,17 @@ export default function ParentPage() {
   const [limitSaved, setLimitSaved] = useState(false);
 
   useEffect(() => {
-    parentApi.weeklyReport({ student_id: childId })
-      .then(({ data }) => setReport(data))
-      .catch((err: any) => setError(err?.response?.data?.detail || '周报加载失败'))
-      .finally(() => setLoading(false));
+    let alive = true;
+    Promise.all([
+      parentApi.weeklyReport({ student_id: childId }).then(({ data }) => data).catch(() => null),
+      laiApi.dashboard(childId === 'me' ? undefined : childId).then(({ data }) => data).catch(() => null),
+    ]).then(([rep, laiData]) => {
+      if (!alive) return;
+      setReport(rep);
+      setLai(laiData);
+      setLoading(false);
+    });
+    return () => { alive = false; };
   }, [childId]);
 
   const saveLimit = () => {
@@ -85,6 +95,9 @@ export default function ParentPage() {
           <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 4 }}>基于专注度与休息节奏的综合判断</div>
         </motion.div>
       </div>
+
+      {/* 孩子的学习健康分（LAI）— 论文核心构念，数据驱动自真实行为日志 */}
+      {lai && <LAIHealthCard data={lai} />}
 
       {/* 难度曲线 */}
       <motion.div className="lf-card" style={{ marginTop: 16 }} initial={reduced ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE_SOFT }}>

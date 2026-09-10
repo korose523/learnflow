@@ -7,6 +7,7 @@ interface User {
   name: string;
   role: 'student' | 'teacher' | 'parent' | 'admin';
   grade?: string;
+  class_id?: string;
 }
 
 interface AuthState {

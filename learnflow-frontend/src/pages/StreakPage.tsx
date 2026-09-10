@@ -32,8 +32,8 @@ export default function StreakPage() {
       <div style={{ fontSize: 24, fontWeight: 700, marginBottom: 12 }}>连胜中心暂时不可用</div>
       <div style={{ color: '#64748b', marginBottom: 20 }}>{error || '请稍后重试'}</div>
       <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-        <button className="btn btn-primary" onClick={loadStreak}>重试</button>
-        <button className="btn btn-ghost" onClick={() => navigate('/student')}>返回首页</button>
+        <button className="lf-btn lf-btn-primary" onClick={loadStreak}>重试</button>
+        <button className="lf-btn lf-btn-ghost" onClick={() => navigate('/student')}>返回首页</button>
       </div>
     </div>
   );
@@ -41,11 +41,11 @@ export default function StreakPage() {
   return (
     <div>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <button className="btn btn-ghost" onClick={() => navigate('/student')}><ArrowLeft size={18} /></button>
+        <button className="lf-btn lf-btn-ghost" onClick={() => navigate('/student')}><ArrowLeft size={18} /></button>
         <h1 style={{ fontSize: 24, fontWeight: 700 }}>🔥 连胜中心</h1>
       </div>
 
-      <div className="card" style={{ textAlign: 'center', marginBottom: 20, background: 'linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%)' }}>
+      <div className="lf-card" style={{ textAlign: 'center', marginBottom: 20, background: 'linear-gradient(135deg, #fef3c7 0%, #fee2e2 100%)' }}>
         <div style={{ fontSize: 72, marginBottom: 8 }}>{data.fire_icons}</div>
         <div style={{ fontSize: 48, fontWeight: 700, color: '#ef4444' }}>{data.current_streak}</div>
         <div style={{ fontSize: 18, color: '#64748b', marginBottom: 8 }}>连续学习天数</div>
@@ -53,19 +53,19 @@ export default function StreakPage() {
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 20 }}>
-        <div className="card" style={{ textAlign: 'center' }}>
+        <div className="lf-card" style={{ textAlign: 'center' }}>
           <Trophy size={28} color="#f59e0b" style={{ marginBottom: 8 }} />
           <div style={{ fontSize: 28, fontWeight: 700 }}>{data.best_streak}</div>
           <div style={{ fontSize: 13, color: '#64748b' }}>历史最高</div>
         </div>
-        <div className="card" style={{ textAlign: 'center' }}>
-          <Calendar size={28} color="#6366f1" style={{ marginBottom: 8 }} />
+        <div className="lf-card" style={{ textAlign: 'center' }}>
+          <Calendar size={28} color="#2C6E8F" style={{ marginBottom: 8 }} />
           <div style={{ fontSize: 28, fontWeight: 700 }}>{data.streak_freezes_available}</div>
           <div style={{ fontSize: 13, color: '#64748b' }}>冻结卡</div>
         </div>
       </div>
 
-      <div className="card">
+      <div className="lf-card">
         <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: 16, display: 'flex', alignItems: 'center', gap: 6 }}>
           <Flame size={18} color="#ef4444" /> 连胜里程碑
         </h2>

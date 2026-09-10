@@ -5,10 +5,13 @@ import { BookOpen, GraduationCap, Users, Shield, LogOut, Activity } from 'lucide
 import { useAuth } from '../../contexts/AuthContext';
 import { useMotionPref } from '../../contexts/MotionContext';
 import { EASE_SOFT } from '../../theme/tokens';
+import AmbientOrbs from './AmbientOrbs';
 
 const navItems = [
   { path: '/student', label: '学生端', icon: BookOpen, role: 'student' },
+  { path: '/student/ai-risk', label: 'AI 风险', icon: Activity, role: 'student' },
   { path: '/teacher', label: '教师端', icon: GraduationCap, role: 'teacher' },
+  { path: '/teacher/ai-analytics', label: 'AI 分析', icon: Activity, role: 'teacher' },
   { path: '/parent', label: '家长端', icon: Users, role: 'parent' },
   { path: '/admin', label: '管理端', icon: Shield, role: 'admin' },
 ];
@@ -34,36 +37,43 @@ export default function Layout() {
   const filteredNav = navItems.filter(item => item.role === user?.role);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#F7FBFD' }}>
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'transparent' }}>
+      {/* 全局柔光氛围背景（纯装饰、pointer-events:none、减弱动效时不渲染） */}
+      <AmbientOrbs />
       <header style={{
-        background: 'rgba(255,255,255,0.92)',
-        backdropFilter: 'blur(8px)',
-        borderBottom: '1px solid #E3EEF3',
+        background: 'rgba(255,255,255,0.82)',
+        backdropFilter: 'blur(14px) saturate(150%)',
+        WebkitBackdropFilter: 'blur(14px) saturate(150%)',
+        borderBottom: '1px solid rgba(44,110,143,0.08)',
         padding: '10px 24px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        boxShadow: '0 2px 12px rgba(59,169,201,0.06)',
+        boxShadow: '0 4px 18px rgba(59,169,201,0.07)',
         position: 'sticky',
         top: 0,
         zIndex: 100,
       }}>
-        {/* 左侧 Logo（童趣圆润） */}
+        {/* 左侧 Logo（童趣圆润 + 渐变芯片） */}
         <Link to={`/${user?.role || 'student'}`} style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
             style={{
-              fontSize: 30, width: 44, height: 44, display: 'inline-flex',
+              fontSize: 26, width: 44, height: 44, display: 'inline-flex',
               alignItems: 'center', justifyContent: 'center',
-              background: '#EAF6FB', borderRadius: 14,
+              background: 'linear-gradient(135deg, #3BA9C9, #9B7EDE)',
+              borderRadius: 14, boxShadow: '0 6px 16px rgba(44,110,143,0.28)',
             }}
           >🎓</span>
-          <span style={{ fontSize: 20, fontWeight: 800, color: '#2C6E8F', fontFamily: "'Baloo 2','Nunito','Noto Sans SC',sans-serif" }}>LearnFlow</span>
+          <span className="lf-gradient-text" style={{ fontSize: 21, fontWeight: 800, fontFamily: "'Baloo 2','Nunito','Noto Sans SC',sans-serif" }}>LearnFlow</span>
         </Link>
 
         {/* 中间导航 */}
         <nav style={{ display: 'flex', gap: 6 }}>
           {filteredNav.map(({ path, label, icon: Icon }) => {
-            const isActive = location.pathname.startsWith(path) || (path === '/student' && location.pathname === '/');
+            const isRoleTab = ['/student', '/teacher', '/parent', '/admin'].includes(path);
+            const isActive = isRoleTab
+              ? (location.pathname === path || (path === '/student' && location.pathname === '/'))
+              : location.pathname.startsWith(path);
             return (
               <Link
                 key={path}
@@ -73,8 +83,9 @@ export default function Layout() {
                   padding: '8px 16px',
                   borderRadius: 14,
                   textDecoration: 'none',
-                  color: isActive ? '#2C6E8F' : '#64748B',
-                  background: isActive ? '#EAF6FB' : 'transparent',
+                  color: isActive ? '#fff' : '#64748B',
+                  background: isActive ? 'linear-gradient(135deg, #3BA9C9, #2C6E8F)' : 'transparent',
+                  boxShadow: isActive ? '0 6px 16px rgba(44,110,143,0.28)' : 'none',
                   fontWeight: isActive ? 700 : 500,
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -138,7 +149,7 @@ export default function Layout() {
         </div>
       </header>
 
-      <main style={{ flex: 1, padding: '24px 16px', maxWidth: 1200, margin: '0 auto', width: '100%' }}>
+      <main style={{ flex: 1, padding: '24px 16px', maxWidth: 1200, margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
         <motion.div
           initial={reduced ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
