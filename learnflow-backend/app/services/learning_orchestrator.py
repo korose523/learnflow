@@ -1189,7 +1189,10 @@ class LearningOrchestrator:
         res = await db.execute(select(AbilityEstimate).where(AbilityEstimate.user_id == user.id))
         row = res.scalar_one_or_none()
         if row is not None and row.updated_at is not None:
-            age = (datetime.now(UTC) - row.updated_at).total_seconds()
+            # SQLite 读回的 DateTime 为 naive（视为 UTC）；与 aware 的 now(UTC) 相减会抛
+            # TypeError。统一补齐时区后再算缓存年龄。
+            updated_at = row.updated_at.replace(tzinfo=UTC) if row.updated_at.tzinfo is None else row.updated_at
+            age = (datetime.now(UTC) - updated_at).total_seconds()
             if age < ABILITY_TTL:
                 await cache_ability(user.id, row.theta, row.sigma)
                 return (row.theta, row.sigma)

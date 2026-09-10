@@ -396,7 +396,12 @@ class MemoryScienceOrchestrator:
             )
             elapsed = 0.0
             if state.last_review:
-                elapsed = (datetime.now(UTC) - state.last_review).total_seconds() / 86400
+                lr = state.last_review
+                # SQLite 读回的 DateTime 为 naive；补齐 UTC 时区后再相减，避免 TypeError。
+                if isinstance(lr, datetime) and lr.tzinfo is None:
+                    lr = lr.replace(tzinfo=UTC)
+                if isinstance(lr, datetime):
+                    elapsed = (datetime.now(UTC) - lr).total_seconds() / 86400
             r = FSRSSpacedRepetitionEngine.retrievability(state.stability, elapsed)
             interval = FSRSSpacedRepetitionEngine.recommended_interval(state.stability, state.difficulty)
             plan.append({

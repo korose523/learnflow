@@ -1,29 +1,26 @@
 """数据库种子数据：演示账号 + 默认反馈文案 + 示例题目"""
 import argparse
 import asyncio
-import os
 import secrets
 from app.core.database import AsyncSessionLocal, init_db
+from app.core.config import settings
 from app.models.user import User, UserRole
 from app.models.pet import PetProfile, PetBreed
-from app.models.task import Task
-from app.models.consent import FeedbackScript
 from app.core.security import hash_password
+from app.services.seed_data import ensure_sample_tasks, ensure_feedback_scripts
 from sqlalchemy import select, func, delete
 
 
 # 种子用户密码：优先从环境变量读取，否则生成随机密码
-SEED_ADMIN_PW = os.getenv("SEED_ADMIN_PASSWORD", secrets.token_urlsafe(12))
-SEED_TEACHER_PW = os.getenv("SEED_TEACHER_PASSWORD", secrets.token_urlsafe(12))
-SEED_STUDENT_PW = os.getenv("SEED_STUDENT_PASSWORD", secrets.token_urlsafe(12))
-SEED_PARENT_PW = os.getenv("SEED_PARENT_PASSWORD", secrets.token_urlsafe(12))
+SEED_ADMIN_PW = settings.SEED_ADMIN_PASSWORD or secrets.token_urlsafe(12)
+SEED_TEACHER_PW = settings.SEED_TEACHER_PASSWORD or secrets.token_urlsafe(12)
+SEED_STUDENT_PW = settings.SEED_STUDENT_PASSWORD or secrets.token_urlsafe(12)
+SEED_PARENT_PW = settings.SEED_PARENT_PASSWORD or secrets.token_urlsafe(12)
 
-PW_SOURCE = "环境变量" if any(
-    os.getenv(k) for k in [
-        "SEED_ADMIN_PASSWORD", "SEED_TEACHER_PASSWORD",
-        "SEED_STUDENT_PASSWORD", "SEED_PARENT_PASSWORD",
-    ]
-) else "随机生成（请记录或使用环境变量重新设置）"
+PW_SOURCE = "环境配置" if any([
+    settings.SEED_ADMIN_PASSWORD, settings.SEED_TEACHER_PASSWORD,
+    settings.SEED_STUDENT_PASSWORD, settings.SEED_PARENT_PASSWORD,
+]) else "随机生成（请记录或通过 .env 重新设置）"
 
 SAMPLE_TASKS = [
     {"topic": "一元一次方程", "difficulty": 3, "content": "解方程：2x + 5 = 13", "correct_answer": "4", "explanation": "移项：2x = 13 - 5 = 8，两边除以2：x = 4"},
@@ -110,9 +107,9 @@ async def seed(force: bool = False):
             )
             db.add(student)
 
-            # 创建家长（通过关联绑定）
+            # 创建家长（通过关联绑定，统一采用 parent_{student_local}@learnflow.com 方案）
             parent = User(
-                email="parent@learnflow.com",
+                email="parent_student@learnflow.com",
                 hashed_password=hash_password(SEED_PARENT_PW),
                 name="小明爸爸",
                 role=UserRole.PARENT,

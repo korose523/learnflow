@@ -587,7 +587,19 @@ class UnfinishedTask:
         if self.reminder_count >= 3:
             return False
         if self.last_reminded_at:
-            return (datetime.now(UTC) - self.last_reminded_at).total_seconds() / 3600 >= 6
+            lr = self.last_reminded_at
+            # SQLite / JSON 落盘读回的 DateTime 可能为 naive 字符串或 naive datetime；
+            # 统一解析为 UTC aware 后再比较，避免 TypeError。
+            if isinstance(lr, str):
+                try:
+                    lr = datetime.fromisoformat(lr)
+                except ValueError:
+                    return True
+            if isinstance(lr, datetime) and lr.tzinfo is None:
+                lr = lr.replace(tzinfo=UTC)
+            if isinstance(lr, datetime):
+                return (datetime.now(UTC) - lr).total_seconds() / 3600 >= 6
+            return True
         return True
 
 

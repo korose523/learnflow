@@ -67,33 +67,49 @@ async def get_db() -> AsyncSession:
 
 
 async def _ensure_schema_extensions(engine):
-    """为已存在的表补充新增的可空列（create_all 不会 ALTER 既有表，兼容开发库升级）"""
+    """为【已存在】的表自动补充模型里新增、但数据库尚未包含的列。
+
+    早期开发库（如 learnflow.db）是在 User 模型加入 phone / school_id / class_id
+    等列之前创建的。``Base.metadata.create_all`` 只会建【缺失的表】，不会 ALTER
+    既有表，于是查询 users 表会报 ``no such column``，连带登录与所有用户相关接口失效。
+
+    这里改为【基于 Base.metadata 自动比对】，不再手工维护列清单：模型演进后无需
+    改这里即可自愈。规则：
+    - 仅对当前数据库【已存在】的表做扩展（create_all 已负责缺失的整表）；
+    - 仅补充【缺失】的列，已存在的列不动；
+    - 仅当列声明为非空且当前表为空时才追加 NOT NULL，否则放宽成可空，
+      避免既有数据行违反约束导致 ALTER 失败（开发库迁移，生产请用 Alembic）。
+    """
     from sqlalchemy import inspect as sa_inspect, text
-    # (表名, [(列名, 类型)])
-    extensions = {
-        "tasks": [("curriculum_node_id", "VARCHAR(36)")],
-        "student_skill_profiles": [("curriculum_node_id", "VARCHAR(36)")],
-        # 研究知情同意标记：新增列必须在此注册，否则已存在的开发库不会 ALTER 出该列，
-        # 功能会静默失效（不报错，只是没有这一列）。
-        "learning_events": [("research_consented", "BOOLEAN")],
-    }
     try:
         async with engine.begin() as conn:
             def _sync(sync_conn):
                 insp = sa_inspect(sync_conn)
-                for table, cols in extensions.items():
-                    if not insp.has_table(table):
+                existing_tables = set(insp.get_table_names())
+                for table_name, table in Base.metadata.tables.items():
+                    if table_name not in existing_tables:
                         continue
-                    existing = {c["name"] for c in insp.get_columns(table)}
-                    for col_name, col_type in cols:
-                        if col_name not in existing:
-                            sync_conn.execute(
-                                text(f"ALTER TABLE {table} ADD COLUMN {col_name} {col_type}")
-                            )
-                            logger.info(f"✅ 已为表 {table} 补充列 {col_name}")
+                    existing_cols = {c["name"] for c in insp.get_columns(table_name)}
+                    row_count = sync_conn.execute(
+                        text(f"SELECT COUNT(*) FROM {table_name}")
+                    ).scalar() or 0
+                    for col in table.columns:
+                        if col.name in existing_cols:
+                            continue
+                        # col.type 不含外键约束（FK 属于 Column 的 foreign_keys），
+                        # 因此 compile 出来只是纯类型，不会生成 REFERENCES 子句，
+                        # 规避了老版本 SQLite 不支持 ALTER ADD COLUMN ... REFERENCES 的问题。
+                        col_type = col.type.compile(dialect=engine.dialect)
+                        ddl = f"ALTER TABLE {table_name} ADD COLUMN {col.name} {col_type}"
+                        if (not col.nullable) and row_count == 0:
+                            ddl += " NOT NULL"
+                        sync_conn.execute(text(ddl))
+                        logger.info(
+                            f"✅ 已为表 {table_name} 补充列 {col.name} ({col_type})"
+                        )
             await conn.run_sync(_sync)
     except Exception as e:  # pragma: no cover
-        logger.warning("⚠️ schema 扩展跳过（%s），若列已存在可忽略", e)
+        logger.warning("⚠️ schema 自动扩展跳过（%s），若列已存在可安全忽略", e)
 
 
 async def init_db():

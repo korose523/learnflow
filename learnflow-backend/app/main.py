@@ -46,11 +46,21 @@ async def _ensure_demo_users() -> None:
     from app.services.onboarding_service import OnboardingService
     from sqlalchemy import select
 
+    demo_passwords = {
+        "student": settings.SEED_STUDENT_PASSWORD,
+        "teacher": settings.SEED_TEACHER_PASSWORD,
+        "parent": settings.SEED_PARENT_PASSWORD,
+        "admin": settings.SEED_ADMIN_PASSWORD,
+    }
+    if not all(demo_passwords.values()):
+        logger.warning("演示账号未创建：请先配置所有 SEED_*_PASSWORD 环境变量")
+        return
+
     demo_users = [
-        ("student@learnflow.com", "Student123!", "Demo Student", UserRole.STUDENT),
-        ("teacher@learnflow.com", "Teacher123!", "Demo Teacher", UserRole.TEACHER),
-        ("parent@learnflow.com", "Parent123!", "Demo Parent", UserRole.PARENT),
-        ("admin@learnflow.com", "Admin1234!", "Demo Admin", UserRole.ADMIN),
+        ("student@learnflow.com", demo_passwords["student"], "Demo Student", UserRole.STUDENT),
+        ("teacher@learnflow.com", demo_passwords["teacher"], "Demo Teacher", UserRole.TEACHER),
+        ("parent@learnflow.com", demo_passwords["parent"], "Demo Parent", UserRole.PARENT),
+        ("admin@learnflow.com", demo_passwords["admin"], "Demo Admin", UserRole.ADMIN),
     ]
 
     parent_bindings = {
@@ -95,7 +105,7 @@ async def _ensure_demo_users() -> None:
                 parent_name = f"{child_user.name}的家长"
                 parent_user = User(
                     email=parent_email,
-                    hashed_password=hash_password("Parent123!"),
+                hashed_password=hash_password(demo_passwords["parent"]),
                     name=parent_name,
                     role=UserRole.PARENT,
                     is_active=True,
@@ -120,6 +130,12 @@ async def _ensure_demo_users() -> None:
         # 第三步：统一 onboarding（默认宠物、技能画像、consents、演示绑定）
         for user in created_or_existing.values():
             await OnboardingService.onboard(user, db)
+
+        # 补充示例题目与默认反馈文案，使「答题 / 反馈」链路开箱即用
+        # （单一数据源见 app/services/seed_data.py，与 seed.py 共用，避免双份种子漂移）
+        from app.services.seed_data import ensure_sample_tasks, ensure_feedback_scripts
+        await ensure_sample_tasks(db)
+        await ensure_feedback_scripts(db)
 
         await db.commit()
     logger.info("✅ 演示账号种子数据完成")
@@ -149,12 +165,15 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.error(f"❌ 数据库初始化失败（应用将继续运行）: {e}")
 
-    # 创建演示账号种子数据
-    try:
-        await _ensure_demo_users()
-        logger.info("✅ 演示账号种子数据完成")
-    except Exception as e:
-        logger.error(f"❌ 创建演示账号失败: {e}")
+    # 演示数据只能由显式开关启动，避免生产环境出现默认账号。
+    if settings.DEMO_DATA_ENABLED:
+        try:
+            await _ensure_demo_users()
+            logger.info("✅ 演示账号种子数据完成")
+        except Exception as e:
+            logger.error(f"❌ 创建演示账号失败: {e}")
+    else:
+        logger.info("ℹ️ 演示账号创建已关闭（DEMO_DATA_ENABLED=false）")
 
     yield
 
