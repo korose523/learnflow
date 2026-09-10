@@ -190,8 +190,8 @@ class MechanismArbitrator:
         # 丢弃其余 approach 机制 (保留 withdraw/neutral 不受影响)。未训练 -> 完全跳过,
         # 行为与旧版一致 (向后兼容, 保守偏置兜底)。
         chosen_rl_id: Optional[str] = None
-        if self.rl_arbitrator is not None and self.rl_arbitrator.trained():
-            risk_tier = self._risk_tier(lai_risk) if lai_risk is not None else 0
+        risk_tier = self._risk_tier(lai_risk) if lai_risk is not None else 0
+        if self.rl_arbitrator is not None and self.rl_arbitrator.ready(risk_tier):
             rl_id = self.rl_arbitrator.select_mechanism(ctx, effects, risk_tier)
             if rl_id is not None:
                 chosen_rl_id = rl_id
@@ -214,11 +214,41 @@ class MechanismArbitrator:
             self.trace_sink(trace)
         ctx.trace.append(f"ARBITRATE delivered={trace.delivered}")
 
-        # 记录 RL 反馈目标: 仅当 RL 实际参与决策, 且选中的 approach 机制确实被下发。
-        # 后续该用户/会话的 LAI 改善将通过 report_lai_feedback 回灌为奖励信号。
+        # 记录 RL 反馈目标, 供后续 report_lai_feedback / report_reward 回灌奖励。
+        #
+        # 两种情况, 缺一不可:
+        #   1) RL 已接管并选中某 approach 且确实下发 → 记录该机制 (真实 RL 决策目标);
+        #   2) 冷启动: RL 尚未在该风险档学够, 本轮由规则层决策 → 记录规则层实际下发的
+        #      approach 机制作为**影子目标** (shadow)。
+        #
+        # 情况 2 是**解除冷启动死锁的关键**。此前只记录情况 1, 而「RL 是否接管」又要求
+        # Q 表非空 (trained), Q 却只能由 observe 写入 —— 于是永远不 observe、永远不训练,
+        # 整条 AI 决策链路形同虚设。影子学习让冷启动阶段规则层的决策也能被观测,
+        # Q 表由此起量, 达到 MIN_OBS_FOR_DECISION 后 RL 才接管决策。
+        #
+        # 伦理含义: 影子学习只是**观测**规则层的选择, 不干预、不改动本轮下发的任何机制,
+        # 因此冷启动期的行为与未接线时完全一致 (保守偏置不变)。
+        _feedback_id: Optional[str] = None
+        _shadow = False
         if chosen_rl_id is not None and chosen_rl_id in trace.delivered:
-            risk_tier = self._risk_tier(lai_risk) if lai_risk is not None else 0
-            rec: Dict[str, object] = {"risk_tier": risk_tier, "chosen_id": chosen_rl_id}
+            _feedback_id = chosen_rl_id
+        elif self.rl_arbitrator is not None:
+            # 冷启动影子: 取规则层本轮实际下发的第一个 approach 机制
+            _feedback_id = next(
+                (
+                    mid for mid in trace.delivered
+                    if self._DIRECTION.get(mid) == "approach"
+                ),
+                None,
+            )
+            _shadow = _feedback_id is not None
+
+        if _feedback_id is not None:
+            rec: Dict[str, object] = {
+                "risk_tier": risk_tier,
+                "chosen_id": _feedback_id,
+                "shadow": _shadow,
+            }
             self._rl_pending[(ctx.user_id, ctx.session_id)] = rec
             self._rl_last[ctx.user_id] = rec
 
@@ -254,27 +284,59 @@ class MechanismArbitrator:
             (风险档, 机制ID) 状态-动作对。
 
         安全性 / 向后兼容:
-            * RL 仲裁器未注入 (``rl_arbitrator is None``) 或尚未训练 → 直接返回 ``None``,
+            * RL 仲裁器未注入 (``rl_arbitrator is None``) → 直接返回 ``None``,
               不改动任何状态, 规则仲裁行为完全不变;
-            * 若该用户/会话此前没有 RL 决策目标 → 返回 ``None`` (无反馈对象)。
+            * 若该用户/会话此前没有反馈目标 → 返回 ``None`` (无反馈对象)。
+
+        注意 (曾导致冷启动死锁): 这里**不再**要求 ``rl_arbitrator.trained()``。
+        「是否让 RL 接管决策」由 arbitrate 第 1.7 层的 ``ready(risk_tier)`` 把关;
+        「是否可以学习」没有门槛 —— 否则 Q 表永远为空, 训练永远无法开始。
         返回实际下发的奖励值 (无目标时返回 None)。
         """
-        if self.rl_arbitrator is None or not self.rl_arbitrator.trained():
+        reward = (lai_after - lai_before) / 100.0
+        fed = self.report_reward(user_id, reward, session_id=session_id)
+        if fed is None:
+            return None
+        logger.info(
+            "RL 反馈: user=%s mech=%s reward=%.4f (LAI %.1f->%.1f)",
+            user_id, fed[1], reward, lai_before, lai_after,
+        )
+        return reward
+
+    def report_reward(
+        self,
+        user_id: str,
+        reward: float,
+        session_id: Optional[str] = None,
+    ) -> Optional[Tuple[int, str]]:
+        """把一次已算好的奖励回灌给 RL 仲裁器 (通用反馈通道)。
+
+        这是 RL 在线学习的**唯一入口**: :meth:`report_lai_feedback` 是本方法在
+        「奖励 = LAI 改善」这一特定口径下的薄封装; 主学习流程里由
+        ``intervention_reward.compute_reward`` 综合掌握度增益与健康风险下降后,
+        直接调用本方法。避免两条通道各写一份回灌逻辑而产生漂移。
+
+        反馈目标来自 :meth:`arbitrate` 登记的 ``_rl_pending`` / ``_rl_last``,
+        可能是 RL 选中的机制, 也可能是冷启动期规则层下发机制的**影子目标**。
+
+        返回 ``(risk_tier, chosen_id)`` 表示本次确实回灌; ``None`` 表示无反馈对象
+        (RL 未注入 / 该用户本轮没有 approach 机制被下发), 调用方可据此跳过。
+        """
+        if self.rl_arbitrator is None:
             return None
         rec = self._rl_pending.pop((user_id, session_id), None)
-        if rec is None:                       # 退而求其次: 该用户最近一次 RL 决策
+        if rec is None:                       # 退而求其次: 该用户最近一次反馈目标
             rec = self._rl_last.get(user_id)
         if rec is None:
             return None
-        reward = (lai_after - lai_before) / 100.0
-        self.rl_arbitrator.observe(
-            rec["risk_tier"], rec["chosen_id"], reward  # type: ignore[arg-type]
+        chosen_id = str(rec["chosen_id"])
+        risk_tier = int(rec["risk_tier"])  # type: ignore[arg-type]
+        self.rl_arbitrator.observe(risk_tier, chosen_id, reward)
+        logger.debug(
+            "RL observe: user=%s tier=t%d mech=%s reward=%.4f shadow=%s",
+            user_id, risk_tier, chosen_id, reward, rec.get("shadow", False),
         )
-        logger.info(
-            "RL 反馈: user=%s mech=%s reward=%.4f (LAI %.1f->%.1f)",
-            user_id, rec["chosen_id"], reward, lai_before, lai_after,
-        )
-        return reward
+        return (risk_tier, chosen_id)
 
     def _resolve_conflicts(
         self, ctx: MechanismContext, effects: List[Effect], trace: ArbitrationTrace

@@ -1,6 +1,7 @@
 """学习流编排器 —— 将 BKT、DDA、85% 规则、风险监控、学习方法推荐串联到同一事务中
 """
 import json
+import logging
 import random
 from dataclasses import dataclass
 from datetime import datetime, timedelta, UTC
@@ -41,6 +42,13 @@ from app.services import mechanism_registry
 from app.services.research_consent import resolve_research_consent
 from app.services.mechanism_arbitrator import MechanismArbitrator
 from app.services.mechanism_registry import Effect, EffectType, MechanismContext
+
+logger = logging.getLogger(__name__)
+
+# 在线干预奖励: 把干预前后信号折算为 RL 奖励 (伦理约束见模块 docstring)
+from app.services.intervention_reward import compute_reward, InterventionSignals
+# LLM 个性化干预话术 (ollama 不可用时回退规则话术)
+from app.services.llm_intervention import personalize_intervention_message
 from app.services.deep_addiction_engine import FOMOEngine
 from app.services.deep_addiction_engine import (
     AppointmentEngine,
@@ -167,7 +175,18 @@ for _step, _keys in PIPELINE_MECHANISM_MAP.items():
 
 # FOMO 后置 nudge 仲裁器单例 (LF-M44, 治理 §3.4.2): 引擎只产 Effect 候选,
 # 由 MechanismArbitrator 三层漏斗决定下发; LF-M52 命中时在第 1 层丢弃。
-_FOMO_ARBITRATOR = MechanismArbitrator()
+#
+# AI 行为管控链路接线 (修复「RL 接入点预留但未生效」): 向仲裁器注入一个
+# ``RLArbitrator`` 实例, 使其 1.7 层 (RL 在线决策) 在 bandit 已训练时可真正参与
+# 「当前风险档下下发哪个 approach 机制收益最高」的决策。rl_arbitrator.py 与
+# mechanism_arbitrator.py 存在潜在运行时循环依赖风险 (后者用 TYPE_CHECKING 规避),
+# 故此处做惰性导入, 避免模块顶层 import 触发环路。
+def _build_fomo_arbitrator() -> "MechanismArbitrator":
+    from app.services.rl_arbitrator import RLArbitrator
+    return MechanismArbitrator(rl_arbitrator=RLArbitrator())
+
+
+_FOMO_ARBITRATOR = _build_fomo_arbitrator()
 
 
 # ────────────────────────────────────────────────────────────
@@ -680,6 +699,13 @@ class LearningOrchestrator:
         # 年龄学段（反成瘾分层）
         age_band = anti_addiction.infer_age_band(user)
 
+        # 干预前风险基线 (供在线奖励 Δrisk 计算): 必须在本次 attempt 入库前采集,
+        # 才能反映「干预前」的真实风险。仅在真正取到前后信号时, 后续才会回灌奖励;
+        # 取不到则按 None 处理 (对应奖励项计 0, 绝不瞎猜)。
+        _risk_before_level = RiskMonitor.assess(
+            [await cls._build_risk_snapshot(user, db)]
+        ).level.value
+
         # 1. 判断对错
         is_correct = cls._compare_answer(answer, task.correct_answer)
 
@@ -712,6 +738,11 @@ class LearningOrchestrator:
         updated_skill = bkt_engine.update(bkt_state, task.topic, is_correct)
         skill.mastery = updated_skill.p_mastery
         await db.flush()
+
+        # 在线奖励信号: BKT 掌握度前后值 (仅取有把握的值; 取不到按 None)。
+        _bkt_before = bkt_state.skills.get(task.topic)
+        mastery_before = _bkt_before.p_mastery if _bkt_before is not None else None
+        mastery_after = updated_skill.p_mastery
 
         # 5. 间隔复习计划
         existing_review = await db.execute(
@@ -840,6 +871,12 @@ class LearningOrchestrator:
         # 回填风险等级到决策快照 (即使未触发告警, 也记录评估等级用于因果归因)
         decision_snapshot["risk_level"] = risk_assessment.level.value
 
+        # 干预后风险等级 + 0..1 成瘾风险代理 (供 RL 风险档分级与奖励 Δrisk)。
+        # RiskLevel 取值 0..3, 归一化到 0..1 (越高 = 成瘾风险越大), 与
+        # mechanism_arbitrator._risk_tier 的阈值体系一致。
+        risk_after_level = risk_assessment.level.value
+        _lai_risk = risk_after_level / 3.0
+
         # 8b. 未成年保护合规校验 (LF-M52)。
         #
         # 治理审计发现的历史缺陷：机制注册表把 LF-M52 的 impl_ref 指向
@@ -959,10 +996,71 @@ class LearningOrchestrator:
                 direction="withdraw",
             ))
         _fomo_ctx = MechanismContext(user_id=str(user.id), session_id=session_id)
-        _fomo_delivered = _FOMO_ARBITRATOR.arbitrate(_fomo_ctx, fomo_effects)
+        # 把 0..1 成瘾风险传入仲裁器: 既驱动 1.5 层「LAI 风险自适应降权」(高风险档
+        # 丢弃高成瘾化拉回机制, 额外伦理护栏), 也决定 RL 决策的上下文风险档 (tier)。
+        # 风险为 0 时 (绝大多数正常提交) 与各层行为完全不变, 向后兼容。
+        _fomo_delivered = _FOMO_ARBITRATOR.arbitrate(
+            _fomo_ctx, fomo_effects, lai_risk=_lai_risk
+        )
         _fomo_nudge = next(
             (e.payload for e in _fomo_delivered if e.mechanism_id == "LF-M44"), None
         )
+
+        # 12b. LLM 个性化干预话术 (AI 行为管控链路生效点): 对经仲裁下发的 FOMO 文案,
+        # 尝试用 LLM 生成非操控性个性化话术; ollama 不可用 (未启动/超时) 时回退到
+        # 既有规则话术, 保证用户始终能看到反馈 (规则兜底)。整段容错, 失败也不影响主流程。
+        if _fomo_nudge is not None:
+            try:
+                _rule_msg = _fomo_nudge.get("message", "")
+                _user_state = {
+                    "name": user.name or "同学",
+                    "level": getattr(pet, "level", 1) if pet is not None else 1,
+                }
+                _personalized = personalize_intervention_message(
+                    _user_state, _lai_risk, _rule_msg
+                )
+                if _personalized:
+                    _fomo_nudge = {**_fomo_nudge, "message": _personalized}
+            except Exception as _llm_exc:  # noqa: BLE001
+                logger.warning("LLM 干预话术生成失败, 使用规则文案: %s", _llm_exc)
+
+        # 12c. 在线决策闭环: RL 奖励回灌 (AI 行为管控核心接线)
+        #
+        # 把「本次实际选中的 approach 机制 + 当时的风险档」与干预前后观测信号,
+        # 经 compute_reward 折算为奖励, 回灌给 RLArbitrator 做在线学习。
+        #
+        # 安全边界 (逐条对应任务约束):
+        #   * 仅在本轮确有 nudge 下发时才回灌; 无反馈目标时 report_reward 自行
+        #     返回 None 跳过 —— 避免拿无目标/脏数据训练。
+        #   * 只在真实观测到 before/after 信号时回灌; 信号缺失由 compute_reward 按 0 计
+        #     (绝不瞎猜数值填补)。
+        #   * 全程 try/except: RL 学习失败**绝不能**让答题提交 500。
+        #
+        # 反馈目标 (risk_tier, chosen_id) 由仲裁器登记的 _rl_pending / _rl_last 提供,
+        # 冷启动期是规则层下发机制的**影子目标** —— 这样 Q 表才能从空表起量,
+        # 达到 MIN_OBS_FOR_DECISION 后 RL 才在该风险档接管决策。
+        #
+        # 注意: 这里**不能**加 ``rl_arbitrator.trained()`` 前置条件。此前正是这个条件
+        # 造成冷启动死锁 —— Q 表只有 observe 才会写入, 而 observe 又要求 Q 表非空,
+        # 于是 bandit 永远训练不起来, AI 链路名存实亡。
+        try:
+            if _fomo_nudge is not None:
+                _signals = InterventionSignals(
+                    mastery_before=mastery_before,
+                    mastery_after=mastery_after,
+                    risk_before=(_risk_before_level / 3.0)
+                    if _risk_before_level is not None else None,
+                    risk_after=risk_after_level / 3.0,
+                    blocked_by_protection=bool(minor_protection["should_block"]),
+                    answered=True,
+                )
+                _reward = compute_reward(_signals)
+                _FOMO_ARBITRATOR.report_reward(
+                    str(user.id), _reward, session_id=session_id
+                )
+        except Exception as _rl_exc:  # noqa: BLE001
+            logger.warning("RL 奖励回灌失败 (不影响主流程): %s", _rl_exc)
+
 
         # 连胜维护（v1 中 success_streak 为临时计算，同样不落库）
         if is_correct:

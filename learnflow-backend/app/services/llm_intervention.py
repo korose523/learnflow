@@ -47,3 +47,35 @@ def generate_intervention(user_state: Dict, risk: float) -> Dict:
     mechanism_id = "LF-M53" if risk >= 0.5 else "LF-M51"
     return {"message": text, "safe": safe, "mechanism_id": mechanism_id,
             "tone": "rest" if risk >= 0.5 else "encourage"}
+
+
+def personalize_intervention_message(
+    user_state: Dict, risk: float, rule_message: str
+) -> str:
+    """用 LLM 生成个性化干预话术; LLM 不可用时回退到既有规则话术。
+
+    这是 ``llm_intervention.py`` 真正接入主流程的入口 (此前零调用方 -> 死代码)。
+    设计要点 (与任务「保留规则兜底」一致):
+
+    * ollama 未启动 / 超时被 :func:`get_ollama` 判定为不可用 (返回 ``MockOllama``,
+      ``available()`` 为 ``False``) -> **直接回退** ``rule_message``, 绝不把一条
+      通用安全模板悄悄替换掉本就有意义、针对具体机制的规则文案, 保证用户始终能看到反馈。
+    * ollama 可用但返回含暗黑模式关键词 -> :func:`generate_intervention` 内部护栏会
+      替换为 ``_SAFE_TEMPLATE`` (这是有意的合规行为, 与「可用性兜底」是两回事)。
+    * 任何异常 -> 回退 ``rule_message``, 不拖垮调用方。
+    """
+    try:
+        ollama = get_ollama()
+    except Exception:
+        return rule_message
+    if not ollama.available():
+        return rule_message
+    try:
+        out = generate_intervention(user_state, risk)
+    except Exception:
+        return rule_message
+    msg = out.get("message") if isinstance(out, dict) else None
+    if not msg:
+        return rule_message
+    return msg
+
