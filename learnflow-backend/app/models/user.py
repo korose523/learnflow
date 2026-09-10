@@ -3,7 +3,7 @@ import uuid
 from datetime import datetime, UTC
 from enum import Enum
 
-from sqlalchemy import Column, String, DateTime, Enum as SAEnum, Boolean, ForeignKey, JSON
+from sqlalchemy import Column, String, DateTime, Enum as SAEnum, Boolean, ForeignKey, JSON, Float, Integer
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
@@ -30,6 +30,8 @@ class User(Base):
     name = Column(String(100), nullable=False)
     role = Column(SAEnum(UserRole), nullable=False, default=UserRole.STUDENT)
     grade = Column(String(20), nullable=True)  # 年级，如 "五年级"
+    subjects = Column(JSON, nullable=True)  # 学生选择的学科列表（引导向导落库），如 ["math","chinese"]
+    difficulty_bias = Column(Float, default=0.0, nullable=True)  # 教师手动难度偏置（[-4,+4]），叠加到自适应融合难度
     school_id = Column(String(50), nullable=True)
     class_id = Column(String(36), ForeignKey("classes.id"), nullable=True, index=True)  # 所属班级（班级宠物园聚合用）
     parent_id = Column(String(36), ForeignKey("users.id"), nullable=True)
@@ -37,6 +39,7 @@ class User(Base):
     consents = Column(JSON, default=lambda: dict())  # {"relaxation_guide": true, "eeg": false, ...}
     created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
+    daily_limit_minutes = Column(Integer, nullable=True)  # 家长设定的每日学习时长上限（分钟）；None=未设置
 
     # 关系
     parent = relationship("User", remote_side=[id], backref="children")

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, ArrowLeft, Check, ShieldCheck, GraduationCap } from 'lucide-react';
-import { k12Api } from '../services/api';
+import { k12Api, onboardingApi } from '../services/api';
 import { useMotionPref } from '../contexts/MotionContext';
 import { EASE_SOFT, subjectColor, subjectMeta } from '../theme/tokens';
 import SubjectBadge from '../components/learn/SubjectBadge';
@@ -45,11 +45,24 @@ export default function OnboardingPage() {
     step === 'subjects' ? subjects.length > 0 :
     step === 'consent' ? consentAgreed && consentName.trim().length > 0 : false;
 
-  const finish = () => {
-    // 引导完成：实际落库由后端 Onboarding 端点负责；此处本地保存选择并进入学习
+  const finish = async () => {
+    // 本地兜底：先保存选择（年级/学科/家长同意），服务端不可用时仍保留数据
     try {
       localStorage.setItem('lf_onboarding', JSON.stringify({ grade, subjects, consentName, consentedAt: new Date().toISOString() }));
     } catch { /* ignore */ }
+    // 真实落库：写入 users 表的 grade / subjects / consents。
+    // 注意用 saveProfile（PUT /onboarding/profile），而不是 complete ——
+    // 后者是产品导览的无状态奖励查询，不写任何数据库。
+    try {
+      await onboardingApi.saveProfile({
+        grade,
+        subjects,
+        consent_name: consentName,
+        consent_agreed: consentAgreed,
+      });
+    } catch {
+      /* 端点不可用时不阻断用户；本地兜底已保存选择 */
+    }
     navigate('/student');
   };
 

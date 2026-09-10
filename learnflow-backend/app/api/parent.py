@@ -46,6 +46,10 @@ class ConsentRequest(BaseModel):
     granted: bool
 
 
+class DailyLimitRequest(BaseModel):
+    daily_limit_minutes: int | None = None  # None 表示清除上限
+
+
 # ─── 孩子学习摘要 ─────────────────────────────
 
 @router.get("/child/{child_id}/summary")
@@ -337,4 +341,71 @@ async def weekly_report(
             ],
         },
         "risk_level": risk_level,
+    }
+
+
+@router.get("/children")
+async def list_children(
+    user: User = Depends(require_parent),
+    db: AsyncSession = Depends(get_db),
+):
+    """列出当前家长绑定的孩子（供前端解析 child_id）"""
+    rows = (
+        await db.execute(
+            select(User).where(User.parent_id == user.id, User.is_active == True)
+        )
+    ).scalars().all()
+    return {"children": [{"id": c.id, "name": c.name, "grade": c.grade} for c in rows]}
+
+
+# ─── 每日学习时长上限（家长设定的真实持久化） ────────────
+
+@router.get("/child/{child_id}/daily-limit")
+async def get_child_daily_limit(
+    child_id: str,
+    user: User = Depends(require_parent),
+    db: AsyncSession = Depends(get_db),
+):
+    """查看孩子的每日学习时长上限（分钟）；未设置时为 null"""
+    child_query = await db.execute(select(User).where(User.id == child_id))
+    child = child_query.scalar_one_or_none()
+    if not child or (child.parent_id != user.id and not _is_demo_child(user.email, child.email)):
+        raise HTTPException(status_code=404, detail="未找到该孩子或无权查看")
+
+    return {
+        "child_id": str(child.id),
+        "daily_limit_minutes": child.daily_limit_minutes,
+    }
+
+
+@router.put("/child/{child_id}/daily-limit")
+async def set_child_daily_limit(
+    child_id: str,
+    req: DailyLimitRequest,
+    user: User = Depends(require_parent),
+    db: AsyncSession = Depends(get_db),
+):
+    """设定/清除孩子的每日学习时长上限（分钟）
+
+    - 20..180 为合法区间；越界返回 400
+    - 传 null 表示清除上限
+    """
+    child_query = await db.execute(select(User).where(User.id == child_id))
+    child = child_query.scalar_one_or_none()
+    if not child or (child.parent_id != user.id and not _is_demo_child(user.email, child.email)):
+        raise HTTPException(status_code=404, detail="未找到该孩子或无权操作")
+
+    value = req.daily_limit_minutes
+    if value is not None and not (20 <= value <= 180):
+        raise HTTPException(
+            status_code=400,
+            detail="daily_limit_minutes 必须在 20..180 分钟之间，或为 null 以清除",
+        )
+
+    child.daily_limit_minutes = value
+    await db.flush()
+
+    return {
+        "child_id": str(child.id),
+        "daily_limit_minutes": child.daily_limit_minutes,
     }

@@ -204,6 +204,9 @@
 | C4 | Zendle et al. (2019) | `[已核验]` | η²=0.120 为检索页披露值，正式引用前建议核原文表 |
 | C7 | Twenge et al. (2017) | `[已核验]` | 须补充 Orben & Przybylski (2019) 等反方以平衡因果论断，避免单一相关证据 |
 | — | 所有 `[已核验]` DOI | 已联网核 | 主论文定稿前建议用 CrossRef/Semantic Scholar 复验一遍 DOI 有效性 |
+| — | 代码事实基线（指纹 `ee1a49be5732`、落地 54/54、后端 81 文件/23,927 行、868 passed/49 文件） | 本轮同步声明 | 主论文定稿前须用 `scripts/verify_counts.py` 与 `scan_mechanism_landing.py --quiet` 复验指针一致性 |
+| — | 4 个占位机制位置 LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`） | 本轮同步声明 | 须与代码复核 `maturity="placeholder"` 一致 |
+| — | `SQLExperimentStore`（`ab_test_framework.py:510`）、`MinorProtectionEngine` 接线（16 处）、`_skilltree_repo_format`（`learning_orchestrator.py:430`）/ `get_skill_tree`（`meta_learning_skilltree.py:273`） | 本轮同步声明（已解决·2026-09-10） | 须与代码复核一致 |
 
 ---
 
@@ -270,6 +273,8 @@ Hari C1「连接替代」、Bartle/Yee 社交动机、SDT relatedness 重新校�
 - **注册**：`mechanism_registry.py` 追加 LF-M54（category=health，disposition=K，maturity=complete），
   机制总数 53 → **54**，类别 H 3 → 4；`verify_counts.py` 基线、`count_verification.json`、
   落地审计矩阵（orphan=0）与测试（registry / count / landing / wiring / class_pet）同步更新。
+
+**代码事实基线（与《LearnFlow_博士毕业论文总纲》等同步，2026-09-10 复核）**：唯一机制数 54（LF-M01–LF-M54）、注册表指纹 `ee1a49be5732`、运行时落地 54/54（orphan=0）、后端 81 个 Python 文件 / 23,927 行、测试 868 passed / 49 文件。复算命令：`python scripts/verify_counts.py`、`python scripts/scan_mechanism_landing.py --quiet`。已知未决项：StateStore 默认 `MemoryStateStore` 未落盘；4 个占位机制（LF-M29 / LF-M32 / LF-M49 / LF-M50，`maturity="placeholder"`）。
 
 ### 8.4 与 G3-2 研究缺口的衔接
 三条落地把「暗黑模式 vs 防沉迷对立建模」从论证推进到可运行代码：LAI 量化成瘾维度、

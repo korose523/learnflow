@@ -9,14 +9,14 @@
 >
 > **与其他文档的关系**：本总纲是上位结构文件。科学问题、可申明贡献与证据要求由《LearnFlow_学术论文转化方案》规定；机制分类学、仲裁形式化与消融设计由《LearnFlow_机制治理与落实方案》规定；五篇期刊论文的卡片与路由由《LearnFlow_期刊论文拆分方案》规定；文献基础由《LearnFlow_文献测绘与研究缺口报告》规定。本总纲不得与上述文件冲突；若冲突，以可复算的实测值为准并同步修订本文件。
 >
-> **代码基线**：`git HEAD = e819cd7`；可复现性印章 `artifacts/count_verification.json`（六项指标全部 `verified`）。
+> **代码基线**：`git HEAD = 79d7f36`；可复现性印章 `artifacts/count_verification.json`（六项指标全部 `verified`）。
 > **版本**：2026-09-04
 
 ---
 
 ## 摘要
 
-本文件给出一篇计算机学科博士学位论文的完整结构规格。论文以自适应学习系统为研究对象，核心科学问题为：源于计算神经科学的最优错误率准则在人类学习者身上是否成立，以及多类游戏化干预中何者对长期学习结果具有可检出的因果效应。论文的一条贯穿论证链为：难度这个被所有组件共享的核心量，必须依次被测量、被校准、被决策、被审计、被治理；缺失其中任一环节，自适应学习系统便只能停留在参数拼接的工程层面。论文采用"测量层—目标层—决策层—先验层—治理层"五层结构组织五个可发表的研究内核，并以三个论文专有章节（统一形式化框架、综合讨论、结论）将五个内核整合为单一论证。全文正文约 95,000 字，分十二章。本文件同时规定：章首贡献声明的书写规范（用于界定学位论文与已发表内容的边界）、图表编号与总清单（39 幅图、25 张表）、实验体系统一设计（数据集、三层评价指标、实验矩阵、统计方法与陷阱预警）、预注册清单、写作时序与里程碑，以及一致性审计规则。本文件特别规定数字诚信纪律：全文出现的每一个系统统计量均须可由一条命令复算，并以带 git 提交指针的印章文件固定；历史文档中机制数量的虚高问题（需求文档标题声称 76，其自身表格求和 69，可复算值 53）须在第 10 章正面披露并分解。
+本文件给出一篇计算机学科博士学位论文的完整结构规格。论文以自适应学习系统为研究对象，核心科学问题为：源于计算神经科学的最优错误率准则在人类学习者身上是否成立，以及多类游戏化干预中何者对长期学习结果具有可检出的因果效应。论文的一条贯穿论证链为：难度这个被所有组件共享的核心量，必须依次被测量、被校准、被决策、被审计、被治理；缺失其中任一环节，自适应学习系统便只能停留在参数拼接的工程层面。论文采用"测量层—目标层—决策层—先验层—治理层"五层结构组织五个可发表的研究内核，并以三个论文专有章节（统一形式化框架、综合讨论、结论）将五个内核整合为单一论证。全文正文约 95,000 字，分十二章。本文件同时规定：章首贡献声明的书写规范（用于界定学位论文与已发表内容的边界）、图表编号与总清单（39 幅图、25 张表）、实验体系统一设计（数据集、三层评价指标、实验矩阵、统计方法与陷阱预警）、预注册清单、写作时序与里程碑，以及一致性审计规则。本文件特别规定数字诚信纪律：全文出现的每一个系统统计量均须可由一条命令复算，并以带 git 提交指针的印章文件固定；历史文档中机制数量的虚高问题（需求文档标题声称 76，其自身表格求和 69，可复算值 54）须在第 10 章正面披露并分解。
 
 **关键词**：博士学位论文；结构规格；自适应学习；最优错误率；游戏化干预；可复现性
 
@@ -271,7 +271,7 @@
 - **§8.7 实验（E12 / S1 / S2）**：八类消融，包括估计量、设计效应（DEFF = 2.45）、分层 Gatekeeping 与样本量（每组约 428 人）。
 - **§8.8 数字诚信的自曝**：本章的重要资产——正面披露系统历史声明值与可复现实测值之间的差异及其分解（详见 §10.4）。
 
-**关键图表**：表 8-1 机制分类学一览（53 行）；表 8-2 类别—状态汇总；图 8-1 三层漏斗仲裁流程；表 8-3 消融实验主效应。
+**关键图表**：表 8-1 机制分类学一览（54 行）；表 8-2 类别—状态汇总；图 8-1 三层漏斗仲裁流程；表 8-3 消融实验主效应。
 
 **章间依赖**：依赖第 3 章；与第 10 章共享工程事实，须保持一致。
 
@@ -296,10 +296,10 @@
 
 - **§10.1 系统架构**：五层结构与关键组件。
 - **§10.2 数据层与决策快照**：`learning_events` 埋点与 `decision_snapshot` 设计。
-- **§10.3 数字诚信审计表（本章核心）**：逐项列出论文引用的系统统计量、其登记值、实测值、复算命令与判定结果。须覆盖：唯一机制数 53、机制落地 53/53（其中 34 个具编排器门控、19 个仅文本引用）、学习方法 28、技能树节点 16、需求文档表格求和 69、测试用例 685、后端规模 67 文件 / 20,349 行、API 端点 72。
-- **§10.4 历史声明值与实测值的差异分解**：76 与 53 之间 23 的差额分解为 7（需求文档标题高于其自身表格求和）+ 9（非机制支撑类被计入）+ 7（重复实现合并）。
+- **§10.3 数字诚信审计表（本章核心）**：逐项列出论文引用的系统统计量、其登记值、实测值、复算命令与判定结果。须覆盖：唯一机制数 54、机制落地 54/54（其中 34 个具编排器门控、19 个仅文本引用）、学习方法 28、技能树节点 16、需求文档表格求和 69、测试用例 868（49 个测试文件）、后端规模 81 文件 / 23,927 行、API 端点 72。复算命令：`python scripts/verify_counts.py` → `artifacts/count_verification.json`；`python scripts/scan_mechanism_landing.py --quiet`（落地 54/54、orphan=0）；`find app -name "*.py" | wc -l`（81）与 `find app -name "*.py" -exec cat {} + | wc -l`（23,927）；`python -m pytest tests/ -q`（868 passed / 49 文件）；注册表指纹 `python -c "from app.services.mechanism_registry import registry_fingerprint as f; print(f())"` → `ee1a49be5732`。
+- **§10.4 历史声明值与实测值的差异分解**：76 与 54 之间 22 的差额分解为 7（需求文档标题高于其自身表格求和）+ 9（非机制支撑类被计入）+ 6（重复实现合并）。
 - **§10.5 工程验证（S4）**：端到端验证与回归测试。
-- **§10.6 未实现项披露**：未成年保护引擎无调用方、技能树接口形状不兼容、实验数据 SQL 后端未实现、部分容器未持久化、8 个占位机制。
+- **§10.6 未实现项披露**：① 未成年保护引擎无调用方——**已解决·2026-09-10**：`MinorProtectionEngine`（LF-M52）已接线，全仓 16 处引用（`anti_addiction_compliance.py:79` 等）；② 技能树接口形状不兼容——**已解决·2026-09-10**：`learning_orchestrator.py:430` 的 `_skilltree_repo_format` 已兼容 `meta_learning_skilltree.py:273` 的 `get_skill_tree` 返回的 `categories` 形状，原 `AttributeError` 路径已消除；③ 实验数据 SQL 后端未实现——**已解决·2026-09-10**：`SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端）；④ 部分容器未持久化——**未决**：`StateStore` 接口已落地，但默认后端仍为 `MemoryStateStore`，进程重启后状态未落盘；⑤ 4 个占位机制（LF-M29 礼物经济 `social_addiction_engine.py:411`、LF-M32 家长门户 `social_addiction_engine.py:288`、LF-M49 空间锚定 `ux_addiction_engine.py:290`、LF-M50 多感官包装 `ux_addiction_engine.py:345,482,524`，`maturity="placeholder"`）——**未决**。
 
 **关键图表**：表 10-1 数字诚信审计表（本章核心）；图 10-1 系统架构图；表 10-2 未实现项清单。
 
@@ -319,7 +319,7 @@
 
 - **§12.1 全文总结**：按 RQ1–RQ5 逐条回答，每条给出"答案 + 证据 + 置信度"三元组。
 - **§12.2 五条主要结论**。
-- **§12.3 局限性的诚实陈述**：不少于 800 字，须包含尚无经伦理审查的真实学习者数据、机制接线强度不齐、占位机制、未实现项四项。
+- **§12.3 局限性的诚实陈述**：不少于 800 字，须包含尚无经伦理审查的真实学习者数据、机制接线强度不齐、4 个占位机制（LF-M29、LF-M32、LF-M49、LF-M50，`maturity="placeholder"`）、未实现项（StateStore 默认内存、部分容器未持久化）五项。
 - **§12.4 未来工作**。
 
 ### 2.2 后置部分
@@ -403,7 +403,7 @@
 
 ### 5.2 支撑性工程贡献（不列为创新点）
 
-以下为工程贡献，在第 10 章与第 12 章陈述，**不列为创新点**：系统实现（后端 67 文件 / 20,349 行）、机制注册与可复现性基础设施（注册表指纹、落地扫描、计数印章）、决策快照埋点、端到端回归测试（685 个用例）。
+以下为工程贡献，在第 10 章与第 12 章陈述，**不列为创新点**：系统实现（后端 81 文件 / 23,927 行）、机制注册与可复现性基础设施（注册表指纹 `ee1a49be5732`、落地扫描、计数印章）、决策快照埋点、端到端回归测试（868 个用例）。
 
 ### 5.3 创新点与证据的对照
 
@@ -435,7 +435,7 @@
 
 Adaptive learning systems select items and interventions according to a learner's evolving state, with the promise of improving learning efficiency. This promise rests on two premises that remain insufficiently validated: whether the optimality criterion governing difficulty selection holds for human learners, and whether engagement-oriented behavioral interventions genuinely promote learning. Prevailing research has largely pursued predictive accuracy of knowledge-state estimation, leaving these two premises comparatively underexamined.
 
-This dissertation studies an adaptive learning system that combines an interpretable difficulty-adaptation engine with a large-scale intervention repertoire, organized along five layers: measurement, objective, decision, prior, and governance. At the measurement layer, we place memory-science difficulty scales and competitive-rating ability scales within a common metric and characterize the conditions for commensurability. At the objective layer, we test the external validity of the optimal-error-rate criterion originating in computational neuroscience on real learner data, proposing an identification strategy that separates ability confounding. At the decision layer, we elevate the flow channel from a heuristic partition to a derivable objective defined by retention-discounted learning rate, and provide a structured bandit formulation over ordered continuous action spaces. At the prior layer, we establish the reliability boundary of automatic difficulty annotation as a cold-start prior. At the governance layer, we normalize 53 heterogeneous interventions into a unified effect interface, propose a three-stage arbitration rule with health constraints taking precedence, and make mechanism-level ablation experimentally feasible.
+This dissertation studies an adaptive learning system that combines an interpretable difficulty-adaptation engine with a large-scale intervention repertoire, organized along five layers: measurement, objective, decision, prior, and governance. At the measurement layer, we place memory-science difficulty scales and competitive-rating ability scales within a common metric and characterize the conditions for commensurability. At the objective layer, we test the external validity of the optimal-error-rate criterion originating in computational neuroscience on real learner data, proposing an identification strategy that separates ability confounding. At the decision layer, we elevate the flow channel from a heuristic partition to a derivable objective defined by retention-discounted learning rate, and provide a structured bandit formulation over ordered continuous action spaces. At the prior layer, we establish the reliability boundary of automatic difficulty annotation as a cold-start prior. At the governance layer, we normalize 54 heterogeneous interventions into a unified effect interface, propose a three-stage arbitration rule with health constraints taking precedence, and make mechanism-level ablation experimentally feasible.
 
 The central conclusion is that the effectiveness bottleneck of adaptive learning systems lies not in predictive accuracy but in whether difficulty scales are commensurable, whether the optimality criterion holds externally, and whether behavioral interventions are formalized and arbitrable.
 
@@ -506,7 +506,7 @@ The central conclusion is that the effectiveness bottleneck of adaptive learning
 | 5 | 4 | 主效应、子群异质性、稳健性、跨域复现 |
 | 6 | 3 | 比较静态、策略对比 E8–E9、模拟器参数 |
 | 7 | 2 | 一致性分析、可靠性判据 |
-| 8 | 5 | 机制分类学（53 行）、类别—状态汇总、仲裁规则、消融主效应、未实现项 |
+| 8 | 5 | 机制分类学（54 行）、类别—状态汇总、仲裁规则、消融主效应、未实现项 |
 | 9 | 1 | 工程测量 |
 | 10 | 2 | 数字诚信审计表、系统规模 |
 | 11–12 | 2 | 效度威胁、贡献对照 |
@@ -680,9 +680,9 @@ The central conclusion is that the effectiveness bottleneck of adaptive learning
 |---|---|
 | 76 个机制 | 54 个唯一机制（LF-M01–LF-M54）；须说明需求文档标题声称 76 与其表格求和 69 自相矛盾 |
 | 23 / 21 种学习方法 | 28 种学习方法（LF-L01–LF-L28） |
-| 48 个零调用机制 | 机制落地 53/53；其中 34 个具编排器门控，19 个仅文本引用 |
-| 394 个测试用例 | 685 个测试用例（35 个测试文件） |
-| 后端 16,593 行 | 后端 67 个 Python 文件 / 20,349 行 |
+| 48 个零调用机制 | 机制落地 54/54；其中 34 个具编排器门控，19 个仅文本引用 |
+| 394 个测试用例 | 868 个测试用例（49 个测试文件） |
+| 后端 16,593 行 | 后端 81 个 Python 文件 / 23,927 行 |
 
 ### 10.5 送审前自查清单
 
@@ -708,6 +708,10 @@ The central conclusion is that the effectiveness bottleneck of adaptive learning
 
 补充文献须逐条核验作者、年份、标题、期刊或会议与 DOI，**严禁凭记忆编造**；核验状态记入参考文献核验报告。
 
+**待核验代码引用（本轮随已解决项新增的证据锚点，须与代码复核一致）**：`registry_fingerprint()`（`app/services/mechanism_registry.py:145`，指纹 `ee1a49be5732`）；`scan_mechanism_landing.py --quiet`（落地 54/54、orphan=0）；`SQLExperimentStore`（`ab_test_framework.py:510`，SQLAlchemy Core 后端）；`MinorProtectionEngine` 接线（16 处引用）；`_skilltree_repo_format`（`learning_orchestrator.py:430`）与 `get_skill_tree`（`meta_learning_skilltree.py:273`）形状兼容；4 个占位机制位置 LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`）。
+
+**待核验代码引用（本轮随已解决项新增的证据锚点，须与代码复核一致）**：`registry_fingerprint()`（`app/services/mechanism_registry.py:145`，指纹 `ee1a49be5732`）；`scan_mechanism_landing.py --quiet`（落地 54/54、orphan=0）；`SQLExperimentStore`（`ab_test_framework.py:510`，SQLAlchemy Core 后端）；`MinorProtectionEngine` 接线（16 处引用）；`_skilltree_repo_format`（`learning_orchestrator.py:430`）与 `get_skill_tree`（`meta_learning_skilltree.py:273`）形状兼容；4 个占位机制位置 LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`）。
+
 ### 11.3 引用纪律
 
 1. 引用须支撑具体论断，不得为引用而引用；
@@ -727,12 +731,12 @@ The central conclusion is that the effectiveness bottleneck of adaptive learning
 | 创新点 | 可公度性定理；外部效度识别策略；心流通道形式化与 Bandit；自动标注可靠性边界；干预形式化与仲裁 |
 | 对应论文 | P1（第 4 章）、P2（第 5 章）、P3（第 6 章）、P5（第 7 章）、P4（第 8 章）、P7（第 10 章） |
 | 唯一机制数 | 54（LF-M01–LF-M54），敏感性区间 52–57 |
-| 机制落地 | 53/53；34 个具编排器门控，19 个仅文本引用 |
+| 机制落地 | 54/54；34 个具编排器门控，19 个仅文本引用 |
 | 学习方法 / 技能树 | 28 / 16 |
-| 系统规模 | 后端 67 文件 / 20,349 行；API 72 端点；测试 685 用例 |
+| 系统规模 | 后端 81 文件 / 23,927 行；API 72 端点；测试 868 用例 |
 | 设计效应 | DEFF = 1 + (m−1)ρ = 2.45（m = 30，ρ = 0.05） |
 | 分层 Gatekeeping | Gate 0 α = 0.05 → Gate 1 α′ = 0.00625 → Gate 2 → Gate 2.5 α′ ≈ 0.0167 |
-| 复算命令 | `python scripts/verify_counts.py`、`python scripts/scan_mechanism_landing.py --quiet`、`python scripts/power_table.py` |
+| 复算命令 | `python scripts/verify_counts.py`、`python scripts/scan_mechanism_landing.py --quiet`、`python scripts/power_table.py`、`python -m pytest tests/ -q`（基线 868 passed / 49 文件）；注册表指纹：`python -c "from app.services.mechanism_registry import registry_fingerprint as f; print(f())"` → `ee1a49be5732` |
 
 ---
 

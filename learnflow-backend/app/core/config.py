@@ -2,7 +2,7 @@
 import secrets
 from pathlib import Path
 from pydantic_settings import BaseSettings
-from pydantic import field_validator
+from pydantic import field_validator, model_validator
 from typing import Optional, List
 
 
@@ -29,7 +29,8 @@ class Settings(BaseSettings):
     ]
 
     # 数据库
-    DATABASE_URL: str = "mysql+aiomysql://learnflow:learnflow@localhost:3306/learnflow"
+    # 本地开发默认零依赖运行；生产环境通过环境变量切换到受管 MySQL/PostgreSQL。
+    DATABASE_URL: str = "sqlite+aiosqlite:///./learnflow.dev.db"
     DATABASE_POOL_SIZE: int = 20
     DATABASE_MAX_OVERFLOW: int = 10
 
@@ -37,8 +38,8 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
 
     # JWT
-    # 生产环境务必通过环境变量覆盖此密钥
-    JWT_SECRET_KEY: str = secrets.token_hex(32)
+    # 开发环境未配置时生成临时密钥；生产环境必须显式注入稳定密钥。
+    JWT_SECRET_KEY: Optional[str] = None
     JWT_ALGORITHM: str = "HS256"
     JWT_ACCESS_TOKEN_EXPIRE_MINUTES: int = 60
     JWT_REFRESH_TOKEN_EXPIRE_DAYS: int = 30
@@ -66,6 +67,7 @@ class Settings(BaseSettings):
     SEED_TEACHER_PASSWORD: Optional[str] = None
     SEED_STUDENT_PASSWORD: Optional[str] = None
     SEED_PARENT_PASSWORD: Optional[str] = None
+    DEMO_DATA_ENABLED: bool = False
 
     @field_validator("DATABASE_URL", mode="after")
     @classmethod
@@ -83,6 +85,25 @@ class Settings(BaseSettings):
                 abs_path = (PROJECT_ROOT / path_part).resolve()
                 return f"{prefix}{abs_path}"
         return v
+
+    @model_validator(mode="after")
+    def validate_runtime_security(self) -> "Settings":
+        """让开发可零配置启动，同时拒绝不安全的生产配置。"""
+        environment = self.ENVIRONMENT.strip().lower()
+        is_production = environment in {"production", "prod"}
+
+        if not self.JWT_SECRET_KEY:
+            if is_production:
+                raise ValueError("生产环境必须设置 JWT_SECRET_KEY")
+            self.JWT_SECRET_KEY = secrets.token_hex(32)
+
+        if is_production and self.DEBUG:
+            raise ValueError("生产环境不得启用 DEBUG")
+        if is_production and "*" in self.ALLOWED_ORIGINS:
+            raise ValueError("生产环境不得使用通配 CORS 来源")
+        if is_production and self.DEMO_DATA_ENABLED:
+            raise ValueError("生产环境不得自动创建演示账号")
+        return self
 
     model_config = {
         "env_file": str(PROJECT_ROOT / ".env"),

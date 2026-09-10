@@ -21,7 +21,7 @@
 
 ```
 learnflow/
-├── backend/                     # Python FastAPI 后端
+├── learnflow-backend/           # Python FastAPI 后端
 │   ├── app/
 │   │   ├── api/                 # API 路由
 │   │   │   ├── auth.py          # 认证（JWT登录/注册/刷新）
@@ -50,7 +50,7 @@ learnflow/
 │   ├── seed.py                  # 种子数据
 │   └── requirements.txt
 │
-├── frontend/                    # React + TypeScript 前端
+├── learnflow-frontend/          # React + TypeScript 前端
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── LoginPage.tsx         # 登录页
@@ -78,27 +78,33 @@ learnflow/
 ### 后端
 
 ```bash
-cd backend
-pip install -r requirements.txt
-python seed.py              # 初始化数据库和种子数据
-uvicorn app.main:app --reload
+cd learnflow-backend
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+.\.venv\Scripts\python seed.py  # 可选：初始化本地演示数据
+.\.venv\Scripts\python -m uvicorn app.main:app --reload
 ```
 
 API 文档：http://localhost:8000/docs
 
+默认配置使用项目目录中的 SQLite 开发数据库，Redis 不可用时自动退化为内存缓存。生产部署必须提供稳定的 `JWT_SECRET_KEY`、受管数据库连接、精确的 `ALLOWED_ORIGINS`，且不得启用 `DEMO_DATA_ENABLED`。
+
 ### 前端
 
 ```bash
-cd frontend
+cd learnflow-frontend
 npm install
 npm run dev
 ```
 
 前端：http://localhost:5173
 
+本地前端默认通过 Vite 代理访问 `http://localhost:8000/api/v1`。若前后端分域部署，在未提交的 `.env.production` 中设置完整的 `VITE_API_BASE`。
+
 ### 演示账号
 
-运行 `python seed.py` 初始化数据库和种子数据。账号密码通过环境变量注入：
+运行 `python seed.py` 初始化数据库和种子数据。账号密码通过环境变量或未提交的 `.env` 注入：
 
 ```bash
 # 可选：设置种子密码（不设置将自动生成随机密码）
@@ -108,11 +114,13 @@ export SEED_STUDENT_PASSWORD="your_student_password"
 export SEED_PARENT_PASSWORD="your_parent_password"
 ```
 
-默认演示邮箱：
+演示邮箱：
 - 🧑‍🎓 学生: student@learnflow.com
 - 👩‍🏫 教师: teacher@learnflow.com
 - 👨‍👧 家长: parent@learnflow.com
 - 🛡️ 管理员: admin@learnflow.com
+
+演示账号仅在显式执行种子脚本或设置 `DEMO_DATA_ENABLED=true` 后创建；不要在生产环境中使用演示账号。
 
 ## 🔑 核心功能
 
@@ -153,8 +161,8 @@ export SEED_PARENT_PASSWORD="your_parent_password"
 
 | 层 | 技术 |
 |----|------|
-| 后端框架 | FastAPI (Python 3.12+) |
-| 数据库 | PostgreSQL + SQLAlchemy 2.0 (async) |
+| 后端框架 | FastAPI (Python 3.11+) |
+| 数据库 | SQLAlchemy 2.0 (async)；本地开发默认 SQLite，生产可切 PostgreSQL / MySQL |
 | 缓存 | Redis |
 | 前端 | React 18 + TypeScript + Vite |
 | 图表 | Recharts |
@@ -163,4 +171,10 @@ export SEED_PARENT_PASSWORD="your_parent_password"
 
 ---
 
-> 本系统基于 [文档方案](C:/Users/Administrator/Downloads/AI%20chat%20in%20Sider.txt) 中的 MVP 功能规格书构建。教育的真正竞争对手不是游戏，而是教育对人性的误解。
+## 🧪 研究工具与死代码可达性登记
+
+离线分析工具（DML 因果效应、实验功效/样本量规划）与已接线运行时的引擎（新手引导、入学水平测试）的可达性状态，统一登记在 [`docs/research_tooling.md`](docs/research_tooling.md)。未实现 / 不可达的模块要么接线暴露、要么在此显式登记，杜绝沉默死代码。
+
+---
+
+> 本系统基于项目内部的 MVP 功能规格书构建。教育的真正竞争对手不是游戏，而是教育对人性的误解。

@@ -155,4 +155,4 @@ export SEED_PARENT_PASSWORD="your_parent_password"
 
 ---
 
-> 本系统基于 [文档方案](C:/Users/Administrator/Downloads/AI%20chat%20in%20Sider.txt) 中的 MVP 功能规格书构建。教育的真正竞争对手不是游戏，而是教育对人性的误解。
+> 本系统基于项目内部的 MVP 功能规格书构建。教育的真正竞争对手不是游戏，而是教育对人性的误解。

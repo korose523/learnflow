@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software or its reproducibility artifacts, please cite it as below."
+type: software
+title: "LearnFlow: A K12 Gamified Adaptive Learning Platform for Difficulty-Calibration Research"
+abstract: >-
+  LearnFlow is a K12 gamified adaptive-learning platform released primarily as a reproducible
+  research artifact. Its methodological contribution is to treat learning difficulty as a
+  measurable, calibratable, decision-theoretic and governable first-class quantity. The artifact
+  accompanies empirical work on the commensurability of difficulty scales, external-validity
+  testing of the 85% success-rate rule, ordered-action bandits with a formalised flow channel,
+  formalisation and conflict arbitration of gamification interventions, and reliability boundaries
+  of LLM-based difficulty annotation. Every headline count in the documentation is recomputed from
+  source by scripts under learnflow-backend/scripts/, and the consistency check fails loudly when a
+  documented number diverges from the code.
+authors:
+  # TODO(维护者): 请将 name 替换为你的法定姓名或常用署名，并补充 affiliation / orcid。
+  # 当前值沿用仓库 git 提交身份，作为占位。
+  - name: "LearnFlow Research"
+version: 0.1.0
+date-released: "2026-09-11"
+license: MIT
+repository-code: "https://github.com/korose523/learnflow"
+url: "https://github.com/korose523/learnflow"
+keywords:
+  - adaptive learning
+  - difficulty calibration
+  - flow channel
+  - gamification
+  - educational data mining
+  - reproducibility
+  - K12 education
+  - bandit algorithms

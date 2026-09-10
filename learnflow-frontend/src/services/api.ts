@@ -109,11 +109,13 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refresh_token');
       if (refreshToken) {
         try {
-          const { data } = await axios.post('/api/v1/auth/refresh', { refresh_token: refreshToken });
+          // 必须继承 VITE_API_BASE：部署到独立 API 域名时，不能回退到前端当前域名。
+          const refreshUrl = `${API_BASE.replace(/\/$/, '')}/auth/refresh`;
+          const { data } = await axios.post(refreshUrl, { refresh_token: refreshToken });
           localStorage.setItem('access_token', data.access_token);
           localStorage.setItem('refresh_token', data.refresh_token);
           error.config.headers.Authorization = `Bearer ${data.access_token}`;
-          return axios(error.config);
+          return api.request(error.config);
         } catch {
           localStorage.clear();
           window.location.href = '/login';
@@ -205,6 +207,7 @@ export const teacherApi = {
 };
 
 export const parentApi = {
+  children: () => api.get('/parent/children'),
   childSummary: (childId: string) => api.get(`/parent/child/${childId}/summary`),
   consentSettings: (childId: string) => api.get(`/parent/consent-settings/${childId}`),
   updateConsent: (data: { child_id: string; consent_type: string; granted: boolean }) =>
@@ -215,6 +218,11 @@ export const parentApi = {
   // ── Spec §4 新增端点（家长周报）──
   weeklyReport: (params: { student_id: string; week?: string }) =>
     api.get('/parent/weekly-report', { params, cache: true }),
+
+  // ── 每日使用时长上限（持久化到后端，作用于孩子端）──
+  dailyLimit: (childId: string) => api.get(`/parent/child/${childId}/daily-limit`),
+  setDailyLimit: (childId: string, minutes: number | null) =>
+    api.put(`/parent/child/${childId}/daily-limit`, { daily_limit_minutes: minutes }),
 };
 
 export const adminApi = {
@@ -235,6 +243,22 @@ export const k12Api = {
   subjects: () => api.get('/k12/subjects', { cache: true }),
   curriculum: (params?: { subject?: string; grade?: string }) =>
     api.get('/k12/curriculum', { params, cache: true }),
+};
+
+// ── 新用户引导（Onboarding）：步骤下发 + 完成/跳过落库 ──
+export const onboardingApi = {
+  // ── 产品导览（无状态奖励查询：后端 complete 只查表返回奖励，不写库）──
+  steps: (role: string) => api.get('/onboarding/steps', { params: { role } }),
+  complete: (role: string, stepId: string) =>
+    api.post('/onboarding/complete', { role, step_id: stepId }),
+  skip: (role: string) => api.post('/onboarding/skip', { role }),
+  // ── 引导向导的学习档案真实落库（grade → subjects → consent，写 users 表）──
+  saveProfile: (payload: {
+    grade?: string | null;
+    subjects?: string[] | null;
+    consent_name?: string | null;
+    consent_agreed?: boolean;
+  }) => api.put('/onboarding/profile', payload),
 };
 
 // ── AI 实时分析层（消费 /api/v1/analytics，无鉴权，依赖内存特征存储）──

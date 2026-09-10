@@ -23,6 +23,7 @@ const TeacherAnalyticsPage = lazy(() => import('./pages/TeacherAnalyticsPage'));
 const TeamPage = lazy(() => import('./pages/TeamPage'));
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'));
 const OnboardingPage = lazy(() => import('./pages/OnboardingPage'));
+const LeaderboardPage = lazy(() => import('./pages/LeaderboardPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 // 骨架屏 fallback（童趣圆角）
@@ -60,6 +61,7 @@ function App() {
           <Route path="student/pet" element={<ProtectedRoute allowedRoles={['student']}><PetCustomizePage /></ProtectedRoute>} />
           <Route path="student/class-pet" element={<ProtectedRoute allowedRoles={['student']}><ClassPetGardenPage /></ProtectedRoute>} />
           <Route path="student/ai-risk" element={<ProtectedRoute allowedRoles={['student']}><StudentRiskPage /></ProtectedRoute>} />
+          <Route path="student/leaderboard" element={<ProtectedRoute allowedRoles={['student']}><LeaderboardPage /></ProtectedRoute>} />
           <Route path="curriculum" element={<ProtectedRoute allowedRoles={['student', 'teacher', 'parent']}><CurriculumPage /></ProtectedRoute>} />
 
           {/* 教师端 */}
@@ -70,6 +72,7 @@ function App() {
 
           {/* 家长端 */}
           <Route path="parent" element={<ProtectedRoute allowedRoles={['parent']}><ParentPage /></ProtectedRoute>} />
+          <Route path="parent/summary" element={<ProtectedRoute allowedRoles={['parent']}><ParentSummary /></ProtectedRoute>} />
 
           {/* 管理端 */}
           <Route path="admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminPanel /></ProtectedRoute>} />

@@ -560,6 +560,10 @@ class LearningOrchestrator:
             bkt_recommended, dda_result.difficulty, optimal_d
         )
 
+        # 6.5 教师手动难度偏置（叠加到融合难度，中性基线 0.0，区间 [-4,+4]）
+        bias = float(getattr(user, "difficulty_bias", 0.0) or 0.0)
+        fused_difficulty = max(1, min(10, int(round(fused_difficulty + bias))))
+
         # 7. 查找题目
         task_query = await db.execute(
             select(Task)

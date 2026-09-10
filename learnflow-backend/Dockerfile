@@ -26,12 +26,10 @@ ENV PYTHONUNBUFFERED=1
 ENV ENVIRONMENT=production
 ENV PORT=80
 ENV DATABASE_URL=sqlite+aiosqlite:///./learnflow.db
-ENV JWT_SECRET_KEY=learnflow-production-jwt-secret-key-2026-06
 ENV REDIS_URL=redis://localhost:6379/0
-ENV SEED_ADMIN_PASSWORD=Admin123!
-ENV SEED_TEACHER_PASSWORD=Teacher123!
-ENV SEED_STUDENT_PASSWORD=Student123!
-ENV SEED_PARENT_PASSWORD=Parent123!
+
+# JWT_SECRET_KEY、数据库凭据和生产 CORS 来源必须在部署平台以密钥/环境变量注入。
+# 应用会拒绝缺少 JWT_SECRET_KEY 的 production 配置，也不会自动创建演示账号。
 
 EXPOSE 80
 

@@ -421,15 +421,42 @@ async def get_ai_classroom_analysis(
             "total_attempts": len(s_attempts),
         })
 
+    # 真实统计：全部基于已加载的 all_attempts 计算，杜绝硬编码假数据
+    if not all_attempts:
+        difficulty_distribution = {}
+        most_active_hour = None
+        weekend_ratio = None
+    else:
+        hour_counts: dict = {}
+        weekend_count = 0
+        dist_counts: dict = {}
+        for a in all_attempts:
+            ts = a.created_at
+            if ts is not None:
+                hour_counts[ts.hour] = hour_counts.get(ts.hour, 0) + 1
+                if ts.weekday() >= 5:
+                    weekend_count += 1
+            diff = a.difficulty_at_time if a.difficulty_at_time is not None else 5
+            key = str(diff)
+            dist_counts[key] = dist_counts.get(key, 0) + 1
+        # 模态小时；若无任何有效时间戳则保留 None（不臆造）
+        most_active_hour = (
+            f"{max(hour_counts, key=hour_counts.get):02d}:00" if hour_counts else None
+        )
+        weekend_ratio = round(weekend_count / len(all_attempts), 2)
+        # 注意：本分支必须显式回填 difficulty_distribution，否则非空作答时
+        # class_stats 引用到未绑定的局部名 → UnboundLocalError（500）。
+        difficulty_distribution = dist_counts
+
     class_stats = {
         "total_students": len(students),
         "active_today": sum(1 for a in all_attempts if a.created_at.strftime("%Y-%m-%d") == today),
         "class_avg_mastery": sum(s["overall_mastery"] for s in student_summaries) / max(len(student_summaries), 1),
         "topic_mastery": topic_mastery,
         "topic_difficulty": topic_difficulty,
-        "difficulty_distribution": {},
-        "most_active_hour": "19:00",
-        "weekend_ratio": 0.3,
+        "difficulty_distribution": difficulty_distribution,
+        "most_active_hour": most_active_hour,
+        "weekend_ratio": weekend_ratio,
     }
 
     report = TeacherAIAssistant.analyze_classroom(student_summaries, class_stats)
@@ -537,12 +564,17 @@ async def adjust_student_difficulty(
     if not student:
         raise HTTPException(status_code=404, detail="学生不存在")
 
+    student.difficulty_bias = float(max(-4, min(4, req.new_difficulty - 5)))  # 以 5 为中性基线
+    await db.commit()
+
     return {
-        "message": "难度已调整",
+        "message": "已保存难度偏置",
         "student_id": req.student_id,
-        "new_difficulty": req.new_difficulty,
+        "requested_difficulty": req.new_difficulty,
+        "difficulty_bias": student.difficulty_bias,
         "applied_to": "dda_bias",
         "applied_by": str(user.id),
+        "persisted": True,
     }
 
 

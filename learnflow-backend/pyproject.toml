@@ -8,18 +8,6 @@ version = "1.0.0"
 description = "LearnFlow - AI-driven gamified learning platform"
 requires-python = ">=3.10"
 
-[tool.pytest.ini_options]
-asyncio_mode = "auto"
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-addopts = "--cov=app --cov-report=term-missing --tb=short"
-filterwarnings = [
-    "ignore::DeprecationWarning:passlib.*",
-    "ignore::DeprecationWarning:bcrypt.*",
-]
-
 [tool.coverage.run]
 source = ["app"]
 omit = ["app/main_hello.py", "app/main_minimal.py", "app/main_cloudbase.py"]

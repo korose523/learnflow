@@ -1,0 +1,224 @@
+{
+  "generated_at": "2026-09-11T00:38:00+09:00",
+  "backend_root": "E:\\learnflow\\learnflow-backend",
+  "counts": {
+    "python_loc": 24414,
+    "python_loc_excl_init": 24332,
+    "source_files": 83,
+    "service_modules": 52,
+    "api_files": 12,
+    "api_routes_defined": 98,
+    "api_routes_reachable": 98,
+    "api_routes_unreachable": 0,
+    "api_routes_per_file": {
+      "admin": {
+        "defined": 6,
+        "reachable": 6
+      },
+      "analytics": {
+        "defined": 5,
+        "reachable": 5
+      },
+      "auth": {
+        "defined": 8,
+        "reachable": 8
+      },
+      "class_pet": {
+        "defined": 5,
+        "reachable": 5
+      },
+      "gamification": {
+        "defined": 29,
+        "reachable": 29
+      },
+      "k12": {
+        "defined": 2,
+        "reachable": 2
+      },
+      "onboarding": {
+        "defined": 7,
+        "reachable": 7
+      },
+      "parent": {
+        "defined": 8,
+        "reachable": 8
+      },
+      "placement": {
+        "defined": 2,
+        "reachable": 2
+      },
+      "student": {
+        "defined": 11,
+        "reachable": 11
+      },
+      "teacher": {
+        "defined": 15,
+        "reachable": 15
+      }
+    },
+    "api_routes_unreachable_detail": [],
+    "registered_routers": {
+      "admin": [
+        "router"
+      ],
+      "analytics": [
+        "router"
+      ],
+      "auth": [
+        "router"
+      ],
+      "class_pet": [
+        "router"
+      ],
+      "gamification": [
+        "router"
+      ],
+      "k12": [
+        "router"
+      ],
+      "onboarding": [
+        "router"
+      ],
+      "parent": [
+        "k12_router",
+        "router"
+      ],
+      "placement": [
+        "router"
+      ],
+      "student": [
+        "router"
+      ],
+      "teacher": [
+        "k12_router",
+        "router"
+      ]
+    },
+    "test_files": 52,
+    "test_functions": 804,
+    "tests_collected": 898
+  },
+  "verdict": {
+    "python_loc": {
+      "registered": 24414,
+      "actual": 24414,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（历史值为 23,927，已漂移）。"
+    },
+    "source_files": {
+      "registered": 83,
+      "actual": 83,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：app/**/*.py 文件数。文档 §1 引用此值（历史值 81）。"
+    },
+    "service_modules": {
+      "registered": 52,
+      "actual": 52,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：app/services/*.py 文件数。文档 §1 历史值 41 为残留，已修正。"
+    },
+    "api_files": {
+      "registered": 12,
+      "actual": 12,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：app/api/*.py 文件数。"
+    },
+    "api_routes_reachable": {
+      "registered": 98,
+      "actual": 98,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：已被 main.py 的 _register_routers() 注册的路由数，是文档 §1「API 端点」应对应的口径（历史值 72 为残留）。"
+    },
+    "test_files": {
+      "registered": 52,
+      "actual": 52,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：tests/test_*.py 文件数。文档 §1 引用此值（历史值 49）。"
+    },
+    "test_functions": {
+      "registered": 804,
+      "actual": 804,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：AST 定义数（含任意嵌套层级），≠ pytest 收集数（parametrize 会把一个函数展开成多个用例）。"
+    },
+    "tests_collected": {
+      "registered": 898,
+      "actual": 898,
+      "delta": 0,
+      "strict": false,
+      "status": "verified",
+      "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。"
+    }
+  },
+  "doc_check": {
+    "doc": "E:\\learnflow\\docs\\LearnFlow_期刊论文拆分方案.md",
+    "items": [
+      {
+        "metric": "python_loc",
+        "doc_text": "24,414 行 Python",
+        "doc_value": 24414,
+        "actual_value": 24414,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "service_modules",
+        "doc_text": "52 个服务模块",
+        "doc_value": 52,
+        "actual_value": 52,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "source_files",
+        "doc_text": "83 个源文件",
+        "doc_value": 83,
+        "actual_value": 83,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "api_routes_reachable",
+        "doc_text": "98 个 API 端点",
+        "doc_value": 98,
+        "actual_value": 98,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "tests_collected",
+        "doc_text": "898 项测试",
+        "doc_value": 898,
+        "actual_value": 898,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "test_files",
+        "doc_text": "52 个测试文件",
+        "doc_value": 52,
+        "actual_value": 52,
+        "ok": true,
+        "note": ""
+      }
+    ],
+    "mismatches": [],
+    "passed": true
+  },
+  "_blocking": [],
+  "_exit_code": 0
+}

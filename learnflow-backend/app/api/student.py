@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
+from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
@@ -17,6 +18,7 @@ from app.services.feedback_service import FeedbackService
 from app.services.risk_monitor import RiskMonitor
 from app.services.learning_orchestrator import LearningOrchestrator
 from app.services import cache as cache_service
+from app.services.anti_addiction import session_reset_decision, infer_age_band
 
 logger = logging.getLogger(__name__)
 
@@ -207,7 +209,7 @@ async def get_challenge(
 ):
     """当前难度通道（ChallengeBar 数据源）：由 AbilityEstimate.theta 映射到 0–100
 
-    通道区间 low=75 / high=85 对应 85% 规则的心流带。
+    通道区间 low=75 / high=85 为 85% 规则的心流带【设计带宽】，非实测数据。
     """
     row = (await db.execute(
         select(AbilityEstimate).where(AbilityEstimate.user_id == user.id)
@@ -219,12 +221,37 @@ async def get_challenge(
     else:
         current = 50  # 未评估时的中性起点
 
+    # subject：取用户最近一次作答关联 Task.topic；无任何作答历史则为 None
+    recent_attempt = (await db.execute(
+        select(Attempt)
+        .options(selectinload(Attempt.task))
+        .where(Attempt.user_id == user.id)
+        .order_by(Attempt.created_at.desc())
+        .limit(1)
+    )).scalars().first()
+    subject = recent_attempt.task.topic if (recent_attempt and recent_attempt.task) else None
+
+    # reset_recommended：复用反成瘾服务的权威判定（连续学习 ≥25 分钟触发难度重置）。
+    # 本会话时长以「当日作答数 × 3 分钟/题」估算（与周报一致的保守启发，非真实会话时钟）；
+    # 当日无作答时 session_minutes=0，不误报重置（保守默认值）。
+    today_count = (await db.execute(
+        select(func.count(Attempt.id)).where(
+            Attempt.user_id == user.id,
+            func.date(Attempt.created_at) == func.current_date(),
+        )
+    )).scalar() or 0
+    session_minutes = today_count * 3
+    age_band = infer_age_band(user)
+    reset_decision = session_reset_decision(session_minutes, age_band)
+    reset_recommended = reset_decision["should_reset_difficulty"]
+
+    # low/high 为 85% 心流带设计带宽（非实测数据），保持不变
     return {
         "current": current,
         "low": 75,
         "high": 85,
-        "reset_recommended": False,
-        "subject": None,
+        "reset_recommended": reset_recommended,
+        "subject": subject,
     }
 
 

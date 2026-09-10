@@ -14,7 +14,9 @@ const ROLES = [
 const DEMO_ACCOUNTS: Record<string, { email: string; password: string }> = {
   student: { email: 'student@learnflow.com', password: 'Student123!' },
   teacher: { email: 'teacher@learnflow.com', password: 'Teacher123!' },
-  parent: { email: 'parent@learnflow.com', password: 'Parent123!' },
+  // 家长演示账号须用真正绑定了演示学生（小明）的账号 parent_student@learnflow.com；
+  // parent@learnflow.com 无任何绑定孩子，登录后家长端只会显示「尚未绑定孩子账号」空态。
+  parent: { email: 'parent_student@learnflow.com', password: 'Parent123!' },
   admin: { email: 'admin@learnflow.com', password: 'Admin1234!' },
 };
 

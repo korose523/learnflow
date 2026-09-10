@@ -40,13 +40,17 @@ export default function StudentDashboard() {
     setLoading(true);
     setError('');
     try {
-      const [{ data }, challengeRes, treeRes, laiRes] = await Promise.allSettled([
+      // 注意：Promise.allSettled 的元素是 {status, value} 包装对象，不是响应体本身。
+      // 原先写成 `const [{ data }, ...] = ...` 再从 data?.value?.data 取值，等价于
+      // 从包装对象上取 .data —— 恒为 undefined，于是 setData(undefined)，仪表盘
+      // 永远落到 `if (!data)` 的「无法加载」分支。必须经 .value 取出响应。
+      const [dashRes, challengeRes, treeRes, laiRes] = await Promise.allSettled([
         studentApi.dashboard(),
         studentApi.challenge(),
         gamificationApi.skillTree(),
         laiApi.dashboard(),
       ]) as any;
-      setData(data?.value?.data ?? data?.data ?? data);
+      setData(dashRes?.value?.data ?? dashRes?.data ?? null);
       try { setChallenge(challengeRes?.value?.data?.current ?? 70); } catch { /* default */ }
       try {
         const t = treeRes?.value?.data?.nodes ?? treeRes?.value?.data?.skills ?? [];
@@ -80,7 +84,9 @@ export default function StudentDashboard() {
     if (!relaxationMode) {
       try {
         await studentApi.updateConsent({ consent_type: 'relaxation_guide', granted: true });
-      } catch {}
+      } catch {
+        // 放松模式仍可在本地开启；同意记录失败不会阻塞用户退出或继续学习。
+      }
     }
     setRelaxationMode(!relaxationMode);
   };

@@ -487,14 +487,27 @@ async def update_pet(
 @router.get("/memory-science/review-plan")
 async def memory_science_review_plan(
     user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
-    """基于 FSRS 的知识点复习计划"""
-    # 演示数据：实际应从数据库读取用户各知识点的记忆状态
-    from datetime import datetime, timedelta, UTC
-    now = datetime.now(UTC)
+    """基于 FSRS 的知识点复习计划
+
+    数据来源：StudentSkillProfile（真实按知识点记忆状态）。无记录时返回空计划。
+    """
+    rows = (
+        await db.execute(
+            select(StudentSkillProfile).where(StudentSkillProfile.user_id == user.id)
+        )
+    ).scalars().all()
     item_states = [
-        {"id": "1", "concept": "分数加减", "difficulty": 5.0, "stability": 1.0, "review_count": 0, "last_review": now - timedelta(days=2)},
-        {"id": "2", "concept": "一元一次方程", "difficulty": 4.0, "stability": 10.0, "review_count": 2, "last_review": now - timedelta(days=1)},
+        {
+            "id": str(r.id),
+            "concept": r.skill_dim,
+            "difficulty": 1.0 + (1.0 - (r.mastery if r.mastery is not None else 0.5)) * 9.0,
+            "stability": max(1.0, float(r.total_attempts or 0) * 2.0),
+            "review_count": int(r.total_attempts or 0),
+            "last_review": r.updated_at,
+        }
+        for r in rows
     ]
     return MemoryScienceOrchestrator.get_review_plan(item_states)
 

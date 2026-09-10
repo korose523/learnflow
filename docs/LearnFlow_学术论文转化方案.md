@@ -2,14 +2,14 @@
 
 > **文档性质**：博士研究生开题报告的学术版，兼作期刊论文选题与贡献声明的顶层设计文件。
 > **作用**：规定本项目可提出的科学问题、可申明的贡献、支撑贡献的证据要求，以及从工程资产到学术主张的转化路径。本计划书是其余各篇论文稿件与学位论文章节的上位约束。
-> **代码基线**：`git HEAD = feda25b`；可复现性印章 `artifacts/count_verification.json`（六项指标全部 `verified`）。
+> **代码基线**：`git HEAD = 79d7f36`；可复现性印章 `artifacts/count_verification.json`（六项指标全部 `verified`）。
 > **版本**：2026-09-04
 
 ---
 
 ## 摘要
 
-本研究计划书针对以下问题给出方案：一个已完成工程实现、但尚未开展科学验证的自适应学习系统，如何转化为计算机学科可发表的学术贡献，以及一篇完整的博士学位论文。本文首先盘点系统的六类可转化资产（最优难度引擎、知识追踪、游戏化机制集合、学习方法推荐、算法透明度与合规、倦怠预警），并逐项给出可申明贡献（C1–C7）与支撑该贡献所必需的证据。其次，本文明确界定本项目的科学问题边界：核心科学问题并非"如何提升知识追踪预测精度"（该赛道已被深度学习知识追踪基准主导），而是"在真实学习者身上，源自计算神经科学的 85% 最优学习规则是否成立，以及多类游戏化干预中何者对长期学习结果有效"。第三，本文给出三阶段研究设计（算法形式化与可复现性、观测性研究、随机化消融实验），并规定每一阶段的估计量、数据来源与效度威胁。第四，本文如实披露本项目的关键限制：当前系统尚无经伦理审查的真实学习者数据，685 个测试用例全部为单元测试，因此任何效果性主张在获得真实数据前均不可提出。本文的立场是：工程完成度不等于科学贡献，但可复现的工程资产是开展科学验证的必要前提；本项目当前已完成后者，前者尚待开展。
+本研究计划书针对以下问题给出方案：一个已完成工程实现、但尚未开展科学验证的自适应学习系统，如何转化为计算机学科可发表的学术贡献，以及一篇完整的博士学位论文。本文首先盘点系统的六类可转化资产（最优难度引擎、知识追踪、游戏化机制集合、学习方法推荐、算法透明度与合规、倦怠预警），并逐项给出可申明贡献（C1–C7）与支撑该贡献所必需的证据。其次，本文明确界定本项目的科学问题边界：核心科学问题并非"如何提升知识追踪预测精度"（该赛道已被深度学习知识追踪基准主导），而是"在真实学习者身上，源自计算神经科学的 85% 最优学习规则是否成立，以及多类游戏化干预中何者对长期学习结果有效"。第三，本文给出三阶段研究设计（算法形式化与可复现性、观测性研究、随机化消融实验），并规定每一阶段的估计量、数据来源与效度威胁。第四，本文如实披露本项目的关键限制：当前系统尚无经伦理审查的真实学习者数据，868 个测试用例（49 个测试文件）全部为单元测试，因此任何效果性主张在获得真实数据前均不可提出。本文的立场是：工程完成度不等于科学贡献，但可复现的工程资产是开展科学验证的必要前提；本项目当前已完成后者，前者尚待开展。
 
 **关键词**：自适应学习系统；最优难度；知识追踪；游戏化；研究设计；可复现性；数字诚信
 
@@ -68,13 +68,13 @@
 
 | 层次 | 文件与规模 | 备注 |
 |---|---|---|
-| 后端总规模 | 67 个 Python 文件 / 20,349 行 | `app/` 目录 |
+| 后端总规模 | 81 个 Python 文件 / 23,927 行 | `app/` 目录 |
 | API 层 | 17 个文件 / 72 个端点 | 含游戏化、学习、教师、家长等模块 |
 | 核心算法层 | 2,079 行 | `optimal_difficulty`(564)、`meta_learning_skilltree`(481)、`placement_test_engine`(383)、`knowledge_tracing`(217)、`risk_monitor`(171)、`dda`(170)、`spaced_repetition`(93) |
 | 游戏化层 | 5,209 行 | 9 个引擎文件，承载 54 个唯一机制 |
 | 学习方法层 | 2,248 行 | `method_registry`(849)、`learning_methods`(588)、`memory_science`(426)、`advanced`(308)、`methods_v3`(277) |
 | 实验与治理层 | 1,705 行 | `ab_test_framework`(779)、`mechanism_registry`(597)、`mechanism_arbitrator`(215)、`state_store`(114) |
-| 测试 | 35 个文件 / 685 个用例 | **全部为单元测试，无真实学习者数据** |
+| 测试 | 49 个文件 / 868 个用例 | **全部为单元测试，无真实学习者数据** |
 
 ### 3.1 资产 A：四层融合最优难度引擎
 
@@ -111,7 +111,9 @@
 
 **可申明贡献的方向**：面向学习者的算法透明度设计及其对信任与持续使用的影响。该方向与教育人工智能的伦理与治理需求直接相关（[@solar2020standards]）。
 
-**限制披露**：`anti_addiction_compliance.py` 中的未成年保护引擎当前**无任何调用方**（详见 §7 表 7-1）。在未接线前，不得以"系统具备未成年人保护机制"作为贡献陈述。
+**限制披露**：`anti_addiction_compliance.py` 中的未成年保护引擎（`MinorProtectionEngine`）已于 2026-09-10 完成接线（全仓 16 处引用，详见 §7 表 7-1），原「无任何调用方」状态已消除。但本文档仍维持以下披露纪律：在实验落地与端到端验证完成前，不得以「系统具备未成年人保护机制」作为已验证的贡献陈述；该引擎的接线事实须以附录 B 待核验引用为准。
+
+**代码事实基线（2026-09-10 复核，待核验引用）**：以下条目须在主理人复核后保留为「待核验」标注：（1）机制注册表指纹 `ee1a49be5732`（`registry_fingerprint()`，`app/services/mechanism_registry.py:145`）；（2）机制运行时落地 54/54，orphan=0（`scripts/scan_mechanism_landing.py --quiet`）；（3）`SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端）；（4）`MinorProtectionEngine` 已接线（全仓 16 处引用），原「无任何调用方」状态于 2026-09-10 消除；（5）技能树持久化 `_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径已消除；（6）4 个机制 `maturity="placeholder"`：LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`），仍属未决项。
 
 ### 3.6 资产 F：风险监控与倦怠预警
 
@@ -150,7 +152,7 @@
 **内容**：
 1. 机制注册表的建立与指纹化（已完成：54 个机制，指纹 `ee1a49be5732`）；
 2. 统一效应接口与三层漏斗仲裁器（已完成）；
-3. 运行时接线与落地扫描（已完成：53/53 落地，其中 34 个具编排器门控）；
+3. 运行时接线与落地扫描（已完成：54/54 落地，其中 34 个具编排器门控）；
 4. 决策快照与埋点（已完成：`learning_events` + `decision_snapshot`）；
 5. 计数印章与复算脚本（已完成：六项指标全部 `verified`）。
 
@@ -193,7 +195,7 @@
 | 前提 | 实现机制 | 状态 |
 |---|---|---|
 | 机制可独立开关 | 机制注册表 + `is_enabled` 门控 + 类别级关闭（`--off-category`） | 已具备（34 个机制具编排器门控） |
-| 处理分配可记录 | A/B 框架的分流与落库 | 已具备（JSON 后端；SQL 后端未实现） |
+| 处理分配可记录 | A/B 框架的分流与落库 | 已具备（SQL 后端已落地 `ab_test_framework.py:510`，真实 SQLAlchemy Core；JSON 后端仍可用）**【已解决·2026-09-10】** |
 | 结局可观测 | `learning_events` + `decision_snapshot` 埋点 | 已具备 |
 
 ### 6.2 数据获取的可行性
@@ -217,17 +219,17 @@
 | # | 风险 | 严重性 | 应对 |
 |---:|---|---|---|
 | 1 | **无真实学习者数据** | 一票否决级 | 优先推进合作部署；在此之前不提出任何效果性主张 |
-| 2 | 未成年保护引擎无调用方 | 高（合规） | 立即接线；未接线前不作相关贡献陈述 |
+| 2 | 未成年保护引擎无调用方 | 高（合规） | **已解决·2026-09-10**：`MinorProtectionEngine`（LF-M52）已接线，全仓 16 处引用；此前“未接线前不作贡献陈述”的约束已解除 |
 | 3 | 19 个机制仅有文本引用，处理变异未经证实 | 高（内部效度） | 预注册中限制消融对象为 34 个具门控的机制 |
-| 4 | 占位机制（8/53）不产生真实处理变异 | 中 | 排除出主要分析，仅作探索性报告 |
-| 5 | 技能树接口形状不兼容缺陷 | 中 | 修复后再纳入相关结局分析 |
-| 6 | 记忆态容器未持久化 | 中 | 迁移至持久化后端后再开展长期结局研究 |
+| 4 | 4 个占位机制（4/54，LF-M29/32/49/50，`maturity="placeholder"`）不产生真实处理变异 | 中 | 排除出主要分析，仅作探索性报告 |
+| 5 | 技能树接口形状不兼容缺陷 | **已解决·2026-09-10**：`_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径已消除 |
+| 6 | 记忆态容器未持久化 | 中（未决） | `StateStore` 接口已落地，默认后端仍为 `MemoryStateStore`，进程重启后状态未落盘；迁移至持久化后端后再开展长期结局研究 |
 | 7 | 精度赛道竞争激烈 | 中 | 已明确排除以精度为主赛道（§1.4） |
 | 8 | 数字被证伪（历史 76 问题） | 高（可信度） | 执行数字诚信纪律：每个数字一条命令可复算 |
 
 ### 7.1 数字诚信纪律
 
-本项目历史文档存在机制数量虚高的问题（标题声称 76，自身表格求和 69，可复算值 53）。为避免该问题在论文中复现，执行三条纪律：
+本项目历史文档存在机制数量虚高的问题（标题声称 76，自身表格求和 69，可复算值 54）。为避免该问题在论文中复现，执行三条纪律：
 
 1. 任何进入论文的数字必须有一条命令可复算；
 2. 计数口径必须在首次出现时显式声明；
@@ -295,7 +297,7 @@
 | 全指标复算与印章刷新 | `python scripts/verify_counts.py` |
 | 机制落地扫描 | `python scripts/scan_mechanism_landing.py --quiet` |
 | 样本量与功效表 | `python scripts/power_table.py` |
-| 全量回归测试 | `python -m pytest tests/ -q`（基线 685 passed） |
+| 全量回归测试 | `python -m pytest tests/ -q`（基线 868 passed / 49 文件） |
 | 后端规模统计 | `find app -name "*.py" \| wc -l` 与 `find app -name "*.py" -exec cat {} + \| wc -l` |
 
 ## 附录 C　待核验引用清单
@@ -305,6 +307,8 @@
 - Csikszentmihalyi (1990)（心流理论）
 - Winitzki 近似（误差函数逆的解析近似）
 - open-spaced-repetition（FSRS 难度模型）
+
+**待核验代码引用（本轮随已解决项新增的证据锚点，须与代码复核一致）**：`registry_fingerprint()`（`app/services/mechanism_registry.py:145`，指纹 `ee1a49be5732`）；`scan_mechanism_landing.py --quiet`（落地 54/54、orphan=0）；`SQLExperimentStore`（`ab_test_framework.py:510`，SQLAlchemy Core 后端）；`MinorProtectionEngine` 接线（16 处引用）；`_skilltree_repo_format`（`learning_orchestrator.py:430`）与 `get_skill_tree`（`meta_learning_skilltree.py:273`）形状兼容；4 个占位机制 LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`）。
 
 正文已核验并使用的 citation key：`@wilson2019eightyfive`、`@sailer2017how`、`@sailer2020meta`、`@mazarakis2024whichone`、`@lieberoth2015shallow`、`@gray2018dark`、`@corbett1994knowledge`、`@liu2025pykt`、`@abdelrahman2023knowledge`、`@preprints2025dlktreview`、`@kitto2020xapi`、`@ieee9274xapi2023`、`@mangaroska2019multisource`、`@solar2020standards`、`@codeworkout2021`、`@falconcode2022`、`@kcgenkt2025`、`@choudhary2025blockchain`、`@hepp2018originstamp`。
 

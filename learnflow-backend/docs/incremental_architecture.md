@@ -446,7 +446,7 @@ sequenceDiagram
 2. **宠物默认值**：所有新用户注册或演示账号初始化时自动创建名为“小豆”的默认宠物，四维默认 50，物种 `cat`。
 3. **OAuth 范围**：继续模拟 QQ/微信 OAuth（前端生成 UID），不接入真实第三方回调。
 4. **BKT 持久化**：不新增表，BKT 状态基于答题历史在线计算，通过 `StudentSkillProfile` 的 `mastery` 字段近似。
-5. **测试目标**：修复 `pydantic_settings` 版本冲突，补齐测试到 420 个并全部通过。
+5. **测试目标**：修复 `pydantic_settings` 版本冲突，补齐测试到 868 个（49 测试文件）并全部通过。
 6. **部署目标**：包含重新部署 CloudBase（后端 + 前端静态托管）。
 7. **移动端优先级**：保持 P2，不阻塞本次核心交付。
 
@@ -614,7 +614,7 @@ tailwindcss ^3.4.0
 **Priority**：P1/P0（测试为 P0，移动端为 P2）
 
 **Acceptance Criteria**：
-- 测试总数达到 420 个，全部通过。
+- 测试总数达到 868 个（49 测试文件），全部通过。
 - 前端可通过新页面查看连胜、排行榜、技能树。
 - 后端可成功部署到 CloudBase 并运行。
 
@@ -660,7 +660,7 @@ tailwindcss ^3.4.0
 1. **测试框架**：`pytest` + `pytest-asyncio`；异步测试使用 `async def` + `@pytest.mark.asyncio`。
 2. **测试数据库**：使用 `aiosqlite` 内存数据库或临时 SQLite 文件，避免污染开发数据库。
 3. **覆盖率目标**：核心新增代码（`learning_orchestrator.py`、`onboarding_service.py`、`gamification.py`）达到 80% 以上。
-4. **测试数量**：补齐到 420 个测试用例，全部通过。
+4. **测试数量**：补齐到 868 个测试用例（49 测试文件），全部通过。
 
 ---
 
@@ -686,5 +686,7 @@ graph TD
 4. **修复教师 AI 运行时错误**（T03）：将 `cls._count_consecutive_fails` 改为顶层函数调用。
 5. **补齐教师/家长/管理端**（T04）：教师可创建题目、管理员可审核、家长可查看真实数据。
 6. **前端接入新能力**（T04/T05）：新增路由与页面， exposing 连胜、排行榜、战队、技能树、宠物装扮。
-7. **补齐测试到 420 个**（T05）：新增核心流程测试，修复收集错误，全部通过。
+7. **补齐测试到 868 个**（T05）：新增核心流程测试，修复收集错误，全部通过。
+
+> 复算命令（测试数）：`python -m pytest tests/ -q` → 868 passed（49 测试文件，0 error、0 failure、16 warning），HEAD=79d7f36 / count_verification.json 复算于 7ce9ffb。
 8. **统一 Dockerfile 并重新部署 CloudBase**（T05）：删除调试镜像，完成前后端生产部署。

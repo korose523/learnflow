@@ -1,7 +1,9 @@
 # LearnFlow v2 · 基于区块链的大数据处理模块设计
 
 > 作者：洗澄明（数据工程师） · 主理人：论笃行 · v1.0 · 2026-09-02
-> 前置：`docs/LearnFlow_学术论文转化方案.md` · 代码基实测：后端 16,593 行 / 33 services / 16 表 / 394 单元测试
+> 前置：`docs/LearnFlow_学术论文转化方案.md` · 代码基实测：后端 81 个文件 / 23,927 行（33 services、16 表）/ 868 passed（49 测试文件）
+
+> 复算命令（后端规模）：`find app -name "*.py" | wc -l` 与 `find app -name "*.py" -exec cat {} + | wc -l`；测试数：`python -m pytest tests/ -q` → `artifacts/count_verification.json`，HEAD=79d7f36。
 
 ---
 
@@ -748,7 +750,7 @@ def audit_decision(engine: str, decision_type: str, model_version: str = "1.0"):
 |---|---|---|---|
 | **"为区块链而区块链"审稿人抵触** | 🔴 最高 | 该领域低质论文多，条件反射式拒稿 | ① 题目/framing 回避"教育区块链"，改用 Verifiable Data Infrastructure；② Related Work 主动设 "Why not just a signed append-only log?" 并用**对比攻击实验**回答；③ 贡献一完全剥离教育语境对冲 |
 | **节点数不足"名不副实"** | 🔴 高 | 4 节点全是自己的 → 可合谋重写 | ① ≥2 节点交合作学校/外部实验室持有；② **OTS 比特币冷锚**——即使联盟链全被控制也无法逆转 BTC 时间戳；③ 论文**不声称去中心化**，只称"跨机构可验证性"，threat model 中给出敌手能力上界 |
-| **零真实用户数据** | 🟠 中高 | 394 个测试全是单元测试 | 先用 **EdNet-KT1 驱动仿真**完成贡献一（性能实验只需真实负载形状，不需真实教育数据）；贡献二必须等真实数据。数据战略见论文方案 §5.2 |
+| **零真实用户数据** | 🟠 中高 | 868 个测试全是单元测试（49 测试文件） | 先用 **EdNet-KT1 驱动仿真**完成贡献一（性能实验只需真实负载形状，不需真实教育数据）；贡献二必须等真实数据。数据战略见论文方案 §5.2 |
 | **部署运维成本** | 🟡 中 | FISCO 4 节点长期维护 | docker-compose 单主机起步（≈¥100/月），运维脚本化（`make chain-up/chain-health/chain-backup`）；**OTS 冷锚零运维**，联盟链挂掉也不影响数据可信性 |
 | **工程挤占研究时间** | 🟡 中 | 博士核心产出是论文 | 严守 L0→L3 分阶段，**每阶段独立可发表**；L0（零区块链）已能支撑贡献二所需全部数据基础设施 |
 | **未成年人数据合规** | 🟡 中 | 教育数据上链需过伦理审查 | 链上零 PII；`ConsentRecord` 已有 `DATA_RESEARCH` / `PARENT_BINDING` 类型可复用；`LEDGER_ENABLED=false` 使不参与研究的用户完全不进流 |
@@ -772,7 +774,7 @@ def audit_decision(engine: str, decision_type: str, model_version: str = "1.0"):
 
 | 阶段 | 内容 | 人月 | 产出 |
 |---|---|---|---|
-| **P0 地基** | DB 迁移评估（→PG）、`attempts` 重构 + 3 新表、Alembic 迁移、回填、394 测试全绿 | 1.0 | 可用事件数据集；修复缺陷 1、2 |
+| **P0 地基** | DB 迁移评估（→PG）、`attempts` 重构 + 3 新表、Alembic 迁移、回填、868 测试全绿（49 测试文件） | 1.0 | 可用事件数据集；修复缺陷 1、2 |
 | **P1 流与树（=L0 MVP）** | Redis Stream、Celery consumer、JCS 规范化、RFC 6962 Merkle、manifest、DuckDB rollup、完整性巡检、离线 verifier | 1.0 | 可复现事件湖；论文 Data Infrastructure 章节 |
 | **P2 冷锚（L1）** | OTS 适配器、周级冷锚调度、验证 API、前端"验证此记录" | 0.5 | 时间戳公证；workshop/short paper |
 | **P3 联盟链（L2）** | FISCO 4 节点（含 2 外部）、Solidity 链码、JSON-RPC 适配器、多尺度策略、EdNet 负载仿真实验台 | 1.5 | **贡献一（系统向论文）** |

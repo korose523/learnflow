@@ -725,3 +725,34 @@ body {
 .lf-bg-rest-soft { background: var(--lf-sem-rest-soft); }
 .lf-bg-risk-soft { background: var(--lf-sem-risk-soft); }
 .lf-bg-warning-soft { background: var(--lf-sem-warning-soft); }
+
+/* =========================================================
+   应用壳层响应式布局
+   顶部操作区在窄屏会把导航单独放到第二行横向滚动，避免品牌、账户和
+   角色导航互相挤压；不隐藏可达的主功能，也不会制造不可退出的流程。
+   ========================================================= */
+@media (max-width: 760px) {
+  .lf-app-header {
+    padding: 8px 12px !important;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .lf-header-brand { min-width: 0; }
+  .lf-header-brand-text { font-size: 18px !important; }
+
+  .lf-header-actions { gap: 4px !important; }
+  .lf-header-user { display: none !important; }
+
+  .lf-header-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    padding: 2px 0 4px;
+    scrollbar-width: none;
+  }
+  .lf-header-nav::-webkit-scrollbar { display: none; }
+  .lf-header-nav a { flex: 0 0 auto; padding: 7px 12px !important; }
+
+  .lf-main-content { padding: 16px 12px 28px !important; }
+}
