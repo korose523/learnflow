@@ -101,8 +101,23 @@ class LearningEvent(Base):
     __tablename__ = "learning_events"
 
     id = Column(String(36), primary_key=True, default=_new_id)
-    # BIGSERIAL 在 SQLite/MySQL 下均可用自增整数替代，此处沿用项目 UUID 约定
-    seq = Column(Integer, primary_key=True, autoincrement=True)
+    # 缺陷修复 —— 原设计为复合主键 (id, seq) 且 seq AUTOINCREMENT。但 **SQLite
+    # 不支持复合主键上的 AUTOINCREMENT**，`create_all` 会直接抛
+    # ``CompileError: SQLite does not support autoincrement for composite
+    # primary keys``，导致**整张表建不出来**。
+    #
+    # 后果很严重：本表是研究事件流（只增不改），被定位为「全部论文可复现性的地基」；
+    # 而项目开发/测试环境用的正是 SQLite 兜底（默认 MySQL 但本机无 MySQL 服务），
+    # 也就是说研究事件在该环境下**完全无法落库**，且失败发生在建表期、
+    # 写入时只会报「表不存在」，极易被误判为环境问题。
+    #
+    # 原注释「BIGSERIAL 在 SQLite/MySQL 下均可用自增整数替代」的断言在 SQLite 上
+    # 并不成立（问题不在类型，而在复合主键 + 自增的组合）。
+    #
+    # 现改为 id 单独作主键（UUID，应用层 _new_id 生成），seq 降级为普通索引列、
+    # 不再由 DB 自动递增。经核对 app/ 与 scripts/ 下**无任何代码读写 seq**，
+    # 故此改动兼容性影响为零，且换回三种方言（SQLite/MySQL/PostgreSQL）均可建表。
+    seq = Column(Integer, nullable=True, index=True)
 
     event_type = Column(String(48), nullable=False, index=True)
     # TASK_PRESENTED / ANSWERED / SKIPPED / HINT_REQUESTED / SESSION_START / SESSION_END
@@ -130,6 +145,15 @@ class LearningEvent(Base):
 
     # —— 上下文 ——
     client_ctx = Column(JSON, nullable=True)            # 设备 / 时区 / 网络
+
+    # —— 研究知情同意标记（博士论文伦理合规，标记式不阻断）——
+    # 必须 nullable=True：历史数据无法追溯判定。若默认 False，等于把「未判定」
+    # 当成「未同意」（方向错，会误删合法数据）；若默认 True 更糟（把没同意的
+    # 算成同意，正是本方案要消除的问题）。nullable 让历史数据保持「未知」，
+    # 分析时必须显式过滤（research_consented IS TRUE），这是刻意设计。
+    # 取值：True=取得有效同意；False=明确未取得有效同意（如未成年人自授）；
+    # None=未知/未判定/已撤销，需进一步追溯，不得直接纳入研究数据集。
+    research_consented = Column(Boolean, nullable=True, index=True)
 
     user = relationship("User")
     task = relationship("Task")

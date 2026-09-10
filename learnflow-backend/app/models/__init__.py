@@ -1,5 +1,6 @@
 from app.models.user import User, UserRole
 from app.models.pet import PetProfile, PetBreed, PetMood
+from app.models.class_pet import ClassPetGarden
 from app.models.task import Task, Attempt, SpacedReview, StudentSkillProfile
 from app.models.consent import ConsentRecord, ConsentType, Alert, AlertType, AlertSeverity, FeedbackScript
 from app.models.curriculum import (
@@ -11,7 +12,7 @@ from app.models.progression import UserXPState, SkillTreeState, LearningEvent
 __all__ = [
     "UserXPState", "SkillTreeState", "LearningEvent",
     "User", "UserRole",
-    "PetProfile", "PetBreed", "PetMood",
+    "PetProfile", "PetBreed", "PetMood", "ClassPetGarden",
     "Task", "Attempt", "SpacedReview", "StudentSkillProfile",
     "ConsentRecord", "ConsentType",
     "Alert", "AlertType", "AlertSeverity",

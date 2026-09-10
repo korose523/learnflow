@@ -179,6 +179,7 @@ async def record_learning_event(
     skipped: bool = False,
     decision_snapshot: Optional[dict] = None,
     client_ctx: Optional[dict] = None,
+    research_consented: Optional[bool] = None,
 ) -> LearningEvent:
     """写入一条学习事件。
 
@@ -214,6 +215,7 @@ async def record_learning_event(
         skipped=skipped,
         decision_snapshot=decision_snapshot,
         client_ctx=client_ctx,
+        research_consented=research_consented,
     )
     db.add(event)
     return event

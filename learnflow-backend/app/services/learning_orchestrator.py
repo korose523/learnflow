@@ -38,6 +38,7 @@ from app.services.progression_repository import (
 )
 from app.services.learning_event_builder import build_submission_events
 from app.services import mechanism_registry
+from app.services.research_consent import resolve_research_consent
 from app.services.mechanism_arbitrator import MechanismArbitrator
 from app.services.mechanism_registry import Effect, EffectType, MechanismContext
 from app.services.deep_addiction_engine import FOMOEngine
@@ -1023,6 +1024,12 @@ class LearningOrchestrator:
         # 仅当 db 可用时执行; decision_snapshot 已含风险等级与奖励抑制标记,
         # 以及 success/failure 连胜, 供因果归因冻结决策输入。
         if db is not None:
+            # 研究知情同意标记（博士论文伦理合规，标记式不阻断）：
+            # 每次提交只查一次同意状态，复用至本次提交产生的全部事件。
+            # 未取得同意时事件照样写入，仅标记为 False/None——绝不拦截提交。
+            # 若 db/user 异常，resolve_research_consent 返回 None（容错），
+            # 事件以未知标记写入，不影响主流程。
+            consent_status = await resolve_research_consent(db, user)
             events = build_submission_events(
                 str(user.id),
                 session_id,
@@ -1036,6 +1043,7 @@ class LearningOrchestrator:
                 decision_snapshot=decision_snapshot,
             )
             for ev in events:
+                ev["research_consented"] = consent_status.consented
                 await record_learning_event(db, **ev)
 
         # 11. 提交作答后失效相关缓存键（看板 + 能力估计）

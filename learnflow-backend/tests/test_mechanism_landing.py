@@ -1,6 +1,6 @@
 """机制落地审计矩阵 + xp_leveling 消融门控测试
 
-* test_scan_produces_53_rows   —— 审计矩阵必须是 53 行且 ID 连续 LF-M01..LF-M53
+* test_scan_produces_54_rows   —— 审计矩阵必须是 54 行且 ID 连续 LF-M01..LF-M54
 * test_xp_leveling_gate_suppresses
     —— process_submission 在 xp_leveling (LF-M19) 关闭时 xp_earned 必须为 0
     （GAP-6 修复；默认开启时行为不变，授予 XP）
@@ -36,13 +36,13 @@ def _load_scan_module():
     return _load_script("scan_mechanism_landing.py")
 
 
-def test_scan_produces_53_rows():
+def test_scan_produces_54_rows():
     mod = _load_scan_module()
     rows = mod.build_landing_rows(BACKEND_ROOT)
-    assert len(rows) == 53, f"期望 53 行机制, 实际 {len(rows)}"
+    assert len(rows) == 54, f"期望 54 行机制, 实际 {len(rows)}"
 
     ids = [r["id"] for r in rows]
-    expected = [f"LF-M{i:02d}" for i in range(1, 54)]
+    expected = [f"LF-M{i:02d}" for i in range(1, 55)]
     assert ids == expected, f"机制 ID 不连续: {ids[:3]}..{ids[-3:]}"
 
     # 每行必须含审计所需字段
@@ -150,7 +150,7 @@ def test_impl_ref_has_no_hard_errors():
     from app.services.mechanism_registry import all_mechanisms
     rows = [mod.check_one(m.id, m.impl_ref, services_dir) for m in all_mechanisms()]
 
-    assert len(rows) == 53
+    assert len(rows) == 54
     hard = [r for r in rows if r["status"] in ("MISSING", "OUT_OF_RANGE", "UNPARSEABLE")]
     assert hard == [], "存在硬错误的 impl_ref: " + "; ".join(
         f"{r['id']} {r['impl_ref']} ({r['detail']})" for r in hard

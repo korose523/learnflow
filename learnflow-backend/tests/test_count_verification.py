@@ -61,7 +61,7 @@ def test_mechanism_unique_is_53():
     mod = _load_module()
     counts = mod.collect_all()
     mq = counts["mechanism_unique"]
-    assert mq["value"] == 53
+    assert mq["value"] == 54
     # 治理文档内部交叉验证必须通过: 编号表 / 类别小计 / 合计行一致
     assert mq["cross_validation_passed"] is True
     assert mq["duplicate_ids"] == []

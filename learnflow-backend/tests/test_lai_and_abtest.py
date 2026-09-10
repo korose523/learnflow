@@ -208,3 +208,56 @@ class TestABTestFramework:
         assert summary["treatment_count"] > 0
         assert "metric_comparisons" in summary
         assert "exam_score" in summary["metric_comparisons"]
+
+
+class TestLaiDashboardAggregation:
+    """/lai/dashboard 的数据驱动聚合（从 Attempt 日志派生 LAI 输入）"""
+
+    def _fake_db(self, attempts):
+        class _Scalars:
+            def __init__(self, rows): self.rows = rows
+            def all(self): return self.rows
+        class _Result:
+            def __init__(self, rows): self.rows = rows
+            def scalars(self): return _Scalars(self.rows)
+        class _DB:
+            async def execute(self, *a, **k): return _Result(attempts)
+        return _DB()
+
+    def _attempt(self, hour, time_spent, is_correct, hints_used):
+        from datetime import datetime, UTC
+        from types import SimpleNamespace
+        return SimpleNamespace(
+            created_at=datetime(2026, 1, 1, hour, 0, 0, tzinfo=UTC),
+            time_spent=time_spent, is_correct=is_correct, hints_used=hints_used,
+        )
+
+    @pytest.mark.asyncio
+    async def test_empty_log_falls_back_to_healthy_defaults(self):
+        from app.api import gamification as g
+        inputs = await g._aggregate_lai_inputs("u1", self._fake_db([]))
+        assert inputs["night_ratio"] == 0.0
+        assert inputs["daily_minutes"] == 20
+        a = lai_engine.assess(**inputs)
+        assert a.risk_tier == LAIRiskTier.L1_NORMAL
+
+    @pytest.mark.asyncio
+    async def test_night_heavy_log_drives_higher_risk(self):
+        from app.api import gamification as g
+        # 7 天、每天 30 题，全部凌晨 2 点、低正确率、高提示依赖 → 高夜比例 + 低专注
+        attempts = [self._attempt(2, 600, False, 3) for _ in range(210)]
+        inputs = await g._aggregate_lai_inputs("u2", self._fake_db(attempts))
+        assert inputs["night_ratio"] > 0.9
+        assert inputs["content_attention_ratio"] < 0.5
+        a = lai_engine.assess(**inputs)
+        assert a.risk_tier.value >= LAIRiskTier.L2_WATCH.value
+
+    @pytest.mark.asyncio
+    async def test_healthy_log_stays_l1(self):
+        from app.api import gamification as g
+        # 白天、正确率高、提示少 → 健康
+        attempts = [self._attempt(15, 120, True, 0) for _ in range(70)]
+        inputs = await g._aggregate_lai_inputs("u3", self._fake_db(attempts))
+        assert inputs["night_ratio"] == 0.0
+        a = lai_engine.assess(**inputs)
+        assert a.risk_tier == LAIRiskTier.L1_NORMAL

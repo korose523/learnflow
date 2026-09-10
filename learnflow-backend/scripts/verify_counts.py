@@ -155,7 +155,7 @@ REGISTERED: Dict[str, Dict[str, Any]] = {
                 "推荐主表述为 60（59 + 1）。详见 REPORT_NOTES。",
     },
     "mechanism_unique": {
-        "registered": 53,
+        "registered": 54,
         "strict": True,
         "note": "strict：这是论文 Table 1 的数字，被引用即必须可复算。",
     },

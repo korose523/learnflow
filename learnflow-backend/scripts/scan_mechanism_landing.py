@@ -6,7 +6,7 @@ scan_mechanism_landing.py —— LearnFlow 机制落地审计矩阵（可复算�
 
 数字诚信声明（重要）
 -----------------------------------------------------------------------------
-本项目的游戏化机制经审计为 **53** 个唯一机制（LF-M01..LF-M53），来源是
+本项目的游戏化机制经审计为 **54** 个唯一机制（LF-M01..LF-M54），来源是
 ``app/services/mechanism_registry.py`` 的单一事实源，并由
 ``scripts/verify_counts.py`` 的 AST 复算交叉校验（mechanism_unique=53）。
 
@@ -222,7 +222,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.quiet:
         print(
-            f"mechanism_landing: landed={landed_n}/53 orphan={orphan_n} "
+            f"mechanism_landing: landed={landed_n}/54 orphan={orphan_n} "
             f"(engine_classes/mechanism_units unaffected)"
         )
     else:

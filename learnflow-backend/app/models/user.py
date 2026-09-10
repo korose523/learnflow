@@ -31,6 +31,7 @@ class User(Base):
     role = Column(SAEnum(UserRole), nullable=False, default=UserRole.STUDENT)
     grade = Column(String(20), nullable=True)  # 年级，如 "五年级"
     school_id = Column(String(50), nullable=True)
+    class_id = Column(String(36), ForeignKey("classes.id"), nullable=True, index=True)  # 所属班级（班级宠物园聚合用）
     parent_id = Column(String(36), ForeignKey("users.id"), nullable=True)
     is_active = Column(Boolean, default=True)
     consents = Column(JSON, default=lambda: dict())  # {"relaxation_guide": true, "eeg": false, ...}

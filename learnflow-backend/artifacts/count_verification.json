@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-06T17:45:39+09:00",
-  "git_commit": "d4b85e05bc3c3d2f9e04ca0e798c0e9a6daa24bf",
+  "generated_at": "2026-09-10T14:06:24+09:00",
+  "git_commit": "59c988be41fff029925f461e366861a591149cf8",
   "python_version": "3.13.14",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
@@ -78,8 +78,8 @@
       "definition": "10 个机制承载文件中的 *Engine 类，加 gamification_service 的非 Engine 机制类，减去预注册的状态容器↔引擎合并对"
     },
     "mechanism_unique": {
-      "value": 53,
-      "id_range": "LF-M01..LF-M53",
+      "value": 54,
+      "id_range": "LF-M01..LF-M54",
       "duplicate_ids": [],
       "contiguous": true,
       "category_counts": {
@@ -90,10 +90,10 @@
         "E": 10,
         "F": 4,
         "G": 4,
-        "H": 3
+        "H": 4
       },
-      "category_sum": 53,
-      "doc_subtotal_claimed": 53,
+      "category_sum": 54,
+      "doc_subtotal_claimed": 54,
       "cross_validation_passed": true,
       "definition": "治理方案 LF-M01..LF-Mnn 编号表中的唯一机制 ID 数（语义去重由人工预注册规则 R1–R6 完成）"
     },
@@ -253,7 +253,7 @@
       "note": "informative：实现单元数随机制落地自然增长。治理方案 §1.2 表内小计为 59（未计入 anti_addiction_compliance 的 MinorProtectionEngine = LF-M52），推荐主表述为 60（59 + 1）。详见 REPORT_NOTES。"
     },
     "mechanism_unique": {
-      "registered": 53,
+      "registered": 54,
       "strict": true,
       "note": "strict：这是论文 Table 1 的数字，被引用即必须可复算。"
     },
@@ -296,8 +296,8 @@
     },
     "mechanism_unique": {
       "status": "verified",
-      "registered": 53,
-      "actual": 53,
+      "registered": 54,
+      "actual": 54,
       "delta": 0,
       "strict": true,
       "notes": ""

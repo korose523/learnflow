@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "title": "LearnFlow AI 实时分析层评估 (in-silico)",
+    "seed": 20260906,
+    "n_users": 600,
+    "source": "synthetic_desensitized_sample",
+    "feature_keys": [
+      "correct_rate",
+      "hint_rate",
+      "skip_rate",
+      "wrong_streak",
+      "thinking_norm",
+      "night_ratio",
+      "intensity_10m",
+      "variability",
+      "difficulty_mean",
+      "immersive_ratio",
+      "session_switch",
+      "recency_gap",
+      "duration_norm",
+      "engagement"
+    ]
+  },
+  "ml_model": {
+    "auroc": 0.9669874216631851,
+    "accuracy": 0.8416666666666667,
+    "n": 600,
+    "pos_rate": 0.5033333333333333
+  },
+  "rule_baseline": {
+    "night_ratio_auc": 0.5341404062402774
+  },
+  "early_warning_recall_at_0.5": 0.9900662251655629,
+  "delta_auroc_ml_minus_rule": 0.4328470154229077
+}

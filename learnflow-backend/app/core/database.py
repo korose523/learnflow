@@ -73,6 +73,9 @@ async def _ensure_schema_extensions(engine):
     extensions = {
         "tasks": [("curriculum_node_id", "VARCHAR(36)")],
         "student_skill_profiles": [("curriculum_node_id", "VARCHAR(36)")],
+        # 研究知情同意标记：新增列必须在此注册，否则已存在的开发库不会 ALTER 出该列，
+        # 功能会静默失效（不报错，只是没有这一列）。
+        "learning_events": [("research_consented", "BOOLEAN")],
     }
     try:
         async with engine.begin() as conn:

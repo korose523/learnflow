@@ -2,6 +2,7 @@
 import logging
 from datetime import datetime, UTC, timedelta
 from collections import defaultdict
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -11,6 +12,7 @@ from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
+from app.api.parent import _is_demo_child
 from app.models.user import User, UserRole
 from app.models.pet import PetProfile
 from app.models.task import Attempt, StudentSkillProfile
@@ -615,23 +617,28 @@ async def assess_lai(
 
 @router.get("/lai/dashboard")
 async def lai_dashboard(
+    student_id: Optional[str] = None,
     user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
 ):
-    """LAI 仪表盘 - 获取当前用户的学习成瘾化指数概览
+    """LAI 仪表盘 - 获取当前用户（或家长/老师所查看学生）的学习成瘾化指数概览
 
-    当LAI风险等级≥L2时，系统自动：
+    从近 7 天 Attempt 真实日志聚合行为指标驱动 LAI 引擎（数据驱动，非固定值）。
+    当 LAI 风险等级 ≥ L2 时，系统自动：
     1. 降低游戏化强度（变比率奖励频率↓）
     2. 增强自主性支持引擎（选择透明度↑）
-    3. L3+级别通知家长
+    3. L3+ 级别通知家长
     """
-    # 从数据库获取最近7天的行为数据（简化版：使用默认值）
-    # 实际实现应从 Attempt 表和日志中聚合
-    assessment = lai_engine.assess(
-        daily_minutes=45,  # 默认值，实际从日志聚合
-        session_minutes=25,
-        night_ratio=0.05,
-        age_group="secondary",
-    )
+    target = user
+    if student_id and student_id != str(user.id):
+        child = (await db.execute(select(User).where(User.id == student_id))).scalar_one_or_none()
+        if not child or (child.parent_id != user.id and not _is_demo_child(user.email, child.email)):
+            if user.role != UserRole.TEACHER:
+                raise HTTPException(status_code=404, detail="未找到该学生或无权查看")
+        target = child
+
+    inputs = await _aggregate_lai_inputs(target.id, db)
+    assessment = lai_engine.assess(**inputs)
     result = assessment.to_dict()
     result["gamification_adjustments"] = {
         "variable_ratio_probability": 0.15 if assessment.should_reduce_gamification else 0.25,
@@ -640,6 +647,61 @@ async def lai_dashboard(
         "forced_break_minutes": 10 if assessment.should_force_break else 0,
     }
     return result
+
+
+async def _aggregate_lai_inputs(user_id: str, db: AsyncSession, days: int = 7) -> dict:
+    """从近 days 天的 Attempt 日志聚合 LAI 输入指标（带安全兜底）。
+
+    仅使用 Attempt 中可观测字段：created_at（夜间比例/单次时长）、
+    time_spent（总时长）、is_correct（专注度代理）、hints_used（动机结构代理）。
+    无日志时回退到中性偏健康默认值，保证接口始终可用。
+    """
+    now = datetime.now(UTC)
+    start = now - timedelta(days=days)
+    q = await db.execute(
+        select(Attempt)
+        .where(Attempt.user_id == user_id, Attempt.created_at >= start)
+        .order_by(Attempt.created_at.asc())
+    )
+    attempts = list(q.scalars().all())
+
+    if not attempts:
+        return dict(
+            daily_minutes=20, session_minutes=15, night_ratio=0.0,
+            content_attention_ratio=0.8, leaderboard_views=0,
+            planned_stop_failures=0, intrinsic_motivation_ratio=0.7,
+            external_reward_dependency=0.3, time_perception_bias=0.0,
+            sleep_impact=0.0, social_impact=0.0, age_group="secondary",
+        )
+
+    total = len(attempts)
+    night = sum(1 for a in attempts if (a.created_at.hour >= 22 or a.created_at.hour < 7))
+    night_ratio = night / total
+    total_seconds = sum((a.time_spent or 0) for a in attempts)
+    daily_minutes = (total_seconds / 60.0) / days
+    correct = sum(1 for a in attempts if a.is_correct)
+    correct_rate = correct / total
+    # 内容专注度 ~ 正确率（越高越专注）
+    content_attention_ratio = round(0.4 + 0.6 * correct_rate, 3)
+    # 内在动机 ~ 低提示依赖；外部奖励依赖 ~ 高提示依赖
+    avg_hints = sum((a.hints_used or 0) for a in attempts) / total
+    intrinsic_motivation_ratio = round(max(0.2, 1.0 - avg_hints * 0.3), 3)
+    external_reward_dependency = round(min(0.8, avg_hints * 0.2), 3)
+    session_minutes = round(total_seconds / total / 60.0, 1) if total else 15.0
+    return dict(
+        daily_minutes=round(daily_minutes, 1),
+        session_minutes=session_minutes,
+        night_ratio=round(night_ratio, 3),
+        content_attention_ratio=content_attention_ratio,
+        leaderboard_views=0,
+        planned_stop_failures=0,
+        intrinsic_motivation_ratio=intrinsic_motivation_ratio,
+        external_reward_dependency=external_reward_dependency,
+        time_perception_bias=0.0,
+        sleep_impact=0.0,
+        social_impact=0.0,
+        age_group="secondary",
+    )
 
 
 # ─── A/B 测试框架（论文第九章9.5节）──────────────────

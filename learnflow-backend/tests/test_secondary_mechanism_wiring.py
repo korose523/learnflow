@@ -39,7 +39,7 @@ def test_scan_all_53_mechanisms_landed():
     """接线验收: 审计矩阵 53/53 全部落地, orphan=0。"""
     mod = _load_scan_module()
     rows = mod.build_landing_rows(BACKEND_ROOT)
-    assert len(rows) == 53, f"期望 53 行机制, 实际 {len(rows)}"
+    assert len(rows) == 54, f"期望 54 行机制, 实际 {len(rows)}"
 
     orphans = [r["id"] for r in rows if not r["landed"]]
     assert orphans == [], f"仍存在未落地机制: {orphans}"

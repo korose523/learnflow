@@ -2,7 +2,7 @@
 
 背景
 ----
-LearnFlow 的 53 个游戏化机制此前只存在于 ``docs/LearnFlow_机制治理与落实方案.md``
+LearnFlow 的 54 个游戏化机制此前只存在于 ``docs/LearnFlow_机制治理与落实方案.md``
 的 §2.4 清单表里, 运行时代码里没有任何统一枚举入口。``learning_orchestrator.py``
 的 ``process_submission`` 用 11 个硬编码步骤把其中几个机制（宠物 LF-M22 / XP 等级
 LF-M19 / 未成年保护 LF-M52 / 强制休息 LF-M51 / 风险监控 LF-M53）直接写死, 无法开关、
@@ -494,6 +494,11 @@ _SPECS_DATA: List[Dict[str, Any]] = [
      "name_en": "LAI Adaptive Downgrade", "stage": "ambient", "category": "health",
      "theory_ref": "自构成瘾指数量表改编", "impl_ref": "learning_addiction_index.py",
      "disposition": "R", "maturity": "placeholder", "notes": "先补采集, 否则废弃"},
+    {"id": "LF-M54", "key": "class_pet", "name_zh": "班级宠物共养",
+     "name_en": "Class Pet (Collective Relatedness)", "stage": "ambient", "category": "health",
+     "theory_ref": "Ryan & Deci 2000（关联性）；Hari 2018（连接替代）",
+     "impl_ref": "class_pet_service.py", "disposition": "K", "maturity": "complete",
+     "notes": "文献补位 C1/B6/B7：以真实连接替代成瘾化孤独追逐；回灌 LAI connection_quality"},
 ]
 
 #: 全部规格 (按 ID 升序)
@@ -575,7 +580,7 @@ def keys() -> List[str]:
 
 
 def ids() -> List[str]:
-    """全部稳定 ID (LF-M01..LF-M53)"""
+    """全部稳定 ID (LF-M01..LF-M54)"""
     return [spec.id for spec in SPECS]
 
 

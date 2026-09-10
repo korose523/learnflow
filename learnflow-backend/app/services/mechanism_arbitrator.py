@@ -31,9 +31,12 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import dataclass, field
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import TYPE_CHECKING, Callable, Dict, List, Optional, Tuple
 
 from app.services.mechanism_registry import Effect, MechanismContext
+
+if TYPE_CHECKING:  # 避免与 rl_arbitrator 的运行时循环导入
+    from app.services.rl_arbitrator import RLArbitrator
 
 logger = logging.getLogger(__name__)
 
@@ -60,6 +63,7 @@ class ArbitrationTrace:
     vetoed_by_health: List[str] = field(default_factory=list)
     dropped_by_conflict: List[str] = field(default_factory=list)
     dropped_by_budget: List[str] = field(default_factory=list)
+    dropped_by_risk: List[str] = field(default_factory=list)
     delivered: List[str] = field(default_factory=list)
     reason: str = ""
 
@@ -102,18 +106,51 @@ class MechanismArbitrator:
         "LF-M51": "withdraw", "LF-M52": "withdraw", "LF-M53": "withdraw",
     }
 
+    # 成瘾化风险权重表 (文献补位: 学习成瘾化研究补充文献测绘)
+    #   key = mechanism_id (须为 approach 方向, 见 _DIRECTION)
+    #   value = 成瘾化风险权重 (0-1): 越高表示该 nudge 越具成瘾化拉回倾向
+    # 依据: LF-M44 FOMO(B4/A4) / LF-M33 Hook(B4) / LF-M08 稀缺性(dark pattern) /
+    #       LF-M07 集换收藏(A8 可变奖励) / LF-M35 情境线索(B4 触发返回)
+    _ADDICTION_RISK: Dict[str, float] = {
+        "LF-M44": 0.9,
+        "LF-M33": 0.7,
+        "LF-M08": 0.5,
+        "LF-M07": 0.4,
+        "LF-M35": 0.4,
+    }
+
     def __init__(
         self,
         policy: Optional[BudgetPolicy] = None,
         store: Optional[MemoryBudgetStore] = None,
         trace_sink: Optional[Callable[[ArbitrationTrace], None]] = None,
+        rl_arbitrator: Optional["RLArbitrator"] = None,
     ) -> None:
         self.policy = policy or BudgetPolicy()
         self.store = store
         self.trace_sink = trace_sink
+        self.rl_arbitrator = rl_arbitrator
+        # 在线决策闭环反馈存储: (user_id, session_id) -> {risk_tier, chosen_id}
+        #   精确绑定到「某次仲裁由 RL 选中的 approach 机制」, 供 report_lai_feedback 使用
+        self._rl_pending: Dict[Tuple[str, Optional[str]], Dict[str, object]] = {}
+        self._rl_last: Dict[str, Dict[str, object]] = {}
 
-    def arbitrate(self, ctx: MechanismContext, effects: List[Effect]) -> List[Effect]:
-        """对一批候选 Effect 做三层漏斗仲裁, 返回最终下发的 Effect 列表。"""
+    def arbitrate(
+        self,
+        ctx: MechanismContext,
+        effects: List[Effect],
+        lai_risk: Optional[float] = None,
+    ) -> List[Effect]:
+        """对一批候选 Effect 做三层漏斗仲裁, 返回最终下发的 Effect 列表。
+
+        Args:
+            ctx: 仲裁上下文 (谁/哪个会话/审计轨迹)
+            effects: 候选干预 Effect 列表
+            lai_risk: 可选, LAI 成瘾风险 (0-1, 越高=成瘾风险越大)。提供时,
+                在健康否决之后、冲突消解之前, 额外丢弃「高成瘾化且 approach 方向」
+                的机制 (见 ``_ADDICTION_RISK``), 实现文献补位的「风险自适应降权」。
+                默认 ``None`` → 行为与旧版完全一致 (向后兼容)。
+        """
         trace = ArbitrationTrace(user_id=ctx.user_id, session_id=ctx.session_id)
         trace.candidates = [e.mechanism_id for e in effects]
 
@@ -132,6 +169,40 @@ class MechanismArbitrator:
             effects = survivors
             trace.reason = f"health_veto:{winner.mechanism_id}"
 
+        # ---------- 第 1.5 层: LAI 风险自适应降权 (可选) ----------
+        if lai_risk is not None:
+            dropped = [
+                e for e in effects
+                if self._DIRECTION.get(e.mechanism_id) == "approach"
+                and self._ADDICTION_RISK.get(e.mechanism_id, 0.0) * lai_risk >= 0.4
+            ]
+            if dropped:
+                effects = [e for e in effects if e not in dropped]
+                trace.dropped_by_risk = [e.mechanism_id for e in dropped]
+                trace.reason += f"|lai_risk_cool(drop={len(dropped)})"
+                logger.info(
+                    "LAI 风险自适应降权: 丢弃高成瘾化拉回 %s (lai_risk=%.2f)",
+                    [e.mechanism_id for e in dropped], lai_risk,
+                )
+
+        # ---------- 第 1.7 层: RL 在线决策 (可选, 仅在已训练时生效) ----------
+        # 已训练 -> 在当前风险档下, 从候选 approach 机制中由 bandit 选一个收益最高的,
+        # 丢弃其余 approach 机制 (保留 withdraw/neutral 不受影响)。未训练 -> 完全跳过,
+        # 行为与旧版一致 (向后兼容, 保守偏置兜底)。
+        chosen_rl_id: Optional[str] = None
+        if self.rl_arbitrator is not None and self.rl_arbitrator.trained():
+            risk_tier = self._risk_tier(lai_risk) if lai_risk is not None else 0
+            rl_id = self.rl_arbitrator.select_mechanism(ctx, effects, risk_tier)
+            if rl_id is not None:
+                chosen_rl_id = rl_id
+                effects = [
+                    e for e in effects
+                    if self._DIRECTION.get(e.mechanism_id) != "approach"
+                    or e.mechanism_id == rl_id
+                ]
+                trace.reason += f"|rl_select({rl_id})"
+                logger.info("RL 仲裁器在风险档 t%d 选中 %s", risk_tier, rl_id)
+
         # ---------- 第 2 层: 冲突消解 ----------
         effects = self._resolve_conflicts(ctx, effects, trace)
 
@@ -142,7 +213,68 @@ class MechanismArbitrator:
         if self.trace_sink is not None:
             self.trace_sink(trace)
         ctx.trace.append(f"ARBITRATE delivered={trace.delivered}")
+
+        # 记录 RL 反馈目标: 仅当 RL 实际参与决策, 且选中的 approach 机制确实被下发。
+        # 后续该用户/会话的 LAI 改善将通过 report_lai_feedback 回灌为奖励信号。
+        if chosen_rl_id is not None and chosen_rl_id in trace.delivered:
+            risk_tier = self._risk_tier(lai_risk) if lai_risk is not None else 0
+            rec: Dict[str, object] = {"risk_tier": risk_tier, "chosen_id": chosen_rl_id}
+            self._rl_pending[(ctx.user_id, ctx.session_id)] = rec
+            self._rl_last[ctx.user_id] = rec
+
         return effects
+
+    @staticmethod
+    def _risk_tier(lai_risk: float) -> int:
+        """把 0-1 成瘾风险映射为 RL 上下文档位 (0-3), 与 TemporalRiskModel 对齐。
+
+        阈值 (0.15/0.35/0.6) 与 :meth:`TemporalRiskModel.risk_tier` 一致, 使规则层
+        与 RL 层共享同一风险离散化, 便于复现已训练的 bandit Q 表语义。
+        """
+        if lai_risk < 0.15:
+            return 0
+        if lai_risk < 0.35:
+            return 1
+        if lai_risk < 0.6:
+            return 2
+        return 3
+
+    def report_lai_feedback(
+        self,
+        user_id: str,
+        lai_before: float,
+        lai_after: float,
+        session_id: Optional[str] = None,
+    ) -> Optional[float]:
+        """在线决策闭环: 用 LAI 改善作奖励信号, 回灌给 RL 仲裁器做在线学习。
+
+        奖励 = (lai_after − lai_before) / 100
+            LAI 综合分 0-100 (越高越健康), 故 LAI 改善 (after > before) 为正收益,
+            恶化则为负收益。奖励被记入此前该用户/会话由 RL 选中的 approach 机制对应的
+            (风险档, 机制ID) 状态-动作对。
+
+        安全性 / 向后兼容:
+            * RL 仲裁器未注入 (``rl_arbitrator is None``) 或尚未训练 → 直接返回 ``None``,
+              不改动任何状态, 规则仲裁行为完全不变;
+            * 若该用户/会话此前没有 RL 决策目标 → 返回 ``None`` (无反馈对象)。
+        返回实际下发的奖励值 (无目标时返回 None)。
+        """
+        if self.rl_arbitrator is None or not self.rl_arbitrator.trained():
+            return None
+        rec = self._rl_pending.pop((user_id, session_id), None)
+        if rec is None:                       # 退而求其次: 该用户最近一次 RL 决策
+            rec = self._rl_last.get(user_id)
+        if rec is None:
+            return None
+        reward = (lai_after - lai_before) / 100.0
+        self.rl_arbitrator.observe(
+            rec["risk_tier"], rec["chosen_id"], reward  # type: ignore[arg-type]
+        )
+        logger.info(
+            "RL 反馈: user=%s mech=%s reward=%.4f (LAI %.1f->%.1f)",
+            user_id, rec["chosen_id"], reward, lai_before, lai_after,
+        )
+        return reward
 
     def _resolve_conflicts(
         self, ctx: MechanismContext, effects: List[Effect], trace: ArbitrationTrace
@@ -209,7 +341,16 @@ class MechanismArbitrator:
         return delivered
 
 
+def lai_risk_from_overall(overall_score: float) -> float:
+    """把 LAI 综合分 (0-100, 越高越健康) 转为成瘾风险 (0-1, 越高越危险)。
+
+    供编排器/调用方在 LAI 评估后直接取 ``lai_risk`` 传入
+    :meth:`MechanismArbitrator.arbitrate` 做风险自适应降权。
+    """
+    return max(0.0, min(1.0, 1.0 - overall_score / 100.0))
+
+
 __all__ = [
     "BudgetPolicy", "ArbitrationTrace", "MemoryBudgetStore",
-    "MechanismArbitrator",
+    "MechanismArbitrator", "lai_risk_from_overall",
 ]

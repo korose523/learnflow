@@ -69,6 +69,12 @@ class PetProfile(Base):
         """确保 Python 层也有合理的默认值（SQLAlchemy Column default 只在 INSERT 时生效）"""
         kwargs.setdefault("level", 1)
         kwargs.setdefault("mood", PetMood.HAPPY)
+        # 四维属性也在此给默认值，避免实例化后未 flush 前为 None
+        # （积分养宠 feed_pet_with_points 会在 commit 前读取这些属性）
+        kwargs.setdefault("understanding", 50.0)
+        kwargs.setdefault("persistence", 50.0)
+        kwargs.setdefault("creativity", 50.0)
+        kwargs.setdefault("collaboration", 50.0)
         super().__init__(**kwargs)
 
     @property
