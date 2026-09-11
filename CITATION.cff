@@ -1,21 +1,27 @@
 cff-version: 1.2.0
 message: "If you use this software or its reproducibility artifacts, please cite it as below."
 type: software
-title: "LearnFlow: A K12 Gamified Adaptive Learning Platform for Difficulty-Calibration Research"
+title: "LearnFlow: A K12 Gamified Adaptive Learning Platform and Measurement Instrument for Learning-Addiction Research"
 abstract: >-
   LearnFlow is a K12 gamified adaptive-learning platform released primarily as a reproducible
-  research artifact. Its methodological contribution is to treat learning difficulty as a
-  measurable, calibratable, decision-theoretic and governable first-class quantity. The artifact
-  accompanies empirical work on the commensurability of difficulty scales, external-validity
-  testing of the 85% success-rate rule, ordered-action bandits with a formalised flow channel,
-  formalisation and conflict arbitration of gamification interventions, and reliability boundaries
-  of LLM-based difficulty annotation. Every headline count in the documentation is recomputed from
-  source by scripts under learnflow-backend/scripts/, and the consistency check fails loudly when a
-  documented number diverges from the code.
+  research artifact for the study of learning addiction. Its measurement contribution is a
+  dual-source, five-dimension framework that combines behavioural logs (durations, night-time
+  ratio, hint dependence) with a self-report instrument layer covering the dimensions logs
+  structurally cannot observe: behavioural control, sleep and social impairment, and
+  time-perception bias. Unmeasured dimensions are excluded from the index weighting and
+  reported through an explicit coverage object rather than silently scored as healthy. The
+  artifact also accompanies empirical work on the commensurability of difficulty scales,
+  external-validity testing of the 85% success-rate rule, ordered-action bandits with a
+  formalised flow channel, and reliability boundaries of LLM-based difficulty annotation.
+  Every headline count in the documentation is recomputed from source by scripts under
+  learnflow-backend/scripts/, and the consistency check fails loudly when a documented number
+  diverges from the code.
 authors:
-  # TODO(维护者): 请将 name 替换为你的法定姓名或常用署名，并补充 affiliation / orcid。
-  # 当前值沿用仓库 git 提交身份，作为占位。
-  - name: "LearnFlow Research"
+  # 署名沿用仓库所有者的 GitHub 身份。若需法定姓名 / 单位 / ORCID，直接改本块即可——
+  # 但注意 IEEE 全系（TLT / TKDE / THMS）要求所有作者持有 ORCID，投稿前须补齐。
+  - name: "korose523"
+    alias: "korose523"
+    website: "https://github.com/korose523"
 version: 0.1.0
 date-released: "2026-09-11"
 license: MIT
@@ -23,6 +29,9 @@ repository-code: "https://github.com/korose523/learnflow"
 url: "https://github.com/korose523/learnflow"
 keywords:
   - adaptive learning
+  - learning addiction
+  - psychological measurement
+  - self-report instruments
   - difficulty calibration
   - flow channel
   - gamification

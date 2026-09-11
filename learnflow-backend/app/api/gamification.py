@@ -33,6 +33,11 @@ from app.services.learning_addiction_index import (
     LearningAddictionIndex, lai_engine, LAIAssessment,
 )
 from app.services.ab_test_framework import ab_test_framework, ExperimentPhase
+from app.services.self_report_service import (
+    coverage_report,
+    lai_inputs_from_self_report,
+    measured_dimensions,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -651,8 +656,12 @@ async def lai_dashboard(
         target = child
 
     inputs = await _aggregate_lai_inputs(target.id, db)
-    assessment = lai_engine.assess(**inputs)
+    # 测量诚实性：显式声明哪些维度由真实测量支撑。未测维度不参与加权，
+    # 避免 control(25%) / function(10%) 在输入为占位常量时被静默计为满分。
+    measured = await measured_dimensions(db, target.id)
+    assessment = lai_engine.assess(**inputs, measured_dimensions=measured)
     result = assessment.to_dict()
+    result["measurement"] = await coverage_report(db, target.id)
     result["gamification_adjustments"] = {
         "variable_ratio_probability": 0.15 if assessment.should_reduce_gamification else 0.25,
         "leaderboard_visible": not assessment.should_reduce_gamification,
@@ -662,12 +671,37 @@ async def lai_dashboard(
     return result
 
 
+async def _with_self_report(db: AsyncSession, user_id: str, inputs: dict) -> dict:
+    """把新鲜自陈测量叠加到行为日志聚合结果之上。
+
+    自陈是**直接观测**（学生本人报告），优先级高于行为日志推导的代理指标，
+    因此覆盖同名的行为侧取值；未被自陈覆盖的键保持不变。
+
+    注意：叠加**不改变「哪些维度已测」的判定** —— 那由
+    ``self_report_service.measured_dimensions`` 单独给出，并在评分时显式传入，
+    以免「叠加了值」被误当作「该维度已测」。
+    """
+    try:
+        sr = await lai_inputs_from_self_report(db, user_id)
+    except Exception as exc:  # pragma: no cover - 防御性：绝不让自陈查询打挂仪表盘
+        logger.warning("自陈测量叠加失败，仅使用行为日志：%s", exc)
+        return inputs
+    if sr:
+        inputs.update(sr)
+    return inputs
+
+
 async def _aggregate_lai_inputs(user_id: str, db: AsyncSession, days: int = 7) -> dict:
     """从近 days 天的 Attempt 日志聚合 LAI 输入指标（带安全兜底）。
 
     仅使用 Attempt 中可观测字段：created_at（夜间比例/单次时长）、
     time_spent（总时长）、is_correct（专注度代理）、hints_used（动机结构代理）。
     无日志时回退到中性偏健康默认值，保证接口始终可用。
+
+    ⚠️ 无日志分支中的 ``planned_stop_failures`` / ``sleep_impact`` /
+    ``social_impact`` / ``time_perception_bias`` 是**占位常量**，行为日志无法观测它们。
+    这些常量不得参与评分：调用方必须用 ``measured_dimensions()`` 声明真实测量集，
+    由 ``LearningAddictionIndex.assess`` 把未测维度剔除并重新归一化权重。
     """
     now = datetime.now(UTC)
     start = now - timedelta(days=days)
@@ -679,13 +713,13 @@ async def _aggregate_lai_inputs(user_id: str, db: AsyncSession, days: int = 7) -
     attempts = list(q.scalars().all())
 
     if not attempts:
-        return dict(
+        return await _with_self_report(db, user_id, dict(
             daily_minutes=20, session_minutes=15, night_ratio=0.0,
             content_attention_ratio=0.8, leaderboard_views=0,
             planned_stop_failures=0, intrinsic_motivation_ratio=0.7,
             external_reward_dependency=0.3, time_perception_bias=0.0,
             sleep_impact=0.0, social_impact=0.0, age_group="secondary",
-        )
+        ))
 
     total = len(attempts)
     night = sum(1 for a in attempts if (a.created_at.hour >= 22 or a.created_at.hour < 7))
@@ -701,7 +735,7 @@ async def _aggregate_lai_inputs(user_id: str, db: AsyncSession, days: int = 7) -
     intrinsic_motivation_ratio = round(max(0.2, 1.0 - avg_hints * 0.3), 3)
     external_reward_dependency = round(min(0.8, avg_hints * 0.2), 3)
     session_minutes = round(total_seconds / total / 60.0, 1) if total else 15.0
-    return dict(
+    return await _with_self_report(db, user_id, dict(
         daily_minutes=round(daily_minutes, 1),
         session_minutes=session_minutes,
         night_ratio=round(night_ratio, 3),
@@ -714,7 +748,7 @@ async def _aggregate_lai_inputs(user_id: str, db: AsyncSession, days: int = 7) -
         sleep_impact=0.0,
         social_impact=0.0,
         age_group="secondary",
-    )
+    ))
 
 
 # ─── A/B 测试框架（论文第九章9.5节）──────────────────

@@ -23,13 +23,13 @@ logger = logging.getLogger(__name__)
 async def _register_routers(app: FastAPI) -> None:
     """注册所有 API 路由"""
     try:
-        from app.api import auth, student, teacher, parent, admin, gamification, k12, class_pet, onboarding, placement, analytics
+        from app.api import auth, student, teacher, parent, admin, gamification, k12, class_pet, onboarding, placement, analytics, instrument
         routers = [
             auth.router, student.router, teacher.router, parent.router,
             admin.router, gamification.router, k12.router,
             teacher.k12_router, parent.k12_router, class_pet.router,
             onboarding.router, placement.router,
-            analytics.router,
+            analytics.router, instrument.router,
         ]
         for router in routers:
             app.include_router(router)
@@ -41,7 +41,7 @@ async def _register_routers(app: FastAPI) -> None:
 
 async def _ensure_demo_users() -> None:
     """确保演示账号存在，并统一 onboarding"""
-    from app.core.security import hash_password
+    from app.core.security import hash_password, verify_password
     from app.models.user import User, UserRole
     from app.core.database import _get_sessionmaker
     from app.services.onboarding_service import OnboardingService
@@ -94,7 +94,15 @@ async def _ensure_demo_users() -> None:
                 await db.refresh(user)
                 logger.info(f"✅ 创建演示账号: {name} ({email})")
             else:
-                logger.info(f"⏭️ 跳过已存在的演示账号: {email}")
+                # 口令轮换：演示账号的hash必须跟随 SEED_*_PASSWORD 变化。
+                # 早期实现只创建不更新，导致「改了 .env 但账号口令没变」——
+                # 这使得「公开源码中的演示口令 == 真实种子口令」无法通过轮换解除。
+                if not verify_password(password, user.hashed_password or ""):
+                    user.hashed_password = hash_password(password)
+                    await db.flush()
+                    logger.info(f"🔑 已轮换演示账号口令: {email}")
+                else:
+                    logger.info(f"⏭️ 跳过已存在的演示账号: {email}")
             created_or_existing[email] = user
 
         # 第二步：创建对应的 4 个默认家长账号并绑定
@@ -116,7 +124,15 @@ async def _ensure_demo_users() -> None:
                 await db.refresh(parent_user)
                 logger.info(f"✅ 创建默认家长: {parent_email}")
             else:
-                logger.info(f"⏭️ 跳过已存在的家长账号: {parent_email}")
+                # 默认家长账号同样必须跟随口令轮换 —— 前端演示用的
+                # parent_student@learnflow.com 就出自这里；若只轮换 4 个主角色账号，
+                # 家长端会因口令不一致而登录失败（401）。
+                if not verify_password(demo_passwords["parent"], parent_user.hashed_password or ""):
+                    parent_user.hashed_password = hash_password(demo_passwords["parent"])
+                    await db.flush()
+                    logger.info(f"🔑 已轮换默认家长口令: {parent_email}")
+                else:
+                    logger.info(f"⏭️ 跳过已存在的家长账号: {parent_email}")
 
             # 绑定亲子关系（仅当学生未绑定或绑定不是当前家长时）
             if child_user.role == UserRole.STUDENT and child_user.parent_id != parent_user.id:

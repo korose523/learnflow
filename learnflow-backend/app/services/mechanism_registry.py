@@ -1,22 +1,22 @@
-"""游戏化机制注册表 — LearnFlow 53 个游戏化/成瘾机制的单一事实源 (single source of truth)
+"""游戏化机制注册表 — LearnFlow 54 个游戏化/成瘾机制的单一事实源 (single source of truth)
 
 背景
 ----
 LearnFlow 的 54 个游戏化机制此前只存在于 ``docs/LearnFlow_机制治理与落实方案.md``
 的 §2.4 清单表里, 运行时代码里没有任何统一枚举入口。``learning_orchestrator.py``
 的 ``process_submission`` 用 11 个硬编码步骤把其中几个机制（宠物 LF-M22 / XP 等级
-LF-M19 / 未成年保护 LF-M52 / 强制休息 LF-M51 / 风险监控 LF-M53）直接写死, 无法开关、
-无法审计「这一步对应哪个机制」。
+LF-M19 / 未成年保护 LF-M52 / 强制休息 LF-M51 / LAI 自适应降级 LF-M53）直接写死,
+无法开关、无法审计「这一步对应哪个机制」。
 
-本模块把全部 **53** 个机制收敛为声明式注册表, 与 ``method_registry.py``（学习方法）
-同构: 可枚举、可开关、可统一查询。每个机制带稳定 ID (``LF-M01``..``LF-M53``)、
+本模块把全部 **54** 个机制收敛为声明式注册表, 与 ``method_registry.py``（学习方法）
+同构: 可枚举、可开关、可统一查询。每个机制带稳定 ID (``LF-M01``..``LF-M54``)、
 生命周期阶段 (stage)、理论类别 (category)、理论来源 (theory_ref)、实现位置 (impl_ref)、
 治理处置 (disposition: K 保留 / M 合并 / R 重构 / D 废弃)。
 
 ID 稳定性约定
 -------------
 ``LF-M`` 系列专属于**游戏化机制**, 与学习方法的 ``LF-L`` 系列互斥。ID 一经分配即冻结,
-不得复用或重排; 新增机制只能追加新序号 (当前封顶 LF-M53)。
+不得复用或重排; 新增机制只能追加新序号 (当前封顶 LF-M54)。
 
 impl_ref 的语义差异（重要）
 --------------------------
@@ -41,8 +41,8 @@ impl_ref 的行号漂移风险（已知技术债）
 
 与 verify_counts.py 的关系
 -------------------------
-``verify_counts.py`` 的 ``mechanism_unique=53`` 是从治理文档 AST 复算得来, 是本注册表的
-外部交叉校验源。两者必须一致: 本注册表 ``count() == 53`` 且 ID 连续无缺口, 即与文档自洽。
+``verify_counts.py`` 的 ``mechanism_unique=54`` 是从治理文档 AST 复算得来, 是本注册表的
+外部交叉校验源。两者必须一致: 本注册表 ``count() == 54`` 且 ID 连续无缺口, 即与文档自洽。
 """
 from __future__ import annotations
 
@@ -70,7 +70,7 @@ DISPOSITIONS: Tuple[str, ...] = ("K", "M", "R", "D")
 #: 成熟度（代码落地程度）
 MATURITY: Tuple[str, ...] = ("complete", "partial", "placeholder")
 
-#: ID 形态 ``LF-M01`` .. ``LF-M53``
+#: ID 形态 ``LF-M01`` .. ``LF-M54``
 ID_PATTERN = re.compile(r"^LF-M(\d{2})$")
 
 #: snake_case key 形态
@@ -507,7 +507,7 @@ SPECS: Tuple[MechanismSpec, ...] = tuple(_make_spec(**d) for d in _SPECS_DATA)
 _BY_KEY: Dict[str, MechanismSpec] = {spec.key: spec for spec in SPECS}
 _BY_ID: Dict[str, MechanismSpec] = {spec.id: spec for spec in SPECS}
 
-# 构造期不变量: ID 必须 LF-M01..LF-M53 连续无缺口、无重复
+# 构造期不变量: ID 必须 LF-M01..LF-M54 连续无缺口、无重复
 if len(_BY_KEY) != len(SPECS):
     raise ValueError(f"mechanism key 重复: 共 {len(SPECS)} 条规格, 去重后 {len(_BY_KEY)} 个 key")
 if len(_BY_ID) != len(SPECS):
@@ -570,7 +570,7 @@ def by_disposition(disp: str) -> List[MechanismSpec]:
 
 
 def count() -> int:
-    """机制总数 (当前 53)"""
+    """机制总数 (当前 54)"""
     return len(SPECS)
 
 

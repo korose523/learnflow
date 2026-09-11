@@ -11,13 +11,36 @@ const ROLES = [
   { value: 'admin', label: '⚙️ 管理员', desc: '平台运营', emoji: '⚙️' },
 ];
 
-const DEMO_ACCOUNTS: Record<string, { email: string; password: string }> = {
-  student: { email: 'student@learnflow.com', password: 'Student123!' },
-  teacher: { email: 'teacher@learnflow.com', password: 'Teacher123!' },
+/**
+ * 开发期快捷登录。
+ *
+ * 设计约束（合规要求）：**源码中不得硬编码任何口令**。
+ * 早前此文件内联了四个演示账号的真实口令，而这些口令与后端 `.env` 的
+ * `SEED_*_PASSWORD` 完全相同 —— 仓库公开即等于公开了种子口令。
+ *
+ * 现在：
+ *  - 邮箱不是秘密，可内联；
+ *  - 口令只从**未提交**的 `learnflow-frontend/.env.local` 读取（见 `.env.example`）；
+ *  - 整个填入逻辑仅在 Vite 开发模式（`import.meta.env.DEV`）下生效，
+ *    生产构建（`vite build`）下永远拿不到口令。
+ */
+const IS_DEV = import.meta.env.DEV;
+
+const DEMO_EMAILS: Record<string, string> = {
+  student: 'student@learnflow.com',
+  teacher: 'teacher@learnflow.com',
   // 家长演示账号须用真正绑定了演示学生（小明）的账号 parent_student@learnflow.com；
   // parent@learnflow.com 无任何绑定孩子，登录后家长端只会显示「尚未绑定孩子账号」空态。
-  parent: { email: 'parent_student@learnflow.com', password: 'Parent123!' },
-  admin: { email: 'admin@learnflow.com', password: 'Admin1234!' },
+  parent: 'parent_student@learnflow.com',
+  admin: 'admin@learnflow.com',
+};
+
+/** 读取开发期演示口令；未配置（生产或未建 .env.local）时返回空串。 */
+const devDemoPassword = (role: string): string => {
+  if (!IS_DEV) return '';
+  const key = `VITE_DEMO_${role.toUpperCase()}_PASSWORD`;
+  const value = (import.meta.env as unknown as Record<string, string | undefined>)[key];
+  return typeof value === 'string' ? value : '';
 };
 
 export default function LoginPage() {
@@ -25,7 +48,7 @@ export default function LoginPage() {
   const { login, register, oauthLogin, isAuthenticated, user } = useAuth();
   const { showToast } = useToast();
   const [email, setEmail] = useState('student@learnflow.com');
-  const [password, setPassword] = useState('Student123!');
+  const [password, setPassword] = useState(() => devDemoPassword('student'));
   const [selectedRole, setSelectedRole] = useState<string>('student');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -43,8 +66,11 @@ export default function LoginPage() {
 
   const handleRoleSelect = (role: string) => {
     setSelectedRole(role);
-    const demo = DEMO_ACCOUNTS[role];
-    if (demo) { setEmail(demo.email); setPassword(demo.password); }
+    const demoEmail = DEMO_EMAILS[role];
+    if (demoEmail) setEmail(demoEmail);
+    // 口令仅在开发模式下、且由未提交的 .env.local 提供时填入；否则不动用户输入。
+    const demoPassword = devDemoPassword(role);
+    if (demoPassword) setPassword(demoPassword);
   };
 
   const handleLogin = async (e: React.FormEvent) => {

@@ -36,6 +36,9 @@ class LAIDimensionScore:
     weighted_score: float  # 加权后分值
     sub_indicators: dict   # 子指标明细
     risk_flag: bool = False  # 是否触发风险标记
+    #: 该维度是否由真实测量支撑。False 表示其输入来自调用方的默认常量，
+    #: 此时 ``weighted_score`` 恒为 0（不参与综合分），且不参与权重归一化。
+    measured: bool = True
 
 
 @dataclass
@@ -50,6 +53,9 @@ class LAIAssessment:
     should_force_break: bool = False            # 是否应强制休息
     autonomy_support_boost: bool = False        # 是否应增强自主性支持
     timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
+    #: 测量覆盖度报告（见 ``LearningAddictionIndex.assess`` 的 measured_dimensions）。
+    #: 未显式声明测量集时为空 dict，表示「按全维度计分」的旧口径。
+    coverage: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return {
@@ -62,9 +68,11 @@ class LAIAssessment:
                     "weighted_score": round(d.weighted_score, 1),
                     "sub_indicators": d.sub_indicators,
                     "risk_flag": d.risk_flag,
+                    "measured": d.measured,
                 }
                 for name, d in self.dimensions.items()
             },
+            "coverage": self.coverage,
             "recommendations": self.recommendations,
             "should_reduce_gamification": self.should_reduce_gamification,
             "should_notify_guardian": self.should_notify_guardian,
@@ -123,6 +131,7 @@ class LearningAddictionIndex:
         hook_internal_trigger_dependency: float = 0.0,  # Hook 内部触发依赖 (0-1, B4 Eyal)
         age_group: str = "secondary",  # primary/secondary/senior
         thresholds: Optional[dict] = None,
+        measured_dimensions: Optional[set] = None,
     ) -> LAIAssessment:
         """计算 LAI 综合指数
 
@@ -144,10 +153,48 @@ class LearningAddictionIndex:
             hook_internal_trigger_dependency: Hook 模型内部触发依赖 (0-1，越高=越依赖负性情绪返回)
             age_group: 年龄段 (primary=小学/secondary=初中/senior=高中)
             thresholds: 自定义阈值覆盖
+            measured_dimensions: **哪些维度由真实测量支撑**。
+
+                这是本引擎的测量诚实性开关，必须由调用方显式声明：
+
+                * ``None``（默认）—— 旧口径，等价于「全部五维均视为已测」。
+                  仅为向后兼容保留，**新的调用方不应使用**，因为它会让
+                  ``control`` / ``function`` 这类无行为日志可观测的维度
+                  在输入取默认常量时静默计为满分。
+                * 集合（如 ``{"time", "motivation", "control"}``）—— 精确口径。
+                  只有集合内的维度参与加权，权重在已测维度上**重新归一化**
+                  （保持 0-100 量纲不变），未测维度的 ``weighted_score`` 恒为 0
+                  且 ``measured=False``。结果中的 ``coverage`` 会报告覆盖度，
+                  使「基于 55% 权重的结论」在下游无法被误读为「基于全五维」。
 
         Returns:
-            LAIAssessment: 综合评估结果
+            LAIAssessment: 综合评估结果（含 ``coverage`` 覆盖度报告）
+
+        Raises:
+            ValueError: ``measured_dimensions`` 为空集，或包含未知维度名。
         """
+        # ── 测量覆盖度校验（先于一切计算，避免用错口径产生看似合理的分数）──
+        valid_dims = set(cls.WEIGHTS)
+        if measured_dimensions is None:
+            measured: set = set(valid_dims)
+            explicit_coverage = False
+        else:
+            measured = set(measured_dimensions)
+            explicit_coverage = True
+            if not measured:
+                raise ValueError(
+                    "measured_dimensions 不能为空集：至少需要一个维度由真实测量支撑，"
+                    "否则综合分无定义。"
+                )
+            unknown = measured - valid_dims
+            if unknown:
+                raise ValueError(
+                    f"measured_dimensions 含未知维度 {sorted(unknown)}；"
+                    f"合法取值为 {sorted(valid_dims)}。"
+                )
+        # 权重在已测维度上重新归一化（未测维度权重不摊给其他维度以外的任何地方）
+        measured_weight_total = sum(cls.WEIGHTS[d] for d in measured)
+        renorm = {d: cls.WEIGHTS[d] / measured_weight_total for d in measured}
         t = {**cls.DEFAULT_THRESHOLDS}
         if thresholds:
             t.update(thresholds)
@@ -206,16 +253,44 @@ class LearningAddictionIndex:
         func_score = min(1.0, func_base + social_protect / 2.0)
 
         # 综合评分（0-100，越高越健康）
+        # 未测维度不参与加权：weighted_score 恒为 0，由 coverage 显式报告，
+        # 绝不以「输入取默认常量所得的满分」冒充测量结果。
+        raw_scores = {
+            "time": time_score,
+            "motivation": motiv_score,
+            "control": control_score,
+            "cognition": cogn_score,
+            "function": func_score,
+        }
+        sub_maps = {
+            "time": time_subs,
+            "motivation": motiv_subs,
+            "control": control_subs,
+            "cognition": cogn_subs,
+            "function": func_subs,
+        }
         dimensions = {
-            "time": LAIDimensionScore("time", time_score, time_score * 100 * cls.WEIGHTS["time"], time_subs, time_score < 0.4),
-            "motivation": LAIDimensionScore("motivation", motiv_score, motiv_score * 100 * cls.WEIGHTS["motivation"], motiv_subs, motiv_score < 0.4),
-            "control": LAIDimensionScore("control", control_score, control_score * 100 * cls.WEIGHTS["control"], control_subs, control_score < 0.4),
-            "cognition": LAIDimensionScore("cognition", cogn_score, cogn_score * 100 * cls.WEIGHTS["cognition"], cogn_subs, cogn_score < 0.4),
-            "function": LAIDimensionScore("function", func_score, func_score * 100 * cls.WEIGHTS["function"], func_subs, func_score < 0.4),
+            name: LAIDimensionScore(
+                name,
+                score,
+                (score * 100 * renorm[name]) if name in measured else 0.0,
+                sub_maps[name],
+                (score < 0.4) if name in measured else False,
+                measured=(name in measured),
+            )
+            for name, score in raw_scores.items()
         }
 
         weighted_sum = sum(d.weighted_score for d in dimensions.values())
-        overall = weighted_sum  # 已经是 0-100 范围
+        overall = weighted_sum  # 已测维度权重归一化后仍为 0-100 量纲
+
+        coverage = {
+            "explicit": explicit_coverage,
+            "measured": sorted(measured),
+            "unmeasured": sorted(valid_dims - measured),
+            "weight_basis": round(measured_weight_total, 4),
+            "complete": measured == valid_dims,
+        }
 
         # 确定风险等级
         if overall >= 80:
@@ -249,6 +324,7 @@ class LearningAddictionIndex:
             should_notify_guardian=should_notify,
             should_force_break=should_break,
             autonomy_support_boost=autonomy_boost,
+            coverage=coverage,
         )
 
     @staticmethod

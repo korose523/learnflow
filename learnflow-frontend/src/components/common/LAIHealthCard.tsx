@@ -70,6 +70,29 @@ export default function LAIHealthCard({ data }: { data: any }) {
   const dims: Record<string, any> = data?.dimensions || {};
   const adj = data?.gamification_adjustments || {};
 
+  // ── 测量覆盖度 ──────────────────────────────────────────────────────────
+  // 未测维度在后端不参与加权（weighted_score=0）。若把它当作「0 分」渲染，
+  // 会造成与真实相反的误读（看起来像最差）。因此这里必须区分：
+  //   已测 → 显示归一化后的**实际**权重占比与分数
+  //   未测 → 显示「未测量」，不显示分数、不显示风险标记
+  const coverage: any = data?.coverage || null;
+  const measuredSet: Set<string> = new Set<string>(
+    coverage?.measured ?? Object.keys(DIM_META)
+  );
+  const weightBasis: number = coverage?.weight_basis ?? 1;
+  /** 该维度在综合分中的实际权重占比（已测维度按 weight_basis 归一化）。 */
+  const effectiveWeight = (key: string): number =>
+    measuredSet.has(key) && weightBasis > 0
+      ? DIM_META[key].weight / weightBasis
+      : DIM_META[key].weight;
+  const coveragePct = Math.round(weightBasis * 100);
+  const unmeasuredLabels = (coverage?.unmeasured ?? [])
+    .map((k: string) => DIM_META[k]?.label ?? k);
+  // 待补测的量表名（来自 dashboard 的 measurement.missing_instruments）
+  const missingInstruments: string[] = (
+    data?.measurement?.missing_instruments ?? data?.missing_instruments ?? []
+  ).map((m: any) => m?.name_zh ?? m?.code).filter(Boolean);
+
   return (
     <motion.div
       className="lf-card"
@@ -87,6 +110,30 @@ export default function LAIHealthCard({ data }: { data: any }) {
         </span>
       </div>
 
+      {/* 覆盖率披露：分数必须与「基于多少测量」一起呈现 */}
+      {coverage && (
+        <div style={{
+          marginBottom: 12, padding: '8px 12px', borderRadius: 10,
+          background: coverage.complete ? '#F0FDF4' : '#FFFBEB',
+          border: `1px solid ${coverage.complete ? '#BBF7D0' : '#FDE68A'}`,
+          fontSize: 12, color: '#64748B', lineHeight: 1.6,
+        }}>
+          <strong style={{ color: coverage.complete ? '#3FA66A' : '#B45309' }}>
+            测量覆盖度 {coveragePct}%
+          </strong>
+          <span style={{ marginLeft: 4 }}>
+            {coverage.complete
+              ? '五个维度均已由真实数据支撑'
+              : `未测量：${unmeasuredLabels.join('、')} —— 健康分仅在已测维度上重新归一化，未测维度不计入，也不视为「健康」`}
+          </span>
+          {!coverage.complete && missingInstruments.length > 0 && (
+            <div style={{ marginTop: 4, color: '#92400E' }}>
+              补测可提升覆盖度：{missingInstruments.join('、')}
+            </div>
+          )}
+        </div>
+      )}
+
       <div style={{ display: 'flex', gap: 20, alignItems: 'center', flexWrap: 'wrap' }}>
         <Gauge score={score} />
         <div style={{ flex: 1, minWidth: 220 }}>
@@ -94,18 +141,29 @@ export default function LAIHealthCard({ data }: { data: any }) {
           <div style={{ display: 'grid', gap: 9 }}>
             {Object.keys(DIM_META).map((key) => {
               const d = dims[key] || {};
+              const measured = measuredSet.has(key);
               const w = d.weighted_score ?? 0;
-              const flag = d.risk_flag;
+              const flag = measured && d.risk_flag;
+              const effW = effectiveWeight(key);
               return (
                 <div key={key}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#64748B', marginBottom: 3 }}>
                     <span>{DIM_META[key].label}
-                      <span style={{ color: '#94A3B8', marginLeft: 4 }}>权重 {(DIM_META[key].weight * 100).toFixed(0)}%</span>
+                      <span style={{ color: '#94A3B8', marginLeft: 4 }}>
+                        {/* 未测维度不参与加权，显示名义权重会让人误以为它计入综合分，
+                            故明确标注「不计入」而非给出百分比。 */}
+                        {measured
+                          ? `权重 ${(effW * 100).toFixed(0)}%`
+                          : `名义权重 ${(DIM_META[key].weight * 100).toFixed(0)}% · 不计入`}
+                      </span>
                       {flag && <span style={{ color: '#E0533D', marginLeft: 6 }}>⚠ 风险</span>}
+                      {!measured && <span style={{ color: '#B45309', marginLeft: 6 }}>未测量</span>}
                     </span>
-                    <span style={{ fontWeight: 700, color: flag ? '#E0533D' : '#2C6E8F' }}>{Math.round(w)}</span>
+                    <span style={{ fontWeight: 700, color: !measured ? '#CBD5E1' : flag ? '#E0533D' : '#2C6E8F' }}>
+                      {measured ? Math.round(w) : '—'}
+                    </span>
                   </div>
-                  <Bar value={w / 100} color={flag ? '#E0533D' : scoreColor(w)} />
+                  <Bar value={measured ? w / 100 : 0} color={flag ? '#E0533D' : measured ? scoreColor(w) : '#E2E8F0'} />
                 </div>
               );
             })}

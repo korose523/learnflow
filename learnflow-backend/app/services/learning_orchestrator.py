@@ -113,7 +113,7 @@ from app.models.analytics import AbilityEstimate, AuditKind
 # 注意: BKT / 间隔复习 / 技能画像等是**算法**而非机制, 不在此登记。
 # 门控一致性 (GAP-6 修复后):
 #   健康护栏类机制 (LF-M51 forced_rest 强制休息 / LF-M52 minor_protection 未成年保护
-#   / LF-M53 lai_downgrade 风险监控) 按治理策略拥有「一票否决权」, **始终开启、
+#   / LF-M53 lai_downgrade LAI 自适应降级) 按治理策略拥有「一票否决权」, **始终开启、
 #   exempt from ablation gating** —— 此处仅登记供审计, 不对其调用 is_enabled 门控。
 #   可被 is_enabled 真实门控、从而在消融实验中按需抑制的机制只有三个:
 #     * pet_companion  (LF-M22) —— 步骤 6  经 is_enabled 门控;
@@ -133,7 +133,7 @@ from app.models.analytics import AbilityEstimate, AuditKind
 
 PIPELINE_MECHANISM_MAP: Dict[int, List[str]] = {
     6: ["pet_companion"],                      # LF-M22 虚拟宠物陪伴
-    8: ["lai_downgrade", "forced_rest"],       # LF-M53 风险监控 / LF-M51 强制休息
+    8: ["lai_downgrade", "forced_rest"],       # LF-M53 LAI 自适应降级 / LF-M51 强制休息
     9: ["xp_leveling", "minor_protection"],     # LF-M19 XP等级 / LF-M52 未成年保护
     12: ["fomo"],                              # LF-M44 错失恐惧 — 经仲裁器下发
     13: [                                      # 孤儿机制评估钩子 (LF-Mxx 升序)

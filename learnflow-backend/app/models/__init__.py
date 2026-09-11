@@ -8,6 +8,7 @@ from app.models.curriculum import (
 )
 from app.models.analytics import AbilityEstimate, AuditLog, AuditKind
 from app.models.progression import UserXPState, SkillTreeState, LearningEvent
+from app.models.instrument import SelfReportResponse
 
 __all__ = [
     "UserXPState", "SkillTreeState", "LearningEvent",
@@ -19,4 +20,5 @@ __all__ = [
     "FeedbackScript",
     "Subject", "GradeLevel", "CurriculumNode", "Class", "Assignment", "GradeBand",
     "AbilityEstimate", "AuditLog", "AuditKind",
+    "SelfReportResponse",
 ]
