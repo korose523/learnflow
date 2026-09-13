@@ -1,0 +1,57 @@
+{
+ "design": "Junyi real arms, ability-decile conditional p, 500 sims x T=40, 11 strategies",
+ "n_users_calibrated": 52733,
+ "results": {
+  "random": {
+   "mean": 0.6835,
+   "se": 0.008
+  },
+  "all_easy": {
+   "mean": 0.7434,
+   "se": 0.007
+  },
+  "all_hard": {
+   "mean": 0.6498,
+   "se": 0.0082
+  },
+  "adaptive": {
+   "mean": 0.6898,
+   "se": 0.0069
+  },
+  "llm_correct": {
+   "mean": 0.7023,
+   "se": 0.0065
+  },
+  "llm_wrong": {
+   "mean": 0.6714,
+   "se": 0.0086
+  },
+  "flow_zone": {
+   "mean": 0.7119,
+   "se": 0.0064
+  },
+  "descent_pair": {
+   "mean": 0.6962,
+   "se": 0.0079
+  },
+  "adaptive_k1": {
+   "mean": 0.6981,
+   "se": 0.0068
+  },
+  "adaptive_k2": {
+   "mean": 0.6943,
+   "se": 0.007
+  },
+  "adaptive_k3": {
+   "mean": 0.6978,
+   "se": 0.0066
+  }
+ },
+ "best": "all_easy",
+ "v1_reference": {
+  "random": 0.687,
+  "llm_correct": 0.706,
+  "llm_wrong": 0.6575,
+  "all_easy": 0.742
+ }
+}

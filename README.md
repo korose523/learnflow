@@ -3,9 +3,9 @@
 > **为一个面向 K12 的学习成瘾化研究，提供可测量、可审计、可复现的系统与测量底座。**
 > 平台以游戏化自适应学习为载体，同时作为**实证研究可复现性 artifact** 发布。
 
-[![tests](https://img.shields.io/badge/tests-920%20passed-brightgreen)](#测试)
+[![tests](https://img.shields.io/badge/tests-934%20passed-brightgreen)](#测试)
 [![mechanisms](https://img.shields.io/badge/mechanisms-54%20(LF--M01%E2%80%A6LF--M54)-blue)](#可复现性)
-[![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](docs/LearnFlow_成瘾化研究_测量框架.md)
+[![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
@@ -44,9 +44,9 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 | **软件系统** | 可运行的自适应学习平台：动态难度调节（DDA）、记忆科学复习调度（FSRS）、游戏化干预引擎、防沉迷与未成年保护护栏、家长门户 |
 | **研究 artifact** | 为一系列实证论文提供**可引用、可复现**的系统底座与统计脚本；所有头部数字均可由代码复算 |
 
-> 🔬 **成瘾化研究主线的权威测量定义**见
-> [`docs/LearnFlow_成瘾化研究_测量框架.md`](docs/LearnFlow_成瘾化研究_测量框架.md)
-> —— 五维如何测量、哪些维度其实测不到、以及必须声明的信效度局限。
+> 🔬 **成瘾化研究主线的测量定义**（五维如何测量、哪些维度其实测不到、必须声明的信效度局限）
+> 已随写作过程产物归档至 `learnflow_archive_20260913/docs/LearnFlow_成瘾化研究_测量框架.md`；
+> 权威测量实现见 `learnflow-backend/app/services/learning_addiction_index.py`。
 
 ---
 
@@ -88,8 +88,8 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 - 当前 **`connection_quality` 未被测量**（固定默认 0.7）。
 
 这些局限在论文中必须逐条声明。把测量效度问题显式暴露出来，而非用一个未验证的
-综合指数下结论，本身就是本研究的方法论主张。详见
-[`docs/LearnFlow_成瘾化研究_测量框架.md`](docs/LearnFlow_成瘾化研究_测量框架.md)。
+综合指数下结论，本身就是本研究的方法论主张。原始测量层设计文档见
+`learnflow_archive_20260913/docs/LearnFlow_成瘾化研究_测量框架.md`。
 
 ### 自陈测量 API
 
@@ -184,7 +184,7 @@ cd learnflow-frontend && cp .env.example .env.local
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前 920 passed）
+# 全量测试（当前 934 passed）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
@@ -257,7 +257,7 @@ learnflow/
 ├── README.md                   # 本文件
 ├── CONTRIBUTING.md             # 贡献与支持指南
 ├── CITATION.cff                # 引用元数据
-├── docs/                       # 研究文档（论文拆分、机制治理、文献测绘等）
+├── docs/                       # 最终论文稿 + 权威治理文档（写作过程产物已归档）
 ├── artifacts/                  # E2E 验证截图等证据
 ├── learnflow-backend/          # FastAPI 后端
 │   ├── app/
@@ -284,16 +284,17 @@ learnflow/
 
 ## 文档索引
 
+`docs/` 只保留**最终版本**与**权威治理文档**；写作与审计过程产物已归档到仓库外的
+`learnflow_archive_20260913/`（附 `MANIFEST.md` 逐项说明，可原样移回）。
+
 | 文档 | 内容 |
 |---|---|
-| `docs/LearnFlow_成瘾化研究_测量框架.md` | ⭐ **成瘾化研究主线的测量层权威定义**：五维如何测量、双源设计、覆盖度契约、信效度局限 |
-| `docs/LearnFlow_抗成瘾层_论文表图.md` | 抗成瘾层结果表图（LAI 场景对比、仲裁器降权） |
-| `docs/LearnFlow_学习成瘾化研究_补充文献测绘.md` | 成瘾化理论文献支撑（A 心理学 / B 游戏设计 / C 实证） |
+| `docs/M1_难度可公度性与最优错误率_完整稿.md` | 论文 M1 完整稿（难度可公度性、合并增益的判据依赖性、冷启动估计器） |
+| `docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md` | 论文 M2 完整稿（游戏化干预冲突结构审计） |
+| `docs/M3_有序难度决策与大模型先验边界_完整稿.md` | 论文 M3 完整稿（有序动作空间、LLM 难度先验边界） |
 | `docs/LearnFlow_期刊论文拆分方案.md` | 论文组合规划、五维新颖性审计、数字诚信红线 |
-| `docs/LearnFlow_投稿材料模板.md` | 各目标期刊的强制前置材料模板（声明 / Highlights / Index Terms / 投稿检查清单） |
 | `docs/LearnFlow_机制治理与落实方案.md` | 54 个机制的去重口径与落地状态 |
-| `docs/LearnFlow_文献测绘与研究缺口.md` | 文献综述与研究缺口定位 |
-| `docs/LearnFlow_v2总体架构优化方案.md` | 架构设计 |
+| `docs/_重写规范_事实基线与学术体例.md` | 事实基线、禁用数字清单与学术体例规范 |
 | `docs/references.bib` | 参考文献库（BibTeX） |
 | `learnflow-backend/docs/research_tooling.md` | 离线分析工具与死代码可达性登记 |
 | `learnflow-backend/docs/incremental_prd.md` | 增量产品需求 |

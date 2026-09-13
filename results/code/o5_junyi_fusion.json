@@ -1,0 +1,58 @@
+{
+ "design": "O5 cross-system replication of fusion estimator (Junyi, performance signals only)",
+ "n_exercises": 1234,
+ "per_signal_spearman": {
+  "success_inverse": [
+   0.261,
+   0.0
+  ],
+  "hint_rate": [
+   0.2169,
+   0.0
+  ],
+  "duration": [
+   0.214,
+   0.0
+  ],
+  "attempts": [
+   0.2847,
+   0.0
+  ],
+  "upgrade_rate": [
+   -0.1837,
+   0.0
+  ],
+  "downgrade_rate": [
+   0.2711,
+   0.0
+  ],
+  "repeat_session_rate": [
+   0.2941,
+   0.0
+  ]
+ },
+ "success_only_spearman": 0.261,
+ "equal_weight_spearman": 0.3629,
+ "insample_best_spearman": 0.3946,
+ "cv5_mean_spearman": 0.3837,
+ "cv5_folds": [
+  0.4826,
+  0.3579,
+  0.343,
+  0.3598,
+  0.3754
+ ],
+ "cv5_weights": {
+  "success_inverse": 0.0,
+  "hint_rate": 0.0,
+  "duration": 0.154,
+  "attempts": 0.154,
+  "upgrade_rate": 0.154,
+  "downgrade_rate": 0.154,
+  "repeat_session_rate": 0.385
+ },
+ "db_reference": {
+  "O4_equal_weight_DBE": 0.2899,
+  "O4_cv_DBE": 0.4778
+ }
+}

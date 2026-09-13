@@ -1,0 +1,27 @@
+{
+  "count": 54,
+  "fingerprint": "ee1a49be5732",
+  "id_first": "LF-M01",
+  "id_last": "LF-M54",
+  "id_contiguous": true,
+  "registry_CATEGORIES": [
+    "retention",
+    "motivation",
+    "selfreg",
+    "cognition",
+    "health"
+  ],
+  "registry_STAGES": [
+    "pre",
+    "during",
+    "post",
+    "ambient"
+  ],
+  "registry_category_counts": {
+    "retention": 19,
+    "motivation": 18,
+    "selfreg": 9,
+    "cognition": 4,
+    "health": 4
+  }
+}

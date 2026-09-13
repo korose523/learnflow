@@ -1,0 +1,445 @@
+{
+ "dataset": "Junyi Academy Learning Activity (Kaggle, CC-BY-NC-SA-4.0)",
+ "log_rows": 16217311,
+ "users": 72758,
+ "exercises_with_data": 1326,
+ "overall_success_rate": 0.7037,
+ "hint_rate": 0.2284,
+ "upgrade_rate": 0.1084,
+ "downgrade_rate": 0.0014,
+ "repeat_session_rows": 2407597,
+ "user_attempts_buckets_100": {
+  "0": 44021,
+  "100": 9487,
+  "200": 4989,
+  "300": 3276,
+  "400": 2277,
+  "500": 1612,
+  "600": 1165,
+  "700": 967,
+  "800": 739,
+  "900": 569,
+  "1000": 3656
+ },
+ "expert_difficulty_outcomes": {
+  "easy": {
+   "attempts": 11129355,
+   "success": 0.7355
+  },
+  "normal": {
+   "attempts": 3183526,
+   "success": 0.6328
+  },
+  "hard": {
+   "attempts": 1416748,
+   "success": 0.616
+  },
+  "unset": {
+   "attempts": 487682,
+   "success": 0.6969
+  }
+ },
+ "top_exercises_min1000_attempts": [
+  {
+   "ucid": "CPI+5YCeEmhqdk6znJeii6jJUNl1QWGEvwCUJ6uLflg=",
+   "attempts": 138169,
+   "users": 16054,
+   "success_rate": 0.9642,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "TwyqyV1uJYlDAX8wX/PtTCVZEBo/APIVfTzzleGkNCQ=",
+   "attempts": 124883,
+   "users": 12848,
+   "success_rate": 0.8081,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "hv7kHCAIdj7thZUmlqz553leG5bFNYgzXmLfB5m4Xvw=",
+   "attempts": 124149,
+   "users": 14038,
+   "success_rate": 0.9284,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "PqQyQvOjvvozBCtlR/0pL8uxhe0K63IPiKYCi1tDG1o=",
+   "attempts": 106195,
+   "users": 12206,
+   "success_rate": 0.9082,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "T7V7D8OgJF2BeuK/agj56BY9ibTmoqRbGdtwrt8a1SQ=",
+   "attempts": 103968,
+   "users": 11731,
+   "success_rate": 0.9307,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "svTmVFY7kPYUWAdDc4l5Zaim90TY7RGkFLs/eaU4FVc=",
+   "attempts": 86455,
+   "users": 10290,
+   "success_rate": 0.9438,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "lvobiTtwUsd1ylmrciW7NzJnmmcqFC1J9PmoZ6R8xK0=",
+   "attempts": 76571,
+   "users": 7925,
+   "success_rate": 0.8374,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "jImuGvSym6odgRoYw7vgkq4HUbmJ1tDW9fq6bo/yN5s=",
+   "attempts": 71943,
+   "users": 8231,
+   "success_rate": 0.8974,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "OVGQBBcCHSOyJ89uwY+z15n2iuZYrv8Tajf37jiGzqc=",
+   "attempts": 71571,
+   "users": 8427,
+   "success_rate": 0.9065,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "w3a6Wk12CqIrUktZei2Z0W3Rf8xdgEdjIW9QX0MWIf8=",
+   "attempts": 67796,
+   "users": 7755,
+   "success_rate": 0.9131,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "dp0m1kS6Bygoksx9S/gkBqTcWPoglbf1HT3Ma3U3N8U=",
+   "attempts": 63358,
+   "users": 7810,
+   "success_rate": 0.9527,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "tOR47i7wGbuHkGxkhX9tHItMHHuJtAttsvHDOjDRVOw=",
+   "attempts": 58581,
+   "users": 6293,
+   "success_rate": 0.8748,
+   "expert_difficulty": "easy",
+   "stage": "junior"
+  },
+  {
+   "ucid": "vhz7ZImgcFLciakjMFdmn0S/He85wqQkhLiYXRPpu18=",
+   "attempts": 55142,
+   "users": 4604,
+   "success_rate": 0.7148,
+   "expert_difficulty": "unset",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "BG1RsWojzEHzV28RBm/1iKi1NyZgDcDomLYEJSV6lmo=",
+   "attempts": 50131,
+   "users": 4759,
+   "success_rate": 0.7782,
+   "expert_difficulty": "easy",
+   "stage": "junior"
+  },
+  {
+   "ucid": "JcrFXI7wzq/14kZRPCdix3feq0/yQh1gHU06bGQwNBE=",
+   "attempts": 49790,
+   "users": 4778,
+   "success_rate": 0.7679,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "hWfAiJgEzK9NSh1jxPBGRiCGV+lYwQ/qoXFxJbFyoWM=",
+   "attempts": 49558,
+   "users": 5197,
+   "success_rate": 0.8965,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "dVKfHzCsi1dOBhd343bsUNF4dowsiANnvRBkWqToitg=",
+   "attempts": 49489,
+   "users": 5218,
+   "success_rate": 0.9284,
+   "expert_difficulty": "unset",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "zX5HAUpRYC4F7YPNs5tUeBqVi++rEmPUfsAtHpoZmEQ=",
+   "attempts": 47659,
+   "users": 3928,
+   "success_rate": 0.7303,
+   "expert_difficulty": "unset",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "arhLfqJ8pA8XhguBiyIZKbrXTISqxBnAQeYVkKBtcWQ=",
+   "attempts": 46534,
+   "users": 3683,
+   "success_rate": 0.9501,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "O/KjGB9rr8dvio3EBiuDvoL1cg/22EZaZV1FxmkURKc=",
+   "attempts": 46438,
+   "users": 4902,
+   "success_rate": 0.8451,
+   "expert_difficulty": "unset",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "nBtFGzjZtlpB0wyz3JkA25mI5JiF+hdWJNzJUiMw1V8=",
+   "attempts": 45057,
+   "users": 3882,
+   "success_rate": 0.6187,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "iJ+Rpf5Qnw63bObvZLfXRBU4Hmi06Io+lXRGV9hsFgg=",
+   "attempts": 44658,
+   "users": 4086,
+   "success_rate": 0.7857,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "rrZveAGxgrsKF1qL65AmLVqda8Zbg24xqWyj34qac9c=",
+   "attempts": 41988,
+   "users": 2802,
+   "success_rate": 0.4712,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "eckDRfpc73OUXcSW4vV+4Y6JZaIfSERP9bUZIrNtLyM=",
+   "attempts": 41518,
+   "users": 3654,
+   "success_rate": 0.7492,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "Lhd00PvCdq23PNggSHEbszeZ68vTRWdg6MmaBD1kEZ8=",
+   "attempts": 39132,
+   "users": 2931,
+   "success_rate": 0.5692,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "qkyb1eQM8HrW/1r3sz2c+00GK5edqo/fzRXXgF53eTI=",
+   "attempts": 38910,
+   "users": 4352,
+   "success_rate": 0.8368,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "9OXYxjWigzS5FgP5nZ1y1EAtwQihC19PGhDlRKqK3Pg=",
+   "attempts": 38732,
+   "users": 3162,
+   "success_rate": 0.6682,
+   "expert_difficulty": "normal",
+   "stage": "junior"
+  },
+  {
+   "ucid": "EH35TxVqqCRWfd7C+kBleb4yHsq1ycppE5AvnX+WQBE=",
+   "attempts": 38373,
+   "users": 4168,
+   "success_rate": 0.7866,
+   "expert_difficulty": "easy",
+   "stage": "junior"
+  },
+  {
+   "ucid": "GKsTLPdjoFT5L8MFLduUaKOBTgtAz0RjoP8E5qYsmF8=",
+   "attempts": 38354,
+   "users": 3309,
+   "success_rate": 0.5194,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "44N1RXOiWg4Zy6x/GQwNyECUUWAykXTDm7q/dERMTZo=",
+   "attempts": 38020,
+   "users": 3822,
+   "success_rate": 0.7834,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "Fj4qR65Oj+FrvKsCqx/NszMakMB145XBuUyRAUyeMqE=",
+   "attempts": 37881,
+   "users": 3720,
+   "success_rate": 0.8497,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "Iq4bn747ApUwO7SvDR8vvfjBWGvDxAyBTsce0dN3Q1w=",
+   "attempts": 37503,
+   "users": 4480,
+   "success_rate": 0.8818,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "cvnGl+iUiKphfjbPcE0G7/HRE/Q51L3w0x0WhVLy1cs=",
+   "attempts": 35951,
+   "users": 4008,
+   "success_rate": 0.8927,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "c7CnB6hlM9deJD6GjunUMpgXQlPcGIKfVuzCTGSGiQ0=",
+   "attempts": 35378,
+   "users": 3724,
+   "success_rate": 0.8677,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "XG1pV3YZ4tnQkmvmVbwNYnm01m9sRhZovPW1qTPIGYI=",
+   "attempts": 35278,
+   "users": 3739,
+   "success_rate": 0.7989,
+   "expert_difficulty": "normal",
+   "stage": "junior"
+  },
+  {
+   "ucid": "jvSzlPLRjqqstMszjfw2Y1+0IOmVTo8P8l/rpJzPgNU=",
+   "attempts": 35124,
+   "users": 4067,
+   "success_rate": 0.867,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "ByQA/MmCIFpFDmbqdsY9HPLUXlMwe6dauKrJXJFmtO0=",
+   "attempts": 34693,
+   "users": 3505,
+   "success_rate": 0.7093,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "T+rWMKiJgE6rmRdVUFc0WOeDY0RVPhl0EYU/hS4dlSc=",
+   "attempts": 34415,
+   "users": 3266,
+   "success_rate": 0.708,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "WeWipB8F4WKb1kJjUzDzzeqmt5Lb4mPAJy8sJKmYoAM=",
+   "attempts": 34165,
+   "users": 3282,
+   "success_rate": 0.7506,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "ZS2aKTrfYoSFzhm+weF3amIGgUrNaR6urAPzgLNqWdY=",
+   "attempts": 34002,
+   "users": 3202,
+   "success_rate": 0.7568,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "u4qhRZS44vAj0iPcn0h6LtwpEu5xpKwVBOXYhTziua8=",
+   "attempts": 33730,
+   "users": 2642,
+   "success_rate": 0.6977,
+   "expert_difficulty": "normal",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "OUnkRX0qK0fXq4JbhUkqNk/Pm5YTwahvlT0CQeC21Zg=",
+   "attempts": 33634,
+   "users": 2347,
+   "success_rate": 0.5611,
+   "expert_difficulty": "normal",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "RKkxBe+3Z33I75tZfZ8EY7LtVnN5QEfE8O0y6bPFCeo=",
+   "attempts": 33389,
+   "users": 1954,
+   "success_rate": 0.5089,
+   "expert_difficulty": "hard",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "s50m57r2jUJxOLDuXF77hZ35UjzqvVkzPKEWj9xqzxI=",
+   "attempts": 33355,
+   "users": 3439,
+   "success_rate": 0.6778,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "gwyAKrDd3r/aPElAq/97BWk1H4+bsSURhZI+O3WDwFY=",
+   "attempts": 33349,
+   "users": 3786,
+   "success_rate": 0.8394,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "XO9+ucYiWTUi8SwVantzYmJrR1nuQBhpI0dy9yPYNrU=",
+   "attempts": 33245,
+   "users": 3038,
+   "success_rate": 0.6812,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "zpLoCKHOugDScAlFt0XHJJKFwU+r3YZaBlTf5G7qWpE=",
+   "attempts": 33208,
+   "users": 3223,
+   "success_rate": 0.7281,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "AI1fp53PL5PAqIN/QBoT8xH/OkkpVuGuw+2Bfw9WjbM=",
+   "attempts": 33190,
+   "users": 3621,
+   "success_rate": 0.8303,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "OVwmRGTNCS+hBkvFYDawSwdperfo46ooCVV/tBEfd84=",
+   "attempts": 32793,
+   "users": 3528,
+   "success_rate": 0.7767,
+   "expert_difficulty": "easy",
+   "stage": "elementary"
+  },
+  {
+   "ucid": "ROy2LJr08ctjmiuRc4SXFKrmk91KPBxZU6hZPJ7JIu8=",
+   "attempts": 32724,
+   "users": 2002,
+   "success_rate": 0.4734,
+   "expert_difficulty": "normal",
+   "stage": "elementary"
+  }
+ ],
+ "n_exercises_ge1000_attempts": 1269
+}

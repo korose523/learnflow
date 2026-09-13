@@ -1,0 +1,57 @@
+{
+  "model": "qwen36",
+  "design": "v2: /no_think + anchored rubric + batch-ranking Bradley-Terry",
+  "end": "2026-09-13 06:11:22",
+  "E1A_rubric_absolute": {
+    "n": 212,
+    "n_parsed": 212,
+    "accuracy": 0.4575,
+    "spearman": [
+      0.2195,
+      0.00129945
+    ],
+    "cohen_kappa": 0.0651,
+    "llm_dist": {
+      "1": 138,
+      "2": 65,
+      "3": 9
+    },
+    "confusion": {
+      "1|1": 71,
+      "1|2": 22,
+      "1|3": 2,
+      "2|1": 53,
+      "2|2": 25,
+      "2|3": 6,
+      "3|1": 14,
+      "3|2": 18,
+      "3|3": 1
+    }
+  },
+  "E1B_batch_ranking_BT": {
+    "n_ranking_batches": 108,
+    "parse_fail": 13,
+    "n_pair_constraints": 1362,
+    "spearman_BT_vs_expert": [
+      0.1808,
+      0.00831048
+    ],
+    "accuracy_tertile": 0.3962,
+    "cohen_kappa_tertile": 0.0947
+  },
+  "E2X_rubric_absolute": {
+    "n": 120,
+    "n_parsed": 120,
+    "spearman_quartile_vs_llm": [
+      -0.0379,
+      0.68098376
+    ],
+    "within_1_quartile_rate": 0.6,
+    "llm_mean_by_quartile": {
+      "0": 1.9,
+      "1": 1.733,
+      "2": 1.7,
+      "3": 1.833
+    }
+  }
+}

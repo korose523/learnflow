@@ -1,0 +1,77 @@
+{
+ "design": "O10 student-level holdout: users split by uuid hash into disjoint halves; difficulty estimated from k reservoir rows of half-A students, criterion is the true difficulty 1-ok/n computed on ALL rows of half-B students",
+ "n_exercises": 1238,
+ "min_B_rows": 500,
+ "reservoir_per_half": 250,
+ "k_list": [
+  10,
+  25,
+  50,
+  100,
+  200
+ ],
+ "reps": 25,
+ "splits": 20,
+ "lambda_formula": {
+  "k0": 27.332,
+  "p": 0.895,
+  "note": "from O9 out-of-sample fit, not retuned here"
+ },
+ "results": {
+  "10": {
+   "success": 0.6631,
+   "fused6": 0.687,
+   "fused7": 0.6442,
+   "mix6_hat": 0.6995,
+   "mix6_emp": 0.6995,
+   "lambda_hat": 0.711,
+   "lambda_emp_mean": 0.716,
+   "gain_mix6_hat_pp": 3.64,
+   "gain_fused6_raw_pp": 2.39
+  },
+  "25": {
+   "success": 0.8133,
+   "fused6": 0.7993,
+   "fused7": 0.7418,
+   "mix6_hat": 0.8297,
+   "mix6_emp": 0.8287,
+   "lambda_hat": 0.52,
+   "lambda_emp_mean": 0.521,
+   "gain_mix6_hat_pp": 1.64,
+   "gain_fused6_raw_pp": -1.4
+  },
+  "50": {
+   "success": 0.8881,
+   "fused6": 0.8491,
+   "fused7": 0.7838,
+   "mix6_hat": 0.8944,
+   "mix6_emp": 0.8939,
+   "lambda_hat": 0.368,
+   "lambda_emp_mean": 0.355,
+   "gain_mix6_hat_pp": 0.63,
+   "gain_fused6_raw_pp": -3.9
+  },
+  "100": {
+   "success": 0.9356,
+   "fused6": 0.8783,
+   "fused7": 0.8101,
+   "mix6_hat": 0.9372,
+   "mix6_emp": 0.9366,
+   "lambda_hat": 0.239,
+   "lambda_emp_mean": 0.2,
+   "gain_mix6_hat_pp": 0.16,
+   "gain_fused6_raw_pp": -5.73
+  },
+  "200": {
+   "success": 0.9603,
+   "fused6": 0.8922,
+   "fused7": 0.8234,
+   "mix6_hat": 0.9605,
+   "mix6_emp": 0.96,
+   "lambda_hat": 0.144,
+   "lambda_emp_mean": 0.093,
+   "gain_mix6_hat_pp": 0.02,
+   "gain_fused6_raw_pp": -6.81
+  }
+ }
+}

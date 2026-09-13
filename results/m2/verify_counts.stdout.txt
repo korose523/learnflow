@@ -1,0 +1,89 @@
+==============================================================================
+LearnFlow 数字诚信复算报告
+==============================================================================
+生成时间 : 2026-09-13T13:40:50+09:00
+git HEAD : 8a328430d36860043f3bf80e8e0bf2a82edd2ecd
+Python   : 3.11.9   后端根: E:\learnflow\learnflow-backend
+
+──────────────────────────────────────────────────────────────────────────────
+【L0】engine_classes —— 全后端 *Engine 类总数
+──────────────────────────────────────────────────────────────────────────────
+  值         : 86
+  口径       : app/**/*.py 中类名以 'Engine' 结尾的 ClassDef 总数（L0，类别错误口径）
+  统计方法   : ast.walk 遍历 app/**/*.py，筛 ClassDef 且 name.endswith('Engine')
+  唯一类名   : 85（重复命名 ['ZeigarnikEngine']）
+  ⚠ 类别错误 : 该口径混入 BKT / DDA / FSRS / OptimalDifficulty 等学习科学算法，
+              不可用于支撑「N 种游戏化机制」
+  与宣称 76  : +10
+
+──────────────────────────────────────────────────────────────────────────────
+【L1】mechanism_units —— 机制实现单元数
+──────────────────────────────────────────────────────────────────────────────
+  值         : 60
+  口径       : 10 个机制承载文件中的 *Engine 类，加 gamification_service 的非 Engine 机制类，减去预注册的状态容器↔引擎合并对
+  统计方法   : 10 个机制文件 *Engine 类 55 + gamification_service 非 Engine 机制类 8 − 容器内合并 3 = 60（合并前原始 63）
+  合并对     : SessionMemory↔PeakEndEngine, UnfinishedTask↔ZeigarnikEngine, CustomizationState↔IKEAEngine
+  与宣称 76  : -16
+
+──────────────────────────────────────────────────────────────────────────────
+【L2】mechanism_unique —— 语义去重后唯一机制数
+──────────────────────────────────────────────────────────────────────────────
+  值         : 54   （LF-M01..LF-M54，连续=True）
+  口径       : 治理方案 LF-M01..LF-Mnn 编号表中的唯一机制 ID 数（语义去重由人工预注册规则 R1–R6 完成）
+  统计方法   : 解析 LearnFlow_机制治理与落实方案.md 的 LF-M 编号表，取唯一 ID
+  交叉验证   : 类别标题声明合计 54 / 文档小计行 54 / 编号表 54 → 一致 ✓
+  类别分布   : {'A': 8, 'B': 8, 'C': 6, 'D': 10, 'E': 10, 'F': 4, 'G': 4, 'H': 4}
+  与宣称 76  : -22
+
+──────────────────────────────────────────────────────────────────────────────
+learning_methods —— 唯一学习方法数
+──────────────────────────────────────────────────────────────────────────────
+  值         : 28   （snake_case 23 + 非英文 0）
+  口径       : 权威来源 = app/services/method_registry.py 中 LF-L01..LF-L28 的登记条目数（用 AST 静态提取dict 的 'id' 字段，不扫源码文本）；3 个学习方法源文件的字面量去重（23）是其子集，差额 5 来自 advanced_methods_v2 的真实新增引擎，二者由同一注册表统辖，故『28 种学习方法』可被一条命令复算。
+  统计方法   : AST 提取 'method' 字面量 → 去 ' - ' 变体后缀 → 中文别名映射 → 去重
+  原始字面量 : {'app/services/learning_methods_engine.py': 16, 'app/services/advanced_methods_engine.py': 7, 'app/services/learning_methods_engine_v3.py': 11}
+  ⚠ 分歧根源 : METHOD_TIPS 是 list 不是 dict ——16 条 / 15 唯一 key
+               v3 引擎 method 字段为中文（如「思维导图」），英文正则统计得 0
+  与宣称 28  : 0
+
+──────────────────────────────────────────────────────────────────────────────
+skill_tree_nodes —— 技能树节点数
+──────────────────────────────────────────────────────────────────────────────
+  值         : 16   （skill_id 唯一数 16）
+  口径       : SKILL_DEFINITIONS 列表元素数（交叉验证 skill_id 唯一数）
+  统计方法   : AST 定位 SKILL_DEFINITIONS 列表赋值，取 elts 长度 + skill_id 关键字实参
+  状态       : 全项目唯一完全属实的数字 ✓
+
+──────────────────────────────────────────────────────────────────────────────
+prd_claimed —— PRD 自述机制数（暴露内部矛盾）
+──────────────────────────────────────────────────────────────────────────────
+  值         : 69（§2.3 表格逐项相加）
+  口径       : PRD §2.3 表格「引擎数量」列之和（该列相加 ≠ 同文档标题/概述所写的 76）
+  统计方法   : 正则截取 §2.3 小节表格，累加「引擎数量」列
+        7  positive_addiction_engine.py
+       10  deep_addiction_engine.py
+       12  ux_addiction_engine.py
+        8  social_addiction_engine.py
+        8  duolingo_addiction_engine.py
+        7  team_competition_engine.py
+        5  addiction_engine_v3.py
+       12  gamification_service.py
+  同文档标题声称 : 76
+  同文档概述声称 : 76
+  ⚠ 内部矛盾 : 是 —— PRD 自己就对不上
+
+==============================================================================
+判定（verdict）
+==============================================================================
+  指标                      登记    实测    差异  级别          状态
+  engine_classes          86    86    +0  informative verified
+  mechanism_units         60    60    +0  informative verified
+  mechanism_unique        54    54    +0  strict      verified
+  learning_methods        28    28    +0  strict      verified
+  skill_tree_nodes        16    16    +0  strict      verified
+  prd_claimed             69    69    +0  strict      verified
+
+  结论      : VERIFIED   退出码 0
+
+  JSON 输出 : C:\Users\mac\WorkBuddy\2026-09-02-22-50-15\results\m2\count_verification.json
+==============================================================================

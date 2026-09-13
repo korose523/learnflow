@@ -1,0 +1,55 @@
+﻿id,key,name_zh,name_en,governance_letter,gov_category_zh,registry_category,stage,disposition,maturity,direction,step_mapped,is_enabled_gated,impl_ref
+LF-M01,variable_ratio_reward,变比率奖励（宝箱）,Variable-Ratio Reward,A,retention,retention,during,K,complete,unassigned,Y,Y,gamification_service.py:GamificationService
+LF-M02,near_miss,濒赢效应,Near-Miss Effect,A,retention,retention,during,K,complete,unassigned,N,N,gamification_service.py:139
+LF-M03,dopamine_rhythm,奖励节拍（多巴胺节律）,Dopamine Rhythm,A,retention,retention,during,R,partial,unassigned,N,N,gamification_service.py:460
+LF-M04,instant_gratification,即时满足,Instant Gratification,A,motivation,motivation,during,R,partial,unassigned,Y,Y,positive_addiction_engine.py:588
+LF-M05,surprise_delight,惊喜与愉悦,Surprise & Delight,A,motivation,motivation,during,R,partial,unassigned,Y,Y,addiction_engine_v3.py:199
+LF-M06,time_based_bonus,时间限定加成,Time-Based Bonus,A,retention,retention,during,K,complete,unassigned,Y,Y,duolingo_addiction_engine.py:TimeBasedBonusEngine
+LF-M07,collection,集换收藏,Collection / Completion,A,retention,retention,ambient,R,partial,approach,N,N,deep_addiction_engine.py:CollectionEngine
+LF-M08,scarcity,稀缺性,Scarcity,A,motivation,motivation,pre,R,partial,approach,Y,Y,deep_addiction_engine.py:461
+LF-M09,loss_aversion,损失厌恶,Loss Aversion,B,retention,retention,post,M,partial,unassigned,N,N,addiction_engine_v3.py:7
+LF-M10,sunk_cost_reminder,沉没成本提示,Sunk-Cost Reminder,B,retention,retention,post,R,partial,approach,N,N,addiction_engine_v3.py:36
+LF-M11,streak,连胜,Streak,B,retention,retention,post,M,complete,unassigned,N,N,duolingo_addiction_engine.py:DuolingoStreakEngine
+LF-M12,streak_sanctification,连胜神圣化,Streak Sanctification,B,retention,retention,post,R,partial,unassigned,Y,Y,deep_addiction_engine.py:308
+LF-M13,zeigarnik,蔡格尼克效应,Zeigarnik Effect,B,retention,retention,post,M,partial,approach,Y,Y,addiction_engine_v3.py:108
+LF-M14,peak_end,峰终定律,Peak-End Rule,B,motivation,motivation,during,M,partial,unassigned,Y,Y,addiction_engine_v3.py:163
+LF-M15,goal_gradient,目标梯度/近距目标,Goal Gradient,B,motivation,motivation,during,R,partial,unassigned,Y,Y,gamification_service.py:GamificationService.get_goal_progress
+LF-M16,daily_challenge,每日/月度挑战,Daily & Monthly Challenge,B,retention,retention,pre,K,complete,unassigned,Y,Y,duolingo_addiction_engine.py:MonthlyChallengeEngine
+LF-M17,autonomy_support,自主性支持,Autonomy Support,C,selfreg,selfreg,during,M,partial,unassigned,N,N,habit_addiction_engine.py:159
+LF-M18,ikea_effect,宜家效应/自主定制,IKEA Effect,C,motivation,motivation,during,R,partial,unassigned,Y,Y,"gamification_service.py:623,615"
+LF-M19,xp_leveling,经验值与等级,XP & Leveling,C,motivation,motivation,post,R,placeholder,unassigned,Y,Y,duolingo_addiction_engine.py:XPEngine
+LF-M20,progress_visualization,进步可视化,Progress Visualization,C,motivation,motivation,during,R,partial,unassigned,Y,Y,positive_addiction_engine.py:649
+LF-M21,progressive_disclosure,渐进式披露,Progressive Disclosure,C,cognition,cognition,during,R,partial,unassigned,Y,Y,ux_addiction_engine.py:119
+LF-M22,pet_companion,虚拟宠物陪伴,Pet Companion (Relatedness),C,motivation,motivation,ambient,K,complete,unassigned,Y,Y,pet_service.py
+LF-M23,social_proof,社会认同,Social Proof,D,motivation,motivation,during,M,partial,unassigned,N,N,gamification_service.py:659
+LF-M24,social_contagion,社会传染,Social Contagion,D,retention,retention,ambient,R,partial,unassigned,Y,Y,positive_addiction_engine.py:506
+LF-M25,peer_progress,同伴进度推动,Peer Progress Nudge,D,motivation,motivation,pre,R,partial,approach,N,N,deep_addiction_engine.py:292
+LF-M26,friendly_competition,友好竞争,Friendly Competition,D,motivation,motivation,during,R,partial,approach,N,N,positive_addiction_engine.py:538
+LF-M27,leaderboard,排行榜与联赛,Leaderboard & Leagues,D,retention,retention,ambient,K,complete,unassigned,N,N,duolingo_addiction_engine.py:LeagueEngine
+LF-M28,business_card,社交名片,Business Card / Identity Display,D,retention,retention,ambient,R,placeholder,unassigned,N,N,social_addiction_engine.py:55
+LF-M29,gift_economy,礼物经济,Gift Economy,D,retention,retention,ambient,R,placeholder,unassigned,Y,Y,social_addiction_engine.py:411
+LF-M30,friend_quest,组队任务,Friend Quest,D,retention,retention,during,R,partial,unassigned,N,N,duolingo_addiction_engine.py:FriendQuestEngine
+LF-M31,team_competition,团队竞赛与赛季,Team Competition & Season,D,retention,retention,ambient,R,partial,unassigned,N,N,"team_competition_engine.py:103,288,389,487,556,651"
+LF-M32,parent_portal,家长门户,Parent Portal,D,selfreg,selfreg,post,R,placeholder,unassigned,Y,Y,social_addiction_engine.py:288
+LF-M33,hook_model,钩子模型,Hook Model,E,retention,retention,pre,R,partial,approach,Y,Y,positive_addiction_engine.py:67
+LF-M34,habit_loop,习惯回路,Habit Loop,E,selfreg,selfreg,pre,R,partial,unassigned,Y,Y,positive_addiction_engine.py:262
+LF-M35,cue_prompting,情境线索提示,Cue Prompting,E,selfreg,selfreg,pre,R,partial,approach,Y,Y,positive_addiction_engine.py:322
+LF-M36,habit_stacking,习惯叠加,Habit Stacking,E,selfreg,selfreg,pre,K,partial,unassigned,N,N,habit_addiction_engine.py:27
+LF-M37,temptation_bundling,诱惑捆绑,Temptation Bundling,E,selfreg,selfreg,pre,K,partial,unassigned,Y,Y,habit_addiction_engine.py:80
+LF-M38,implementation_intentions,执行意图,Implementation Intentions,E,selfreg,selfreg,pre,K,partial,unassigned,Y,Y,habit_addiction_engine.py:109
+LF-M39,self_regulation_goals,自我调节目标,Self-Regulation Goals,E,selfreg,selfreg,pre,R,partial,unassigned,Y,Y,habit_addiction_engine.py:SelfRegulationEngine
+LF-M40,skill_tree,元认知技能树,Metacognitive Skill Tree,E,cognition,cognition,ambient,R,partial,unassigned,N,N,meta_learning_skilltree.py:157
+LF-M41,commitment_device,承诺装置/预约,Appointment (Commitment Device),E,selfreg,selfreg,pre,R,partial,unassigned,Y,Y,deep_addiction_engine.py:388
+LF-M42,fresh_start,新起点效应,Fresh Start Effect,E,motivation,motivation,pre,K,partial,unassigned,N,N,addiction_engine_v3.py:51
+LF-M43,curiosity_gap,好奇心缺口,Curiosity Gap,F,motivation,motivation,pre,K,partial,unassigned,Y,Y,deep_addiction_engine.py:25
+LF-M44,fomo,错失恐惧,FOMO,F,retention,retention,pre,R,partial,approach,Y,Y,deep_addiction_engine.py:238
+LF-M45,serendipity,偶然性与惊喜,Serendipity,F,motivation,motivation,during,R,placeholder,unassigned,N,N,deep_addiction_engine.py:542
+LF-M46,identity_motivation,身份认同动机,Identity-Based Motivation,F,motivation,motivation,ambient,K,partial,unassigned,Y,Y,positive_addiction_engine.py:348
+LF-M47,micro_interaction,微交互反馈,Micro-interaction,G,motivation,motivation,during,R,partial,unassigned,N,N,ux_addiction_engine.py:24
+LF-M48,color_psychology,色彩与情绪,Color Psychology,G,cognition,cognition,ambient,R,partial,unassigned,Y,Y,ux_addiction_engine.py:210
+LF-M49,spatial_anchoring,空间锚定,Spatial Anchoring,G,cognition,cognition,ambient,R,placeholder,unassigned,Y,Y,ux_addiction_engine.py:290
+LF-M50,multisensory_packaging,多感官包装（占位）,Multi-sensory Packaging,G,motivation,motivation,during,D,placeholder,unassigned,Y,Y,"ux_addiction_engine.py:345,482,524"
+LF-M51,forced_rest,强制休息提醒,Forced Rest Reminder,H,health,health,during,K,partial,withdraw,Y,N,feedback_service.py:198
+LF-M52,minor_protection,未成年保护与奖励冷却,Minor Protection & Reward Cooldown,H,health,health,during,K,complete,withdraw,Y,N,anti_addiction_compliance.py:MinorProtectionEngine
+LF-M53,lai_downgrade,LAI 自适应降级,LAI Adaptive Downgrade,H,health,health,ambient,R,placeholder,withdraw,Y,N,learning_addiction_index.py
+LF-M54,class_pet,班级宠物共养,Class Pet (Collective Relatedness),H,health,health,ambient,K,complete,unassigned,N,N,class_pet_service.py

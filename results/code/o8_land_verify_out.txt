@@ -1,0 +1,16 @@
+PASS lambda_closed_form(10)==0.711 | got=0.7107
+PASS lambda_closed_form(25)==0.52 | got=0.5197
+PASS lambda_closed_form(50)==0.368 | got=0.3678
+PASS lambda_closed_form(100)==0.238 | got=0.2383
+PASS lambda_closed_form(200)==0.144 | got=0.1440
+PASS lambda_closed_form 严格单调递减
+PASS lambda_closed_form ∈ (0,1)
+PASS lambda_closed_form(0) 抛错
+PASS 剔除 upgrade_rate：改变 upgrade_rate 输出不变
+PASS O1 不变量：success_rate 单调重参数化输出逐位不变
+PASS 评分公式自洽
+PASS O8 confirmatory：闭式直接留出 Δpp 均 ≤0.55 | max|Δ|=0.547pp
+
+=== SUMMARY ===
+checks: 0 ALL PASS
+O8 估计器落库验证通过 ✅

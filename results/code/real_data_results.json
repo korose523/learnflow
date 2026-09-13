@@ -1,0 +1,174 @@
+{
+  "assist09_window": {
+    "window": 20,
+    "n_windows": 286150,
+    "n_users_used": 4217,
+    "mean_error_rate": 0.3511,
+    "median_error_rate": 0.3,
+    "modal_bin_center": 0.18,
+    "share_err_in_17_23pct": 0.1051,
+    "share_err_in_10_20pct": 0.1964,
+    "hist_05bins": [
+      3794,
+      30327,
+      0,
+      56212,
+      0,
+      30899,
+      53953,
+      0,
+      41252,
+      0,
+      15590,
+      22391,
+      0,
+      13410,
+      0,
+      4356,
+      6111,
+      0,
+      4336,
+      3519
+    ]
+  },
+  "assist09_sources": {
+    "n_problems": 994,
+    "min_attempts": 50,
+    "spearman_irt_vs_time": [
+      -0.25,
+      0.0
+    ],
+    "spearman_irt_vs_attempts": [
+      -0.1338,
+      2.3e-05
+    ],
+    "spearman_time_vs_attempts": [
+      -0.3021,
+      0.0
+    ]
+  },
+  "assist09_drift": {
+    "weights_nominal": [
+      0.4,
+      0.3,
+      0.3
+    ],
+    "pi_baseline": [
+      0.5406,
+      0.3878,
+      0.0726
+    ],
+    "transforms": {
+      "irt|logit_minmax": {
+        "L1": 1.0117,
+        "rank_reversals": 2,
+        "pi": [
+          0.0348,
+          0.7481,
+          0.2181
+        ]
+      },
+      "irt|probit_std": {
+        "L1": 0.7929,
+        "rank_reversals": 0,
+        "pi": [
+          0.9371,
+          0.0745,
+          -0.0106
+        ]
+      },
+      "irt|log": {
+        "L1": 0.986,
+        "rank_reversals": 2,
+        "pi": [
+          0.0476,
+          0.7335,
+          0.2199
+        ]
+      },
+      "time|logit_minmax": {
+        "L1": 0.7606,
+        "rank_reversals": 1,
+        "pi": [
+          0.848,
+          0.0075,
+          0.1455
+        ]
+      },
+      "time|probit_std": {
+        "L1": 0.9004,
+        "rank_reversals": 1,
+        "pi": [
+          0.16,
+          0.838,
+          0.003
+        ]
+      },
+      "time|log": {
+        "L1": 0.799,
+        "rank_reversals": 1,
+        "pi": [
+          0.8595,
+          -0.0117,
+          0.1532
+        ]
+      },
+      "attempts|logit_minmax": {
+        "L1": 0.1272,
+        "rank_reversals": 0,
+        "pi": [
+          0.6043,
+          0.3781,
+          0.0186
+        ]
+      },
+      "attempts|probit_std": {
+        "L1": 1.3324,
+        "rank_reversals": 2,
+        "pi": [
+          0.144,
+          0.1182,
+          0.7388
+        ]
+      },
+      "attempts|log": {
+        "L1": 0.1272,
+        "rank_reversals": 0,
+        "pi": [
+          0.6042,
+          0.3677,
+          0.0291
+        ]
+      }
+    },
+    "L1_mean": 0.7597,
+    "L1_max": 1.3324,
+    "reversal_rate": 0.6667
+  },
+  "dbe_kt22": {
+    "n_transactions": 161953,
+    "n_questions_eval": 212,
+    "min_attempts": 20,
+    "spearman_expert_vs_empirical": [
+      0.2207,
+      0.00122
+    ],
+    "groups_by_expert_difficulty": {
+      "1": {
+        "n_q": 95,
+        "mean_emp_difficulty": -1.7211,
+        "mean_success": 0.8026
+      },
+      "2": {
+        "n_q": 84,
+        "mean_emp_difficulty": -1.621,
+        "mean_success": 0.7702
+      },
+      "3": {
+        "n_q": 33,
+        "mean_emp_difficulty": -0.7,
+        "mean_success": 0.6322
+      }
+    }
+  }
+}

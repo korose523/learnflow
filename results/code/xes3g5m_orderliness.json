@@ -1,0 +1,42 @@
+{
+  "n_questions_total": 7652,
+  "n_with_text": 7652,
+  "n_eval": 4806,
+  "min_attempts": 100,
+  "spearman_depth_vs_difficulty": [
+    0.0785,
+    5e-08
+  ],
+  "groups_by_kc_depth": {
+    "2": {
+      "n_q": 71,
+      "mean_diff": -1.6169,
+      "mean_success": 0.7754
+    },
+    "3": {
+      "n_q": 44,
+      "mean_diff": -1.3321,
+      "mean_success": 0.7464
+    },
+    "4": {
+      "n_q": 975,
+      "mean_diff": -1.7094,
+      "mean_success": 0.7988
+    },
+    "5": {
+      "n_q": 2194,
+      "mean_diff": -1.4703,
+      "mean_success": 0.7731
+    },
+    "6": {
+      "n_q": 1518,
+      "mean_diff": -1.387,
+      "mean_success": 0.7606
+    },
+    "7": {
+      "n_q": 4,
+      "mean_diff": -2.1096,
+      "mean_success": 0.8769
+    }
+  }
+}

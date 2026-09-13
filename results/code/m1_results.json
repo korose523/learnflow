@@ -1,0 +1,3022 @@
+{
+  "config": {
+    "4源(0.40/0.30/0.20/0.10)": {
+      "nominal_w": [
+        0.4,
+        0.3,
+        0.2,
+        0.1
+      ],
+      "baseline_pi_linear_mean": [
+        0.531989,
+        0.170514,
+        0.178738,
+        0.118759
+      ],
+      "baseline_pi_linear_sd": [
+        0.025648,
+        0.03161,
+        0.009161,
+        0.0055
+      ],
+      "baseline_pi_logit_mean": [
+        0.403223,
+        0.298607,
+        0.201116,
+        0.097054
+      ],
+      "baseline_pi_logit_sd": [
+        0.006497,
+        0.006322,
+        0.003132,
+        0.002545
+      ],
+      "logit_common_cal_maxdev_overall": 0.0027263491321147804,
+      "logit_common_cal_maxdev_worstkey": "src0|logit_minmax",
+      "per_transform_linear": {
+        "src0|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.030633,
+          "L1_sd": 0.008366,
+          "L1_ci95": [
+            0.016921,
+            0.047547
+          ],
+          "rev_mean": 0.13,
+          "rev_any_frac": 0.13,
+          "spearman_mean": 0.974
+        },
+        "src0|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.023692,
+          "L1_sd": 0.005337,
+          "L1_ci95": [
+            0.014983,
+            0.035971
+          ],
+          "rev_mean": 0.21,
+          "rev_any_frac": 0.21,
+          "spearman_mean": 0.958
+        },
+        "src0|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.06729,
+          "L1_sd": 0.015209,
+          "L1_ci95": [
+            0.041116,
+            0.105637
+          ],
+          "rev_mean": 0.055,
+          "rev_any_frac": 0.055,
+          "spearman_mean": 0.989
+        },
+        "src0|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.19281,
+          "L1_sd": 0.048884,
+          "L1_ci95": [
+            0.116151,
+            0.325355
+          ],
+          "rev_mean": 0.065,
+          "rev_any_frac": 0.065,
+          "spearman_mean": 0.987
+        },
+        "src0|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.012857,
+          "L1_sd": 0.003347,
+          "L1_ci95": [
+            0.0086,
+            0.021285
+          ],
+          "rev_mean": 0.135,
+          "rev_any_frac": 0.135,
+          "spearman_mean": 0.973
+        },
+        "src0|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.140257,
+          "L1_sd": 0.00971,
+          "L1_ci95": [
+            0.123519,
+            0.160685
+          ],
+          "rev_mean": 0.07,
+          "rev_any_frac": 0.07,
+          "spearman_mean": 0.986
+        },
+        "src0|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.674011,
+          "L1_sd": 0.018155,
+          "L1_ci95": [
+            0.64132,
+            0.709399
+          ],
+          "rev_mean": 2.835,
+          "rev_any_frac": 1.0,
+          "spearman_mean": -0.024
+        },
+        "src1|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.156004,
+          "L1_sd": 0.012655,
+          "L1_ci95": [
+            0.120741,
+            0.171093
+          ],
+          "rev_mean": 1.165,
+          "rev_any_frac": 0.91,
+          "spearman_mean": 0.716
+        },
+        "src1|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.228138,
+          "L1_sd": 0.026687,
+          "L1_ci95": [
+            0.150701,
+            0.257492
+          ],
+          "rev_mean": 1.325,
+          "rev_any_frac": 0.92,
+          "spearman_mean": 0.654
+        },
+        "src1|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.095437,
+          "L1_sd": 0.020181,
+          "L1_ci95": [
+            0.056373,
+            0.134123
+          ],
+          "rev_mean": 0.63,
+          "rev_any_frac": 0.59,
+          "spearman_mean": 0.866
+        },
+        "src1|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.141779,
+          "L1_sd": 0.050768,
+          "L1_ci95": [
+            0.046176,
+            0.24611
+          ],
+          "rev_mean": 0.67,
+          "rev_any_frac": 0.59,
+          "spearman_mean": 0.85
+        },
+        "src1|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.286199,
+          "L1_sd": 0.046622,
+          "L1_ci95": [
+            0.163231,
+            0.342966
+          ],
+          "rev_mean": 1.33,
+          "rev_any_frac": 0.92,
+          "spearman_mean": 0.652
+        },
+        "src1|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.367709,
+          "L1_sd": 0.057407,
+          "L1_ci95": [
+            0.273815,
+            0.486575
+          ],
+          "rev_mean": 0.67,
+          "rev_any_frac": 0.59,
+          "spearman_mean": 0.85
+        },
+        "src1|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.194538,
+          "L1_sd": 0.060793,
+          "L1_ci95": [
+            0.059583,
+            0.291569
+          ],
+          "rev_mean": 1.33,
+          "rev_any_frac": 0.92,
+          "spearman_mean": 0.652
+        },
+        "src2|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.01306,
+          "L1_sd": 0.009826,
+          "L1_ci95": [
+            0.003355,
+            0.038394
+          ],
+          "rev_mean": 0.125,
+          "rev_any_frac": 0.125,
+          "spearman_mean": 0.975
+        },
+        "src2|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.027138,
+          "L1_sd": 0.017333,
+          "L1_ci95": [
+            0.00668,
+            0.068422
+          ],
+          "rev_mean": 0.245,
+          "rev_any_frac": 0.245,
+          "spearman_mean": 0.951
+        },
+        "src2|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.01438,
+          "L1_sd": 0.010357,
+          "L1_ci95": [
+            0.002582,
+            0.041791
+          ],
+          "rev_mean": 0.115,
+          "rev_any_frac": 0.115,
+          "spearman_mean": 0.977
+        },
+        "src2|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.036369,
+          "L1_sd": 0.023114,
+          "L1_ci95": [
+            0.005353,
+            0.095306
+          ],
+          "rev_mean": 0.295,
+          "rev_any_frac": 0.285,
+          "spearman_mean": 0.939
+        },
+        "src2|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.015961,
+          "L1_sd": 0.010815,
+          "L1_ci95": [
+            0.00359,
+            0.041959
+          ],
+          "rev_mean": 0.15,
+          "rev_any_frac": 0.15,
+          "spearman_mean": 0.97
+        },
+        "src2|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.199395,
+          "L1_sd": 0.025733,
+          "L1_ci95": [
+            0.155999,
+            0.259998
+          ],
+          "rev_mean": 0.42,
+          "rev_any_frac": 0.42,
+          "spearman_mean": 0.916
+        },
+        "src2|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.274139,
+          "L1_sd": 0.013265,
+          "L1_ci95": [
+            0.247552,
+            0.297703
+          ],
+          "rev_mean": 1.59,
+          "rev_any_frac": 1.0,
+          "spearman_mean": 0.564
+        },
+        "src3|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src3|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.00597,
+          "L1_sd": 0.002795,
+          "L1_ci95": [
+            0.003014,
+            0.013034
+          ],
+          "rev_mean": 0.035,
+          "rev_any_frac": 0.035,
+          "spearman_mean": 0.993
+        },
+        "src3|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.024746,
+          "L1_sd": 0.008917,
+          "L1_ci95": [
+            0.00797,
+            0.041984
+          ],
+          "rev_mean": 0.085,
+          "rev_any_frac": 0.085,
+          "spearman_mean": 0.983
+        },
+        "src3|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.020165,
+          "L1_sd": 0.005686,
+          "L1_ci95": [
+            0.010394,
+            0.032533
+          ],
+          "rev_mean": 0.035,
+          "rev_any_frac": 0.035,
+          "spearman_mean": 0.993
+        },
+        "src3|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.056866,
+          "L1_sd": 0.014188,
+          "L1_ci95": [
+            0.032516,
+            0.087624
+          ],
+          "rev_mean": 0.085,
+          "rev_any_frac": 0.085,
+          "spearman_mean": 0.983
+        },
+        "src3|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.016542,
+          "L1_sd": 0.006135,
+          "L1_ci95": [
+            0.005235,
+            0.028594
+          ],
+          "rev_mean": 0.05,
+          "rev_any_frac": 0.05,
+          "spearman_mean": 0.99
+        },
+        "src3|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.0735,
+          "L1_sd": 0.007318,
+          "L1_ci95": [
+            0.060383,
+            0.088359
+          ],
+          "rev_mean": 0.405,
+          "rev_any_frac": 0.37,
+          "spearman_mean": 0.912
+        },
+        "src3|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.183769,
+          "L1_sd": 0.00789,
+          "L1_ci95": [
+            0.17085,
+            0.203703
+          ],
+          "rev_mean": 0.1,
+          "rev_any_frac": 0.1,
+          "spearman_mean": 0.98
+        }
+      },
+      "per_transform_logit_indepcal": {
+        "src0|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015789,
+          "L1_sd": 0.008041,
+          "L1_ci95": [
+            0.004244,
+            0.035654
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.01488,
+          "L1_sd": 0.007911,
+          "L1_ci95": [
+            0.003384,
+            0.034346
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015815,
+          "L1_sd": 0.008424,
+          "L1_ci95": [
+            0.003632,
+            0.034612
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016466,
+          "L1_sd": 0.008675,
+          "L1_ci95": [
+            0.003565,
+            0.0364
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015724,
+          "L1_sd": 0.007983,
+          "L1_ci95": [
+            0.004197,
+            0.034385
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015476,
+          "L1_sd": 0.00773,
+          "L1_ci95": [
+            0.003301,
+            0.035067
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015964,
+          "L1_sd": 0.00801,
+          "L1_ci95": [
+            0.004758,
+            0.03763
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015516,
+          "L1_sd": 0.008092,
+          "L1_ci95": [
+            0.003619,
+            0.033384
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015227,
+          "L1_sd": 0.008262,
+          "L1_ci95": [
+            0.003761,
+            0.03517
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.01569,
+          "L1_sd": 0.007981,
+          "L1_ci95": [
+            0.003719,
+            0.033819
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.015658,
+          "L1_sd": 0.007683,
+          "L1_ci95": [
+            0.004614,
+            0.035118
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.015945,
+          "L1_sd": 0.008473,
+          "L1_ci95": [
+            0.004469,
+            0.036749
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.01513,
+          "L1_sd": 0.008655,
+          "L1_ci95": [
+            0.003188,
+            0.036978
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.016611,
+          "L1_sd": 0.008676,
+          "L1_ci95": [
+            0.004193,
+            0.035016
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.015774,
+          "L1_sd": 0.007946,
+          "L1_ci95": [
+            0.004633,
+            0.032876
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.016124,
+          "L1_sd": 0.00793,
+          "L1_ci95": [
+            0.005358,
+            0.035265
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015611,
+          "L1_sd": 0.008221,
+          "L1_ci95": [
+            0.003912,
+            0.032858
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016377,
+          "L1_sd": 0.008426,
+          "L1_ci95": [
+            0.004029,
+            0.035504
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016194,
+          "L1_sd": 0.007955,
+          "L1_ci95": [
+            0.003962,
+            0.03473
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015807,
+          "L1_sd": 0.00761,
+          "L1_ci95": [
+            0.003928,
+            0.032978
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016144,
+          "L1_sd": 0.007521,
+          "L1_ci95": [
+            0.003788,
+            0.029946
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.01703,
+          "L1_sd": 0.00829,
+          "L1_ci95": [
+            0.004528,
+            0.033859
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015306,
+          "L1_sd": 0.008034,
+          "L1_ci95": [
+            0.00374,
+            0.033547
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016769,
+          "L1_sd": 0.00788,
+          "L1_ci95": [
+            0.004768,
+            0.033587
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016033,
+          "L1_sd": 0.00796,
+          "L1_ci95": [
+            0.003779,
+            0.032949
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.016015,
+          "L1_sd": 0.008105,
+          "L1_ci95": [
+            0.004245,
+            0.033194
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.015702,
+          "L1_sd": 0.007994,
+          "L1_ci95": [
+            0.004009,
+            0.033584
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.01563,
+          "L1_sd": 0.00755,
+          "L1_ci95": [
+            0.004406,
+            0.033644
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.015819,
+          "L1_sd": 0.008221,
+          "L1_ci95": [
+            0.004126,
+            0.03435
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.015883,
+          "L1_sd": 0.007971,
+          "L1_ci95": [
+            0.003939,
+            0.035478
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.016345,
+          "L1_sd": 0.009173,
+          "L1_ci95": [
+            0.003944,
+            0.036094
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.016266,
+          "L1_sd": 0.00821,
+          "L1_ci95": [
+            0.00512,
+            0.035446
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015745,
+          "L1_sd": 0.008351,
+          "L1_ci95": [
+            0.00376,
+            0.034812
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016586,
+          "L1_sd": 0.008254,
+          "L1_ci95": [
+            0.00498,
+            0.036531
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015156,
+          "L1_sd": 0.007762,
+          "L1_ci95": [
+            0.003446,
+            0.030612
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015991,
+          "L1_sd": 0.008708,
+          "L1_ci95": [
+            0.003924,
+            0.036751
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015926,
+          "L1_sd": 0.007671,
+          "L1_ci95": [
+            0.004551,
+            0.031885
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015393,
+          "L1_sd": 0.00833,
+          "L1_ci95": [
+            0.004092,
+            0.035162
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016342,
+          "L1_sd": 0.00875,
+          "L1_ci95": [
+            0.00389,
+            0.036325
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015483,
+          "L1_sd": 0.008051,
+          "L1_ci95": [
+            0.004159,
+            0.035236
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015822,
+          "L1_sd": 0.008047,
+          "L1_ci95": [
+            0.004441,
+            0.033413
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.015595,
+          "L1_sd": 0.007223,
+          "L1_ci95": [
+            0.004698,
+            0.032959
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.015699,
+          "L1_sd": 0.00773,
+          "L1_ci95": [
+            0.004133,
+            0.032755
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.01588,
+          "L1_sd": 0.008139,
+          "L1_ci95": [
+            0.003219,
+            0.035986
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.015619,
+          "L1_sd": 0.007363,
+          "L1_ci95": [
+            0.005087,
+            0.031415
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.0159,
+          "L1_sd": 0.007698,
+          "L1_ci95": [
+            0.00383,
+            0.035766
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.016056,
+          "L1_sd": 0.008102,
+          "L1_ci95": [
+            0.004045,
+            0.034766
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.016189,
+          "L1_sd": 0.007625,
+          "L1_ci95": [
+            0.00431,
+            0.033575
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016236,
+          "L1_sd": 0.007812,
+          "L1_ci95": [
+            0.004066,
+            0.031842
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016175,
+          "L1_sd": 0.008515,
+          "L1_ci95": [
+            0.003205,
+            0.03538
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015501,
+          "L1_sd": 0.008993,
+          "L1_ci95": [
+            0.002863,
+            0.03705
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015946,
+          "L1_sd": 0.008355,
+          "L1_ci95": [
+            0.004223,
+            0.03624
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.01717,
+          "L1_sd": 0.008837,
+          "L1_ci95": [
+            0.005508,
+            0.035692
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016763,
+          "L1_sd": 0.007929,
+          "L1_ci95": [
+            0.005755,
+            0.034793
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015993,
+          "L1_sd": 0.008595,
+          "L1_ci95": [
+            0.004457,
+            0.034227
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.01604,
+          "L1_sd": 0.008662,
+          "L1_ci95": [
+            0.003963,
+            0.0368
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016314,
+          "L1_sd": 0.008502,
+          "L1_ci95": [
+            0.003365,
+            0.037721
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.015493,
+          "L1_sd": 0.007288,
+          "L1_ci95": [
+            0.004446,
+            0.03207
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.015812,
+          "L1_sd": 0.0082,
+          "L1_ci95": [
+            0.003747,
+            0.032959
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.015948,
+          "L1_sd": 0.007755,
+          "L1_ci95": [
+            0.003848,
+            0.031483
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.015186,
+          "L1_sd": 0.007719,
+          "L1_ci95": [
+            0.003706,
+            0.03346
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.016165,
+          "L1_sd": 0.00753,
+          "L1_ci95": [
+            0.00352,
+            0.031731
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.016778,
+          "L1_sd": 0.007727,
+          "L1_ci95": [
+            0.005118,
+            0.032388
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src3|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.01552,
+          "L1_sd": 0.007798,
+          "L1_ci95": [
+            0.003536,
+            0.033088
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        }
+      }
+    },
+    "3源(0.45/0.35/0.20)": {
+      "nominal_w": [
+        0.45,
+        0.35,
+        0.2
+      ],
+      "baseline_pi_linear_mean": [
+        0.612943,
+        0.204922,
+        0.182135
+      ],
+      "baseline_pi_linear_sd": [
+        0.034023,
+        0.036766,
+        0.00975
+      ],
+      "baseline_pi_logit_mean": [
+        0.452173,
+        0.348101,
+        0.199726
+      ],
+      "baseline_pi_logit_sd": [
+        0.007206,
+        0.007091,
+        0.003296
+      ],
+      "logit_common_cal_maxdev_overall": 0.0029005201800571534,
+      "logit_common_cal_maxdev_worstkey": "src0|logit_minmax",
+      "per_transform_linear": {
+        "src0|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src0|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.026833,
+          "L1_sd": 0.008435,
+          "L1_ci95": [
+            0.013191,
+            0.044153
+          ],
+          "rev_mean": 0.085,
+          "rev_any_frac": 0.085,
+          "spearman_mean": 0.9575
+        },
+        "src0|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.022931,
+          "L1_sd": 0.00435,
+          "L1_ci95": [
+            0.016958,
+            0.033745
+          ],
+          "rev_mean": 0.11,
+          "rev_any_frac": 0.11,
+          "spearman_mean": 0.945
+        },
+        "src0|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.06312,
+          "L1_sd": 0.015452,
+          "L1_ci95": [
+            0.036976,
+            0.100796
+          ],
+          "rev_mean": 0.025,
+          "rev_any_frac": 0.025,
+          "spearman_mean": 0.9875
+        },
+        "src0|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.185837,
+          "L1_sd": 0.051428,
+          "L1_ci95": [
+            0.106332,
+            0.323075
+          ],
+          "rev_mean": 0.04,
+          "rev_any_frac": 0.04,
+          "spearman_mean": 0.98
+        },
+        "src0|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.014028,
+          "L1_sd": 0.00434,
+          "L1_ci95": [
+            0.008471,
+            0.024287
+          ],
+          "rev_mean": 0.085,
+          "rev_any_frac": 0.085,
+          "spearman_mean": 0.9575
+        },
+        "src0|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.134338,
+          "L1_sd": 0.010308,
+          "L1_ci95": [
+            0.116073,
+            0.154908
+          ],
+          "rev_mean": 0.02,
+          "rev_any_frac": 0.02,
+          "spearman_mean": 0.99
+        },
+        "src0|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.724549,
+          "L1_sd": 0.014073,
+          "L1_ci95": [
+            0.694589,
+            0.746443
+          ],
+          "rev_mean": 2.08,
+          "rev_any_frac": 1.0,
+          "spearman_mean": -0.5175
+        },
+        "src1|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src1|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.180408,
+          "L1_sd": 0.015097,
+          "L1_ci95": [
+            0.143851,
+            0.199536
+          ],
+          "rev_mean": 0.705,
+          "rev_any_frac": 0.705,
+          "spearman_mean": 0.6475
+        },
+        "src1|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.266467,
+          "L1_sd": 0.029889,
+          "L1_ci95": [
+            0.180155,
+            0.300915
+          ],
+          "rev_mean": 0.725,
+          "rev_any_frac": 0.725,
+          "spearman_mean": 0.6375
+        },
+        "src1|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.106982,
+          "L1_sd": 0.024522,
+          "L1_ci95": [
+            0.060367,
+            0.154881
+          ],
+          "rev_mean": 0.275,
+          "rev_any_frac": 0.275,
+          "spearman_mean": 0.8625
+        },
+        "src1|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.15815,
+          "L1_sd": 0.059159,
+          "L1_ci95": [
+            0.050248,
+            0.280431
+          ],
+          "rev_mean": 0.275,
+          "rev_any_frac": 0.275,
+          "spearman_mean": 0.8625
+        },
+        "src1|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.337704,
+          "L1_sd": 0.053448,
+          "L1_ci95": [
+            0.193044,
+            0.401855
+          ],
+          "rev_mean": 0.725,
+          "rev_any_frac": 0.725,
+          "spearman_mean": 0.6375
+        },
+        "src1|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.40606,
+          "L1_sd": 0.067024,
+          "L1_ci95": [
+            0.297053,
+            0.550766
+          ],
+          "rev_mean": 0.275,
+          "rev_any_frac": 0.275,
+          "spearman_mean": 0.8625
+        },
+        "src1|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.230398,
+          "L1_sd": 0.070614,
+          "L1_ci95": [
+            0.071718,
+            0.342766
+          ],
+          "rev_mean": 0.725,
+          "rev_any_frac": 0.725,
+          "spearman_mean": 0.6375
+        },
+        "src2|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.0,
+          "L1_sd": 0.0,
+          "L1_ci95": [
+            0.0,
+            0.0
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": 1.0
+        },
+        "src2|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.013526,
+          "L1_sd": 0.009894,
+          "L1_ci95": [
+            0.003815,
+            0.039466
+          ],
+          "rev_mean": 0.065,
+          "rev_any_frac": 0.065,
+          "spearman_mean": 0.9675
+        },
+        "src2|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.027522,
+          "L1_sd": 0.017348,
+          "L1_ci95": [
+            0.007641,
+            0.069258
+          ],
+          "rev_mean": 0.12,
+          "rev_any_frac": 0.12,
+          "spearman_mean": 0.94
+        },
+        "src2|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.014766,
+          "L1_sd": 0.010511,
+          "L1_ci95": [
+            0.002844,
+            0.042721
+          ],
+          "rev_mean": 0.055,
+          "rev_any_frac": 0.055,
+          "spearman_mean": 0.9725
+        },
+        "src2|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.037236,
+          "L1_sd": 0.023485,
+          "L1_ci95": [
+            0.005437,
+            0.097525
+          ],
+          "rev_mean": 0.115,
+          "rev_any_frac": 0.115,
+          "spearman_mean": 0.9425
+        },
+        "src2|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.016184,
+          "L1_sd": 0.010867,
+          "L1_ci95": [
+            0.00414,
+            0.042656
+          ],
+          "rev_mean": 0.095,
+          "rev_any_frac": 0.095,
+          "spearman_mean": 0.9525
+        },
+        "src2|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.202266,
+          "L1_sd": 0.026659,
+          "L1_ci95": [
+            0.157184,
+            0.267634
+          ],
+          "rev_mean": 0.72,
+          "rev_any_frac": 0.72,
+          "spearman_mean": 0.64
+        },
+        "src2|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.27881,
+          "L1_sd": 0.013995,
+          "L1_ci95": [
+            0.250397,
+            0.304343
+          ],
+          "rev_mean": 0.275,
+          "rev_any_frac": 0.275,
+          "spearman_mean": 0.8625
+        }
+      },
+      "per_transform_logit_indepcal": {
+        "src0|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015222,
+          "L1_sd": 0.009132,
+          "L1_ci95": [
+            0.001863,
+            0.038082
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.014307,
+          "L1_sd": 0.008758,
+          "L1_ci95": [
+            0.001998,
+            0.037143
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015139,
+          "L1_sd": 0.009469,
+          "L1_ci95": [
+            0.002403,
+            0.037009
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015654,
+          "L1_sd": 0.009834,
+          "L1_ci95": [
+            0.002582,
+            0.03766
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015271,
+          "L1_sd": 0.008857,
+          "L1_ci95": [
+            0.003257,
+            0.036301
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.014924,
+          "L1_sd": 0.008633,
+          "L1_ci95": [
+            0.001936,
+            0.039456
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015098,
+          "L1_sd": 0.008957,
+          "L1_ci95": [
+            0.002639,
+            0.0399
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.014962,
+          "L1_sd": 0.009128,
+          "L1_ci95": [
+            0.001782,
+            0.033818
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.01426,
+          "L1_sd": 0.009251,
+          "L1_ci95": [
+            0.002744,
+            0.03697
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.01485,
+          "L1_sd": 0.009083,
+          "L1_ci95": [
+            0.00245,
+            0.035623
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.014871,
+          "L1_sd": 0.008581,
+          "L1_ci95": [
+            0.003178,
+            0.037225
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.015207,
+          "L1_sd": 0.00947,
+          "L1_ci95": [
+            0.003017,
+            0.0376
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.01435,
+          "L1_sd": 0.009836,
+          "L1_ci95": [
+            0.001772,
+            0.039766
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.016115,
+          "L1_sd": 0.009849,
+          "L1_ci95": [
+            0.002537,
+            0.038682
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.015028,
+          "L1_sd": 0.008861,
+          "L1_ci95": [
+            0.002628,
+            0.033393
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src0|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.015741,
+          "L1_sd": 0.009044,
+          "L1_ci95": [
+            0.003262,
+            0.03705
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015014,
+          "L1_sd": 0.009066,
+          "L1_ci95": [
+            0.002922,
+            0.034612
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015581,
+          "L1_sd": 0.009562,
+          "L1_ci95": [
+            0.002546,
+            0.03892
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.01581,
+          "L1_sd": 0.008877,
+          "L1_ci95": [
+            0.001662,
+            0.035647
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.01518,
+          "L1_sd": 0.008515,
+          "L1_ci95": [
+            0.001861,
+            0.034618
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015586,
+          "L1_sd": 0.008641,
+          "L1_ci95": [
+            0.002538,
+            0.031967
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.016527,
+          "L1_sd": 0.009488,
+          "L1_ci95": [
+            0.002701,
+            0.034929
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.014545,
+          "L1_sd": 0.008751,
+          "L1_ci95": [
+            0.003336,
+            0.035241
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.016279,
+          "L1_sd": 0.009089,
+          "L1_ci95": [
+            0.002644,
+            0.037327
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015537,
+          "L1_sd": 0.008821,
+          "L1_ci95": [
+            0.002786,
+            0.036158
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.015264,
+          "L1_sd": 0.009193,
+          "L1_ci95": [
+            0.00262,
+            0.033483
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.014992,
+          "L1_sd": 0.00893,
+          "L1_ci95": [
+            0.002025,
+            0.035418
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.014883,
+          "L1_sd": 0.008498,
+          "L1_ci95": [
+            0.002401,
+            0.03532
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.015331,
+          "L1_sd": 0.009316,
+          "L1_ci95": [
+            0.00272,
+            0.037994
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.015186,
+          "L1_sd": 0.008914,
+          "L1_ci95": [
+            0.002588,
+            0.037816
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.015969,
+          "L1_sd": 0.010232,
+          "L1_ci95": [
+            0.002833,
+            0.039709
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src1|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.015676,
+          "L1_sd": 0.009365,
+          "L1_ci95": [
+            0.002673,
+            0.037487
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015184,
+          "L1_sd": 0.009301,
+          "L1_ci95": [
+            0.002623,
+            0.037573
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015857,
+          "L1_sd": 0.009258,
+          "L1_ci95": [
+            0.002761,
+            0.039005
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=0.5,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.014592,
+          "L1_sd": 0.008985,
+          "L1_ci95": [
+            0.002402,
+            0.032535
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015423,
+          "L1_sd": 0.009831,
+          "L1_ci95": [
+            0.001809,
+            0.041094
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.015348,
+          "L1_sd": 0.008803,
+          "L1_ci95": [
+            0.002927,
+            0.034045
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=1.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.01494,
+          "L1_sd": 0.009438,
+          "L1_ci95": [
+            0.002359,
+            0.037639
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=-0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015614,
+          "L1_sd": 0.009881,
+          "L1_ci95": [
+            0.001675,
+            0.038657
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=0.0)": {
+          "family": "affine",
+          "L1_mean": 0.014574,
+          "L1_sd": 0.009061,
+          "L1_ci95": [
+            0.002905,
+            0.035992
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|affine(a=2.0,b=0.5)": {
+          "family": "affine",
+          "L1_mean": 0.015171,
+          "L1_sd": 0.009098,
+          "L1_ci95": [
+            0.003059,
+            0.036176
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|power2": {
+          "family": "nonlinear",
+          "L1_mean": 0.015136,
+          "L1_sd": 0.008204,
+          "L1_ci95": [
+            0.003204,
+            0.034586
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|power3": {
+          "family": "nonlinear",
+          "L1_mean": 0.015126,
+          "L1_sd": 0.00884,
+          "L1_ci95": [
+            0.002846,
+            0.035197
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|sqrt": {
+          "family": "nonlinear",
+          "L1_mean": 0.015169,
+          "L1_sd": 0.009066,
+          "L1_ci95": [
+            0.001631,
+            0.037008
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|log": {
+          "family": "nonlinear",
+          "L1_mean": 0.014493,
+          "L1_sd": 0.008273,
+          "L1_ci95": [
+            0.003013,
+            0.03431
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|exp_scaled": {
+          "family": "nonlinear",
+          "L1_mean": 0.015363,
+          "L1_sd": 0.008509,
+          "L1_ci95": [
+            0.003468,
+            0.036736
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|probit_std": {
+          "family": "nonlinear",
+          "L1_mean": 0.015507,
+          "L1_sd": 0.008944,
+          "L1_ci95": [
+            0.002982,
+            0.038071
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        },
+        "src2|logit_minmax": {
+          "family": "nonlinear",
+          "L1_mean": 0.01554,
+          "L1_sd": 0.008833,
+          "L1_ci95": [
+            0.002195,
+            0.035019
+          ],
+          "rev_mean": 0.0,
+          "rev_any_frac": 0.0,
+          "spearman_mean": null
+        }
+      }
+    }
+  },
+  "counterexamples": {
+    "logit_minmax": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 0,
+      "source_name": "BKT掌握度",
+      "transform": "logit_minmax",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.198265,
+        0.284001,
+        0.310976,
+        0.206759
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        3,
+        1,
+        0,
+        2
+      ],
+      "L1": 0.689258,
+      "n_reversals": 3,
+      "spearman": -0.2,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "power2": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "power2",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.592,
+        0.075416,
+        0.199346,
+        0.133237
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "L1": 0.152036,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "power3": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "power3",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.610837,
+        0.046832,
+        0.205172,
+        0.137158
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "L1": 0.209205,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "sqrt": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "sqrt",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.506908,
+        0.207919,
+        0.170758,
+        0.114415
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "L1": 0.112969,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "log": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "log",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.480627,
+        0.249805,
+        0.161383,
+        0.108186
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "L1": 0.19674,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "exp_scaled": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "exp_scaled",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.627874,
+        0.021947,
+        0.209677,
+        0.140502
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        3,
+        1,
+        2
+      ],
+      "L1": 0.258974,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    },
+    "probit_std": {
+      "config": "4源(0.40/0.30/0.20/0.10)",
+      "rep": 0,
+      "source_index": 1,
+      "source_name": "间隔重复记忆难度",
+      "transform": "probit_std",
+      "family": "nonlinear",
+      "pi_baseline": [
+        0.542894,
+        0.151434,
+        0.18312,
+        0.122552
+      ],
+      "pi_transformed": [
+        0.414618,
+        0.351572,
+        0.139693,
+        0.094118
+      ],
+      "rank_baseline": [
+        0,
+        2,
+        1,
+        3
+      ],
+      "rank_transformed": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "L1": 0.400274,
+      "n_reversals": 1,
+      "spearman": 0.8,
+      "logit_same_transform_max_abs_dev": 0.0
+    }
+  },
+  "settings": {
+    "R": 200,
+    "N": 500,
+    "NCAL": 500
+  }
+}

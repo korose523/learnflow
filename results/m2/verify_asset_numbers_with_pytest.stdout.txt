@@ -1,0 +1,35 @@
+==============================================================================
+LearnFlow 自身资产数字复算报告
+==============================================================================
+  生成时间 : 2026-09-13T13:41:03+09:00
+  后端根目录: E:\learnflow\learnflow-backend
+
+── 复算值 ────────────────────────────────────────────────────────────────────
+  python_loc                  : 25581
+  python_loc_excl_init        : 25497
+  source_files                : 88
+  service_modules             : 55
+  api_files                   : 13
+  api_routes_defined          : 104
+  api_routes_reachable        : 104
+  api_routes_unreachable      : 0
+  test_files                  : 54
+  test_functions              : 840
+  tests_collected             : 934
+
+── 登记比对 ──────────────────────────────────────────────────────────────────
+  指标                                登记      实测      差异  级别          状态
+  --------------------------------------------------------------------------
+  python_loc                     25389   25581     192  informative drifted
+  source_files                      87      88       1  informative drifted
+  service_modules                   54      55       1  informative drifted
+  api_files                         13      13       0  informative verified
+  api_routes_reachable             104     104       0  informative verified
+  test_files                        53      54       1  informative drifted
+  test_functions                   826     840      14  informative drifted
+  tests_collected                  920     934      14  informative drifted
+
+==============================================================================
+  结论      : PASS   退出码 0
+  JSON 输出 : C:\Users\mac\WorkBuddy\2026-09-02-22-50-15\results\m2\asset_numbers_with_pytest.json
+==============================================================================

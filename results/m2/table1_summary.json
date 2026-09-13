@@ -1,0 +1,45 @@
+{
+  "n": 54,
+  "governance_letter_counts": {
+    "A": 8,
+    "B": 8,
+    "C": 6,
+    "D": 10,
+    "E": 10,
+    "F": 4,
+    "G": 4,
+    "H": 4
+  },
+  "registry_category_counts": {
+    "retention": 19,
+    "motivation": 18,
+    "selfreg": 9,
+    "cognition": 4,
+    "health": 4
+  },
+  "stage_counts": {
+    "during": 20,
+    "ambient": 13,
+    "pre": 14,
+    "post": 7
+  },
+  "maturity_counts": {
+    "complete": 9,
+    "partial": 37,
+    "placeholder": 8
+  },
+  "disposition_counts": {
+    "K": 15,
+    "R": 32,
+    "M": 6,
+    "D": 1
+  },
+  "direction_counts": {
+    "unassigned": 42,
+    "approach": 9,
+    "withdraw": 3
+  },
+  "step_mapped": 34,
+  "is_enabled_gated": 31,
+  "xlsx": "openpyxl 缺失，未生成 xlsx"
+}

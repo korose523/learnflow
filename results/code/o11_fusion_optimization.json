@@ -1,0 +1,427 @@
+{
+ "design": "O11 optimization of difficulty fusion: sign-corrected + split-half-reliability-weighted fusion, and reliability-driven lambda. Identical O7/O8 held-out protocol (disjoint reservoir blocks A=fit k, B=criterion 250); all signs/weights/lambda estimated inside A only.",
+ "k_list": [
+  10,
+  25,
+  50,
+  100,
+  200
+ ],
+ "B_SIZE": 250,
+ "reps": 25,
+ "splits": 20,
+ "variants": [
+  "fused6",
+  "fused7",
+  "signed7",
+  "rw6",
+  "srw7"
+ ],
+ "lambda_strategies": [
+  "cf",
+  "rel",
+  "emp"
+ ],
+ "cols6_drop_upgrade": [
+  0,
+  1,
+  2,
+  3,
+  5,
+  6
+ ],
+ "lambda_cf_formula": "1/(1+(k/27.3)^0.895)",
+ "lambda_rel_definition": "1 - split_half_reliability_of_success(A)",
+ "results": {
+  "10": {
+   "success_heldout": 0.6698,
+   "lambda_cf_mean": 0.7107,
+   "lambda_rel_mean": 0.701,
+   "lambda_star_emp_mean": 0.7,
+   "variants": {
+    "fused6": {
+     "cf": {
+      "heldout": 0.7026,
+      "gain_vs_success_pp": 3.278
+     },
+     "rel": {
+      "heldout": 0.7025,
+      "gain_vs_success_pp": 3.266
+     },
+     "emp": {
+      "heldout": 0.7015,
+      "gain_vs_success_pp": 3.169
+     }
+    },
+    "fused7": {
+     "cf": {
+      "heldout": 0.6848,
+      "gain_vs_success_pp": 1.498
+     },
+     "rel": {
+      "heldout": 0.685,
+      "gain_vs_success_pp": 1.523
+     },
+     "emp": {
+      "heldout": 0.6871,
+      "gain_vs_success_pp": 1.734
+     }
+    },
+    "signed7": {
+     "cf": {
+      "heldout": 0.7057,
+      "gain_vs_success_pp": 3.594
+     },
+     "rel": {
+      "heldout": 0.7056,
+      "gain_vs_success_pp": 3.582
+     },
+     "emp": {
+      "heldout": 0.7049,
+      "gain_vs_success_pp": 3.515
+     }
+    },
+    "rw6": {
+     "cf": {
+      "heldout": 0.706,
+      "gain_vs_success_pp": 3.616
+     },
+     "rel": {
+      "heldout": 0.706,
+      "gain_vs_success_pp": 3.62
+     },
+     "emp": {
+      "heldout": 0.7055,
+      "gain_vs_success_pp": 3.574
+     }
+    },
+    "srw7": {
+     "cf": {
+      "heldout": 0.708,
+      "gain_vs_success_pp": 3.823
+     },
+     "rel": {
+      "heldout": 0.7081,
+      "gain_vs_success_pp": 3.826
+     },
+     "emp": {
+      "heldout": 0.7072,
+      "gain_vs_success_pp": 3.739
+     }
+    }
+   }
+  },
+  "25": {
+   "success_heldout": 0.806,
+   "lambda_cf_mean": 0.5197,
+   "lambda_rel_mean": 0.4902,
+   "lambda_star_emp_mean": 0.527,
+   "variants": {
+    "fused6": {
+     "cf": {
+      "heldout": 0.8218,
+      "gain_vs_success_pp": 1.586
+     },
+     "rel": {
+      "heldout": 0.8218,
+      "gain_vs_success_pp": 1.581
+     },
+     "emp": {
+      "heldout": 0.8213,
+      "gain_vs_success_pp": 1.533
+     }
+    },
+    "fused7": {
+     "cf": {
+      "heldout": 0.8112,
+      "gain_vs_success_pp": 0.523
+     },
+     "rel": {
+      "heldout": 0.812,
+      "gain_vs_success_pp": 0.599
+     },
+     "emp": {
+      "heldout": 0.8128,
+      "gain_vs_success_pp": 0.681
+     }
+    },
+    "signed7": {
+     "cf": {
+      "heldout": 0.8253,
+      "gain_vs_success_pp": 1.93
+     },
+     "rel": {
+      "heldout": 0.8249,
+      "gain_vs_success_pp": 1.895
+     },
+     "emp": {
+      "heldout": 0.8252,
+      "gain_vs_success_pp": 1.928
+     }
+    },
+    "rw6": {
+     "cf": {
+      "heldout": 0.8243,
+      "gain_vs_success_pp": 1.829
+     },
+     "rel": {
+      "heldout": 0.8242,
+      "gain_vs_success_pp": 1.819
+     },
+     "emp": {
+      "heldout": 0.8236,
+      "gain_vs_success_pp": 1.766
+     }
+    },
+    "srw7": {
+     "cf": {
+      "heldout": 0.8262,
+      "gain_vs_success_pp": 2.025
+     },
+     "rel": {
+      "heldout": 0.8259,
+      "gain_vs_success_pp": 1.995
+     },
+     "emp": {
+      "heldout": 0.8259,
+      "gain_vs_success_pp": 1.99
+     }
+    }
+   }
+  },
+  "50": {
+   "success_heldout": 0.8824,
+   "lambda_cf_mean": 0.3678,
+   "lambda_rel_mean": 0.3136,
+   "lambda_star_emp_mean": 0.3723,
+   "variants": {
+    "fused6": {
+     "cf": {
+      "heldout": 0.889,
+      "gain_vs_success_pp": 0.659
+     },
+     "rel": {
+      "heldout": 0.8888,
+      "gain_vs_success_pp": 0.639
+     },
+     "emp": {
+      "heldout": 0.8886,
+      "gain_vs_success_pp": 0.619
+     }
+    },
+    "fused7": {
+     "cf": {
+      "heldout": 0.8842,
+      "gain_vs_success_pp": 0.181
+     },
+     "rel": {
+      "heldout": 0.8849,
+      "gain_vs_success_pp": 0.251
+     },
+     "emp": {
+      "heldout": 0.8848,
+      "gain_vs_success_pp": 0.243
+     }
+    },
+    "signed7": {
+     "cf": {
+      "heldout": 0.8909,
+      "gain_vs_success_pp": 0.85
+     },
+     "rel": {
+      "heldout": 0.8903,
+      "gain_vs_success_pp": 0.786
+     },
+     "emp": {
+      "heldout": 0.8908,
+      "gain_vs_success_pp": 0.836
+     }
+    },
+    "rw6": {
+     "cf": {
+      "heldout": 0.8905,
+      "gain_vs_success_pp": 0.806
+     },
+     "rel": {
+      "heldout": 0.8901,
+      "gain_vs_success_pp": 0.771
+     },
+     "emp": {
+      "heldout": 0.8901,
+      "gain_vs_success_pp": 0.773
+     }
+    },
+    "srw7": {
+     "cf": {
+      "heldout": 0.8917,
+      "gain_vs_success_pp": 0.93
+     },
+     "rel": {
+      "heldout": 0.891,
+      "gain_vs_success_pp": 0.863
+     },
+     "emp": {
+      "heldout": 0.8917,
+      "gain_vs_success_pp": 0.925
+     }
+    }
+   }
+  },
+  "100": {
+   "success_heldout": 0.9248,
+   "lambda_cf_mean": 0.2383,
+   "lambda_rel_mean": 0.1881,
+   "lambda_star_emp_mean": 0.237,
+   "variants": {
+    "fused6": {
+     "cf": {
+      "heldout": 0.9272,
+      "gain_vs_success_pp": 0.243
+     },
+     "rel": {
+      "heldout": 0.9271,
+      "gain_vs_success_pp": 0.232
+     },
+     "emp": {
+      "heldout": 0.9269,
+      "gain_vs_success_pp": 0.219
+     }
+    },
+    "fused7": {
+     "cf": {
+      "heldout": 0.9255,
+      "gain_vs_success_pp": 0.073
+     },
+     "rel": {
+      "heldout": 0.9257,
+      "gain_vs_success_pp": 0.099
+     },
+     "emp": {
+      "heldout": 0.9255,
+      "gain_vs_success_pp": 0.079
+     }
+    },
+    "signed7": {
+     "cf": {
+      "heldout": 0.928,
+      "gain_vs_success_pp": 0.327
+     },
+     "rel": {
+      "heldout": 0.9276,
+      "gain_vs_success_pp": 0.289
+     },
+     "emp": {
+      "heldout": 0.9279,
+      "gain_vs_success_pp": 0.319
+     }
+    },
+    "rw6": {
+     "cf": {
+      "heldout": 0.9281,
+      "gain_vs_success_pp": 0.335
+     },
+     "rel": {
+      "heldout": 0.9278,
+      "gain_vs_success_pp": 0.306
+     },
+     "emp": {
+      "heldout": 0.9279,
+      "gain_vs_success_pp": 0.317
+     }
+    },
+    "srw7": {
+     "cf": {
+      "heldout": 0.9287,
+      "gain_vs_success_pp": 0.391
+     },
+     "rel": {
+      "heldout": 0.9282,
+      "gain_vs_success_pp": 0.342
+     },
+     "emp": {
+      "heldout": 0.9288,
+      "gain_vs_success_pp": 0.401
+     }
+    }
+   }
+  },
+  "200": {
+   "success_heldout": 0.9502,
+   "lambda_cf_mean": 0.144,
+   "lambda_rel_mean": 0.1041,
+   "lambda_star_emp_mean": 0.1333,
+   "variants": {
+    "fused6": {
+     "cf": {
+      "heldout": 0.9509,
+      "gain_vs_success_pp": 0.071
+     },
+     "rel": {
+      "heldout": 0.9509,
+      "gain_vs_success_pp": 0.068
+     },
+     "emp": {
+      "heldout": 0.9508,
+      "gain_vs_success_pp": 0.059
+     }
+    },
+    "fused7": {
+     "cf": {
+      "heldout": 0.9504,
+      "gain_vs_success_pp": 0.013
+     },
+     "rel": {
+      "heldout": 0.9505,
+      "gain_vs_success_pp": 0.025
+     },
+     "emp": {
+      "heldout": 0.9504,
+      "gain_vs_success_pp": 0.013
+     }
+    },
+    "signed7": {
+     "cf": {
+      "heldout": 0.9513,
+      "gain_vs_success_pp": 0.111
+     },
+     "rel": {
+      "heldout": 0.9512,
+      "gain_vs_success_pp": 0.092
+     },
+     "emp": {
+      "heldout": 0.9513,
+      "gain_vs_success_pp": 0.106
+     }
+    },
+    "rw6": {
+     "cf": {
+      "heldout": 0.9513,
+      "gain_vs_success_pp": 0.108
+     },
+     "rel": {
+      "heldout": 0.9512,
+      "gain_vs_success_pp": 0.094
+     },
+     "emp": {
+      "heldout": 0.9512,
+      "gain_vs_success_pp": 0.095
+     }
+    },
+    "srw7": {
+     "cf": {
+      "heldout": 0.9516,
+      "gain_vs_success_pp": 0.138
+     },
+     "rel": {
+      "heldout": 0.9513,
+      "gain_vs_success_pp": 0.112
+     },
+     "emp": {
+      "heldout": 0.9516,
+      "gain_vs_success_pp": 0.139
+     }
+    }
+   }
+  }
+ }
+}

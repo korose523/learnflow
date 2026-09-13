@@ -1,0 +1,195 @@
+{
+ "design": "O8 held-out validation of fusion variants (disjoint reservoir blocks A=fitsize k, B=criterion 250), lambda chosen on a random half of exercises and evaluated on the held-out half",
+ "variants": {
+  "fused7": [
+   0,
+   1,
+   2,
+   3,
+   4,
+   5,
+   6
+  ],
+  "fused6_drop_upgrade": [
+   0,
+   1,
+   2,
+   3,
+   5,
+   6
+  ],
+  "fused3_success_hint_attempts": [
+   0,
+   1,
+   3
+  ]
+ },
+ "k_list": [
+  10,
+  25,
+  50,
+  100,
+  200
+ ],
+ "B_SIZE": 250,
+ "reps": 25,
+ "splits": 20,
+ "results": {
+  "fused7": {
+   "10": {
+    "success_raw": 0.6702,
+    "variant_raw": 0.6431,
+    "delta_raw": -0.0271,
+    "lambda_star_mean": 0.519,
+    "heldout_at_lambda_star": 0.6871,
+    "heldout_at_lambda_0": 0.6698,
+    "heldout_at_lambda_1": 0.6421,
+    "gain_vs_success_pp": 1.734
+   },
+   "25": {
+    "success_raw": 0.8067,
+    "variant_raw": 0.7349,
+    "delta_raw": -0.0718,
+    "lambda_star_mean": 0.363,
+    "heldout_at_lambda_star": 0.8128,
+    "heldout_at_lambda_0": 0.806,
+    "heldout_at_lambda_1": 0.7332,
+    "gain_vs_success_pp": 0.681
+   },
+   "50": {
+    "success_raw": 0.8829,
+    "variant_raw": 0.7848,
+    "delta_raw": -0.098,
+    "lambda_star_mean": 0.237,
+    "heldout_at_lambda_star": 0.8848,
+    "heldout_at_lambda_0": 0.8824,
+    "heldout_at_lambda_1": 0.7841,
+    "gain_vs_success_pp": 0.243
+   },
+   "100": {
+    "success_raw": 0.9251,
+    "variant_raw": 0.8124,
+    "delta_raw": -0.1127,
+    "lambda_star_mean": 0.163,
+    "heldout_at_lambda_star": 0.9255,
+    "heldout_at_lambda_0": 0.9248,
+    "heldout_at_lambda_1": 0.8117,
+    "gain_vs_success_pp": 0.079
+   },
+   "200": {
+    "success_raw": 0.9506,
+    "variant_raw": 0.8299,
+    "delta_raw": -0.1206,
+    "lambda_star_mean": 0.088,
+    "heldout_at_lambda_star": 0.9504,
+    "heldout_at_lambda_0": 0.9502,
+    "heldout_at_lambda_1": 0.8296,
+    "gain_vs_success_pp": 0.013
+   }
+  },
+  "fused6_drop_upgrade": {
+   "10": {
+    "success_raw": 0.6659,
+    "variant_raw": 0.688,
+    "delta_raw": 0.022,
+    "lambda_star_mean": 0.701,
+    "heldout_at_lambda_star": 0.6992,
+    "heldout_at_lambda_0": 0.6649,
+    "heldout_at_lambda_1": 0.6878,
+    "gain_vs_success_pp": 3.433
+   },
+   "25": {
+    "success_raw": 0.8109,
+    "variant_raw": 0.7974,
+    "delta_raw": -0.0134,
+    "lambda_star_mean": 0.524,
+    "heldout_at_lambda_star": 0.8273,
+    "heldout_at_lambda_0": 0.8116,
+    "heldout_at_lambda_1": 0.7979,
+    "gain_vs_success_pp": 1.566
+   },
+   "50": {
+    "success_raw": 0.881,
+    "variant_raw": 0.8487,
+    "delta_raw": -0.0324,
+    "lambda_star_mean": 0.387,
+    "heldout_at_lambda_star": 0.8878,
+    "heldout_at_lambda_0": 0.8805,
+    "heldout_at_lambda_1": 0.8479,
+    "gain_vs_success_pp": 0.729
+   },
+   "100": {
+    "success_raw": 0.9257,
+    "variant_raw": 0.8748,
+    "delta_raw": -0.0509,
+    "lambda_star_mean": 0.234,
+    "heldout_at_lambda_star": 0.9271,
+    "heldout_at_lambda_0": 0.925,
+    "heldout_at_lambda_1": 0.8739,
+    "gain_vs_success_pp": 0.215
+   },
+   "200": {
+    "success_raw": 0.9504,
+    "variant_raw": 0.8899,
+    "delta_raw": -0.0605,
+    "lambda_star_mean": 0.125,
+    "heldout_at_lambda_star": 0.9502,
+    "heldout_at_lambda_0": 0.9497,
+    "heldout_at_lambda_1": 0.889,
+    "gain_vs_success_pp": 0.051
+   }
+  },
+  "fused3_success_hint_attempts": {
+   "10": {
+    "success_raw": 0.6634,
+    "variant_raw": 0.6345,
+    "delta_raw": -0.0289,
+    "lambda_star_mean": 0.078,
+    "heldout_at_lambda_star": 0.6617,
+    "heldout_at_lambda_0": 0.6627,
+    "heldout_at_lambda_1": 0.6334,
+    "gain_vs_success_pp": -0.102
+   },
+   "25": {
+    "success_raw": 0.8105,
+    "variant_raw": 0.773,
+    "delta_raw": -0.0375,
+    "lambda_star_mean": 0.072,
+    "heldout_at_lambda_star": 0.81,
+    "heldout_at_lambda_0": 0.8101,
+    "heldout_at_lambda_1": 0.7728,
+    "gain_vs_success_pp": -0.006
+   },
+   "50": {
+    "success_raw": 0.8824,
+    "variant_raw": 0.8391,
+    "delta_raw": -0.0433,
+    "lambda_star_mean": 0.05,
+    "heldout_at_lambda_star": 0.8819,
+    "heldout_at_lambda_0": 0.882,
+    "heldout_at_lambda_1": 0.8392,
+    "gain_vs_success_pp": -0.009
+   },
+   "100": {
+    "success_raw": 0.9254,
+    "variant_raw": 0.883,
+    "delta_raw": -0.0424,
+    "lambda_star_mean": 0.046,
+    "heldout_at_lambda_star": 0.9248,
+    "heldout_at_lambda_0": 0.9249,
+    "heldout_at_lambda_1": 0.8826,
+    "gain_vs_success_pp": -0.008
+   },
+   "200": {
+    "success_raw": 0.9511,
+    "variant_raw": 0.9097,
+    "delta_raw": -0.0414,
+    "lambda_star_mean": 0.036,
+    "heldout_at_lambda_star": 0.9509,
+    "heldout_at_lambda_0": 0.951,
+    "heldout_at_lambda_1": 0.9098,
+    "gain_vs_success_pp": -0.003
+   }
+  }
+ }
+}

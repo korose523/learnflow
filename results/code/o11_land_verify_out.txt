@@ -1,0 +1,18 @@
+[PASS] 模块导出 estimate_optimized_difficulty  
+[PASS] 模块导出 split_half_reliability  
+[PASS] k<=0 抛 ValueError  
+[PASS] 缺信号抛 ValueError  
+[PASS] λ 缺省等于 lambda_closed_form(k)  
+[PASS] k=10 signed7 增益复现  landed +3.594 vs o11 +3.594 pp
+[PASS] k=10 srw7 增益复现  landed +3.823 vs o11 +3.823 pp
+[PASS] k=25 signed7 增益复现  landed +1.930 vs o11 +1.930 pp
+[PASS] k=25 srw7 增益复现  landed +2.025 vs o11 +2.025 pp
+[PASS] k=50 signed7 增益复现  landed +0.850 vs o11 +0.850 pp
+[PASS] k=50 srw7 增益复现  landed +0.930 vs o11 +0.930 pp
+[PASS] k=100 signed7 增益复现  landed +0.327 vs o11 +0.327 pp
+[PASS] k=100 srw7 增益复现  landed +0.391 vs o11 +0.391 pp
+[PASS] k=200 signed7 增益复现  landed +0.111 vs o11 +0.111 pp
+[PASS] k=200 srw7 增益复现  landed +0.138 vs o11 +0.138 pp
+[PASS] 符号校正：反向信号被取负（与难度方向正相关）  Spearman(fused, difficulty)=+0.951
+
+OVERALL: ALL PASS  (checks=15)

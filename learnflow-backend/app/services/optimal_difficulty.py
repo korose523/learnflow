@@ -491,23 +491,55 @@ class OptimalDifficultyEngine:
 
     # ─── 题目难度更新 ──────────────────────────────────
 
+    # 耗时→"偏慢"程度的软性判据（O1 修复：不再使用硬阈值）
+    TIME_REF_SECONDS: float = 60.0   # log-time 中心（秒）
+    TIME_SLOPE: float = 0.8          # log-time 陡峭度
+    HINT_PENALTY: float = 0.5        # 使用提示的证据惩罚（O5：提示率是有效难度信号）
+
     def update_task_difficulty(
         self, task: TaskDifficulty,
         was_correct: bool, time_spent_seconds: Optional[float] = None,
+        hint_used: bool = False,
     ) -> TaskDifficulty:
-        """根据答题结果更新题目难度估计"""
-        # 答对→3-4分，答错→1-2分
-        if was_correct:
-            # 考虑耗时：快速答对=4分(简单)，慢速答对=3分(中等)
-            if time_spent_seconds is not None and time_spent_seconds > 180:
-                score = 3.0
-            else:
-                score = 4.0
-        else:
-            score = 1.0
+        """根据答题结果更新题目难度估计。
 
+        改动依据（results/Real_data_实验报告.md O1）：
+        原实现对耗时使用 `>180s` 的**硬阈值**分档——这类把连续信号按任意切点离散化
+        再与其他信号（正确性）手工合并的做法，在量表/单位变化（单调重参数化）下会
+        产生有效权重漂移（实测线性融合 L1=0.5357、排序反转 ~67%）。
+        现改为 log-time 上的连续单调项：耗时越长 → 证据越偏向"难"，且无跳变点。
+
+        证据分数（FSRS r ∈ [1,4]，3=中性）：
+          * 答对：r = 3 + (1 - s)  → 快速答对≈4（简单），慢速答对→3（中等）
+          * 答错：r = 1 + (1 - s)  → 慢速答错≈1（很难），快速答错→2（疑似粗心）
+          * 使用提示：r -= 0.5（更吃力 ⇒ 更难的证据）
+        其中 s = σ(ln(t / 60s) / 0.8) ∈ (0,1) 为"偏慢"程度。
+        """
+        score = self._evidence_score(was_correct, time_spent_seconds, hint_used)
         task.d = self.fsrs.update_difficulty(task.d, score)
         return task
+
+    @classmethod
+    def _slowness(cls, time_spent_seconds: Optional[float]) -> float:
+        """耗时 → 偏慢程度 s ∈ (0,1)；缺失耗时时取中性 0.5"""
+        if time_spent_seconds is None:
+            return 0.5
+        t = max(float(time_spent_seconds), 1.0)
+        x = math.log(t / cls.TIME_REF_SECONDS) / cls.TIME_SLOPE
+        return 1.0 / (1.0 + math.exp(-x))
+
+    @classmethod
+    def _evidence_score(
+        cls, was_correct: bool,
+        time_spent_seconds: Optional[float] = None,
+        hint_used: bool = False,
+    ) -> float:
+        """把 (正确性, 耗时, 提示) 合并为 FSRS 证据分 r ∈ [1,4]"""
+        s = cls._slowness(time_spent_seconds)
+        score = (3.0 + (1.0 - s)) if was_correct else (1.0 + (1.0 - s))
+        if hint_used:
+            score -= cls.HINT_PENALTY
+        return max(1.0, min(4.0, score))
 
     # ─── 批量题目的最优选择 ────────────────────────────
 

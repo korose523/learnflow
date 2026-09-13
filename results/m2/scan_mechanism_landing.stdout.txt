@@ -1,0 +1,65 @@
+==============================================================================
+LearnFlow 机制落地审计矩阵
+==============================================================================
+git HEAD : 8a328430d36860043f3bf80e8e0bf2a82edd2ecd
+total    : 54
+landed   : 54  (运行时可达：有外部引用 或被编排器接线/门控)
+orphan   : 0  (仅引擎/文档可达，运行时不可达)
+------------------------------------------------------------------------------
+  OK  LF-M01 variable_ratio_reward        ext=1 wired=1 maturity=complete
+  OK  LF-M02 near_miss                    ext=1 wired=0 maturity=complete
+  OK  LF-M03 dopamine_rhythm              ext=1 wired=0 maturity=partial
+  OK  LF-M04 instant_gratification        ext=1 wired=1 maturity=partial
+  OK  LF-M05 surprise_delight             ext=1 wired=1 maturity=partial
+  OK  LF-M06 time_based_bonus             ext=1 wired=1 maturity=complete
+  OK  LF-M07 collection                   ext=1 wired=0 maturity=partial
+  OK  LF-M08 scarcity                     ext=1 wired=1 maturity=partial
+  OK  LF-M09 loss_aversion                ext=1 wired=0 maturity=partial
+  OK  LF-M10 sunk_cost_reminder           ext=1 wired=0 maturity=partial
+  OK  LF-M11 streak                       ext=1 wired=0 maturity=complete
+  OK  LF-M12 streak_sanctification        ext=1 wired=1 maturity=partial
+  OK  LF-M13 zeigarnik                    ext=1 wired=1 maturity=partial
+  OK  LF-M14 peak_end                     ext=1 wired=1 maturity=partial
+  OK  LF-M15 goal_gradient                ext=1 wired=1 maturity=partial
+  OK  LF-M16 daily_challenge              ext=1 wired=1 maturity=complete
+  OK  LF-M17 autonomy_support             ext=1 wired=0 maturity=partial
+  OK  LF-M18 ikea_effect                  ext=1 wired=1 maturity=partial
+  OK  LF-M19 xp_leveling                  ext=1 wired=1 maturity=placeholder
+  OK  LF-M20 progress_visualization       ext=1 wired=1 maturity=partial
+  OK  LF-M21 progressive_disclosure       ext=1 wired=1 maturity=partial
+  OK  LF-M22 pet_companion                ext=1 wired=1 maturity=complete
+  OK  LF-M23 social_proof                 ext=1 wired=0 maturity=partial
+  OK  LF-M24 social_contagion             ext=1 wired=1 maturity=partial
+  OK  LF-M25 peer_progress                ext=1 wired=0 maturity=partial
+  OK  LF-M26 friendly_competition         ext=1 wired=0 maturity=partial
+  OK  LF-M27 leaderboard                  ext=1 wired=0 maturity=complete
+  OK  LF-M28 business_card                ext=1 wired=0 maturity=placeholder
+  OK  LF-M29 gift_economy                 ext=1 wired=1 maturity=placeholder
+  OK  LF-M30 friend_quest                 ext=1 wired=0 maturity=partial
+  OK  LF-M31 team_competition             ext=1 wired=0 maturity=partial
+  OK  LF-M32 parent_portal                ext=1 wired=1 maturity=placeholder
+  OK  LF-M33 hook_model                   ext=1 wired=1 maturity=partial
+  OK  LF-M34 habit_loop                   ext=1 wired=1 maturity=partial
+  OK  LF-M35 cue_prompting                ext=1 wired=1 maturity=partial
+  OK  LF-M36 habit_stacking               ext=1 wired=0 maturity=partial
+  OK  LF-M37 temptation_bundling          ext=1 wired=1 maturity=partial
+  OK  LF-M38 implementation_intentions    ext=1 wired=1 maturity=partial
+  OK  LF-M39 self_regulation_goals        ext=1 wired=1 maturity=partial
+  OK  LF-M40 skill_tree                   ext=1 wired=0 maturity=partial
+  OK  LF-M41 commitment_device            ext=1 wired=1 maturity=partial
+  OK  LF-M42 fresh_start                  ext=1 wired=0 maturity=partial
+  OK  LF-M43 curiosity_gap                ext=1 wired=1 maturity=partial
+  OK  LF-M44 fomo                         ext=1 wired=1 maturity=partial
+  OK  LF-M45 serendipity                  ext=1 wired=0 maturity=placeholder
+  OK  LF-M46 identity_motivation          ext=1 wired=1 maturity=partial
+  OK  LF-M47 micro_interaction            ext=1 wired=0 maturity=partial
+  OK  LF-M48 color_psychology             ext=1 wired=1 maturity=partial
+  OK  LF-M49 spatial_anchoring            ext=1 wired=1 maturity=placeholder
+  OK  LF-M50 multisensory_packaging       ext=1 wired=1 maturity=placeholder
+  OK  LF-M51 forced_rest                  ext=1 wired=1 maturity=partial
+  OK  LF-M52 minor_protection             ext=1 wired=1 maturity=complete
+  OK  LF-M53 lai_downgrade                ext=1 wired=1 maturity=placeholder
+  OK  LF-M54 class_pet                    ext=1 wired=0 maturity=complete
+------------------------------------------------------------------------------
+  JSON 输出 : C:\Users\mac\WorkBuddy\2026-09-02-22-50-15\results\m2\mechanism_landing_status.json
+==============================================================================

@@ -1,0 +1,89 @@
+{
+ "design": "O12 student-level holdout (O10 protocol) rerun with O11 estimator srw7 (sign-corrected + split-half-reliability-weighted fusion, all 7 signals) and reliability-driven lambda. Users split by crc32(uuid); signs/weights/lambda estimated on A-half students only.",
+ "n_exercises": 1238,
+ "min_B_rows": 500,
+ "reservoir_per_half": 250,
+ "k_list": [
+  10,
+  25,
+  50,
+  100,
+  200
+ ],
+ "reps": 25,
+ "splits": 20,
+ "lambda_cf_formula": "1/(1+(k/27.3)^0.895)",
+ "lambda_rel_definition": "1 - split_half_reliability_of_success(A)",
+ "results": {
+  "10": {
+   "success": 0.6631,
+   "fused6": 0.687,
+   "srw7_lambda_cf": 0.7059,
+   "srw7_lambda_rel": 0.7059,
+   "gain_fused6_pp": 2.39,
+   "gain_srw7_cf_pp": 4.283,
+   "gain_srw7_rel_pp": 4.284,
+   "srw7_minus_fused6_pp": 0.662,
+   "win_rate": 0.902,
+   "wilcoxon_p": 1.1532995825521911e-66,
+   "lambda_cf": 0.711,
+   "lambda_rel_mean": 0.704
+  },
+  "25": {
+   "success": 0.8133,
+   "fused6": 0.7993,
+   "srw7_lambda_cf": 0.8352,
+   "srw7_lambda_rel": 0.835,
+   "gain_fused6_pp": -1.402,
+   "gain_srw7_cf_pp": 2.189,
+   "gain_srw7_rel_pp": 2.163,
+   "srw7_minus_fused6_pp": 0.557,
+   "win_rate": 1.0,
+   "wilcoxon_p": 1.2647189486921487e-83,
+   "lambda_cf": 0.52,
+   "lambda_rel_mean": 0.506
+  },
+  "50": {
+   "success": 0.8881,
+   "fused6": 0.8491,
+   "srw7_lambda_cf": 0.8976,
+   "srw7_lambda_rel": 0.8971,
+   "gain_fused6_pp": -3.905,
+   "gain_srw7_cf_pp": 0.951,
+   "gain_srw7_rel_pp": 0.896,
+   "srw7_minus_fused6_pp": 0.317,
+   "win_rate": 1.0,
+   "wilcoxon_p": 1.264716101234528e-83,
+   "lambda_cf": 0.368,
+   "lambda_rel_mean": 0.32
+  },
+  "100": {
+   "success": 0.9356,
+   "fused6": 0.8783,
+   "srw7_lambda_cf": 0.9389,
+   "srw7_lambda_rel": 0.9385,
+   "gain_fused6_pp": -5.728,
+   "gain_srw7_cf_pp": 0.335,
+   "gain_srw7_rel_pp": 0.298,
+   "srw7_minus_fused6_pp": 0.169,
+   "win_rate": 0.998,
+   "wilcoxon_p": 1.2723425957164632e-83,
+   "lambda_cf": 0.238,
+   "lambda_rel_mean": 0.188
+  },
+  "200": {
+   "success": 0.9603,
+   "fused6": 0.8922,
+   "srw7_lambda_cf": 0.9613,
+   "srw7_lambda_rel": 0.9612,
+   "gain_fused6_pp": -6.804,
+   "gain_srw7_cf_pp": 0.102,
+   "gain_srw7_rel_pp": 0.088,
+   "srw7_minus_fused6_pp": 0.081,
+   "win_rate": 0.996,
+   "wilcoxon_p": 1.2877218646392791e-83,
+   "lambda_cf": 0.144,
+   "lambda_rel_mean": 0.106
+  }
+ }
+}

@@ -1,0 +1,36 @@
+﻿==============================================================================
+LearnFlow 鑷韩璧勪骇鏁板瓧澶嶇畻鎶ュ憡
+==============================================================================
+  鐢熸垚鏃堕棿 : 2026-09-13T22:23:05+09:00
+  鍚庣鏍圭洰褰? E:\learnflow\learnflow-backend
+
+鈹€鈹€ 澶嶇畻鍊?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  python_loc                  : 25795
+  python_loc_excl_init        : 25711
+  source_files                : 88
+  service_modules             : 55
+  api_files                   : 13
+  api_routes_defined          : 104
+  api_routes_reachable        : 104
+  api_routes_unreachable      : 0
+  test_files                  : 54
+  test_functions              : 840
+
+鈹€鈹€ 鐧昏姣斿 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  鎸囨爣                                鐧昏      瀹炴祴      宸紓  绾у埆          鐘舵€?
+  --------------------------------------------------------------------------
+  python_loc                     25389   25795     406  informative drifted
+  source_files                      87      88       1  informative drifted
+  service_modules                   54      55       1  informative drifted
+  api_files                         13      13       0  informative verified
+  api_routes_reachable             104     104       0  informative verified
+  test_files                        53      54       1  informative drifted
+  test_functions                   826     840      14  informative drifted
+  tests_collected                  920       -       -  informative drifted
+
+==============================================================================
+  缁撹      : PASS   閫€鍑虹爜 0
+  JSON 杈撳嚭 : E:\learnflow\learnflow-backend\artifacts\asset_numbers.json
+==============================================================================
+exit=0
+

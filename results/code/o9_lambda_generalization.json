@@ -1,0 +1,140 @@
+{
+ "design": "O9 out-of-sample test of the lambda*(k) shrinkage rule + within-pool check of fused6",
+ "Q1_out_of_sample_k": {
+  "fit_ks": [
+   10,
+   50,
+   200
+  ],
+  "oos_ks": [
+   25,
+   100
+  ],
+  "fitted": {
+   "k0": 27.332,
+   "p": 0.895
+  },
+  "formula": "lambda*(k) = 1/(1+(k/k0)^p)",
+  "results": {
+   "25": {
+    "lambda_hat_from_formula": 0.52,
+    "lambda_emp_splithalf": 0.536,
+    "rho_lambda_0": 0.8103,
+    "rho_lambda_hat": 0.8272,
+    "rho_lambda_emp": 0.8255,
+    "gain_hat_pp": 1.695,
+    "gain_emp_pp": 1.528,
+    "retained_fraction": 1.109
+   },
+   "100": {
+    "lambda_hat_from_formula": 0.239,
+    "lambda_emp_splithalf": 0.23,
+    "rho_lambda_0": 0.9262,
+    "rho_lambda_hat": 0.9286,
+    "rho_lambda_emp": 0.9281,
+    "gain_hat_pp": 0.237,
+    "gain_emp_pp": 0.186,
+    "retained_fraction": 1.276
+   }
+  }
+ },
+ "Q2_within_pool_fused6_vs_fused7": {
+  "n_pools": 268,
+  "k_list": [
+   10,
+   25,
+   50,
+   100,
+   250,
+   500
+  ],
+  "reps": 20,
+  "splits": 20,
+  "results": {
+   "10": {
+    "fused7": {
+     "lambda_star_mean": 0.758,
+     "heldout_at_lambda_star": 0.5955,
+     "heldout_at_lambda_0": 0.5532,
+     "gain_pp": 4.23
+    },
+    "fused6": {
+     "lambda_star_mean": 0.92,
+     "heldout_at_lambda_star": 0.6094,
+     "heldout_at_lambda_0": 0.5449,
+     "gain_pp": 6.447
+    }
+   },
+   "25": {
+    "fused7": {
+     "lambda_star_mean": 0.567,
+     "heldout_at_lambda_star": 0.722,
+     "heldout_at_lambda_0": 0.7018,
+     "gain_pp": 2.014
+    },
+    "fused6": {
+     "lambda_star_mean": 0.778,
+     "heldout_at_lambda_star": 0.7364,
+     "heldout_at_lambda_0": 0.6982,
+     "gain_pp": 3.818
+    }
+   },
+   "50": {
+    "fused7": {
+     "lambda_star_mean": 0.45,
+     "heldout_at_lambda_star": 0.7985,
+     "heldout_at_lambda_0": 0.7874,
+     "gain_pp": 1.104
+    },
+    "fused6": {
+     "lambda_star_mean": 0.58,
+     "heldout_at_lambda_star": 0.8035,
+     "heldout_at_lambda_0": 0.7855,
+     "gain_pp": 1.804
+    }
+   },
+   "100": {
+    "fused7": {
+     "lambda_star_mean": 0.358,
+     "heldout_at_lambda_star": 0.8483,
+     "heldout_at_lambda_0": 0.8422,
+     "gain_pp": 0.613
+    },
+    "fused6": {
+     "lambda_star_mean": 0.429,
+     "heldout_at_lambda_star": 0.8518,
+     "heldout_at_lambda_0": 0.8424,
+     "gain_pp": 0.948
+    }
+   },
+   "250": {
+    "fused7": {
+     "lambda_star_mean": 0.269,
+     "heldout_at_lambda_star": 0.8887,
+     "heldout_at_lambda_0": 0.8854,
+     "gain_pp": 0.332
+    },
+    "fused6": {
+     "lambda_star_mean": 0.282,
+     "heldout_at_lambda_star": 0.8894,
+     "heldout_at_lambda_0": 0.8861,
+     "gain_pp": 0.331
+    }
+   },
+   "500": {
+    "fused7": {
+     "lambda_star_mean": 0.24,
+     "heldout_at_lambda_star": 0.9033,
+     "heldout_at_lambda_0": 0.9015,
+     "gain_pp": 0.18
+    },
+    "fused6": {
+     "lambda_star_mean": 0.201,
+     "heldout_at_lambda_star": 0.904,
+     "heldout_at_lambda_0": 0.9015,
+     "gain_pp": 0.244
+    }
+   }
+  }
+ }
+}

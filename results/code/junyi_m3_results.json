@@ -1,0 +1,53 @@
+{
+ "design": "real Junyi arms (expert-difficulty exercises within strand), ability-decile-calibrated p, 8 strategies x 400 sims x T=40",
+ "users_with_ability_ge20": 52733,
+ "policy_results": {
+  "random": 0.687,
+  "all_easy": 0.742,
+  "all_hard": 0.6421,
+  "fixed_normal": 0.6684,
+  "staircase": 0.6714,
+  "adaptive": 0.7003,
+  "llm_correct": 0.706,
+  "llm_wrong": 0.6575
+ },
+ "best": "all_easy",
+ "ordered_difficulty_transitions": {
+  "normal->easy": {
+   "n": 1885528,
+   "success": 0.7314
+  },
+  "easy->easy": {
+   "n": 7997849,
+   "success": 0.7335
+  },
+  "normal->normal": {
+   "n": 880896,
+   "success": 0.6118
+  },
+  "easy->normal": {
+   "n": 1886468,
+   "success": 0.6407
+  },
+  "normal->hard": {
+   "n": 311261,
+   "success": 0.6005
+  },
+  "hard->easy": {
+   "n": 795667,
+   "success": 0.7534
+  },
+  "hard->normal": {
+   "n": 310027,
+   "success": 0.6479
+  },
+  "easy->hard": {
+   "n": 794051,
+   "success": 0.6302
+  },
+  "hard->hard": {
+   "n": 270934,
+   "success": 0.5945
+  }
+ }
+}

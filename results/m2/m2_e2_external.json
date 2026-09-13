@@ -1,0 +1,316 @@
+{
+  "system_A_ludilearn": {
+    "repo": "https://github.com/DigiDago/moodle-format_ludilearn",
+    "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+    "license": "GPL-3.0",
+    "language": "PHP (Moodle course format)",
+    "mechanism_inventory_rule": "classes/local/gameelements/*.php 去掉抽象基类与 nogamified",
+    "mechanism_count": 6,
+    "mechanisms": [
+      "avatar",
+      "badge",
+      "progress",
+      "ranking",
+      "score",
+      "timer"
+    ],
+    "schema": {
+      "score": {
+        "target": "参与度/表现",
+        "direction": "approach",
+        "channel": "数值面板",
+        "anchor": "lang/en/format_ludilearn.php:189 settings:scoredescription"
+      },
+      "badge": {
+        "target": "成就/表现",
+        "direction": "approach",
+        "channel": "徽章图",
+        "anchor": "lang/en/format_ludilearn.php:194 settings:badgedescription"
+      },
+      "progress": {
+        "target": "进度/坚持",
+        "direction": "approach",
+        "channel": "进度条",
+        "anchor": "lang/en/format_ludilearn.php:198 settings:progressiondescription"
+      },
+      "avatar": {
+        "target": "身份/自主",
+        "direction": "approach",
+        "channel": "头像定制",
+        "anchor": "lang/en/format_ludilearn.php:202 settings:avatardescription"
+      },
+      "ranking": {
+        "target": "社交比较",
+        "direction": "approach",
+        "channel": "排行榜",
+        "anchor": "lang/en/format_ludilearn.php:133 ranking"
+      },
+      "timer": {
+        "target": "时长/节奏",
+        "direction": "withdraw",
+        "channel": "计时器+扣分",
+        "anchor": "classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20"
+      }
+    },
+    "concurrency_model": "互斥：manager.attribution_game_element() 删除同 section 其它元素的 attribution",
+    "concurrency_anchor": "classes/manager.php:126-146",
+    "detection": {
+      "approach": [
+        "avatar",
+        "badge",
+        "progress",
+        "ranking",
+        "score"
+      ],
+      "withdraw": [
+        "timer"
+      ],
+      "type_I_same_target_opposite_direction": [],
+      "type_I_count": 0,
+      "type_I_relaxed_upper_bound": [
+        [
+          "avatar",
+          "timer"
+        ],
+        [
+          "badge",
+          "timer"
+        ],
+        [
+          "progress",
+          "timer"
+        ],
+        [
+          "ranking",
+          "timer"
+        ],
+        [
+          "score",
+          "timer"
+        ]
+      ],
+      "type_I_relaxed_count": 5,
+      "co_active_rule": "单元素排他（attribution 删除同 section 其它元素）",
+      "type_II": {
+        "state_writers": [
+          "badge",
+          "progress",
+          "ranking",
+          "score"
+        ],
+        "competition": true,
+        "cap": null
+      },
+      "type_III": [],
+      "type_III_count": 0
+    }
+  },
+  "system_B_block_xp": {
+    "repo": "https://github.com/FMCorz/moodle-block_xp",
+    "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+    "license": "GPL-3.0",
+    "language": "PHP (Moodle block)",
+    "mechanism_inventory_rule": "classes/local/{xp,leaderboard,badge,rule,division,notification,check} + form/{cheatguard,promo}",
+    "mechanism_count": 11,
+    "mechanisms": [
+      "badge",
+      "cheatguard",
+      "division",
+      "leaderboard",
+      "levels",
+      "notification",
+      "promotion",
+      "rank",
+      "rule_limits",
+      "rules",
+      "xp_points"
+    ],
+    "schema": {
+      "xp_points": {
+        "target": "参与度",
+        "direction": "approach",
+        "channel": "数值",
+        "anchor": "classes/local/xp/state.php, user_state.php"
+      },
+      "levels": {
+        "target": "胜任/进度",
+        "direction": "approach",
+        "channel": "进度+等级",
+        "anchor": "classes/local/xp/levels_info.php, level.php"
+      },
+      "leaderboard": {
+        "target": "社交比较",
+        "direction": "approach",
+        "channel": "排行榜",
+        "anchor": "classes/local/leaderboard/course_user_leaderboard.php"
+      },
+      "rank": {
+        "target": "社交比较",
+        "direction": "approach",
+        "channel": "名次",
+        "anchor": "classes/local/xp/rank.php, state_rank.php"
+      },
+      "badge": {
+        "target": "成就",
+        "direction": "approach",
+        "channel": "徽章",
+        "anchor": "classes/local/badge/badge_manager.php"
+      },
+      "notification": {
+        "target": "参与度",
+        "direction": "approach",
+        "channel": "弹窗通知",
+        "anchor": "classes/local/notification/course_level_up_notification_service.php"
+      },
+      "rules": {
+        "target": "行为触发",
+        "direction": "approach",
+        "channel": "规则引擎",
+        "anchor": "classes/local/rule/the_dictator.php, ruletype/*.php"
+      },
+      "rule_limits": {
+        "target": "行为速率",
+        "direction": "withdraw",
+        "channel": "限流窗口",
+        "anchor": "classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）"
+      },
+      "division": {
+        "target": "社交分层",
+        "direction": "approach",
+        "channel": "分组",
+        "anchor": "classes/local/division/group_division.php"
+      },
+      "cheatguard": {
+        "target": "合规",
+        "direction": "withdraw",
+        "channel": "防作弊拦截",
+        "anchor": "classes/form/cheatguard.php"
+      },
+      "promotion": {
+        "target": "参与度",
+        "direction": "approach",
+        "channel": "促销横幅",
+        "anchor": "classes/form/promo.php"
+      }
+    },
+    "concurrency_model": "并存：多个机制在同一用户状态上同时生效",
+    "detection": {
+      "approach": [
+        "badge",
+        "division",
+        "leaderboard",
+        "levels",
+        "notification",
+        "promotion",
+        "rank",
+        "rules",
+        "xp_points"
+      ],
+      "withdraw": [
+        "cheatguard",
+        "rule_limits"
+      ],
+      "type_I_same_target_opposite_direction": [],
+      "type_I_count": 0,
+      "type_I_relaxed_upper_bound": [
+        [
+          "badge",
+          "cheatguard"
+        ],
+        [
+          "badge",
+          "rule_limits"
+        ],
+        [
+          "division",
+          "cheatguard"
+        ],
+        [
+          "division",
+          "rule_limits"
+        ],
+        [
+          "leaderboard",
+          "cheatguard"
+        ],
+        [
+          "leaderboard",
+          "rule_limits"
+        ],
+        [
+          "levels",
+          "cheatguard"
+        ],
+        [
+          "levels",
+          "rule_limits"
+        ],
+        [
+          "notification",
+          "cheatguard"
+        ],
+        [
+          "notification",
+          "rule_limits"
+        ],
+        [
+          "promotion",
+          "cheatguard"
+        ],
+        [
+          "promotion",
+          "rule_limits"
+        ],
+        [
+          "rank",
+          "cheatguard"
+        ],
+        [
+          "rank",
+          "rule_limits"
+        ],
+        [
+          "rules",
+          "cheatguard"
+        ],
+        [
+          "rules",
+          "rule_limits"
+        ],
+        [
+          "xp_points",
+          "cheatguard"
+        ],
+        [
+          "xp_points",
+          "rule_limits"
+        ]
+      ],
+      "type_I_relaxed_count": 18,
+      "co_active_rule": "多机制并存",
+      "type_II": {
+        "state_writers": [
+          "badge",
+          "leaderboard",
+          "levels",
+          "rank",
+          "xp_points"
+        ],
+        "competition": true,
+        "cap": null
+      },
+      "type_III": [
+        [
+          "cheatguard",
+          "全部 approach 机制"
+        ]
+      ],
+      "type_III_count": 1
+    }
+  },
+  "method_limits": [
+    "schema 字段为分析师单编码，未计算评分者间信度（IRR）——不得宣称双重编码。",
+    "target_construct 为语义标注，非外部系统自带字段；外部系统不提供 direction 元数据。",
+    "类型 II 的预算上限：Ludilearn 无预算概念；block_xp 的 limit_spec 提供 H/D/W/M 速率窗口。"
+  ]
+}

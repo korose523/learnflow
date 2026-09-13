@@ -1,0 +1,517 @@
+{
+ "by_k": {
+  "10": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.6805,
+     "regret_pp": 6.444,
+     "regret_pp_se": 1.349,
+     "rank_error": 0.3248
+    },
+    "q_0.50": {
+     "mean_p": 0.6793,
+     "regret_pp": 0.994,
+     "regret_pp_se": 1.314,
+     "rank_error": 0.2674
+    },
+    "q_0.75": {
+     "mean_p": 0.6815,
+     "regret_pp": -6.098,
+     "regret_pp_se": 1.364,
+     "rank_error": 0.3271
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6865,
+     "regret_pp": 5.852,
+     "regret_pp_se": 1.345,
+     "rank_error": 0.2402
+    },
+    "q_0.50": {
+     "mean_p": 0.6813,
+     "regret_pp": 0.787,
+     "regret_pp_se": 1.272,
+     "rank_error": 0.2398
+    },
+    "q_0.75": {
+     "mean_p": 0.6689,
+     "regret_pp": -4.839,
+     "regret_pp_se": 1.323,
+     "rank_error": 0.25
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.6823,
+     "regret_pp": 6.268,
+     "regret_pp_se": 1.364,
+     "rank_error": 0.2282
+    },
+    "q_0.50": {
+     "mean_p": 0.6844,
+     "regret_pp": 0.483,
+     "regret_pp_se": 1.312,
+     "rank_error": 0.2318
+    },
+    "q_0.75": {
+     "mean_p": 0.6812,
+     "regret_pp": -6.064,
+     "regret_pp_se": 1.308,
+     "rank_error": 0.234
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.5507,
+   "pool_spearman_fused": 0.5778,
+   "pool_spearman_gain": 0.0271
+  },
+  "25": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.6827,
+     "regret_pp": 6.226,
+     "regret_pp_se": 1.333,
+     "rank_error": 0.3266
+    },
+    "q_0.50": {
+     "mean_p": 0.6808,
+     "regret_pp": 0.838,
+     "regret_pp_se": 1.316,
+     "rank_error": 0.2684
+    },
+    "q_0.75": {
+     "mean_p": 0.6791,
+     "regret_pp": -5.858,
+     "regret_pp_se": 1.351,
+     "rank_error": 0.3236
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6832,
+     "regret_pp": 6.181,
+     "regret_pp_se": 1.335,
+     "rank_error": 0.2024
+    },
+    "q_0.50": {
+     "mean_p": 0.6835,
+     "regret_pp": 0.577,
+     "regret_pp_se": 1.336,
+     "rank_error": 0.2121
+    },
+    "q_0.75": {
+     "mean_p": 0.6783,
+     "regret_pp": -5.771,
+     "regret_pp_se": 1.309,
+     "rank_error": 0.205
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.6822,
+     "regret_pp": 6.275,
+     "regret_pp_se": 1.333,
+     "rank_error": 0.2081
+    },
+    "q_0.50": {
+     "mean_p": 0.6845,
+     "regret_pp": 0.474,
+     "regret_pp_se": 1.348,
+     "rank_error": 0.2099
+    },
+    "q_0.75": {
+     "mean_p": 0.6825,
+     "regret_pp": -6.196,
+     "regret_pp_se": 1.296,
+     "rank_error": 0.2067
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.7014,
+   "pool_spearman_fused": 0.6838,
+   "pool_spearman_gain": -0.0176
+  },
+  "50": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.6818,
+     "regret_pp": 6.317,
+     "regret_pp_se": 1.346,
+     "rank_error": 0.3279
+    },
+    "q_0.50": {
+     "mean_p": 0.6817,
+     "regret_pp": 0.751,
+     "regret_pp_se": 1.308,
+     "rank_error": 0.2669
+    },
+    "q_0.75": {
+     "mean_p": 0.6816,
+     "regret_pp": -6.106,
+     "regret_pp_se": 1.348,
+     "rank_error": 0.3287
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6792,
+     "regret_pp": 6.576,
+     "regret_pp_se": 1.339,
+     "rank_error": 0.176
+    },
+    "q_0.50": {
+     "mean_p": 0.6884,
+     "regret_pp": 0.086,
+     "regret_pp_se": 1.286,
+     "rank_error": 0.1868
+    },
+    "q_0.75": {
+     "mean_p": 0.6793,
+     "regret_pp": -5.873,
+     "regret_pp_se": 1.247,
+     "rank_error": 0.1812
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.6803,
+     "regret_pp": 6.464,
+     "regret_pp_se": 1.349,
+     "rank_error": 0.191
+    },
+    "q_0.50": {
+     "mean_p": 0.6865,
+     "regret_pp": 0.272,
+     "regret_pp_se": 1.293,
+     "rank_error": 0.1933
+    },
+    "q_0.75": {
+     "mean_p": 0.6849,
+     "regret_pp": -6.43,
+     "regret_pp_se": 1.25,
+     "rank_error": 0.1915
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.7852,
+   "pool_spearman_fused": 0.7409,
+   "pool_spearman_gain": -0.0443
+  },
+  "100": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.6802,
+     "regret_pp": 6.481,
+     "regret_pp_se": 1.333,
+     "rank_error": 0.3262
+    },
+    "q_0.50": {
+     "mean_p": 0.6817,
+     "regret_pp": 0.752,
+     "regret_pp_se": 1.309,
+     "rank_error": 0.2663
+    },
+    "q_0.75": {
+     "mean_p": 0.6794,
+     "regret_pp": -5.884,
+     "regret_pp_se": 1.354,
+     "rank_error": 0.3269
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6782,
+     "regret_pp": 6.676,
+     "regret_pp_se": 1.338,
+     "rank_error": 0.1498
+    },
+    "q_0.50": {
+     "mean_p": 0.6878,
+     "regret_pp": 0.139,
+     "regret_pp_se": 1.359,
+     "rank_error": 0.1648
+    },
+    "q_0.75": {
+     "mean_p": 0.6834,
+     "regret_pp": -6.286,
+     "regret_pp_se": 1.237,
+     "rank_error": 0.1566
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.6827,
+     "regret_pp": 6.232,
+     "regret_pp_se": 1.341,
+     "rank_error": 0.1718
+    },
+    "q_0.50": {
+     "mean_p": 0.6882,
+     "regret_pp": 0.101,
+     "regret_pp_se": 1.334,
+     "rank_error": 0.1831
+    },
+    "q_0.75": {
+     "mean_p": 0.687,
+     "regret_pp": -6.639,
+     "regret_pp_se": 1.231,
+     "rank_error": 0.1775
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.843,
+   "pool_spearman_fused": 0.7822,
+   "pool_spearman_gain": -0.0608
+  },
+  "250": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.679,
+     "regret_pp": 6.599,
+     "regret_pp_se": 1.347,
+     "rank_error": 0.327
+    },
+    "q_0.50": {
+     "mean_p": 0.6814,
+     "regret_pp": 0.777,
+     "regret_pp_se": 1.323,
+     "rank_error": 0.2677
+    },
+    "q_0.75": {
+     "mean_p": 0.6809,
+     "regret_pp": -6.031,
+     "regret_pp_se": 1.361,
+     "rank_error": 0.3289
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6753,
+     "regret_pp": 6.968,
+     "regret_pp_se": 1.304,
+     "rank_error": 0.129
+    },
+    "q_0.50": {
+     "mean_p": 0.6899,
+     "regret_pp": -0.066,
+     "regret_pp_se": 1.297,
+     "rank_error": 0.1463
+    },
+    "q_0.75": {
+     "mean_p": 0.6854,
+     "regret_pp": -6.487,
+     "regret_pp_se": 1.227,
+     "rank_error": 0.1298
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.6804,
+     "regret_pp": 6.457,
+     "regret_pp_se": 1.302,
+     "rank_error": 0.1588
+    },
+    "q_0.50": {
+     "mean_p": 0.6914,
+     "regret_pp": -0.213,
+     "regret_pp_se": 1.309,
+     "rank_error": 0.1678
+    },
+    "q_0.75": {
+     "mean_p": 0.6893,
+     "regret_pp": -6.87,
+     "regret_pp_se": 1.209,
+     "rank_error": 0.1672
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.8851,
+   "pool_spearman_fused": 0.8162,
+   "pool_spearman_gain": -0.0689
+  },
+  "500": {
+   "random": {
+    "q_0.25": {
+     "mean_p": 0.6797,
+     "regret_pp": 6.524,
+     "regret_pp_se": 1.34,
+     "rank_error": 0.3288
+    },
+    "q_0.50": {
+     "mean_p": 0.6807,
+     "regret_pp": 0.856,
+     "regret_pp_se": 1.308,
+     "rank_error": 0.269
+    },
+    "q_0.75": {
+     "mean_p": 0.6811,
+     "regret_pp": -6.053,
+     "regret_pp_se": 1.353,
+     "rank_error": 0.3279
+    }
+   },
+   "success_only": {
+    "q_0.25": {
+     "mean_p": 0.6918,
+     "regret_pp": 5.323,
+     "regret_pp_se": 1.189,
+     "rank_error": 0.1206
+    },
+    "q_0.50": {
+     "mean_p": 0.6899,
+     "regret_pp": -0.069,
+     "regret_pp_se": 1.112,
+     "rank_error": 0.1528
+    },
+    "q_0.75": {
+     "mean_p": 0.6824,
+     "regret_pp": -6.183,
+     "regret_pp_se": 1.232,
+     "rank_error": 0.1159
+    }
+   },
+   "fused": {
+    "q_0.25": {
+     "mean_p": 0.697,
+     "regret_pp": 4.804,
+     "regret_pp_se": 1.193,
+     "rank_error": 0.1538
+    },
+    "q_0.50": {
+     "mean_p": 0.6757,
+     "regret_pp": 1.356,
+     "regret_pp_se": 1.337,
+     "rank_error": 0.1457
+    },
+    "q_0.75": {
+     "mean_p": 0.6991,
+     "regret_pp": -7.849,
+     "regret_pp_se": 1.194,
+     "rank_error": 0.1727
+    }
+   },
+   "oracle": {
+    "q_0.25": {
+     "mean_p": 0.745,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.50": {
+     "mean_p": 0.6892,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    },
+    "q_0.75": {
+     "mean_p": 0.6206,
+     "regret_pp": 0.0,
+     "rank_error": 0.0
+    }
+   },
+   "pool_spearman_success": 0.9017,
+   "pool_spearman_fused": 0.8321,
+   "pool_spearman_gain": -0.0695
+  }
+ },
+ "design": "M3-Junyi v3.1 cold-start difficulty-estimator-driven sequencing; quantile targeting with a shared target quantile q, regret measured against oracle",
+ "n_exercises": 1234,
+ "n_pools": 268,
+ "min_pool": 6,
+ "min_attempts_per_arm": 500,
+ "target_quantiles": [
+  0.25,
+  0.5,
+  0.75
+ ],
+ "reps": 60,
+ "k_list": [
+  10,
+  25,
+  50,
+  100,
+  250,
+  500
+ ],
+ "pool_size_median": 18,
+ "why_quantile_targeting": "absolute 0.75 targeting is unreachable inside pools (pool mean p = 0.68, oracle q* degenerates to 0.12); quantile targeting keeps all estimators comparable"
+}

@@ -1,0 +1,47 @@
+﻿==============================================================================
+LearnFlow 鑷韩璧勪骇鏁板瓧澶嶇畻鎶ュ憡
+==============================================================================
+  鐢熸垚鏃堕棿 : 2026-09-13T22:23:47+09:00
+  鍚庣鏍圭洰褰? E:\learnflow\learnflow-backend
+
+鈹€鈹€ 澶嶇畻鍊?鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  python_loc                  : 25795
+  python_loc_excl_init        : 25711
+  source_files                : 88
+  service_modules             : 55
+  api_files                   : 13
+  api_routes_defined          : 104
+  api_routes_reachable        : 104
+  api_routes_unreachable      : 0
+  test_files                  : 54
+  test_functions              : 840
+
+鈹€鈹€ 鐧昏姣斿 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  鎸囨爣                                鐧昏      瀹炴祴      宸紓  绾у埆          鐘舵€?
+  --------------------------------------------------------------------------
+  python_loc                     25389   25795     406  informative drifted
+  source_files                      87      88       1  informative drifted
+  service_modules                   54      55       1  informative drifted
+  api_files                         13      13       0  informative verified
+  api_routes_reachable             104     104       0  informative verified
+  test_files                        53      54       1  informative drifted
+  test_functions                   826     840      14  informative drifted
+  tests_collected                  920       -       -  informative drifted
+
+鈹€鈹€ 鏂囨。鏁板瓧鏍稿 鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€
+  鏂囨。: E:\learnflow\docs\LearnFlow_鏈熷垔璁烘枃鎷嗗垎鏂规.md
+  [DRIFT] python_loc               鏂囨。=25389      瀹炴祴=25795      鏂囨。 25389 鈮?瀹炴祴 25795
+  [DRIFT] service_modules          鏂囨。=54         瀹炴祴=55         鏂囨。 54 鈮?瀹炴祴 55
+  [DRIFT] source_files             鏂囨。=87         瀹炴祴=88         鏂囨。 87 鈮?瀹炴祴 88
+  [OK  ] api_routes_reachable     鏂囨。=104        瀹炴祴=104        
+  [OK  ] tests_collected          鏂囨。=920        瀹炴祴=-          鏈鏈绠楄鎸囨爣锛堝姞 --with-pytest 鍙绠楋級锛屼粎璁板綍鏂囨。鍊?
+  [DRIFT] test_files               鏂囨。=53         瀹炴祴=54         鏂囨。 53 鈮?瀹炴祴 54
+
+  缁撹: 涓嶄竴鑷?鈥斺€?瀛樺湪 4 椤规紓绉?
+
+==============================================================================
+  缁撹      : DRIFT   閫€鍑虹爜 1
+  JSON 杈撳嚭 : E:\learnflow\learnflow-backend\artifacts\asset_numbers.json
+==============================================================================
+exit=1
+

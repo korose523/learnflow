@@ -1,0 +1,336 @@
+{
+  "generated_at": "2026-09-13T13:40:50+09:00",
+  "git_commit": "8a328430d36860043f3bf80e8e0bf2a82edd2ecd",
+  "python_version": "3.11.9",
+  "backend_root": "E:\\learnflow\\learnflow-backend",
+  "counts": {
+    "engine_classes": {
+      "value": 86,
+      "unique_class_names": 85,
+      "duplicate_class_names": [
+        "ZeigarnikEngine"
+      ],
+      "files": {
+        "app/services/duolingo_addiction_engine.py": 8,
+        "app/services/ux_addiction_engine.py": 8,
+        "app/services/deep_addiction_engine.py": 7,
+        "app/services/positive_addiction_engine.py": 6,
+        "app/services/team_competition_engine.py": 6,
+        "app/services/addiction_engine_v3.py": 5,
+        "app/services/advanced_methods_v2.py": 5,
+        "app/services/gamification_service.py": 5,
+        "app/services/habit_addiction_engine.py": 5,
+        "app/services/learning_methods_engine_v3.py": 5,
+        "app/services/advanced_methods_engine.py": 4,
+        "app/services/memory_science_engine.py": 4,
+        "app/services/social_addiction_engine.py": 4,
+        "app/services/learning_methods_engine.py": 3,
+        "app/services/meta_learning_skilltree.py": 3,
+        "app/services/onboarding_engine.py": 3,
+        "app/services/anti_addiction_compliance.py": 1,
+        "app/services/dda.py": 1,
+        "app/services/knowledge_tracing.py": 1,
+        "app/services/optimal_difficulty.py": 1,
+        "app/services/placement_test_engine.py": 1
+      },
+      "definition": "app/**/*.py 中类名以 'Engine' 结尾的 ClassDef 总数（L0，类别错误口径）"
+    },
+    "mechanism_units": {
+      "value": 60,
+      "engine_classes_in_scope": 55,
+      "non_engine_mechanism_classes": [
+        "CustomizationState",
+        "DopamineRhythm",
+        "NearMissDetector",
+        "ProximalGoals",
+        "SessionMemory",
+        "StreakState",
+        "TreasureBoxState",
+        "UnfinishedTask"
+      ],
+      "intra_file_merges": [
+        [
+          "SessionMemory",
+          "PeakEndEngine"
+        ],
+        [
+          "UnfinishedTask",
+          "ZeigarnikEngine"
+        ],
+        [
+          "CustomizationState",
+          "IKEAEngine"
+        ]
+      ],
+      "raw_before_merges": 63,
+      "per_file": {
+        "app/services/positive_addiction_engine.py": 6,
+        "app/services/deep_addiction_engine.py": 7,
+        "app/services/ux_addiction_engine.py": 8,
+        "app/services/social_addiction_engine.py": 4,
+        "app/services/duolingo_addiction_engine.py": 8,
+        "app/services/team_competition_engine.py": 6,
+        "app/services/addiction_engine_v3.py": 5,
+        "app/services/habit_addiction_engine.py": 5,
+        "app/services/anti_addiction_compliance.py": 1,
+        "app/services/gamification_service.py": 5
+      },
+      "definition": "10 个机制承载文件中的 *Engine 类，加 gamification_service 的非 Engine 机制类，减去预注册的状态容器↔引擎合并对"
+    },
+    "mechanism_unique": {
+      "value": 54,
+      "id_range": "LF-M01..LF-M54",
+      "duplicate_ids": [],
+      "contiguous": true,
+      "category_counts": {
+        "A": 8,
+        "B": 8,
+        "C": 6,
+        "D": 10,
+        "E": 10,
+        "F": 4,
+        "G": 4,
+        "H": 4
+      },
+      "category_sum": 54,
+      "doc_subtotal_claimed": 54,
+      "cross_validation_passed": true,
+      "definition": "治理方案 LF-M01..LF-Mnn 编号表中的唯一机制 ID 数（语义去重由人工预注册规则 R1–R6 完成）"
+    },
+    "learning_methods": {
+      "value": 28,
+      "registry_count": 28,
+      "registry_ids": [
+        "LF-L01",
+        "LF-L02",
+        "LF-L03",
+        "LF-L04",
+        "LF-L05",
+        "LF-L06",
+        "LF-L07",
+        "LF-L08",
+        "LF-L09",
+        "LF-L10",
+        "LF-L11",
+        "LF-L12",
+        "LF-L13",
+        "LF-L14",
+        "LF-L15",
+        "LF-L16",
+        "LF-L17",
+        "LF-L18",
+        "LF-L19",
+        "LF-L20",
+        "LF-L21",
+        "LF-L22",
+        "LF-L23",
+        "LF-L24",
+        "LF-L25",
+        "LF-L26",
+        "LF-L27",
+        "LF-L28"
+      ],
+      "literal_scan_unique": 23,
+      "snake_case_ids": 23,
+      "non_snake_ids": [],
+      "ids": [
+        "active_recall",
+        "analogy",
+        "chunking",
+        "concrete_examples",
+        "distributed_practice",
+        "dual_coding",
+        "elaborative_rehearsal",
+        "exercise_memory",
+        "feynman",
+        "generation",
+        "growth_mindset",
+        "interleaving",
+        "memory_palace",
+        "metacognition",
+        "mind_mapping",
+        "pomodoro",
+        "pretesting",
+        "retrieval_practice",
+        "self_explanation",
+        "sleep_memory",
+        "spaced_repetition",
+        "sq3r",
+        "successive_relearning"
+      ],
+      "raw_label_counts": {
+        "app/services/learning_methods_engine.py": 16,
+        "app/services/advanced_methods_engine.py": 7,
+        "app/services/learning_methods_engine_v3.py": 11
+      },
+      "method_tips_entries": 16,
+      "method_tips_unique_keys": 15,
+      "definition": "权威来源 = app/services/method_registry.py 中 LF-L01..LF-L28 的登记条目数（用 AST 静态提取dict 的 'id' 字段，不扫源码文本）；3 个学习方法源文件的字面量去重（23）是其子集，差额 5 来自 advanced_methods_v2 的真实新增引擎，二者由同一注册表统辖，故『28 种学习方法』可被一条命令复算。"
+    },
+    "skill_tree_nodes": {
+      "value": 16,
+      "unique_skill_ids": 16,
+      "duplicate_skill_ids": [],
+      "skill_ids": [
+        "active_recall",
+        "spaced_repetition",
+        "memory_palace",
+        "dual_coding",
+        "chunking",
+        "feynman",
+        "elaborative_rehearsal",
+        "sq3r",
+        "retrieval_practice",
+        "interleaving",
+        "testing_effect",
+        "pomodoro",
+        "deep_work",
+        "growth_mindset",
+        "metacognition",
+        "sleep_mastery"
+      ],
+      "definition": "SKILL_DEFINITIONS 列表元素数（交叉验证 skill_id 唯一数）"
+    },
+    "prd_claimed": {
+      "value": 69,
+      "items": [
+        {
+          "category": "正向成瘾引擎",
+          "file": "positive_addiction_engine.py",
+          "count": 7
+        },
+        {
+          "category": "深度成瘾引擎",
+          "file": "deep_addiction_engine.py",
+          "count": 10
+        },
+        {
+          "category": "UI 成瘾引擎",
+          "file": "ux_addiction_engine.py",
+          "count": 12
+        },
+        {
+          "category": "社交成瘾引擎",
+          "file": "social_addiction_engine.py",
+          "count": 8
+        },
+        {
+          "category": "多邻国式成瘾",
+          "file": "duolingo_addiction_engine.py",
+          "count": 8
+        },
+        {
+          "category": "竞技排位引擎",
+          "file": "team_competition_engine.py",
+          "count": 7
+        },
+        {
+          "category": "新增成瘾引擎 v3",
+          "file": "addiction_engine_v3.py",
+          "count": 5
+        },
+        {
+          "category": "游戏化激励服务",
+          "file": "gamification_service.py",
+          "count": 12
+        }
+      ],
+      "prd_headline_claimed": 76,
+      "prd_intro_claimed": 76,
+      "internally_inconsistent": true,
+      "definition": "PRD §2.3 表格「引擎数量」列之和（该列相加 ≠ 同文档标题/概述所写的 76）"
+    }
+  },
+  "registered": {
+    "engine_classes": {
+      "registered": 86,
+      "strict": false,
+      "note": "informative：新增一个 *Engine 类是正常的工程演进，不应让 CI 变红；但登记值应定期复核。当前 86 = 基线 81 + advanced_methods_v2 的 5 个真实引擎（WorkedExamples/KeywordMnemonic/ProductiveFailure/Summarization/VariedPractice），与『28 种学习方法』的注册表口径一致。"
+    },
+    "mechanism_units": {
+      "registered": 60,
+      "strict": false,
+      "note": "informative：实现单元数随机制落地自然增长。治理方案 §1.2 表内小计为 59（未计入 anti_addiction_compliance 的 MinorProtectionEngine = LF-M52），推荐主表述为 60（59 + 1）。详见 REPORT_NOTES。"
+    },
+    "mechanism_unique": {
+      "registered": 54,
+      "strict": true,
+      "note": "strict：这是论文 Table 1 的数字，被引用即必须可复算。"
+    },
+    "learning_methods": {
+      "registered": 28,
+      "strict": true,
+      "note": "strict：论文统一写法口径（22 个 snake_case + v3 的「思维导图」+ advanced_methods_v2 的 5 个真实新增方法, 使 28 成为可复算真值）。"
+    },
+    "skill_tree_nodes": {
+      "registered": 16,
+      "strict": true,
+      "note": "strict：全项目唯一完全属实的数字，且被论文引用。"
+    },
+    "prd_claimed": {
+      "registered": 69,
+      "strict": true,
+      "note": "strict：PRD §2.3 表格逐项相加。此值变化说明有人改了 PRD 表格，必须重新核对「PRD 自相矛盾」这一论断是否仍成立。"
+    }
+  },
+  "claims": {
+    "mechanisms_claimed": 76,
+    "learning_methods_claimed": 28
+  },
+  "verdict": {
+    "engine_classes": {
+      "status": "verified",
+      "registered": 86,
+      "actual": 86,
+      "delta": 0,
+      "strict": false,
+      "notes": ""
+    },
+    "mechanism_units": {
+      "status": "verified",
+      "registered": 60,
+      "actual": 60,
+      "delta": 0,
+      "strict": false,
+      "notes": ""
+    },
+    "mechanism_unique": {
+      "status": "verified",
+      "registered": 54,
+      "actual": 54,
+      "delta": 0,
+      "strict": true,
+      "notes": ""
+    },
+    "learning_methods": {
+      "status": "verified",
+      "registered": 28,
+      "actual": 28,
+      "delta": 0,
+      "strict": true,
+      "notes": ""
+    },
+    "skill_tree_nodes": {
+      "status": "verified",
+      "registered": 16,
+      "actual": 16,
+      "delta": 0,
+      "strict": true,
+      "notes": ""
+    },
+    "prd_claimed": {
+      "status": "verified",
+      "registered": 69,
+      "actual": 69,
+      "delta": 0,
+      "strict": true,
+      "notes": ""
+    },
+    "_overall": {
+      "status": "verified",
+      "blocking_metrics": [],
+      "drifted_informative_metrics": [],
+      "exit_code": 0
+    }
+  }
+}

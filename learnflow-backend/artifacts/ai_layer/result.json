@@ -22,14 +22,14 @@
     ]
   },
   "ml_model": {
-    "auroc": 0.9669874216631851,
-    "accuracy": 0.8416666666666667,
+    "auroc": 0.9533928948920215,
+    "accuracy": 0.845,
     "n": 600,
-    "pos_rate": 0.5033333333333333
+    "pos_rate": 0.4816666666666667
   },
   "rule_baseline": {
-    "night_ratio_auc": 0.5341404062402774
+    "night_ratio_auc": 0.5820825776877803
   },
-  "early_warning_recall_at_0.5": 0.9900662251655629,
-  "delta_auroc_ml_minus_rule": 0.4328470154229077
+  "early_warning_recall_at_0.5": 0.71280276816609,
+  "delta_auroc_ml_minus_rule": 0.37131031720424124
 }

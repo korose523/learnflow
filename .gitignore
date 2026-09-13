@@ -68,6 +68,21 @@ out/
 .DS_Store
 Thumbs.db
 
+# ── 研究原始数据集（体积 13 GB 级，且受上游许可约束，不入版本库）──────
+# data/ 存放四个公开数据集（assist09 / DBE-KT22 / XES3G5M / Junyi）的原始文件，
+# 由 scripts/ 下的下载脚本按 docs/Kaggle与DataShop凭据获取指南.md 获取；
+# 它们不是本项目的产物，且 Junyi 为 CC-BY-NC-SA-4.0（禁商用），故不随代码归档。
+data/
+data_backup/
+
+# ── 外部对照系统的上游浅克隆（第三方代码，不属本项目产物）────────────
+# results/m2/external/ 下是 M2 外部效度分析用的两个 Moodle 插件浅克隆：
+#   DigiDago/moodle-format_ludilearn @ eb69582fb4def6e4cbb26c2146ceb90435951c53 (GPL-3.0)
+#   FMCorz/moodle-block_xp          @ 65541fdc9c77511a906353f6660e195eeaa51893 (GPL-3.0)
+# 体积 49 MB / 1432 文件，内容全是上游代码，且可按 results/M2_results.md 里记录的两行
+# `git clone --depth 1` 原样重建，故不入本库——避免把他人的 GPL 代码当作本项目产物分发。
+results/m2/external/
+
 # ── 项目临时文件 ────────────────────────────────────────
 tmp_*.json
 

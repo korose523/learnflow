@@ -1,0 +1,566 @@
+{
+  "git_commit": "4073bb0270d3ceeaaf715d4e99fee71736682c81",
+  "1_registry": {
+    "count": 54,
+    "fingerprint": "ee1a49be5732",
+    "id_range": [
+      "LF-M01",
+      "LF-M54"
+    ],
+    "registry_category_counts": {
+      "retention": 19,
+      "motivation": 18,
+      "selfreg": 9,
+      "cognition": 4,
+      "health": 4
+    },
+    "registry_maturity_counts": {
+      "complete": 9,
+      "partial": 37,
+      "placeholder": 8
+    },
+    "governance_letter_counts": {
+      "A": 8,
+      "B": 8,
+      "C": 6,
+      "D": 10,
+      "E": 10,
+      "F": 4,
+      "G": 4,
+      "H": 4
+    },
+    "registry_category_vs_governance_letter": {
+      "A": {
+        "LF-M01": "retention",
+        "LF-M02": "retention",
+        "LF-M03": "retention",
+        "LF-M04": "motivation",
+        "LF-M05": "motivation",
+        "LF-M06": "retention",
+        "LF-M07": "retention",
+        "LF-M08": "motivation"
+      },
+      "B": {
+        "LF-M09": "retention",
+        "LF-M10": "retention",
+        "LF-M11": "retention",
+        "LF-M12": "retention",
+        "LF-M13": "retention",
+        "LF-M14": "motivation",
+        "LF-M15": "motivation",
+        "LF-M16": "retention"
+      },
+      "C": {
+        "LF-M17": "selfreg",
+        "LF-M18": "motivation",
+        "LF-M19": "motivation",
+        "LF-M20": "motivation",
+        "LF-M21": "cognition",
+        "LF-M22": "motivation"
+      },
+      "D": {
+        "LF-M23": "motivation",
+        "LF-M24": "retention",
+        "LF-M25": "motivation",
+        "LF-M26": "motivation",
+        "LF-M27": "retention",
+        "LF-M28": "retention",
+        "LF-M29": "retention",
+        "LF-M30": "retention",
+        "LF-M31": "retention",
+        "LF-M32": "selfreg"
+      },
+      "E": {
+        "LF-M33": "retention",
+        "LF-M34": "selfreg",
+        "LF-M35": "selfreg",
+        "LF-M36": "selfreg",
+        "LF-M37": "selfreg",
+        "LF-M38": "selfreg",
+        "LF-M39": "selfreg",
+        "LF-M40": "cognition",
+        "LF-M41": "selfreg",
+        "LF-M42": "motivation"
+      },
+      "F": {
+        "LF-M43": "motivation",
+        "LF-M44": "retention",
+        "LF-M45": "motivation",
+        "LF-M46": "motivation"
+      },
+      "G": {
+        "LF-M47": "motivation",
+        "LF-M48": "cognition",
+        "LF-M49": "cognition",
+        "LF-M50": "motivation"
+      },
+      "H": {
+        "LF-M51": "health",
+        "LF-M52": "health",
+        "LF-M53": "health",
+        "LF-M54": "health"
+      }
+    }
+  },
+  "2_wiring": {
+    "step_mapped_total": 34,
+    "step_mapped_ids": [
+      "LF-M01",
+      "LF-M04",
+      "LF-M05",
+      "LF-M06",
+      "LF-M08",
+      "LF-M12",
+      "LF-M13",
+      "LF-M14",
+      "LF-M15",
+      "LF-M16",
+      "LF-M18",
+      "LF-M19",
+      "LF-M20",
+      "LF-M21",
+      "LF-M22",
+      "LF-M24",
+      "LF-M29",
+      "LF-M32",
+      "LF-M33",
+      "LF-M34",
+      "LF-M35",
+      "LF-M37",
+      "LF-M38",
+      "LF-M39",
+      "LF-M41",
+      "LF-M43",
+      "LF-M44",
+      "LF-M46",
+      "LF-M48",
+      "LF-M49",
+      "LF-M50",
+      "LF-M51",
+      "LF-M52",
+      "LF-M53"
+    ],
+    "is_enabled_gated_total": 31,
+    "is_enabled_gated_ids": [
+      "LF-M01",
+      "LF-M04",
+      "LF-M05",
+      "LF-M06",
+      "LF-M08",
+      "LF-M12",
+      "LF-M13",
+      "LF-M14",
+      "LF-M15",
+      "LF-M16",
+      "LF-M18",
+      "LF-M19",
+      "LF-M20",
+      "LF-M21",
+      "LF-M22",
+      "LF-M24",
+      "LF-M29",
+      "LF-M32",
+      "LF-M33",
+      "LF-M34",
+      "LF-M35",
+      "LF-M37",
+      "LF-M38",
+      "LF-M39",
+      "LF-M41",
+      "LF-M43",
+      "LF-M44",
+      "LF-M46",
+      "LF-M48",
+      "LF-M49",
+      "LF-M50"
+    ],
+    "step_map_detail": {
+      "6": [
+        "pet_companion"
+      ],
+      "8": [
+        "lai_downgrade",
+        "forced_rest"
+      ],
+      "9": [
+        "xp_leveling",
+        "minor_protection"
+      ],
+      "12": [
+        "fomo"
+      ],
+      "13": [
+        "variable_ratio_reward",
+        "instant_gratification",
+        "surprise_delight",
+        "time_based_bonus",
+        "scarcity",
+        "streak_sanctification",
+        "zeigarnik",
+        "peak_end",
+        "goal_gradient",
+        "daily_challenge",
+        "ikea_effect",
+        "progress_visualization",
+        "progressive_disclosure",
+        "social_contagion",
+        "gift_economy",
+        "parent_portal",
+        "hook_model",
+        "habit_loop",
+        "cue_prompting",
+        "temptation_bundling",
+        "implementation_intentions",
+        "self_regulation_goals",
+        "commitment_device",
+        "curiosity_gap",
+        "identity_motivation",
+        "color_psychology",
+        "spatial_anchoring",
+        "multisensory_packaging"
+      ]
+    },
+    "not_step_mapped_total": 20,
+    "not_step_mapped_ids": [
+      "LF-M02",
+      "LF-M03",
+      "LF-M07",
+      "LF-M09",
+      "LF-M10",
+      "LF-M11",
+      "LF-M17",
+      "LF-M23",
+      "LF-M25",
+      "LF-M26",
+      "LF-M27",
+      "LF-M28",
+      "LF-M30",
+      "LF-M31",
+      "LF-M36",
+      "LF-M40",
+      "LF-M42",
+      "LF-M45",
+      "LF-M47",
+      "LF-M54"
+    ]
+  },
+  "3_conflicts": {
+    "type_I_direction": {
+      "approach_ids": [
+        "LF-M07",
+        "LF-M08",
+        "LF-M10",
+        "LF-M13",
+        "LF-M25",
+        "LF-M26",
+        "LF-M33",
+        "LF-M35",
+        "LF-M44"
+      ],
+      "withdraw_ids": [
+        "LF-M51",
+        "LF-M52",
+        "LF-M53"
+      ],
+      "direction_table_coverage": "12/54",
+      "potential_pairs_upper_bound": 27,
+      "potential_pairs_list": [
+        [
+          "LF-M07",
+          "LF-M51"
+        ],
+        [
+          "LF-M07",
+          "LF-M52"
+        ],
+        [
+          "LF-M07",
+          "LF-M53"
+        ],
+        [
+          "LF-M08",
+          "LF-M51"
+        ],
+        [
+          "LF-M08",
+          "LF-M52"
+        ],
+        [
+          "LF-M08",
+          "LF-M53"
+        ],
+        [
+          "LF-M10",
+          "LF-M51"
+        ],
+        [
+          "LF-M10",
+          "LF-M52"
+        ],
+        [
+          "LF-M10",
+          "LF-M53"
+        ],
+        [
+          "LF-M13",
+          "LF-M51"
+        ],
+        [
+          "LF-M13",
+          "LF-M52"
+        ],
+        [
+          "LF-M13",
+          "LF-M53"
+        ],
+        [
+          "LF-M25",
+          "LF-M51"
+        ],
+        [
+          "LF-M25",
+          "LF-M52"
+        ],
+        [
+          "LF-M25",
+          "LF-M53"
+        ],
+        [
+          "LF-M26",
+          "LF-M51"
+        ],
+        [
+          "LF-M26",
+          "LF-M52"
+        ],
+        [
+          "LF-M26",
+          "LF-M53"
+        ],
+        [
+          "LF-M33",
+          "LF-M51"
+        ],
+        [
+          "LF-M33",
+          "LF-M52"
+        ],
+        [
+          "LF-M33",
+          "LF-M53"
+        ],
+        [
+          "LF-M35",
+          "LF-M51"
+        ],
+        [
+          "LF-M35",
+          "LF-M52"
+        ],
+        [
+          "LF-M35",
+          "LF-M53"
+        ],
+        [
+          "LF-M44",
+          "LF-M51"
+        ],
+        [
+          "LF-M44",
+          "LF-M52"
+        ],
+        [
+          "LF-M44",
+          "LF-M53"
+        ]
+      ],
+      "doc_pinned_same_target_pairs": [
+        [
+          "LF-M44",
+          "LF-M51"
+        ],
+        [
+          "LF-M44",
+          "LF-M52"
+        ]
+      ],
+      "runtime_detectable": "见 3_runtime"
+    },
+    "type_II_budget": {
+      "budget_policy": {
+        "max_per_session": 3,
+        "max_per_day": 6,
+        "max_cost_per_session": 4.0,
+        "min_interval_sec": 300
+      },
+      "runtime_visible_candidates": [
+        "LF-M44"
+      ],
+      "competing_pairs": [],
+      "step13_mechanisms_bypass_arbitration": 28
+    },
+    "type_III_schema": {
+      "ambiguous_governance_letters": {
+        "A": [
+          "motivation",
+          "retention"
+        ],
+        "B": [
+          "motivation",
+          "retention"
+        ],
+        "C": [
+          "cognition",
+          "motivation",
+          "selfreg"
+        ],
+        "D": [
+          "motivation",
+          "retention",
+          "selfreg"
+        ],
+        "E": [
+          "cognition",
+          "motivation",
+          "retention",
+          "selfreg"
+        ],
+        "F": [
+          "motivation",
+          "retention"
+        ],
+        "G": [
+          "cognition",
+          "motivation"
+        ]
+      },
+      "letter_to_registry_categories": {
+        "A": [
+          "motivation",
+          "retention"
+        ],
+        "B": [
+          "motivation",
+          "retention"
+        ],
+        "C": [
+          "cognition",
+          "motivation",
+          "selfreg"
+        ],
+        "D": [
+          "motivation",
+          "retention",
+          "selfreg"
+        ],
+        "E": [
+          "cognition",
+          "motivation",
+          "retention",
+          "selfreg"
+        ],
+        "F": [
+          "motivation",
+          "retention"
+        ],
+        "G": [
+          "cognition",
+          "motivation"
+        ],
+        "H": [
+          "health"
+        ]
+      }
+    }
+  },
+  "4_unclassifiable": {
+    "no_direction_annotation": 42,
+    "no_direction_ratio": 0.7778,
+    "no_direction_ids": [
+      "LF-M01",
+      "LF-M02",
+      "LF-M03",
+      "LF-M04",
+      "LF-M05",
+      "LF-M06",
+      "LF-M09",
+      "LF-M11",
+      "LF-M12",
+      "LF-M14",
+      "LF-M15",
+      "LF-M16",
+      "LF-M17",
+      "LF-M18",
+      "LF-M19",
+      "LF-M20",
+      "LF-M21",
+      "LF-M22",
+      "LF-M23",
+      "LF-M24",
+      "LF-M27",
+      "LF-M28",
+      "LF-M29",
+      "LF-M30",
+      "LF-M31",
+      "LF-M32",
+      "LF-M34",
+      "LF-M36",
+      "LF-M37",
+      "LF-M38",
+      "LF-M39",
+      "LF-M40",
+      "LF-M41",
+      "LF-M42",
+      "LF-M43",
+      "LF-M45",
+      "LF-M46",
+      "LF-M47",
+      "LF-M48",
+      "LF-M49",
+      "LF-M50",
+      "LF-M54"
+    ],
+    "no_governance_row": 0,
+    "registry_categories_count": 5,
+    "governance_letters_count": 8
+  },
+  "5_runtime_producers": {
+    "LF-M44": [
+      {
+        "file": "app/services/deep_addiction_engine.py",
+        "user_visible": "True",
+        "health_critical": "False",
+        "cost": 1.5,
+        "priority": 50
+      }
+    ],
+    "LF-M52": [
+      {
+        "file": "app/services/learning_orchestrator.py",
+        "user_visible": "False",
+        "health_critical": "True",
+        "cost": 0.0,
+        "priority": 100
+      }
+    ]
+  },
+  "6_addiction_risk": {
+    "LF-M44": "0.9",
+    "LF-M33": "0.7",
+    "LF-M08": "0.5",
+    "LF-M07": "0.4",
+    "LF-M35": "0.4"
+  },
+  "7_governance_vs_registry_maturity": {
+    "registry": {
+      "complete": 9,
+      "partial": 37,
+      "placeholder": 8
+    },
+    "gov_symbol_counts": {
+      "●": 9,
+      "◐": 37,
+      "○": 8
+    }
+  }
+}

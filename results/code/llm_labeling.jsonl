@@ -1,0 +1,404 @@
+{"exp": "E1_dbe", "qid": "219", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "218", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "217", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "216", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "214", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "213", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "212", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "211", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "210", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "209", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "208", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "207", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "206", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "205", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "204", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "203", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "202", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "201", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "200", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "199", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "198", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "197", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "196", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "195", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "194", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "193", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "192", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "191", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "190", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "189", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "188", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "187", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "186", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "185", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "184", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "183", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "182", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "181", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "180", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "179", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "178", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "177", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "176", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "175", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "174", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "173", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "172", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "171", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "170", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "169", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "168", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "167", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "166", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "165", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "164", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "163", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "162", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "161", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "160", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "159", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "158", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "157", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "156", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "155", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "154", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "153", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "152", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "151", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "150", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "149", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "148", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "147", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "146", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "143", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "142", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "141", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "140", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "139", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "138", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "137", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "136", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "135", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "134", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "133", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "132", "expert": 1, "llm": 3, "raw": "<think>\n\n</think>\n\n3"}
+{"exp": "E1_dbe", "qid": "131", "expert": 1, "llm": 3, "raw": "<think>\n\n</think>\n\n3"}
+{"exp": "E1_dbe", "qid": "130", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "129", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "128", "expert": 3, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "127", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "126", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "125", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "124", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "123", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "122", "expert": 2, "llm": 3, "raw": "<think>\n\n</think>\n\n3"}
+{"exp": "E1_dbe", "qid": "121", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "120", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "119", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "118", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "117", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "116", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "115", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "114", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "113", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "112", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "111", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "110", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "109", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "108", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "107", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "106", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "105", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "104", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "103", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "102", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "101", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "100", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "99", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "98", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "97", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "96", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "95", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "94", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "93", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "92", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "91", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "87", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "86", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "85", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "84", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "83", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "82", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "81", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "80", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "79", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "78", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "77", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "76", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "75", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "74", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "73", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "72", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "71", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "70", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "69", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "68", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "67", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "66", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "65", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "64", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "63", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "62", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "61", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "60", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "59", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "58", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "57", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "56", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "55", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "54", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "53", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "52", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "51", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "50", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "49", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "48", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "47", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "46", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "45", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "44", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "43", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "42", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "41", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "40", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "39", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "38", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "37", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "36", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "35", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "34", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "33", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "32", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "31", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "30", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "29", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "28", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "27", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "26", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "25", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "24", "expert": 1, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "23", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "22", "expert": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "21", "expert": 2, "llm": 2, "raw": "<think>\n\n</think>\n\n2"}
+{"exp": "E1_dbe", "qid": "20", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "19", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "18", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "17", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "16", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "15", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "14", "expert": 3, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "13", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "12", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "11", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "10", "expert": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "9", "expert": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E1_dbe", "qid": "8", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "7", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "6", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "5", "expert": 2, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "4", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "3", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E1_dbe", "qid": "2", "expert": 1, "llm": 1, "raw": "<think>\n\n</think>\n\n1"}
+{"exp": "E2_xes", "qid": "4521", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "5084", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4861", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2950", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1112", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3456", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "853", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4164", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "316", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1483", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "268", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2492", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "128", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2486", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "759", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1200", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1855", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2411", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3693", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1443", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1467", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3622", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2092", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1213", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "89", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1687", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1971", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3654", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "405", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3353", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3341", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1226", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4016", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4267", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "259", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4077", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "130", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1405", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1597", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4056", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3186", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "548", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "634", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "565", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1240", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3592", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1609", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4329", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1203", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "329", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3651", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1219", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2227", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2125", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1473", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2769", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "6946", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4177", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2484", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1078", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4067", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3221", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "682", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1164", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4143", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2747", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4105", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3875", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1106", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2705", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2060", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3582", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4521", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "5084", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4861", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2950", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1112", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3456", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "853", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4164", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "316", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1483", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "268", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2492", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "128", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2486", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "759", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1200", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1855", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2411", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3693", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1443", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1467", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3622", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2092", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1213", "emp_quartile": 0, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "89", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1687", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1971", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3654", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "405", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3353", "emp_quartile": 0, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3341", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1226", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4016", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4267", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "259", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4077", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "130", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1405", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1597", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4056", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3186", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "548", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "634", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "565", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1240", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3592", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1609", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4329", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1203", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "329", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3651", "emp_quartile": 1, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1219", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2227", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2125", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1473", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2769", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "6946", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4177", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2484", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1078", "emp_quartile": 1, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4067", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3221", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "682", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1164", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4143", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2747", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4105", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3875", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1106", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2705", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2060", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3582", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2153", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4194", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "79", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2370", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4628", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4015", "emp_quartile": 2, "llm": null, "raw": ""}
+{"exp": "E2_xes", "qid": "4454", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4196", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "747", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4027", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4792", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2751", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1904", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3243", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "531", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2761", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2721", "emp_quartile": 2, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "231", "emp_quartile": 2, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3534", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "389", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2036", "emp_quartile": 3, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4213", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "940", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4244", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1933", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2682", "emp_quartile": 3, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "5017", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "277", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4025", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1093", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "5744", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "6885", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2700", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4093", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2114", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2214", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1026", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "3630", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4706", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4288", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "2683", "emp_quartile": 3, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "81", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "1141", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "5881", "emp_quartile": 3, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "318", "emp_quartile": 3, "llm": null, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "4768", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "342", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}
+{"exp": "E2_xes", "qid": "738", "emp_quartile": 3, "llm": 1, "raw": "<think>\nHere's a thinking proc"}

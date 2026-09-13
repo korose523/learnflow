@@ -1,0 +1,4 @@
+﻿registry_fingerprint=ee1a49be5732
+mechanism_count=54
+exit=0
+

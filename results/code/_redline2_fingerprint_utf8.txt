@@ -1,0 +1,15 @@
+﻿python.exe :   File "<string>", line 1
+所在位置 行:448 字符: 1
++ & $py -c $code *> 'E:\learnflow\results\code\_redline2_fingerprint.tx ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (  File "<string>", line 1:String) 
+    [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    import sys; sys.path.insert(0, rE:\learnflow\learnflow-backend); from app.s
+ervices.mechanism_registry import registry_fingerprint, count; print(registry_f
+ingerprint=, registry_fingerprint()); print(mechanism_count=, count())
+                                     ^
+SyntaxError: invalid syntax
+exit=1
+

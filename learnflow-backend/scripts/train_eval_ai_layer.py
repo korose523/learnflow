@@ -26,14 +26,44 @@ import json
 import math
 import os
 import random
-import time
 from typing import Dict, List, Tuple
 
-from app.services.feature_store import FeatureStore
+from app.services.feature_store import (
+    FeatureStore,
+    NIGHT_END_HOUR,
+    NIGHT_START_HOUR,
+    hour_of,
+    is_night_hour,
+)
 from app.services.ml_risk_model import TemporalRiskModel
 
 SEED = 20260906
-OUT_DIR = "artifacts/ai_layer"
+
+#: 确定性时间基准（2026-01-01T00:00:00Z）。
+#: 样本生成原以 ``time.time()`` 为事件时间轴起点，导致 night_ratio 等
+#: 时间派生特征随墙钟漂移，同种子两次运行的指标不一致（已观测规则基线
+#: AUROC 在 0.484–0.534 间漂移）。此处改为固定常量，使同种子逐位可复现。
+#: 注意：该常量同时决定"相对当下的时间偏移"，是评估报告的自由参数，
+#: 变更它会改变冻结数值，故一经冻结不应再改。
+FIXED_EPOCH = 1767225600.0  # 2026-01-01T00:00:00Z
+
+#: 评估路径固定时区为 UTC+08:00（Asia/Shanghai，平台目标服务区），使夜间时段
+#: 判定与 night_ratio 不再依赖运行机器的本地时区，跨机器复算结果一致。
+#: 仅作用于离线评估；生产路径仍按学习者本地时区判定夜间（``FeatureStore``
+#: 的 ``tz_offset_hours`` 默认为 ``None``）。
+TZ_OFFSET_HOURS = 8.0
+
+#: 夜间时段的可选落点（与 feature_store 的 22:00–07:00 判定一致）
+NIGHT_HOURS = tuple(
+    h for h in range(24) if h >= NIGHT_START_HOUR or h < NIGHT_END_HOUR
+)
+#: 日间时段（夜间之外的小时）
+DAY_HOURS = tuple(h for h in range(24) if not is_night_hour(h))
+
+#: 默认产物目录取脚本所在后端的绝对路径，避免受调用方当前工作目录影响
+#: （曾出现产物被写到项目外目录的情况）。
+BACKEND_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT_DIR = os.path.join(BACKEND_ROOT, "artifacts", "ai_layer")
 
 
 # ---------------------------------------------------------------------------
@@ -48,11 +78,32 @@ def generate_sample_dataset(n_users: int = 600, seed: int = SEED):
         r_true = rng.betavariate(2.0, 2.0)  # 0-1, 多数居中
         label = 1 if r_true > 0.5 else 0
         n_ev = rng.randint(30, 90)
-        start = time.time() - 3600 * rng.randint(1, 48)
+        # 先抽事件间隔并累计出会话总时长，便于随后把整个会话定位到指定钟点
+        # （原实现在循环内逐事件抽取，无法预先得知会话跨度）。
+        offsets = []
+        acc = 0.0
+        for _ in range(n_ev):
+            offsets.append(acc)
+            acc += rng.uniform(20, 600)
+        span = acc
+        # 会话结束钟点：r_true 越高，会话越可能结束于夜间时段 22:00–07:00，
+        # 从而其末段（即滚动窗口所覆盖的部分）的夜间占比随成瘾倾向升高。
+        # 这是「夜间比例随 r_true 升高」这一设计意图的落地方式。
+        #
+        # 原实现为逐事件标记后加 ``86400 * 22``（整 22 天）位移，整日位移不改变
+        # 小时数，夜间标记从未反映到时间戳上，night_ratio 特征完全未承载信号，
+        # 规则基线因此退化为随机水平（稻草人基线）。
+        if rng.random() < (0.1 + 0.6 * r_true):
+            h_end = NIGHT_HOURS[rng.randrange(len(NIGHT_HOURS))]
+        else:
+            h_end = DAY_HOURS[rng.randrange(len(DAY_HOURS))]
+        # 把会话整体平移，使其结束时刻的小时数为 h_end（会话内部时序结构不变）
+        cur_h = hour_of(FIXED_EPOCH, TZ_OFFSET_HOURS)
+        end = FIXED_EPOCH + ((h_end - cur_h) % 24) * 3600
+        start = end - span
         evs = []
         for i in range(n_ev):
-            ts = start + i * rng.uniform(20, 600)
-            night = rng.random() < (0.1 + 0.6 * r_true)  # 夜间比例随 r_true 升高
+            ts = start + offsets[i]
             is_correct = rng.random() > (0.25 + 0.3 * r_true)
             hints = rng.randint(0, 3) if rng.random() < (0.2 + 0.5 * r_true) else 0
             thinking = int(rng.uniform(5000, 90000) * (1.0 - 0.4 * r_true))
@@ -64,7 +115,7 @@ def generate_sample_dataset(n_users: int = 600, seed: int = SEED):
                 "hints_used": hints,
                 "thinking_ms": thinking,
                 "skipped": rng.random() < (0.05 + 0.3 * r_true),
-                "created_at": ts + (86400 * 22 if night else 0),  # 夜间=深夜小时
+                "created_at": ts,
                 "session_id": f"S{rng.randint(1, 5)}",
                 "decision_snapshot": {"fused_d": rng.uniform(200, 800),
                                       "zone": "immersive" if rng.random() < (0.3 + 0.4 * r_true) else "normal"},
@@ -74,13 +125,31 @@ def generate_sample_dataset(n_users: int = 600, seed: int = SEED):
     return users
 
 
-def build_vectors(users) -> Tuple[List[List[float]], List[int], List[float]]:
-    store = FeatureStore()
-    for uid, evs, _, _ in users:
+def build_vectors(users, now_fn=None,
+                  tz_offset_hours=None) -> Tuple[List[List[float]], List[int], List[float]]:
+    """聚合特征向量。
+
+    参数说明：
+
+    - ``now_fn``：全局观察时点（生产/实时语义）。为 ``None`` 时采用**离线回放**
+      语义——以每个用户最后一条事件的时刻作为该用户各自的观察时点。
+    - 为何必须按用户回放：若全体用户共用一个全局 ``now``，则所有用户的滚动
+      窗口落在同一段钟表区间内，``night_ratio`` 只能同取 0 或同取 1，无法产生
+      个体区分度，规则基线必然退化为随机水平。按各自会话末刻回放，各用户的
+      窗口才落在不同的钟表时段，夜间占比方具备真实的个体差异。
+    - ``tz_offset_hours``：评估时传 ``TZ_OFFSET_HOURS``，使夜间判定与运行机器
+      时区无关。
+    """
+    X, y, r_true_list = [], [], []
+    for uid, evs, label, r_true in users:
+        if now_fn is not None:
+            nf = now_fn
+        else:
+            end = max((float(e.get("created_at") or 0.0) for e in evs), default=0.0)
+            nf = (lambda t=end: t)
+        store = FeatureStore(now_fn=nf, tz_offset_hours=tz_offset_hours)
         for e in evs:
             store.ingest(e)
-    X, y, r_true_list = [], [], []
-    for uid, _, label, r_true in users:
         X.append(store.feature_vector(uid))
         y.append(label)
         r_true_list.append(r_true)
@@ -161,7 +230,9 @@ def main():
             for uid, evs, label, rt in users:
                 w.writerow([uid, label, f"{rt:.3f}", len(evs)])
 
-    X, y, r_true = build_vectors(users)
+    # 离线回放：now_fn 不传（各用户按其会话末刻回放），时区固定为
+    # TZ_OFFSET_HOURS，使结果与墙钟和运行机器时区均无关。
+    X, y, r_true = build_vectors(users, tz_offset_hours=TZ_OFFSET_HOURS)
 
     # 训练
     model = TemporalRiskModel(seed=args.seed)

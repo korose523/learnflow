@@ -1,0 +1,19 @@
+npz_exists = True
+=== fused6_drop_upgrade - fused7 (heldout_at_lambda_star, percentage points) ===
+  k=10    +1.210 pp   (fused6=0.6992  fused7=0.6871)
+  k=25    +1.450 pp   (fused6=0.8273  fused7=0.8128)
+  k=50    +0.300 pp   (fused6=0.8878  fused7=0.8848)
+  k=100   +0.160 pp   (fused6=0.9271  fused7=0.9255)
+  k=200   -0.020 pp   (fused6=0.9502  fused7=0.9504)
+=== gain_vs_success_pp (各自相对 pure success) ===
+  fused7: [1.734, 0.681, 0.243, 0.079, 0.013]
+  fused6_drop_upgrade: [3.433, 1.566, 0.729, 0.215, 0.051]
+=== empirical lambda_star_mean per k ===
+  fused7: [0.519, 0.363, 0.237, 0.163, 0.088]
+  fused6_drop_upgrade: [0.701, 0.524, 0.387, 0.234, 0.125]
+  fused3_success_hint_attempts: [0.078, 0.072, 0.05, 0.046, 0.036]
+  fit fused7: lambda*(k) ~ 1/(1+(k/11.66)^0.798)
+  fit fused6: lambda*(k) ~ 1/(1+(k/27.07)^0.929)
+  chapter-claimed closed form: lambda*(k)=1/(1+(k/27.3)^0.895)
+  that closed form at k=10/25/50/100/200 = [0.711, 0.52, 0.368, 0.238, 0.144]
+  empirical fused7 lambda*  at those k = [0.519, 0.363, 0.237, 0.163, 0.088]

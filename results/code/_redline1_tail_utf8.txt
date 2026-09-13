@@ -1,0 +1,20 @@
+﻿total_lines=200
+--- last 6 lines ---
+app\services\teacher_ai_assistant.py           232     36    84%   91-97, 125-126, 204, 240-242, 247-254, 285, 290, 295, 313-314, 366-368, 370-373, 390, 395-396, 399, 435
+app\services\team_competition_engine.py        340     55    84%   137, 147, 185, 211-216, 233-236, 245-255, 322, 342, 346, 414, 466-496, 510, 517, 549, 587, 610, 614-617, 622-626, 644
+app\services\ux_addiction_engine.py            124      2    98%   640-641
+--------------------------------------------------------------------------
+TOTAL                                         9422   1895    80%
+================= 934 passed, 16 warnings in 70.20s (0:01:10) =================
+--- summary matches ---
+  E:\learnflow\learnflow-backend\tests\test_mechanism_landing.py:74: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+  E:\learnflow\learnflow-backend\tests\test_minor_protection_wiring.py:289: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+tests/test_research_consent.py::test_resolve_db_error_returns_none
+  E:\learnflow\learnflow-backend\tests\test_research_consent.py:108: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+  E:\learnflow\learnflow-backend\tests\test_research_consent.py:217: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+  E:\learnflow\learnflow-backend\tests\test_rl_intervention_wiring.py:61: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+  E:\learnflow\learnflow-backend\tests\test_secondary_mechanism_wiring.py:143: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+================= 934 passed, 16 warnings in 70.20s (0:01:10) =================
+--- exit file ---
+pytest_exit=0
+

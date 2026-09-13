@@ -1,0 +1,246 @@
+{
+ "design": "O6 robustness & sample efficiency of the fused difficulty estimator (extends O4 DBE / O5 Junyi)",
+ "n_junyi": 1234,
+ "n_dbe": 212,
+ "reservoir_K": 500,
+ "O6a_sample_efficiency_junyi": {
+  "reps": 30,
+  "k_list": [
+   10,
+   25,
+   50,
+   100,
+   250,
+   500
+  ],
+  "full_data_success": 0.261,
+  "full_data_fused": 0.3629,
+  "by_k": {
+   "10": {
+    "success_mean": 0.175,
+    "success_sd": 0.0218,
+    "fused_mean": 0.226,
+    "fused_sd": 0.0197,
+    "gain": 0.0509,
+    "paired_gain_sd": 0.0176,
+    "paired_win_rate": 1.0
+   },
+   "25": {
+    "success_mean": 0.2116,
+    "success_sd": 0.0163,
+    "fused_mean": 0.264,
+    "fused_sd": 0.0152,
+    "gain": 0.0524,
+    "paired_gain_sd": 0.0142,
+    "paired_win_rate": 1.0
+   },
+   "50": {
+    "success_mean": 0.2314,
+    "success_sd": 0.0101,
+    "fused_mean": 0.2929,
+    "fused_sd": 0.0075,
+    "gain": 0.0616,
+    "paired_gain_sd": 0.0116,
+    "paired_win_rate": 1.0
+   },
+   "100": {
+    "success_mean": 0.2416,
+    "success_sd": 0.008,
+    "fused_mean": 0.3099,
+    "fused_sd": 0.0097,
+    "gain": 0.0682,
+    "paired_gain_sd": 0.0096,
+    "paired_win_rate": 1.0
+   },
+   "250": {
+    "success_mean": 0.2496,
+    "success_sd": 0.0022,
+    "fused_mean": 0.3269,
+    "fused_sd": 0.0074,
+    "gain": 0.0773,
+    "paired_gain_sd": 0.0076,
+    "paired_win_rate": 1.0
+   },
+   "500": {
+    "success_mean": 0.2536,
+    "success_sd": 0.0,
+    "fused_mean": 0.338,
+    "fused_sd": 0.0,
+    "gain": 0.0844,
+    "paired_gain_sd": 0.0,
+    "paired_win_rate": 1.0
+   }
+  }
+ },
+ "O6a_sample_efficiency_dbe": {
+  "reps": 30,
+  "k_list": [
+   10,
+   25,
+   50,
+   100,
+   250,
+   500
+  ],
+  "full_data_success": 0.217,
+  "full_data_fused": 0.2899,
+  "by_k": {
+   "10": {
+    "success_mean": 0.2024,
+    "success_sd": 0.0424,
+    "fused_mean": 0.2316,
+    "fused_sd": 0.0329,
+    "gain": 0.0292,
+    "paired_win_rate": 0.8667
+   },
+   "25": {
+    "success_mean": 0.2113,
+    "success_sd": 0.0275,
+    "fused_mean": 0.2399,
+    "fused_sd": 0.0321,
+    "gain": 0.0286,
+    "paired_win_rate": 0.7667
+   },
+   "50": {
+    "success_mean": 0.2224,
+    "success_sd": 0.0186,
+    "fused_mean": 0.2493,
+    "fused_sd": 0.0236,
+    "gain": 0.0269,
+    "paired_win_rate": 0.8333
+   },
+   "100": {
+    "success_mean": 0.2208,
+    "success_sd": 0.0115,
+    "fused_mean": 0.2654,
+    "fused_sd": 0.024,
+    "gain": 0.0446,
+    "paired_win_rate": 0.9667
+   },
+   "250": {
+    "success_mean": 0.2213,
+    "success_sd": 0.007,
+    "fused_mean": 0.2725,
+    "fused_sd": 0.0097,
+    "gain": 0.0512,
+    "paired_win_rate": 1.0
+   },
+   "500": {
+    "success_mean": 0.2209,
+    "success_sd": 0.0,
+    "fused_mean": 0.2779,
+    "fused_sd": 0.0,
+    "gain": 0.057,
+    "paired_win_rate": 1.0
+   }
+  }
+ },
+ "O6b_bootstrap": {
+  "B": 2000,
+  "junyi": {
+   "success_rho": [
+    0.2606,
+    0.2112,
+    0.3101
+   ],
+   "fused_rho": [
+    0.3623,
+    0.3149,
+    0.4094
+   ],
+   "delta": [
+    0.1017,
+    0.0726,
+    0.1325
+   ],
+   "p_one_sided_delta_le_0": 0.0
+  },
+  "dbe": {
+   "success_rho": [
+    0.2167,
+    0.0809,
+    0.3476
+   ],
+   "fused_rho": [
+    0.289,
+    0.1563,
+    0.4127
+   ],
+   "delta": [
+    0.0723,
+    -0.0195,
+    0.1649
+   ],
+   "p_one_sided_delta_le_0": 0.059
+  }
+ },
+ "O6b_repeated_cv5x10": {
+  "junyi": {
+   "mean": 0.4023,
+   "sd": 0.048,
+   "ci95": [
+    0.3227,
+    0.4909
+   ],
+   "n_folds": 50
+  },
+  "dbe": {
+   "mean": 0.524,
+   "sd": 0.1069,
+   "ci95": [
+    0.2895,
+    0.739
+   ],
+   "n_folds": 50
+  }
+ },
+ "O6b_qwk_tertile": {
+  "junyi_success": 0.1815,
+  "junyi_fused": 0.2595,
+  "dbe_success": 0.1778,
+  "dbe_fused": 0.237
+ },
+ "O6c_criterion_switch_performance_difficulty": {
+  "full_success": 0.9151,
+  "full_fused": 0.9009,
+  "by_k": {
+   "10": {
+    "success_mean": 0.5891,
+    "fused_mean": 0.6042,
+    "gain": 0.0151,
+    "paired_win_rate": 0.8667
+   },
+   "25": {
+    "success_mean": 0.7322,
+    "fused_mean": 0.7079,
+    "gain": -0.0243,
+    "paired_win_rate": 0.0
+   },
+   "50": {
+    "success_mean": 0.8096,
+    "fused_mean": 0.7673,
+    "gain": -0.0423,
+    "paired_win_rate": 0.0
+   },
+   "100": {
+    "success_mean": 0.8529,
+    "fused_mean": 0.8004,
+    "gain": -0.0525,
+    "paired_win_rate": 0.0
+   },
+   "250": {
+    "success_mean": 0.8863,
+    "fused_mean": 0.8358,
+    "gain": -0.0505,
+    "paired_win_rate": 0.0
+   },
+   "500": {
+    "success_mean": 0.8978,
+    "fused_mean": 0.8531,
+    "gain": -0.0447,
+    "paired_win_rate": 0.0
+   }
+  },
+  "expert_vs_performance_spearman": 0.4326
+ }
+}

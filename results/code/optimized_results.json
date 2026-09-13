@@ -1,0 +1,171 @@
+{
+  "o1_window_sensitivity": {
+    "all": {
+      "n_windows": 286150,
+      "mean_err": 0.3511,
+      "median_err": 0.3,
+      "modal_bin": [
+        0.15,
+        0.2
+      ],
+      "share_success_77_83": 0.1051
+    },
+    "original_only(main_problem)": {
+      "n_windows": 216993,
+      "mean_err": 0.3334,
+      "median_err": 0.3,
+      "modal_bin": [
+        0.15,
+        0.2
+      ],
+      "share_success_77_83": 0.1093
+    },
+    "tutor_mode_test": {
+      "n_windows": 0,
+      "mean_err": null,
+      "median_err": null,
+      "modal_bin": null,
+      "share_success_77_83": null
+    },
+    "no_hint_correction": {
+      "n_windows": 231125,
+      "mean_err": 0.2183,
+      "median_err": 0.2,
+      "modal_bin": [
+        0.15,
+        0.2
+      ],
+      "share_success_77_83": 0.1479
+    }
+  },
+  "o1_metric_comparison": {
+    "A_minmax_linear": {
+      "pi_baseline": [
+        0.5219,
+        0.344,
+        0.1351
+      ],
+      "L1_mean": 0.5357,
+      "L1_max": 0.8401,
+      "reversal_rate": 0.6667
+    },
+    "B_ecdf_logit": {
+      "pi_baseline": [
+        0.5273,
+        0.2691,
+        0.2046
+      ],
+      "L1_mean": 0.0001,
+      "L1_max": 0.0007,
+      "reversal_rate": 0.0
+    }
+  },
+  "o2_dbe_irt": {
+    "n_questions_eval": 212,
+    "baseline_raw_rate_spearman": [
+      0.2207,
+      0.00122012
+    ],
+    "optimized_irt1pl_spearman": [
+      0.23,
+      0.00074127
+    ],
+    "irt_group_means_by_level": {
+      "1": -1.3236,
+      "2": -1.1852,
+      "3": -0.2079
+    }
+  },
+  "o3_xes_tree_gradient": {
+    "n_nodes_eval": 353,
+    "n_edges": 347,
+    "edge_consistency_rate": 0.487,
+    "interpretation": "0.5=无梯度；>0.5=树边方向与难度递增一致",
+    "sample_edges": [
+      [
+        "拓展思维",
+        "组合模块",
+        -1.47,
+        -1.52,
+        false
+      ],
+      [
+        "组合模块",
+        "图论问题",
+        -1.52,
+        -1.323,
+        true
+      ],
+      [
+        "图论问题",
+        "一笔画",
+        -1.323,
+        -1.341,
+        false
+      ],
+      [
+        "一笔画",
+        "一笔画判断",
+        -1.341,
+        -1.41,
+        false
+      ],
+      [
+        "图论问题",
+        "多笔画",
+        -1.323,
+        -1.239,
+        true
+      ],
+      [
+        "一笔画",
+        "一笔画的应用",
+        -1.341,
+        -1.293,
+        true
+      ],
+      [
+        "拓展思维",
+        "计数模块",
+        -1.47,
+        -1.307,
+        true
+      ],
+      [
+        "计数模块",
+        "枚举法综合",
+        -1.307,
+        -0.911,
+        true
+      ],
+      [
+        "枚举法综合",
+        "字典排序法",
+        -0.911,
+        -0.903,
+        true
+      ],
+      [
+        "字典排序法",
+        "组数",
+        -0.903,
+        -0.903,
+        false
+      ],
+      [
+        "组数",
+        "上升数（下降数）",
+        -0.903,
+        -0.563,
+        true
+      ],
+      [
+        "课内题型",
+        "综合与实践",
+        -1.427,
+        -1.409,
+        true
+      ]
+    ]
+  }
+}

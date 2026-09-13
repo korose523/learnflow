@@ -1,0 +1,36 @@
+��==============================================================================
+LearnFlow w�G�闧t�R����g�t�o�]{u���0�a
+==============================================================================
+  "��q�WÓX�h : 2026-09-13T20:45:50+09:00
+  Z��^l�͓-W0m0�? E:\learnflow\learnflow-backend
+
+9�� 9��  �o�]{uJ�?9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 
+  python_loc                  : 25687
+  python_loc_excl_init        : 25603
+  source_files                : 88
+  service_modules             : 55
+  api_files                   : 13
+  api_routes_defined          : 104
+  api_routes_reachable        : 104
+  api_routes_unreachable      : 0
+  test_files                  : 54
+  test_functions              : 840
+  tests_collected             : 934
+
+9�� 9��  '�f���Y�e�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 9�� 
+  ���V#r                                '�f��      9p�pty      �[��}  �~C�W          �5�� ?
+  --------------------------------------------------------------------------
+  python_loc                     25389   25687     298  informative drifted
+  source_files                      87      88       1  informative drifted
+  service_modules                   54      55       1  informative drifted
+  api_files                         13      13       0  informative verified
+  api_routes_reachable             104     104       0  informative verified
+  test_files                        53      54       1  informative drifted
+  test_functions                   826     840      14  informative drifted
+  tests_collected                  920     934      14  informative drifted
+
+==============================================================================
+  �d��      : PASS   ��� Q�y�r 0
+  JSON Hg�d�V : E:\learnflow\learnflow-backend\artifacts\asset_numbers.json
+==============================================================================
+EXIT=0

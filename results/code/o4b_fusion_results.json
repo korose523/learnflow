@@ -1,0 +1,64 @@
+{
+ "design": "O4b expanded-feature ECDF-logit fusion, greedy weights, 5-fold CV",
+ "n_questions": 212,
+ "per_feature_spearman": {
+  "success_inverse": [
+   0.217,
+   0.0014798
+  ],
+  "hint_rate": [
+   -0.1173,
+   0.08834405
+  ],
+  "difficulty_feedback": [
+   0.0379,
+   0.58335785
+  ],
+  "trust_inverse": [
+   0.2606,
+   0.00012384
+  ],
+  "duration": [
+   0.2397,
+   0.00043024
+  ],
+  "differential": [
+   0.3892,
+   0.0
+  ],
+  "dispersion": [
+   0.1789,
+   0.00902646
+  ],
+  "n_transactions": [
+   -0.3018,
+   7.71e-06
+  ]
+ },
+ "equal_weight_spearman": 0.2462,
+ "insample_best_spearman": 0.4955,
+ "insample_weights": {
+  "success_inverse": 0.0,
+  "hint_rate": 0.0,
+  "difficulty_feedback": 0.45,
+  "trust_inverse": 0.05,
+  "duration": 0.0,
+  "differential": 0.501,
+  "dispersion": 0.0,
+  "n_transactions": 0.0
+ },
+ "cv5_mean_spearman": 0.4608,
+ "cv5_folds": [
+  0.3697,
+  0.3497,
+  0.5694,
+  0.5859,
+  0.429
+ ],
+ "reference_diff_only_spearman": 0.5306,
+ "baselines": {
+  "O2_irt": 0.23,
+  "O4_equal": 0.2899,
+  "O4_cv": 0.4778
+ }
+}

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import time
 from collections import deque
-from typing import Any, Deque, Dict, List, Optional
+from typing import Any, Callable, Deque, Dict, List, Optional
 
 # 规范特征向量维度 (顺序即索引, 与 ml_risk_model 严格对应)
 FEATURE_KEYS = [
@@ -33,6 +33,28 @@ WINDOW_EVENTS = 200
 WINDOW_SEC = 2 * 3600
 
 
+#: 夜间时段定义（22:00–07:00），与 ``_aggregate`` 中的判定保持一致。
+NIGHT_START_HOUR = 22
+NIGHT_END_HOUR = 7
+
+
+def hour_of(ts: float, tz_offset_hours: Optional[float] = None) -> int:
+    """返回时间戳 ``ts`` 所对应的小时数（0–23）。
+
+    ``tz_offset_hours`` 为 ``None`` 时按**运行机器本地时区**解释（生产语义：
+    夜间应相对于学习者所在地判断）；给定数值时按该固定 UTC 偏移（小时）计算，
+    使结果与运行机器时区无关，供离线评估复现之用。
+    """
+    if tz_offset_hours is None:
+        return time.localtime(ts).tm_hour
+    return int(((float(ts) + tz_offset_hours * 3600.0) // 3600) % 24)
+
+
+def is_night_hour(h: int) -> bool:
+    """小时数是否落入夜间时段（22:00–07:00）。"""
+    return h >= NIGHT_START_HOUR or h < NIGHT_END_HOUR
+
+
 def _norm(x: float, lo: float, hi: float) -> float:
     if hi <= lo:
         return 0.0
@@ -40,10 +62,24 @@ def _norm(x: float, lo: float, hi: float) -> float:
 
 
 class FeatureStore:
-    def __init__(self, window_events: int = WINDOW_EVENTS, window_sec: int = WINDOW_SEC):
+    def __init__(self, window_events: int = WINDOW_EVENTS, window_sec: int = WINDOW_SEC,
+                 now_fn: Optional[Callable[[], float]] = None,
+                 tz_offset_hours: Optional[float] = None):
         self.window_events = window_events
         self.window_sec = window_sec
         self._buf: Dict[str, Deque[dict]] = {}
+        #: 可注入的时间源。默认为 ``time.time``，即生产环境的实时语义
+        #: （滚动窗口与近端强度均相对"当下"计算）。离线评估可注入常量
+        #: 函数，以消除墙钟依赖、使特征逐位可复现。注入不影响 ``ingest``
+        #: 对事件自带 ``created_at`` 的取值。
+        self._now_fn: Callable[[], float] = now_fn or time.time
+        #: 夜间判定的时区偏移（小时）。``None`` 表示按运行机器本地时区
+        #: （生产语义）；给定数值时按该固定 UTC 偏移，使夜间占比与运行
+        #: 机器无关，供离线评估复现。
+        self._tz_offset_hours: Optional[float] = tz_offset_hours
+
+    def _now(self) -> float:
+        return self._now_fn()
 
     def ingest(self, event: dict) -> None:
         uid = event.get("user_id")
@@ -59,7 +95,7 @@ class FeatureStore:
         dq.append(e)
 
     def _window(self, uid: str) -> List[dict]:
-        now = time.time()
+        now = self._now()
         dq = self._buf.get(uid)
         if not dq:
             return []
@@ -75,7 +111,7 @@ class FeatureStore:
         if not w:
             return [0.0] * F
         n = len(w)
-        now = time.time()
+        now = self._now()
         correct = sum(1 for e in w if e.get("is_correct") is True)
         hints = sum(int(e.get("hints_used") or 0) for e in w)
         skipped = sum(1 for e in w if e.get("skipped"))
@@ -92,8 +128,8 @@ class FeatureStore:
 
         night = 0
         for e in w:
-            h = time.localtime(e.get("_ts", now)).tm_hour
-            if h >= 22 or h < 7:
+            h = hour_of(e.get("_ts", now), self._tz_offset_hours)
+            if is_night_hour(h):
                 night += 1
 
         intensity = sum(1 for e in w if now - e.get("_ts", now) <= 600)
