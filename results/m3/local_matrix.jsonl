@@ -3133,3 +3133,32 @@
 {"model": "deepseek-r1:1.5b", "cond": "E1B", "key": "r2b18", "round": 2, "batch_ids": ["164", "171", "101", "74", "71", "30"], "order": ["A", "B", "D", "E", "F", "C"], "ok_parse": true, "raw": "{\"ranking\": [\"A\", \"B\", \"D\", \"E\", \"F\", \"C\"]}", "retry": 1}
 {"model": "deepseek-r1:1.5b", "cond": "E1B", "key": "r2b21", "round": 2, "batch_ids": ["177", "85", "172", "63", "178", "124"], "order": ["B", "A", "C"], "ok_parse": false, "raw": "{\"ranking\": [ \"B\", \"A\", \"C\" ]}", "retry": 1}
 {"model": "deepseek-r1:1.5b", "cond": "E1B", "key": "r2b24", "round": 2, "batch_ids": ["11", "123", "211", "70", "176", "19"], "order": ["A", "B", "D", "E", "F"], "ok_parse": false, "raw": "{\"ranking\": [    \"A\",    \"B\",    \"D\",    \"E\",    \"F\"]}", "retry": 1}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "219", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "218", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "217", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "216", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "214", "expert": 2, "llm": 3, "raw": "{ \"difficulty\": 3 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "213", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "212", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "211", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "210", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "209", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "208", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "207", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "206", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "205", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "204", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "203", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "202", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "201", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "200", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "199", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "198", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "197", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "196", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "195", "expert": 2, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "194", "expert": 1, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "193", "expert": 3, "llm": 2, "raw": "{ \"difficulty\": 2 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "192", "expert": 3, "llm": null, "raw": ""}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "191", "expert": 1, "llm": 1, "raw": "{ \"difficulty\": 1 }"}
+{"model": "deepseek-r1:32b", "cond": "E1A", "key": "190", "expert": 1, "llm": null, "raw": ""}

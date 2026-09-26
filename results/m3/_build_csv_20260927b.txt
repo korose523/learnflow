@@ -1,0 +1,73 @@
+E:\learnflow\results\m3\build_matrix_rows.py:189: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  boots.append(_spearman(be, bp) if use_np else float(st.spearmanr(be, bp).statistic))
+==============================================================================
+④b 实测汇总（全部数字由本脚本从产物算出，未经手工转录）
+==============================================================================
+
+[deepseek-r1:1.5b] F4_DeepSeek / S1_<7B / params=1.8 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=-0.0088，accuracy=0.1887，κ=-0.0215（加权κ=-0.0158）
+  E1-B: 有效批 94/108，失败 14，模式 {'drop_one_item': 8, 'too_few_items': 4, 'free_text_or_empty': 2}，ρ=0.0591
+
+[deepseek-r1:32b] 该模型 E1-A 仅 29/212 唯一键 < MIN_KEYS=200，跳过；尚需 171 键
+  → 补齐 171 个唯一键后本脚本会自动生成该行，无需改代码
+  （完整性门禁：题量不足的单元格不产出任何 ρ/κ/parse_rate，不得用残缺样本冒充完整单元格）
+
+[deepseek-v2:16b] F4_DeepSeek / S2_7-30B / params=15.7 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=0.2521，accuracy=0.4057，κ=0.1132（加权κ=0.1682）
+  E1-B: 有效批 96/108，失败 12，模式 {'drop_one_item': 4, 'duplicate_or_extra': 1, 'too_few_items': 1, 'free_text_or_empty': 6}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+WARNING [AUDITED 分歧] llama3.1:8b（E1-A）：自算与留档发布值不一致
+  本脚本自算 ：ρ=0.2430  95%CI [0.0863, 0.3809]
+  AUDITED 留档：ρ=0.2430  95%CI [0.1258, 0.3511]
+  差值       ：Δρ=0.0000  ΔCI 端点=0.0395/0.0298
+  处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+[llama3.1:8b] F2_Llama / S2_7-30B / params=8.0 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=0.2430，accuracy=0.5142，κ=0.2327（加权κ=0.2249）
+  E1-B: 有效批 93/108，失败 15，模式 {'drop_one_item': 15}，ρ=0.1081
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+WARNING [AUDITED 分歧] llama3.2:1b（E1-A）：自算与留档发布值不一致
+  本脚本自算 ：ρ=-0.0337  95%CI [-0.1711, 0.0925]
+  AUDITED 留档：ρ=-0.0337  95%CI [-0.1597, 0.0875]
+  差值       ：Δρ=0.0000  ΔCI 端点=0.0114/0.0050
+  处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+[llama3.2:1b] F2_Llama / S1_<7B / params=1.2 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=-0.0337，accuracy=0.3349，κ=-0.0233（加权κ=-0.0329）
+  E1-B: 有效批 36/108，失败 72，模式 {'drop_one_item': 45, 'too_few_items': 10, 'free_text_or_empty': 16, 'duplicate_or_extra': 1}，ρ=-0.0574
+
+[mistral:7b] F3_Mistral / S2_7-30B / params=7.2 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=0.2085，accuracy=0.4292，κ=0.0286（加权κ=0.0839）
+  E1-B: 有效批 96/108，失败 12，模式 {'duplicate_or_extra': 9, 'drop_one_item': 3}
+
+[qwen36:latest] 锚点唯一键 212/212 ≥ MIN_KEYS=200，不跳过：ρ/CI/κ/parse_rate 一律由本脚本从 local_matrix.jsonl 现算
+
+[qwen36:latest] F1_Qwen / S3_30-70B / params=34.7 / MoE (Qwen3.6-35B-A3B)
+  E1-A: 解析 212/212 (100.0%)，ρ=0.1744，accuracy=0.4434，κ=0.0927（加权κ=0.1207）
+  E1-B: 有效批 90/108，失败 18，模式 {'too_few_items': 5, 'drop_one_item': 13}
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+WARNING [AUDITED 分歧] qwen3:1.7b（E1-A）：自算与留档发布值不一致
+  本脚本自算 ：ρ=0.1072  95%CI [-0.0446, 0.2101]
+  AUDITED 留档：ρ=0.1072  95%CI [-0.0288, 0.2095]
+  差值       ：Δρ=0.0000  ΔCI 端点=0.0158/0.0006
+  处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+[qwen3:1.7b] F1_Qwen / S1_<7B / params=2.0 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=0.1072，accuracy=0.4057，κ=0.0163（加权κ=0.0233）
+  E1-B: 有效批 83/108，失败 25，模式 {'duplicate_or_extra': 4, 'too_few_items': 17, 'drop_one_item': 4}，ρ=-0.0671
+
+[qwen3:8b] F1_Qwen / S2_7-30B / params=8.2 / dense
+  E1-A: 解析 212/212 (100.0%)，ρ=0.0849，accuracy=0.3396，κ=0.0687（加权κ=0.0632）
+  E1-B: 有效批 102/108，失败 6，模式 {'drop_one_item': 6}
+
+[written] E:\learnflow\results\m3\m3_model_scale_matrix.csv  (8 行)
+[written] E:\learnflow\results\m3\protocol_usability.json  (8 单元格)

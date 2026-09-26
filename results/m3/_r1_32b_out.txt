@@ -1,0 +1,13 @@
+[data] DBE-KT22 questions: 212
+[resume] 2387 records already present -> results\m3\local_matrix.jsonl
+[E1-B] 批构成：3 轮 × 6 题 = 108 批（seed=20260912）
+
+=== model=deepseek-r1:32b ===
+[E1A ERR] 219 timed out
+[E1A ERR] 218 timed out
+[E1A ERR] 217 timed out
+[E1A ERR] 216 timed out
+[E1A ERR] 212 timed out
+[E1-A] 25/212 elapsed=13002s
+[E1A ERR] 192 timed out
+[E1A ERR] 190 timed out
