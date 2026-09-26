@@ -1,0 +1,18 @@
+system,item_id,target_construct,direction,channel,coder,source_anchor
+Ludilearn,LUDI_1,身份/自主,approach,,coderB,lang/en/format_ludilearn.php:202 settings:avatardescription
+Ludilearn,LUDI_2,成就/表现,approach,,coderB,lang/en/format_ludilearn.php:194 settings:badgedescription
+Ludilearn,LUDI_3,进度/坚持,approach,,coderB,lang/en/format_ludilearn.php:198 settings:progressiondescription
+Ludilearn,LUDI_4,社交比较,approach,,coderB,lang/en/format_ludilearn.php:133 ranking
+Ludilearn,LUDI_5,参与度,approach,,coderB,lang/en/format_ludilearn.php:189 settings:scoredescription
+Ludilearn,LUDI_6,时长/节奏,neutral,,coderB,classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20
+Level Up XP,LUXP_1,身份/自主,neutral,,coderB,classes/local/badge/badge_manager.php
+Level Up XP,LUXP_10,合规,neutral,,coderB,"classes/local/rule/the_dictator.php, ruletype/*.php"
+Level Up XP,LUXP_11,行为速率,approach,,coderB,"classes/local/xp/state.php, user_state.php"
+Level Up XP,LUXP_2,合规,withdraw,,coderB,classes/form/cheatguard.php
+Level Up XP,LUXP_3,社交分层,neutral,,coderB,classes/local/division/group_division.php
+Level Up XP,LUXP_4,社交比较,approach,,coderB,classes/local/leaderboard/course_user_leaderboard.php
+Level Up XP,LUXP_5,胜任/进度,approach,,coderB,"classes/local/xp/levels_info.php, level.php"
+Level Up XP,LUXP_6,行为触发,approach,,coderB,classes/local/notification/course_level_up_notification_service.php
+Level Up XP,LUXP_7,行为触发,approach,,coderB,classes/form/promo.php
+Level Up XP,LUXP_8,社交比较,approach,,coderB,"classes/local/xp/rank.php, state_rank.php"
+Level Up XP,LUXP_9,合规,withdraw,,coderB,classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）

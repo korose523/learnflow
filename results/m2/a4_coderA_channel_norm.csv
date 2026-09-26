@@ -1,0 +1,18 @@
+item_id,system,coderA_channel_raw,proposed_closed_code,coderA_confirmed_code,note
+LUDI_1,Ludilearn,头像定制,VISUAL_CUSTOMIZATION,,
+LUDI_2,Ludilearn,徽章图,BADGE,,
+LUDI_3,Ludilearn,进度条,PROGRESS_BAR,,
+LUDI_4,Ludilearn,排行榜,LEADERBOARD,,
+LUDI_5,Ludilearn,数值面板,SCORE_PANEL,,
+LUDI_6,Ludilearn,计时器+扣分,TIMER,,
+LUXP_1,Level Up XP,徽章,BADGE,,
+LUXP_10,Level Up XP,规则引擎,RULE_ENGINE,,
+LUXP_11,Level Up XP,数值,SCORE_PANEL,,⚠️歧义：数值 亦可读作 XP_STATE，须裁定
+LUXP_2,Level Up XP,防作弊拦截,CHEATGUARD,,
+LUXP_3,Level Up XP,分组,GROUPING,,
+LUXP_4,Level Up XP,排行榜,LEADERBOARD,,
+LUXP_5,Level Up XP,进度+等级,LEVEL_INFO,,
+LUXP_6,Level Up XP,弹窗通知,NOTIFICATION,,
+LUXP_7,Level Up XP,促销横幅,NOTIFICATION,,
+LUXP_8,Level Up XP,名次,LEADERBOARD,,
+LUXP_9,Level Up XP,限流窗口,RATE_LIMIT,,
