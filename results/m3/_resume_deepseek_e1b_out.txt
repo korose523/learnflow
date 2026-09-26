@@ -1,0 +1,100 @@
+=== resume start 2026-09-26 13:27:52
+>>> C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe E:/learnflow/results/m3\local_matrix_e1ab.py --models deepseek-v2:16b --conditions E1B --out E:/learnflow/results/m3\local_matrix --meta {"deepseek-v2:16b": {"family":"DeepSeek","params_b":15.7,"architecture":"dense"}} --retry-rounds 2
+    [data] DBE-KT22 questions: 212
+    [resume] 2002 records already present -> E:\learnflow\results\m3\local_matrix.jsonl
+    [E1-B] 批构成：3 轮 × 6 题 = 108 批（seed=20260912）
+    
+    === model=deepseek-v2:16b ===
+    [deepseek-v2:16b] done in 3049.1s (- E1-A parsed)
+    [retry] 重试轮 1/2：E1-A 0 条, E1-B 12 条
+    [retry E1B ERR] deepseek-v2:16b/r1b20 Remote end closed connection without response
+    [retry E1B ERR] deepseek-v2:16b/r1b23 HTTP Error 502: Bad Gateway
+    [retry E1B ERR] deepseek-v2:16b/r2b1 HTTP Error 502: Bad Gateway
+    [retry E1B ERR] deepseek-v2:16b/r2b10 HTTP Error 502: Bad Gateway
+    [retry E1B ERR] deepseek-v2:16b/r2b16 HTTP Error 502: Bad Gateway
+    [retry E1B ERR] deepseek-v2:16b/r2b27 [WinError 10054] 远程主机强迫关闭了一个现有的连接。
+    [retry] 重试轮 1 修复：E1-A 0/0, E1-B 0/12
+    [retry] 本轮零修复，停止重试
+    
+    [done] summary -> E:\learnflow\results\m3\local_matrix.json
+      deepseek-v2:16b: E1A ρ(listwise)=0.2521 CI=[0.1337, 0.359] | E1A ρ(none_as_zero)=0.2521 CI=[0.1337, 0.359] | parsed=212/212 (listwise) | E1B ρ=0.0141 CI=[-0.1328, 0.1778] fail=12/108
+[deepseek E1B] driver rc=0
+>>> C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe E:/learnflow/results/m3\build_matrix_rows.py --csv-out E:/learnflow/results/m3\m3_model_scale_matrix.csv
+    ==============================================================================
+    ④b 实测汇总（全部数字由本脚本从产物算出，未经手工转录）
+    ==============================================================================
+    
+    [deepseek-v2:16b] F4_DeepSeek / S2_7-30B / params=15.7 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=0.2521，accuracy=0.4057，κ=0.1132（加权κ=0.1682）
+      E1-B: 有效批 96/108，失败 12，模式 {'drop_one_item': 4, 'duplicate_or_extra': 1, 'too_few_items': 1, 'free_text_or_empty': 6}，ρ=0.0141
+    
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    WARNING [AUDITED 分歧] llama3.1:8b（E1-A）：自算与留档发布值不一致
+      本脚本自算 ：ρ=0.2430  95%CI [0.0863, 0.3809]
+      AUDITED 留档：ρ=0.2430  95%CI [0.1258, 0.3511]
+      差值       ：Δρ=0.0000  ΔCI 端点=0.0395/0.0298
+      处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    
+    [llama3.1:8b] F2_Llama / S2_7-30B / params=8.0 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=0.2430，accuracy=0.5142，κ=0.2327（加权κ=0.2249）
+      E1-B: 有效批 93/108，失败 15，模式 {'drop_one_item': 15}，ρ=0.1081
+    
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    WARNING [AUDITED 分歧] llama3.2:1b（E1-A）：自算与留档发布值不一致
+      本脚本自算 ：ρ=-0.0337  95%CI [-0.1711, 0.0925]
+      AUDITED 留档：ρ=-0.0337  95%CI [-0.1597, 0.0875]
+      差值       ：Δρ=0.0000  ΔCI 端点=0.0114/0.0050
+      处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    
+    [llama3.2:1b] F2_Llama / S1_<7B / params=1.2 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=-0.0337，accuracy=0.3349，κ=-0.0233（加权κ=-0.0329）
+      E1-B: 有效批 36/108，失败 72，模式 {'drop_one_item': 45, 'too_few_items': 10, 'free_text_or_empty': 16, 'duplicate_or_extra': 1}，ρ=-0.0574
+    
+    [mistral:7b] F3_Mistral / S2_7-30B / params=7.2 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=0.2085，accuracy=0.4292，κ=0.0286（加权κ=0.0839）
+      E1-B: 有效批 96/108，失败 12，模式 {'duplicate_or_extra': 9, 'drop_one_item': 3}
+    
+    [qwen36:latest] 锚点唯一键 212/212 ≥ MIN_KEYS=200，不跳过：ρ/CI/κ/parse_rate 一律由本脚本从 local_matrix.jsonl 现算
+    
+    [qwen36:latest] F1_Qwen / S3_30-70B / params=34.7 / MoE (Qwen3.6-35B-A3B)
+      E1-A: 解析 212/212 (100.0%)，ρ=0.1744，accuracy=0.4434，κ=0.0927（加权κ=0.1207）
+      E1-B: 有效批 90/108，失败 18，模式 {'too_few_items': 5, 'drop_one_item': 13}
+    
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    WARNING [AUDITED 分歧] qwen3:1.7b（E1-A）：自算与留档发布值不一致
+      本脚本自算 ：ρ=0.1072  95%CI [-0.0446, 0.2101]
+      AUDITED 留档：ρ=0.1072  95%CI [-0.0288, 0.2095]
+      差值       ：Δρ=0.0000  ΔCI 端点=0.0158/0.0006
+      处置       ：人工已批准将发布值切换为本脚本自算 CI（2026-09-26）；ρ 与 AUDITED 逐位一致，仅 95% CI 端点因 bootstrap 实现不同而异，分歧保留作留痕。
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    
+    
+    [qwen3:1.7b] F1_Qwen / S1_<7B / params=2.0 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=0.1072，accuracy=0.4057，κ=0.0163（加权κ=0.0233）
+      E1-B: 有效批 83/108，失败 25，模式 {'duplicate_or_extra': 4, 'too_few_items': 17, 'drop_one_item': 4}，ρ=-0.0671
+    
+    [qwen3:8b] F1_Qwen / S2_7-30B / params=8.2 / dense
+      E1-A: 解析 212/212 (100.0%)，ρ=0.0849，accuracy=0.3396，κ=0.0687（加权κ=0.0632）
+      E1-B: 有效批 102/108，失败 6，模式 {'drop_one_item': 6}
+    
+    [written] E:\learnflow\results\m3\m3_model_scale_matrix.csv  (7 行)
+    [written] E:\learnflow\results\m3\protocol_usability.json  (7 单元格)
+  ! E:\learnflow\results\m3\build_matrix_rows.py:189: ConstantInputWarning: An input array is constant; the correlation coefficient is not defined.
+  !   boots.append(_spearman(be, bp) if use_np else float(st.spearmanr(be, bp).statistic))
+>>> C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe E:/learnflow/results/m3\verify_m3_matrix.py --matrix E:/learnflow/results/m3\m3_model_scale_matrix.csv
+    结构层: PASS（模型族 4 ≥3；规模档 4 ≥3；方案文档与模板存在）
+    ======================================================================
+    C 项自测：合成矩阵校验逻辑（门槛生效性）
+    ======================================================================
+      合法矩阵（4 族 × 4 档，1 EVALUATED）：校验问题数 = 0（期望 0）
+      族数=2 矩阵：校验问题数 = 2（期望 ≥1：族数门槛生效）
+      EVALUATED 缺 spearman_rho：校验问题数 = 3（期望 ≥1）
+      NOT_EVALUATED 误填 spearman_rho：校验问题数 = 3（期望 ≥1：不虚构度量）
+      C 项自测: PASS
+    自测层: PASS（覆盖门槛 / 字段必填 / 不虚构度量 逻辑均生效）
+    矩阵校验: PASS（单元格 7；触及 4 族 × 3 档；EVALUATED=7）
+    ⚠ 真实多模型评估未全覆盖：当前 7 单元格为 EVALUATED，距 4×3 全覆盖仍差外部多模型评估（状态 🟡）。

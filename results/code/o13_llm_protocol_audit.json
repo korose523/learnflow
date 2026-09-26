@@ -1,0 +1,116 @@
+{
+  "generated_by": "results/code/o13_llm_protocol_audit.py",
+  "source_artifacts": [
+    "results\\code\\llm_labeling_v2.jsonl",
+    "results\\code\\llm_labeling.json"
+  ],
+  "v1_truncated_thinking_excluded": {
+    "rho": 0.0295,
+    "source": "results/code/llm_labeling.json",
+    "reason": "num_predict=16 截断 thinking 块的 <think> 段，解析到的数字取自思考文本，标签无效；存储的 DBE 原始回复全部以 <think> 开头。"
+  },
+  "e1a_rubric_absolute": {
+    "n": 212,
+    "parse_ok": 212,
+    "spearman": 0.2195,
+    "p_value": 0.00129945,
+    "usable_as_capability_estimate": true
+  },
+  "e1b_batch_ranking_bt": {
+    "n_batches": 108,
+    "parse_fail": 13,
+    "n_pair_constraints": 1362,
+    "n_total_comparisons": 1383,
+    "spearman": 0.181,
+    "p_value": 0.00826594,
+    "usable_as_capability_estimate": true
+  },
+  "evidence_grading_by_return_style": {
+    "enum_array": {
+      "n_batches": 60,
+      "parse_fail": 13,
+      "parse_fail_rate": 0.2167,
+      "n_pair_constraints": 697,
+      "n_total_comparisons": 705,
+      "spearman": 0.1553,
+      "p_value": 0.023697,
+      "usable_as_capability_estimate": true
+    },
+    "free_string": {
+      "n_batches": 48,
+      "parse_fail": 0,
+      "parse_fail_rate": 0.0,
+      "n_pair_constraints": 676,
+      "n_total_comparisons": 678,
+      "spearman": 0.0478,
+      "p_value": 0.4892076,
+      "usable_as_capability_estimate": false
+    }
+  },
+  "evidence_grading_by_round": {
+    "0": {
+      "n_batches": 36,
+      "parse_fail": 5,
+      "n_pair_constraints": 451,
+      "spearman": 0.2208
+    },
+    "1": {
+      "n_batches": 36,
+      "parse_fail": 5,
+      "n_pair_constraints": 451,
+      "spearman": 0.2073
+    },
+    "2": {
+      "n_batches": 36,
+      "parse_fail": 3,
+      "n_pair_constraints": 481,
+      "spearman": 0.0903
+    }
+  },
+  "claimed_first_round_reproducibility": {
+    "claimed_batches": 108,
+    "claimed_parse_fail": 60,
+    "claimed_constraints": 676,
+    "claimed_rho": 0.046,
+    "rho_reproducible": true,
+    "constraints_reproducible": true,
+    "batches_and_parse_fail_reproducible": false,
+    "where_the_numbers_actually_come_from": {
+      "rho_0.046": "自由字符串形态批次（48 批，解析失败 0 批），ρ = 0.0478，两两约束 676 —— 与稿件 0.046 / 676 吻合",
+      "batches_108": "全部 108 批（自由字符串 + 枚举数组）之和，不是''首轮批次数''",
+      "parse_fail_60": "不成立：存储记录中解析失败共 13 批，且**全部落在枚举数组形态**（13/60）；自由字符串形态48 批零解析失败。"
+    },
+    "note": "稿件把 0.046 归因于「108 批中 60 批解析失败」，但按存储记录重算：0.046 来自**自由字符串形态且全部解析成功**的那批记录（失败率 0）；解析失败只出现在枚举数组形态（13/60）。因此 0.0478 → 0.1808 的抬升不是「剔除失败实现」的结果，而是**两种返回形态的记录被合并**所致（枚举数组单独只给 0.1553）。该叙事必须在 M3 5.2 节改正。"
+  },
+  "paired_item_bootstrap": {
+    "reps_used": 200,
+    "rho_absolute": {
+      "mean": 0.2276,
+      "ci95": [
+        0.0942,
+        0.345
+      ]
+    },
+    "rho_bt": {
+      "mean": 0.1577,
+      "ci95": [
+        -0.0097,
+        0.3018
+      ]
+    },
+    "delta_abs_minus_bt": {
+      "point": 0.0385,
+      "mean": 0.0699,
+      "ci95": [
+        -0.0652,
+        0.2193
+      ],
+      "p_two_sided": 0.34,
+      "significant_at_0.05": false
+    },
+    "resampling_unit": "题目（DBE-KT22 的 212 道），BT 在每个重抽样样本内重新拟合"
+  },
+  "conclusion_for_paper": [
+    "可下结论的协议比较只有锚定绝对评级 ρ = 0.2195 与枚举数组 + BT ρ = 0.1810 两者；其差 Δ = 0.0385，95% 配对（题目级重抽样、BT 再拟合）区间 [-0.0652, 0.2193]，双侧 p = 0.3400 —— 差异不显著，不得宣称一种协议优于另一种。"
+  ]
+}

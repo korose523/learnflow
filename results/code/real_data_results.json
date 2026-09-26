@@ -2,34 +2,192 @@
   "assist09_window": {
     "window": 20,
     "n_windows": 286150,
-    "n_users_used": 4217,
+    "n_users_input": 4217,
+    "n_users_used": 2314,
     "mean_error_rate": 0.3511,
     "median_error_rate": 0.3,
-    "modal_bin_center": 0.18,
+    "modal_k_errors": [
+      5
+    ],
+    "modal_error_rate": [
+      0.25
+    ],
+    "modal_error_rate_center": 0.25,
+    "bootstrap_modal_ci95_k": [
+      5
+    ],
+    "k_frequency_table": [
+      {
+        "k_errors": 0,
+        "error_rate": 0.0,
+        "success_rate": 1.0,
+        "n_windows": 3794,
+        "share": 0.013259,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 1,
+        "error_rate": 0.05,
+        "success_rate": 0.95,
+        "n_windows": 10982,
+        "share": 0.038378,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 2,
+        "error_rate": 0.1,
+        "success_rate": 0.9,
+        "n_windows": 19345,
+        "share": 0.067604,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 3,
+        "error_rate": 0.15,
+        "success_rate": 0.85,
+        "n_windows": 26151,
+        "share": 0.091389,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 4,
+        "error_rate": 0.2,
+        "success_rate": 0.8,
+        "n_windows": 30061,
+        "share": 0.105053,
+        "bootstrap_argmax_freq": 0.045
+      },
+      {
+        "k_errors": 5,
+        "error_rate": 0.25,
+        "success_rate": 0.75,
+        "n_windows": 30899,
+        "share": 0.107982,
+        "bootstrap_argmax_freq": 0.955
+      },
+      {
+        "k_errors": 6,
+        "error_rate": 0.3,
+        "success_rate": 0.7,
+        "n_windows": 28518,
+        "share": 0.099661,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 7,
+        "error_rate": 0.35,
+        "success_rate": 0.65,
+        "n_windows": 25435,
+        "share": 0.088887,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 8,
+        "error_rate": 0.4,
+        "success_rate": 0.6,
+        "n_windows": 22360,
+        "share": 0.078141,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 9,
+        "error_rate": 0.45,
+        "success_rate": 0.55,
+        "n_windows": 18892,
+        "share": 0.066021,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 10,
+        "error_rate": 0.5,
+        "success_rate": 0.5,
+        "n_windows": 15590,
+        "share": 0.054482,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 11,
+        "error_rate": 0.55,
+        "success_rate": 0.45,
+        "n_windows": 12477,
+        "share": 0.043603,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 12,
+        "error_rate": 0.6,
+        "success_rate": 0.4,
+        "n_windows": 9914,
+        "share": 0.034646,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 13,
+        "error_rate": 0.65,
+        "success_rate": 0.35,
+        "n_windows": 7714,
+        "share": 0.026958,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 14,
+        "error_rate": 0.7,
+        "success_rate": 0.3,
+        "n_windows": 5696,
+        "share": 0.019906,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 15,
+        "error_rate": 0.75,
+        "success_rate": 0.25,
+        "n_windows": 4356,
+        "share": 0.015223,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 16,
+        "error_rate": 0.8,
+        "success_rate": 0.2,
+        "n_windows": 3377,
+        "share": 0.011802,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 17,
+        "error_rate": 0.85,
+        "success_rate": 0.15,
+        "n_windows": 2734,
+        "share": 0.009554,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 18,
+        "error_rate": 0.9,
+        "success_rate": 0.1,
+        "n_windows": 2270,
+        "share": 0.007933,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 19,
+        "error_rate": 0.95,
+        "success_rate": 0.05,
+        "n_windows": 2066,
+        "share": 0.00722,
+        "bootstrap_argmax_freq": 0.0
+      },
+      {
+        "k_errors": 20,
+        "error_rate": 1.0,
+        "success_rate": 0.0,
+        "n_windows": 3519,
+        "share": 0.012298,
+        "bootstrap_argmax_freq": 0.0
+      }
+    ],
     "share_err_in_17_23pct": 0.1051,
-    "share_err_in_10_20pct": 0.1964,
-    "hist_05bins": [
-      3794,
-      30327,
-      0,
-      56212,
-      0,
-      30899,
-      53953,
-      0,
-      41252,
-      0,
-      15590,
-      22391,
-      0,
-      13410,
-      0,
-      4356,
-      6111,
-      0,
-      4336,
-      3519
-    ]
+    "share_err_in_10_20pct": 0.264
   },
   "assist09_sources": {
     "n_problems": 994,
@@ -47,103 +205,11 @@
       0.0
     ]
   },
-  "assist09_drift": {
-    "weights_nominal": [
-      0.4,
-      0.3,
-      0.3
-    ],
-    "pi_baseline": [
-      0.5406,
-      0.3878,
-      0.0726
-    ],
-    "transforms": {
-      "irt|logit_minmax": {
-        "L1": 1.0117,
-        "rank_reversals": 2,
-        "pi": [
-          0.0348,
-          0.7481,
-          0.2181
-        ]
-      },
-      "irt|probit_std": {
-        "L1": 0.7929,
-        "rank_reversals": 0,
-        "pi": [
-          0.9371,
-          0.0745,
-          -0.0106
-        ]
-      },
-      "irt|log": {
-        "L1": 0.986,
-        "rank_reversals": 2,
-        "pi": [
-          0.0476,
-          0.7335,
-          0.2199
-        ]
-      },
-      "time|logit_minmax": {
-        "L1": 0.7606,
-        "rank_reversals": 1,
-        "pi": [
-          0.848,
-          0.0075,
-          0.1455
-        ]
-      },
-      "time|probit_std": {
-        "L1": 0.9004,
-        "rank_reversals": 1,
-        "pi": [
-          0.16,
-          0.838,
-          0.003
-        ]
-      },
-      "time|log": {
-        "L1": 0.799,
-        "rank_reversals": 1,
-        "pi": [
-          0.8595,
-          -0.0117,
-          0.1532
-        ]
-      },
-      "attempts|logit_minmax": {
-        "L1": 0.1272,
-        "rank_reversals": 0,
-        "pi": [
-          0.6043,
-          0.3781,
-          0.0186
-        ]
-      },
-      "attempts|probit_std": {
-        "L1": 1.3324,
-        "rank_reversals": 2,
-        "pi": [
-          0.144,
-          0.1182,
-          0.7388
-        ]
-      },
-      "attempts|log": {
-        "L1": 0.1272,
-        "rank_reversals": 0,
-        "pi": [
-          0.6042,
-          0.3677,
-          0.0291
-        ]
-      }
-    },
-    "L1_mean": 0.7597,
-    "L1_max": 1.3324,
-    "reversal_rate": 0.6667
+  "assist09_drift_deprecated": {
+    "_deprecated": true,
+    "_reason": "旧符号口径 L1_mean = 0.7597 已作废，禁止引用。",
+    "_superseded_by": "results/code/optimized_results.json",
+    "_moved_to": "results/code/deprecated/assist09_drift_v1_sign_mixed.json"
   },
   "dbe_kt22": {
     "n_transactions": 161953,

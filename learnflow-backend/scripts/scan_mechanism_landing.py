@@ -8,15 +8,15 @@ scan_mechanism_landing.py —— LearnFlow 机制落地审计矩阵（可复算�
 -----------------------------------------------------------------------------
 本项目的游戏化机制经审计为 **54** 个唯一机制（LF-M01..LF-M54），来源是
 ``app/services/mechanism_registry.py`` 的单一事实源，并由
-``scripts/verify_counts.py`` 的 AST 复算交叉校验（mechanism_unique=53）。
+``scripts/verify_counts.py`` 的 AST 复算交叉校验（mechanism_unique=54）。
 
 历史上曾有「76 种游戏化机制」的宣称，该数字在任何口径下都不成立，已被
 verify_counts.py 证伪并拒绝引用。**「76」是禁止引用的遗留错误数字，本脚本
-绝不以任何形式引用它。** 53 是经过审计、可被一条命令复算的唯一机制数。
+绝不以任何形式引用它。** 54 是经过审计、可被一条命令复算的唯一机制数。
 
 为什么需要这个脚本
 -----------------------------------------------------------------------------
-mechanism_registry 枚举了 53 个机制，但研究发现其中 39 个虽有引擎逻辑、却
+mechanism_registry 枚举了 54 个机制，但研究发现其中 39 个虽有引擎逻辑、却
 **零外部运行时调用方**（orphan）。本脚本把「机制落地状态」从口头声明变为
 **一条命令可复算的审计矩阵**：对每个机制判断它是否真正接入运行时（有外部
 引用，或被编排器流程接线/门控），并写入 ``artifacts/mechanism_landing_status.json``。
@@ -152,7 +152,7 @@ def _orchestrator_wired(key: str, orch_text: str, wired_keys: set) -> bool:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def build_landing_rows(backend_root: Optional[Path] = None) -> List[Dict[str, Any]]:
-    """枚举全部 53 个机制，计算每项的运行时落地状态。
+    """枚举全部 54 个机制，计算每项的运行时落地状态。
 
     返回行列表，字段与 artifacts/mechanism_landing_status.json 的 rows 一致。
     """

@@ -1,0 +1,13 @@
+[stream] reading Log_Problem.csv ...
+[stream] done. rows_total=16217311, distinct_ucid=1326, distinct_users=72758
+[write] r09_results.json written
+Traceback (most recent call last):
+  File "E:\learnflow\results\m3\r09_nonstationary\r09_run.py", line 331, in <module>
+    "我们在 Junyi 真实逐次作答日志（Log_Problem.csv，含 calendar 时间戳与学生对每题的尝试序号）上，"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ...<3 lines>...
+    "两者均以自助法（B=1000，种子=42）估计 Δ 的 95% 置信区间，区间不跨 0 视为显著漂移。\n"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    % (MIN_ATTEMPTS, nA)
+    ^~~~~~~~~~~~~~~~~~~~
+TypeError: not enough arguments for format string

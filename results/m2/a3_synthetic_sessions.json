@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-09-22T14:18:36.616837+00:00",
+  "route_a": {
+    "mode": "route_a_14_producers",
+    "n_sessions": 10000,
+    "steps": 40,
+    "total_steps": 400000,
+    "producers_route_a": 14,
+    "producers_active": 14,
+    "conflict_frequency": 0.633115,
+    "competition_rate": 0.97125,
+    "budget_exhaustion_rate": 1.0,
+    "preempt_violation_rate": 0.0,
+    "mean_delivered_per_step": 0.5996525,
+    "note": "改造后（≥14 生产者）运行时分布；对比封存时点（2 生产者）冲突频率≈0"
+  },
+  "legacy": {
+    "mode": "legacy_2_producers",
+    "n_sessions": 10000,
+    "steps": 40,
+    "total_steps": 400000,
+    "producers_route_a": 14,
+    "producers_active": 2,
+    "conflict_frequency": 0.0,
+    "competition_rate": 0.29917,
+    "budget_exhaustion_rate": 0.4327,
+    "preempt_violation_rate": 0.0,
+    "mean_delivered_per_step": 0.5556675,
+    "note": "改造前（2 生产者）基线"
+  },
+  "delta_conflict_frequency": 0.633115
+}

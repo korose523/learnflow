@@ -1,0 +1,112 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "E:\\learnflow\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "llama3.1:8b": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": 0.243,
+      "e1a_spearman_p": 0.00035519,
+      "e1a_accuracy": 0.5142,
+      "e1a_cohen_kappa": 0.2327,
+      "e1a_llm_dist": {
+        "1": 56,
+        "2": 118,
+        "3": 38
+      },
+      "e1a_spearman_ci95": [
+        0.1258,
+        0.3511
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": 0.243,
+      "e1a_spearman_none_as_zero_p": 0.00035519,
+      "e1a_spearman_none_as_zero_ci95": [
+        0.1258,
+        0.3511
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 108,
+      "e1b_parse_fail": 15,
+      "e1b_n_pair_constraints": 1339,
+      "e1b_n_total_comparisons": 1353,
+      "e1b_spearman": 0.1081,
+      "e1b_spearman_p": 0.11651772,
+      "paired_bootstrap": {
+        "reps_used": 200,
+        "rho_absolute_mean": 0.2492,
+        "rho_absolute_ci95": [
+          0.1258,
+          0.3511
+        ],
+        "rho_bt_mean": 0.0791,
+        "rho_bt_ci95": [
+          -0.0858,
+          0.2113
+        ],
+        "delta_abs_minus_bt_mean": 0.1701,
+        "delta_abs_minus_bt_ci95": [
+          -0.0194,
+          0.3693
+        ],
+        "delta_p_two_sided": 0.07,
+        "significant_at_0.05": false
+      },
+      "e1b_spearman_ci95": [
+        -0.0858,
+        0.2113
+      ]
+    }
+  },
+  "run_cells": {
+    "llama3.1:8b": {
+      "model_id": "llama3.1:8b",
+      "family": "Llama",
+      "architecture": "dense",
+      "params_billions": 8.0,
+      "scale_tier": "S2_7-30B",
+      "model_digest": {
+        "digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+        "digest_source": "api/tags",
+        "size_bytes": 4920753328,
+        "modified_at": "2026-09-25T01:05:36.3129234+09:00",
+        "family": "llama",
+        "parameter_size": "8.0B",
+        "quantization_level": "Q4_K_M",
+        "format": "gguf",
+        "model_info_subset": {
+          "general.architecture": "llama",
+          "general.parameter_count": 8030261312,
+          "llama.block_count": 32,
+          "llama.context_length": 131072
+        },
+        "raw_top_keys": [
+          "capabilities",
+          "details",
+          "license",
+          "model_info",
+          "modelfile",
+          "modified_at",
+          "parameters",
+          "template",
+          "tensors"
+        ]
+      },
+      "e1a_new_records": 211,
+      "e1a_wall_seconds": 1937.7,
+      "e1b_new_records": 108,
+      "e1b_wall_seconds": 6830.4,
+      "wall_seconds": 8768.2
+    }
+  }
+}

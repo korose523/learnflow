@@ -1,0 +1,77 @@
+{
+  "settings": {
+    "D": 10,
+    "T": 120,
+    "SEEDS": 60,
+    "PSTAR": 0.75,
+    "SG": 0.18,
+    "ETA": 0.06,
+    "LAM": 0.015,
+    "OBS_NOISE": 0.05
+  },
+  "ls_target": [
+    {
+      "target": 0.6,
+      "fz_mean": 6.20553,
+      "ae_mean": 3.15801,
+      "delta": 3.04752,
+      "paired_t": 210.425,
+      "paired_p": 0.0,
+      "fz_wins": true
+    },
+    {
+      "target": 0.7,
+      "fz_mean": 6.70671,
+      "ae_mean": 3.15801,
+      "delta": 3.5487,
+      "paired_t": 259.379,
+      "paired_p": 0.0,
+      "fz_wins": true
+    },
+    {
+      "target": 0.75,
+      "fz_mean": 7.08996,
+      "ae_mean": 3.15801,
+      "delta": 3.93195,
+      "paired_t": 323.884,
+      "paired_p": 0.0,
+      "fz_wins": true
+    },
+    {
+      "target": 0.8,
+      "fz_mean": 6.85459,
+      "ae_mean": 3.15801,
+      "delta": 3.69658,
+      "paired_t": 291.957,
+      "paired_p": 0.0,
+      "fz_wins": true
+    },
+    {
+      "target": 0.9,
+      "fz_mean": 5.23892,
+      "ae_mean": 3.15801,
+      "delta": 2.08091,
+      "paired_t": 213.324,
+      "paired_p": 0.0,
+      "fz_wins": true
+    }
+  ],
+  "ls_prior": [
+    {
+      "shift": 0.0,
+      "final_gain_mean": 5.26962,
+      "final_gain_sd": 0.14375
+    },
+    {
+      "shift": 0.18,
+      "final_gain_mean": 4.54695,
+      "final_gain_sd": 0.16203
+    },
+    {
+      "shift": -0.18,
+      "final_gain_mean": 4.89839,
+      "final_gain_sd": 0.16015
+    }
+  ],
+  "verdict": "正确先验(shift=0)的 final_gain 高于偏难/偏易先验 → §5.1 的『先验符号』结论在 latent(final_gain)口径下保持：先验方向仍决定增益大小。"
+}

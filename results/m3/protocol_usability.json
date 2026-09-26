@@ -1,0 +1,134 @@
+{
+  "gate": {
+    "parse_min": 0.9,
+    "entropy_min": 0.5,
+    "modal_max": 0.8,
+    "coverage_min": 0.9
+  },
+  "note": "协议可用性三重判据：解析完整性 / 输出非退化 / 覆盖充分；三条同时满足才 usable",
+  "cells": [
+    {
+      "model_id": "deepseek-r1:1.5b",
+      "family": "F4_DeepSeek",
+      "scale_tier": "S1_<7B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.5520736419741835,
+      "modal_share": 0.8018867924528302,
+      "e1b_coverage": 0.8703703703703703,
+      "e1a_usable": false,
+      "e1a_reasons": [
+        "众数占比 80.2% > 80%（等级塌缩）"
+      ],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 87% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "deepseek-v2:16b",
+      "family": "F4_DeepSeek",
+      "scale_tier": "S2_7-30B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.9879824569301222,
+      "modal_share": 0.38207547169811323,
+      "e1b_coverage": 0.8888888888888888,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 89% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "llama3.1:8b",
+      "family": "F2_Llama",
+      "scale_tier": "S2_7-30B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.8973908383923171,
+      "modal_share": 0.5566037735849056,
+      "e1b_coverage": 0.8611111111111112,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 86% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "llama3.2:1b",
+      "family": "F2_Llama",
+      "scale_tier": "S1_<7B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.8462773400751221,
+      "modal_share": 0.6132075471698113,
+      "e1b_coverage": 0.3333333333333333,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 33% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "mistral:7b",
+      "family": "F3_Mistral",
+      "scale_tier": "S2_7-30B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.6626761705102427,
+      "modal_share": 0.75,
+      "e1b_coverage": 0.8888888888888888,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 89% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "qwen36:latest",
+      "family": "F1_Qwen",
+      "scale_tier": "S3_30-70B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.8403863894260294,
+      "modal_share": 0.6226415094339622,
+      "e1b_coverage": 0.8333333333333334,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 83% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "qwen3:1.7b",
+      "family": "F1_Qwen",
+      "scale_tier": "S1_<7B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.09485608470703805,
+      "modal_share": 0.9811320754716981,
+      "e1b_coverage": 0.7685185185185185,
+      "e1a_usable": false,
+      "e1a_reasons": [
+        "归一化熵 0.095 < 0.5",
+        "众数占比 98.1% > 80%（等级塌缩）"
+      ],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 77% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "qwen3:8b",
+      "family": "F1_Qwen",
+      "scale_tier": "S2_7-30B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.6488621078037311,
+      "modal_share": 0.5566037735849056,
+      "e1b_coverage": 0.9444444444444444,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": true,
+      "e1b_reasons": []
+    }
+  ]
+}

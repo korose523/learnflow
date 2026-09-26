@@ -5,7 +5,7 @@
 # 对应治理文档 §6.1.3 / §6.3.2。本文件在「数据收集前」冻结；任何事后修改都会
 # 破坏 confirmatory 研究的 FWER 控制承诺，必须重新走 IRB 审批。
 #
-# 数字诚信约束：机制总数 = 53 (LF-M01..LF-M53)，绝不可写作 76。
+# 数字诚信约束：机制总数 = 54 (LF-M01..LF-M54)，绝不可写作 76。
 # 整群随机设计效应 DEFF = 1 + (m-1)·ρ = 1 + (30-1)·0.05 = 2.45。
 # =============================================================================
 
@@ -65,7 +65,7 @@ gates:
     alpha: 0.05
     arms:
       - name: all_off
-        toggles: {all_53: false}         # 仅保留 H 类健康护栏 (伦理硬约束)
+        toggles: {all_54: false}         # 仅保留 H 类健康护栏 (伦理硬约束)
       - name: all_on
         toggles: {}
     stop_if_null: true                   # H0 不显著 → STOP，整套游戏化视为无效
@@ -84,7 +84,7 @@ gates:
       - {name: off_E, toggles_by_category: [retention]}   # E 习惯形成与自我调节
       - {name: off_F, toggles_by_category: [motivation]}  # F 情绪与动机触发
       - {name: off_G, toggles_by_category: [cognition]}   # G UX 微交互与认知负荷
-      # H 类健康护栏 (LF-M51/LF-M52/LF-M53) 永不关闭 —— 伦理硬约束，单臂不可消融
+      # H 类健康护栏 (LF-M51/LF-M52/LF-M53/LF-M54) 永不关闭 —— 伦理硬约束，单臂不可消融
     note: "Holm 逐步拒绝；仅对被拒绝的类别进入 Gate 2"
 
   - level: 2
@@ -116,6 +116,6 @@ stopping_rules:
 # IRB 排除项（伦理审查硬性约束）
 irb_exclusions:
   minors: "未成年用户 (age < 18) 排除出消融主分析；仅进入 LF-M52 奖励冷却观测"
-  lai_high_risk: "LAI 高风险用户 (lai_score < 30) 不进入机制关闭臂；健康护栏 LF-M51/LF-M52/LF-M53 恒开"
-  health_category_never_ablated: "H 类 (LF-M51/LF-M52/LF-M53) 任何消融臂均保持开启"
+  lai_high_risk: "LAI 高风险用户 (lai_score < 30) 不进入机制关闭臂；健康护栏 LF-M51/LF-M52/LF-M53/LF-M54 恒开"
+  health_category_never_ablated: "H 类 (LF-M51/LF-M52/LF-M53/LF-M54) 任何消融臂均保持开启"
   informed_consent: "所有参与者需签署知情同意；可随时退出且不损失学习进度"

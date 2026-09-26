@@ -1,0 +1,570 @@
+{
+  "doi": {
+    "liu2025pykt": {
+      "doi": "10.1109/tkde.2025.3552759",
+      "title": "Deep Learning Based Knowledge Tracing: A Review, a Tool and Empirical Studies",
+      "container": "IEEE Transactions on Knowledge and Data Engineering",
+      "volume": "37",
+      "issue": "8",
+      "page": "4512-4536",
+      "year": "2025",
+      "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+      "authors": [
+        "Liu, Zitao",
+        "Guo, Teng",
+        "Liang, Qianru",
+        "Hou, Mingliang",
+        "Zhan, Bojun",
+        "Tang, Jiliang",
+        "Luo, Weiqi",
+        "Weng, Jian"
+      ],
+      "type": "journal-article"
+    },
+    "choudhary2025blockchain": {
+      "doi": "10.1007/s11042-024-20303-x",
+      "title": "Analyzing functional, technical and bibliometric trends of blockchain applications in education: A systematic review",
+      "container": "Multimedia Tools and Applications",
+      "volume": "84",
+      "issue": "8",
+      "page": "4003-4048",
+      "year": "2024",
+      "publisher": "Springer Science and Business Media LLC",
+      "authors": [
+        "Choudhary, Ankita",
+        "Chawla, Meenu",
+        "Tiwari, Namita"
+      ],
+      "type": "journal-article"
+    },
+    "razzaq2026blockchain": {
+      "doi": "10.1049/sfw2/5556408",
+      "title": "Can Blockchain Decentralize Education? A Systematic Review of Challenges and Pathways",
+      "container": "IET Software",
+      "volume": "2026",
+      "issue": "1",
+      "page": "",
+      "year": "2026",
+      "publisher": "Institution of Engineering and Technology (IET)",
+      "authors": [
+        "Razzaq, Abdul",
+        "Numair, Muhammad",
+        "Ahmed, Salman",
+        "Junaid, Waqas"
+      ],
+      "type": "journal-article"
+    },
+    "jusic2025microcredential": {
+      "doi": "10.21125/edulearn.2025.1342",
+      "title": "BLOCKCHAIN-ENABLED MICRO CREDENTIALING: ENHANCING TRUST, MOBILITY, AND INTEROPERABILITY IN LIFELONG LEARNING",
+      "container": "EDULEARN Proceedings",
+      "volume": "1",
+      "issue": "",
+      "page": "5382-5388",
+      "year": "2025",
+      "publisher": "IATED",
+      "authors": [
+        "Jušić, Arvin",
+        "Fuks, Svetlana",
+        "Kochovski, Petar",
+        "Stankovski, Vlado"
+      ],
+      "type": "proceedings-article"
+    },
+    "lieberoth2015shallow": {
+      "doi": "10.1177/1555412014559978",
+      "title": "Shallow Gamification",
+      "container": "Games and Culture",
+      "volume": "10",
+      "issue": "3",
+      "page": "229-248",
+      "year": "2015",
+      "publisher": "SAGE Publications",
+      "authors": [
+        "Lieberoth, Andreas"
+      ],
+      "type": "journal-article"
+    },
+    "falconcode2022": {
+      "doi": "10.1145/3545945.3569822",
+      "title": "FalconCode: A Multiyear Dataset of Python Code Samples from an Introductory Computer Science Course",
+      "container": "Proceedings of the 54th ACM Technical Symposium on Computer Science Education V. 1",
+      "volume": "",
+      "issue": "",
+      "page": "938-944",
+      "year": "2023",
+      "publisher": "ACM",
+      "authors": [
+        "de Freitas, Adrian",
+        "Coffman, Joel",
+        "de Freitas, Michelle",
+        "Wilson, Justin",
+        "Weingart, Troy"
+      ],
+      "type": "proceedings-article"
+    },
+    "hamari2014doesgamification": {
+      "doi": "10.1109/hicss.2014.377",
+      "title": "Does Gamification Work? -- A Literature Review of Empirical Studies on Gamification",
+      "container": "2014 47th Hawaii International Conference on System Sciences",
+      "volume": "",
+      "issue": "",
+      "page": "3025-3034",
+      "year": "2014",
+      "publisher": "IEEE",
+      "authors": [
+        "Hamari, Juho",
+        "Koivisto, Jonna",
+        "Sarsa, Harri"
+      ],
+      "type": "proceedings-article"
+    },
+    "rafferty2016pomdp": {
+      "doi": "10.1111/cogs.12290",
+      "title": "Faster Teaching via POMDP Planning",
+      "container": "Cognitive Science",
+      "volume": "40",
+      "issue": "6",
+      "page": "1290-1332",
+      "year": "2016",
+      "publisher": "Wiley",
+      "authors": [
+        "Rafferty, Anna N.",
+        "Brunskill, Emma",
+        "Griffiths, Thomas L.",
+        "Shafto, Patrick"
+      ],
+      "type": "journal-article"
+    },
+    "nafchi2025digitalfatigue": {
+      "doi": "10.2478/acc-2025-0010",
+      "title": "Digital Fatigue and Gamification: A Systematic Literature Review",
+      "container": "ACC JOURNAL",
+      "volume": "31",
+      "issue": "2",
+      "page": "59-69",
+      "year": "2025",
+      "publisher": "Walter de Gruyter GmbH",
+      "authors": [
+        "Nafchi, Majid Ziaei"
+      ],
+      "type": "journal-article"
+    }
+  },
+  "title_search": {
+    "guadagnoli2004challengepoint": [
+      {
+        "score": 58.5,
+        "doi": "10.3200/jmbr.36.2.212-224",
+        "title": "Challenge Point: A Framework for Conceptualizing the Effects of Various Practice Conditions in Motor Learning",
+        "container": "Journal of Motor Behavior",
+        "volume": "36",
+        "issue": "2",
+        "page": "212-224",
+        "year": "2004",
+        "authors": [
+          "Guadagnoli, Mark A.",
+          "Lee, Timothy D."
+        ]
+      },
+      {
+        "score": 36.1,
+        "doi": "10.1016/s0166-4115(08)62557-1",
+        "title": "Chapter 7 Transfer-Appropriate Processing: A Framework for Conceptualizing Practice Effects in Motor Learning",
+        "container": "Advances in Psychology",
+        "volume": "",
+        "issue": "",
+        "page": "201-215",
+        "year": "1988",
+        "authors": [
+          "Lee, Timothy D."
+        ]
+      },
+      {
+        "score": 29.1,
+        "doi": "10.70675/6e25a8a9zed84z4241za973z29df80f4368d",
+        "title": "Perceptual-motor learning and transfer : effects of the conditions of practice on the exploratory activity in a climbing task",
+        "container": "",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "None",
+        "authors": [
+          "Hacques, Guillaume"
+        ]
+      },
+      {
+        "score": 28.0,
+        "doi": "10.1080/00222895.2018.1518310",
+        "title": "Individualized Challenge Point Practice as a Method to Aid Motor Sequence Learning",
+        "container": "Journal of Motor Behavior",
+        "volume": "51",
+        "issue": "5",
+        "page": "467-485",
+        "year": "2019",
+        "authors": [
+          "Wadden, Katie P.",
+          "Hodges, Nicola J.",
+          "De Asis, Kristopher L.",
+          "Neva, Jason L.",
+          "Boyd, Lara A."
+        ]
+      },
+      {
+        "score": 27.1,
+        "doi": "10.1080/00222895.2025.2508283",
+        "title": "Challenge Accepted: A Systematic Scoping Review of the Applications of the Challenge Point Framework",
+        "container": "Journal of Motor Behavior",
+        "volume": "57",
+        "issue": "4",
+        "page": "444-462",
+        "year": "2025",
+        "authors": [
+          "Thomas, Ashleigh",
+          "Paul, Lara",
+          "Rasenyalo, Seipati",
+          "Jones, Ben",
+          "Hendricks, Sharief"
+        ]
+      }
+    ],
+    "hodges2022extendedchallenge": [
+      {
+        "score": 47.7,
+        "doi": "10.1080/02640414.2021.2015917",
+        "title": "An extended challenge-based framework for practice design in sports coaching",
+        "container": "Journal of Sports Sciences",
+        "volume": "40",
+        "issue": "7",
+        "page": "754-768",
+        "year": "2022",
+        "authors": [
+          "Hodges, Nicola J",
+          "Lohse, Keith R"
+        ]
+      },
+      {
+        "score": 34.5,
+        "doi": "10.4324/9780203994986-15",
+        "title": "COACHING PRACTICE",
+        "container": "Sports Coaching Concepts",
+        "volume": "",
+        "issue": "",
+        "page": "132-164",
+        "year": "2005",
+        "authors": []
+      },
+      {
+        "score": 34.5,
+        "doi": "10.1080/21640629.2017.1409965",
+        "title": "Sport coaching concepts: a framework for coaching practice (2nd ed)",
+        "container": "Sports Coaching Review",
+        "volume": "",
+        "issue": "",
+        "page": "1-5",
+        "year": "2017",
+        "authors": [
+          "Gale, Laura"
+        ]
+      },
+      {
+        "score": 33.6,
+        "doi": "10.4324/9780203994986-23",
+        "title": "COACHING AND ETHICAL PRACTICE",
+        "container": "Sports Coaching Concepts",
+        "volume": "",
+        "issue": "",
+        "page": "250-264",
+        "year": "2005",
+        "authors": []
+      },
+      {
+        "score": 33.1,
+        "doi": "10.4324/9780203994986-26",
+        "title": "COACH EDUCATION AND COACHING PRACTICE",
+        "container": "Sports Coaching Concepts",
+        "volume": "",
+        "issue": "",
+        "page": "290-306",
+        "year": "2005",
+        "authors": []
+      }
+    ],
+    "feng2009assistments": [
+      {
+        "score": 46.8,
+        "doi": "10.1007/s11257-009-9063-7",
+        "title": "Addressing the assessment challenge with an online system that tutors as it assesses",
+        "container": "User Modeling and User-Adapted Interaction",
+        "volume": "19",
+        "issue": "3",
+        "page": "243-266",
+        "year": "2009",
+        "authors": [
+          "Feng, Mingyu",
+          "Heffernan, Neil",
+          "Koedinger, Kenneth"
+        ]
+      },
+      {
+        "score": 43.6,
+        "doi": "10.1145/1135777.1135825",
+        "title": "Addressing the testing challenge with a web-based e-assessment system that tutors as it assesses",
+        "container": "Proceedings of the 15th international conference on World Wide Web",
+        "volume": "",
+        "issue": "",
+        "page": "307-316",
+        "year": "2006",
+        "authors": [
+          "Feng, Mingyu",
+          "Heffernan, Neil T.",
+          "Koedinger, Kenneth R."
+        ]
+      },
+      {
+        "score": 30.6,
+        "doi": "10.1093/oso/9780198817062.003.0012",
+        "title": "Addressing the Policy Challenge",
+        "container": "Oxford Scholarship Online",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "2018",
+        "authors": [
+          "Alter, Rolf"
+        ]
+      },
+      {
+        "score": 26.8,
+        "doi": "10.1093/oso/9780190685898.003.0010",
+        "title": "Transforming High School and Addressing the Challenge of America’s Competitiveness",
+        "container": "Oxford Scholarship Online",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "2018",
+        "authors": [
+          "Litow, Stanley S.",
+          "Suh, Grace"
+        ]
+      },
+      {
+        "score": 26.1,
+        "doi": "10.1163/2210-7975_hrd-4022-0023",
+        "title": "the-global-impact-of-ewaste-addressing-the-challenge",
+        "container": "Human Rights Documents online",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "None",
+        "authors": []
+      }
+    ],
+    "zhang2021theoryintegration": [
+      {
+        "score": 69.4,
+        "doi": "10.31234/osf.io/fsw8t",
+        "title": "Theory Integration for Lifestyle Behavior Change in the Digital Age:  An Adaptive Decision-making Framework",
+        "container": "",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "2019",
+        "authors": [
+          "Zhang, Chao",
+          "Lakens, Daniel",
+          "IJsselsteijn, Wijnand"
+        ]
+      },
+      {
+        "score": 58.0,
+        "doi": "10.2196/17127",
+        "title": "Theory Integration for Lifestyle Behavior Change in the Digital Age: An Adaptive Decision-Making Framework",
+        "container": "Journal of Medical Internet Research",
+        "volume": "23",
+        "issue": "4",
+        "page": "e17127",
+        "year": "2021",
+        "authors": [
+          "Zhang, Chao",
+          "Lakens, Daniël",
+          "IJsselsteijn, Wijnand A"
+        ]
+      },
+      {
+        "score": 64.0,
+        "doi": "10.2196/preprints.17127",
+        "title": "Theory Integration for Lifestyle Behavior Change in the Digital Age: An Adaptive Decision-Making Framework (Preprint)",
+        "container": "",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "2019",
+        "authors": [
+          "Zhang, Chao",
+          "Lakens, Daniël",
+          "IJsselsteijn, Wijnand A"
+        ]
+      },
+      {
+        "score": 57.3,
+        "doi": "10.2196/29629",
+        "title": "Correction: Theory Integration for Lifestyle Behavior Change in the Digital Age: An Adaptive Decision-Making Framework",
+        "container": "Journal of Medical Internet Research",
+        "volume": "23",
+        "issue": "4",
+        "page": "e29629",
+        "year": "2021",
+        "authors": [
+          "Zhang, Chao",
+          "Lakens, Daniël",
+          "IJsselsteijn, Wijnand A"
+        ]
+      },
+      {
+        "score": 63.2,
+        "doi": "10.2196/preprints.29629",
+        "title": "Correction: Theory Integration for Lifestyle Behavior Change in the Digital Age: An Adaptive Decision-Making Framework (Preprint)",
+        "container": "",
+        "volume": "",
+        "issue": "",
+        "page": "",
+        "year": "2021",
+        "authors": [
+          "Zhang, Chao",
+          "Lakens, Daniël",
+          "IJsselsteijn, Wijnand A"
+        ]
+      }
+    ]
+  },
+  "arxiv": {
+    "raihan2025llmcsed": {
+      "url": "http://arxiv.org/abs/2410.16349v1",
+      "title": "Large Language Models in Computer Science Education: A Systematic Literature Review",
+      "authors": [
+        "Nishat Raihan",
+        "Mohammed Latif Siddiq",
+        "Joanna C. S. Santos",
+        "Marcos Zampieri"
+      ],
+      "published": "2024-10-21T17:49:50Z",
+      "updated": "2024-10-21T17:49:50Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "cs.LG"
+    },
+    "kcgenkt2025": {
+      "url": "http://arxiv.org/abs/2502.18632v4",
+      "title": "Automated Knowledge Component Generation for Interpretable Knowledge Tracing in Coding Problems",
+      "authors": [
+        "Zhangqi Duan",
+        "Nigel Fernandez",
+        "Arun Balajiee Lekshmi Narayanan",
+        "Mohammad Hassany",
+        "Rafaella Sampaio de Alencar",
+        "Peter Brusilovsky",
+        "Bita Akram",
+        "Andrew Lan"
+      ],
+      "published": "2025-02-25T20:40:51Z",
+      "updated": "2026-05-17T02:37:04Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "cs.AI"
+    },
+    "kone2024banditpareto": {
+      "url": "http://arxiv.org/abs/2311.03992v2",
+      "title": "Bandit Pareto Set Identification: the Fixed Budget Setting",
+      "authors": [
+        "Cyrille Kone",
+        "Emilie Kaufmann",
+        "Laura Richert"
+      ],
+      "published": "2023-11-07T13:43:18Z",
+      "updated": "2025-01-13T10:38:40Z",
+      "journal_ref": "AISTATS 2024",
+      "doi": "",
+      "primary_category": "stat.ML"
+    },
+    "kone2025constrainedpareto": {
+      "url": "http://arxiv.org/abs/2506.08127v1",
+      "title": "Constrained Pareto Set Identification with Bandit Feedback",
+      "authors": [
+        "Cyrille Kone",
+        "Emilie Kaufmann",
+        "Laura Richert"
+      ],
+      "published": "2025-06-09T18:29:28Z",
+      "updated": "2025-06-09T18:29:28Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "stat.ML"
+    },
+    "kim2025morlportfolios": {
+      "url": "http://arxiv.org/abs/2502.09724v2",
+      "title": "Navigating the Social Welfare Frontier: Portfolios for Multi-objective Reinforcement Learning",
+      "authors": [
+        "Cheol Woo Kim",
+        "Jai Moondra",
+        "Shresth Verma",
+        "Madeleine Pollack",
+        "Lingkai Kong",
+        "Milind Tambe",
+        "Swati Gupta"
+      ],
+      "published": "2025-02-13T19:13:55Z",
+      "updated": "2025-07-16T17:43:06Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "cs.LG"
+    },
+    "ballon2025estimating": {
+      "url": "http://arxiv.org/abs/2512.14220v1",
+      "title": "Estimating problem difficulty without ground truth using Large Language Model comparisons",
+      "authors": [
+        "Marthe Ballon",
+        "Andres Algaba",
+        "Brecht Verbeken",
+        "Vincent Ginis"
+      ],
+      "published": "2025-12-16T09:13:56Z",
+      "updated": "2025-12-16T09:13:56Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "cs.LG"
+    },
+    "li2025canllms": {
+      "url": "http://arxiv.org/abs/2512.18880v2",
+      "title": "Can LLMs Estimate Student Struggles? Human-AI Difficulty Alignment with Proficiency Simulation for Item Difficulty Prediction",
+      "authors": [
+        "Ming Li",
+        "Han Chen",
+        "Yunze Xiao",
+        "Jian Chen",
+        "Hong Jiao",
+        "Tianyi Zhou"
+      ],
+      "published": "2025-12-21T20:41:36Z",
+      "updated": "2026-05-10T20:55:34Z",
+      "journal_ref": "",
+      "doi": "",
+      "primary_category": "cs.CL"
+    },
+    "parfenova2025textannotation": {
+      "url": "http://arxiv.org/abs/2512.00046v1",
+      "title": "Text Annotation via Inductive Coding: Comparing Human Experts to LLMs in Qualitative Data Analysis",
+      "authors": [
+        "Angelina Parfenova",
+        "Andreas Marfurt",
+        "Alexander Denzler",
+        "Juergen Pfeffer"
+      ],
+      "published": "2025-11-17T13:03:27Z",
+      "updated": "2025-11-17T13:03:27Z",
+      "journal_ref": "NAACL 2025",
+      "doi": "10.18653/v1/2025.findings-naacl.361",
+      "primary_category": "cs.CL"
+    }
+  }
+}

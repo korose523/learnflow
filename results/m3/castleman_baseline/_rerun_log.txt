@@ -1,0 +1,57 @@
+cache loaded: users 52733 p-table 13243
+pools built
+generating 500 sims (seed 42 ) ...
+sims ready; example arm counts: {'easy': 28, 'normal': 6, 'hard': 6}
+
+[M3 section 5.3 v2 internal strategies -- reproduced on same sims]
+  random         0.6786 +/- 0.0078
+  all_easy       0.7618 +/- 0.0068
+  all_hard       0.6319 +/- 0.0091
+  adaptive       0.6998 +/- 0.0062
+  llm_correct    0.6963 +/- 0.0065
+  llm_wrong      0.6729 +/- 0.0081
+  flow_zone      0.7158 +/- 0.0062
+  descent_pair   0.6905 +/- 0.0075
+  adaptive_k1    0.6964 +/- 0.0068
+  adaptive_k2    0.6985 +/- 0.0065
+  adaptive_k3    0.7034 +/- 0.0061
+
+[Castleman hierarchical MAB]
+  hmab_ucb       0.6899 +/- 0.0075  (UCB1, immediate-success reward)
+  hmab_castleman 0.6722 +/- 0.0075  (UCB1 + Eq.7 diff-adjusted concept reward)
+  hmab_thompson  0.7093 +/- 0.0074  (Thompson, immediate-success reward)
+  hmab_ucb_c10   0.6988 +/- 0.0073  (UCB c=1.0, immediate-success reward)
+  hmab_ucb_c03   0.7137 +/- 0.0073  (UCB c=0.3, immediate-success reward)
+
+Reference M3 section 5.3 v2 published means: {'all_easy': 0.7434, 'flow_zone': 0.7119, 'llm_correct': 0.7023, 'adaptive': 0.6898, 'random': 0.6835, 'all_hard': 0.6498}
+
+[HMAB vs internal strategies]
+   hmab_ucb - all_easy = -0.0535
+   hmab_ucb - flow_zone = -0.0220
+   hmab_ucb - llm_correct = -0.0124
+   hmab_ucb - random = +0.0064
+   hmab_castleman - all_easy = -0.0712
+   hmab_castleman - flow_zone = -0.0397
+   hmab_castleman - llm_correct = -0.0301
+   hmab_castleman - random = -0.0113
+   hmab_thompson - all_easy = -0.0341
+   hmab_thompson - flow_zone = -0.0026
+   hmab_thompson - llm_correct = +0.0070
+   hmab_thompson - random = +0.0258
+   hmab_ucb_c10 - all_easy = -0.0446
+   hmab_ucb_c10 - flow_zone = -0.0131
+   hmab_ucb_c10 - llm_correct = -0.0035
+   hmab_ucb_c10 - random = +0.0153
+   hmab_ucb_c03 - all_easy = -0.0297
+   hmab_ucb_c03 - flow_zone = +0.0018
+   hmab_ucb_c03 - llm_correct = +0.0114
+   hmab_ucb_c03 - random = +0.0302
+
+[HMAB vs M3 Table 4 published]
+  hmab_ucb         all_easy -0.0535 | flow_zone -0.0220 | llm_correct -0.0124 | random +0.0064
+  hmab_castleman   all_easy -0.0712 | flow_zone -0.0397 | llm_correct -0.0301 | random -0.0113
+  hmab_thompson    all_easy -0.0341 | flow_zone -0.0026 | llm_correct +0.0070 | random +0.0258
+  hmab_ucb_c10     all_easy -0.0446 | flow_zone -0.0131 | llm_correct -0.0035 | random +0.0153
+  hmab_ucb_c03     all_easy -0.0297 | flow_zone +0.0018 | llm_correct +0.0114 | random +0.0302
+
+Saved -> E:\learnflow\results\m3\castleman_baseline\results.json

@@ -1,0 +1,117 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "E:\\learnflow\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "deepseek-v2:16b": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": 0.2521,
+      "e1a_spearman_p": 0.00020763,
+      "e1a_accuracy": 0.4057,
+      "e1a_cohen_kappa": 0.1132,
+      "e1a_llm_dist": {
+        "1": 81,
+        "2": 55,
+        "3": 76
+      },
+      "e1a_spearman_ci95": [
+        0.1337,
+        0.359
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": 0.2521,
+      "e1a_spearman_none_as_zero_p": 0.00020763,
+      "e1a_spearman_none_as_zero_ci95": [
+        0.1337,
+        0.359
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 108,
+      "e1b_parse_fail": 12,
+      "e1b_n_pair_constraints": 1379,
+      "e1b_n_total_comparisons": 1398,
+      "e1b_spearman": 0.0141,
+      "e1b_spearman_p": 0.8385335,
+      "paired_bootstrap": {
+        "reps_used": 200,
+        "rho_absolute_mean": 0.2515,
+        "rho_absolute_ci95": [
+          0.1337,
+          0.359
+        ],
+        "rho_bt_mean": 0.0215,
+        "rho_bt_ci95": [
+          -0.1328,
+          0.1778
+        ],
+        "delta_abs_minus_bt_mean": 0.23,
+        "delta_abs_minus_bt_ci95": [
+          -0.0139,
+          0.4443
+        ],
+        "delta_p_two_sided": 0.07,
+        "significant_at_0.05": false
+      },
+      "e1b_spearman_ci95": [
+        -0.1328,
+        0.1778
+      ]
+    }
+  },
+  "run_cells": {
+    "deepseek-v2:16b": {
+      "model_id": "deepseek-v2:16b",
+      "family": "DeepSeek",
+      "architecture": "dense",
+      "params_billions": 15.7,
+      "scale_tier": "S2_7-30B",
+      "model_digest": {
+        "digest": "7c8c332f2df7ac4d657f3514d757d969b84ac6d3fec5b0c02bc8491bd0dc5ea1",
+        "digest_source": "api/tags",
+        "size_bytes": 8905124229,
+        "modified_at": "2026-09-26T13:02:47.1858913+09:00",
+        "family": "deepseek2",
+        "parameter_size": "15.7B",
+        "quantization_level": "Q4_0",
+        "format": "gguf",
+        "model_info_subset": {
+          "deepseek2.block_count": 27,
+          "deepseek2.context_length": 163840,
+          "deepseek2.expert_count": 64,
+          "deepseek2.expert_feed_forward_length": 1408,
+          "deepseek2.expert_shared_count": 2,
+          "deepseek2.expert_used_count": 6,
+          "deepseek2.expert_weights_scale": 1,
+          "deepseek2.leading_dense_block_count": 1,
+          "deepseek2.rope.scaling.original_context_length": 4096,
+          "general.architecture": "deepseek2",
+          "general.parameter_count": 15706484224
+        },
+        "raw_top_keys": [
+          "capabilities",
+          "details",
+          "license",
+          "model_info",
+          "modelfile",
+          "modified_at",
+          "parameters",
+          "template",
+          "tensors"
+        ]
+      },
+      "e1b_new_records": 90,
+      "e1b_wall_seconds": 3048.9,
+      "wall_seconds": 3049.1
+    }
+  }
+}

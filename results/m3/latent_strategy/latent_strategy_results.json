@@ -1,0 +1,65 @@
+{
+  "settings": {
+    "D": 10,
+    "T": 120,
+    "SEEDS": 60,
+    "ALPHA": 1.5,
+    "PSTAR": 0.75,
+    "SG": 0.18,
+    "ETA": 0.06,
+    "LAM": 0.015,
+    "OBS_NOISE": 0.05
+  },
+  "summary": {
+    "flow_zone_latent": {
+      "final_gain_mean": 7.08996,
+      "final_gain_sd": 0.14624,
+      "imm_sr_mean": 0.78613,
+      "final_m_mean": 1.0,
+      "comparable": true
+    },
+    "all_easy_latent": {
+      "final_gain_mean": 3.15801,
+      "final_gain_sd": 0.05837,
+      "imm_sr_mean": 0.98148,
+      "final_m_mean": 1.0,
+      "comparable": true
+    },
+    "all_hard_latent": {
+      "final_gain_mean": 0.00135,
+      "final_gain_sd": 3e-05,
+      "imm_sr_mean": 0.00325,
+      "final_m_mean": 0.01582,
+      "comparable": true
+    },
+    "random_latent": {
+      "final_gain_mean": 3.1983,
+      "final_gain_sd": 0.54797,
+      "imm_sr_mean": 0.63087,
+      "final_m_mean": 1.0,
+      "comparable": true
+    },
+    "oracle(已知m)": {
+      "final_gain_mean": 7.17712,
+      "final_gain_sd": 0.14308,
+      "imm_sr_mean": 0.78428,
+      "final_m_mean": 1.0,
+      "comparable": false
+    },
+    "matched(模型已知,用m̂)": {
+      "final_gain_mean": 7.08996,
+      "final_gain_sd": 0.14624,
+      "imm_sr_mean": 0.78613,
+      "final_m_mean": 1.0,
+      "comparable": false
+    },
+    "ctx+LLM先验(正确)": {
+      "final_gain_mean": 5.26962,
+      "final_gain_sd": 0.14375,
+      "imm_sr_mean": 0.82768,
+      "final_m_mean": 1.0,
+      "comparable": false
+    }
+  },
+  "verdict": "flow_zone 在独立结果变量(final_gain)上优于 all_easy —— §5.3 可从'策略行为的模拟比较'升级为'策略优劣的模拟比较'。"
+}

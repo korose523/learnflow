@@ -479,7 +479,7 @@ _SPECS_DATA: List[Dict[str, Any]] = [
      "theory_ref": "—（无理论支撑）", "impl_ref": "ux_addiction_engine.py:345,482,524",
      "disposition": "D", "maturity": "placeholder", "notes": "建议删除或合并为 1 个可配置主题"},
 
-    # H. 健康护栏与伦理（3）
+    # H. 健康护栏与伦理（4）
     {"id": "LF-M51", "key": "forced_rest", "name_zh": "强制休息提醒",
      "name_en": "Forced Rest Reminder", "stage": "during", "category": "health",
      "theory_ref": "认知疲劳恢复", "impl_ref": "feedback_service.py:198",

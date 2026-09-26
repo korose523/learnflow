@@ -1,0 +1,140 @@
+{
+ "protocol": {
+  "source": "M3 section 5.3 v2 / Castleman HMAB baseline (castleman_hmab.py), reused verbatim",
+  "data": "Junyi real arms, ability-decile conditional p (junyi_m3_cache.json + Info_Content.csv)",
+  "horizon_T": 40,
+  "n_sims": 500,
+  "seed": 42,
+  "reward": "immediate success rate (1/0 per step), NOT learning gain -- matches M3 5.3",
+  "clamp": "[0.05, 0.98]",
+  "pythonhashseed_safety": "sorted strands in generate_sims; per-sim RNG seeded by crc32(strand|rldkt|decile)",
+  "note": "RL-DKT *policy* implemented as tabular Q-learning over a strand answer-history state; Q-table RESET per sim (cold-start / real-time interpretation). Same 500 sims as Castleman baseline (generate_sims is deterministic in seed=42)."
+ },
+ "rldkt_hyperparams": {
+  "agent": "tabular Q-learning (epsilon-greedy)",
+  "state_features": [
+   "rolling success rate over last WINDOW attempts (5 bins)",
+   "recent streak clipped to [-3,3] (7 bins)",
+   "current difficulty band one-hot {easy,normal,hard}"
+  ],
+  "WINDOW": 10,
+  "SR_BINS": 5,
+  "STREAK_CLIP": 3,
+  "actions": [
+   "easy",
+   "normal",
+   "hard"
+  ],
+  "alpha": 0.1,
+  "gamma": 0.9,
+  "eps0": 0.2,
+  "eps_end": 0.05,
+  "q_table_reset_per_sim": true,
+  "reward": "immediate success 1/0"
+ },
+ "rldkt_q": {
+  "mean": 0.6883,
+  "se": 0.0078,
+  "beats_flow_zone_same_protocol": false,
+  "beats_flow_zone_published": false
+ },
+ "internal_same_protocol_reproduced": {
+  "random": {
+   "mean": 0.6786,
+   "se": 0.0078
+  },
+  "all_easy": {
+   "mean": 0.7618,
+   "se": 0.0068
+  },
+  "all_hard": {
+   "mean": 0.6319,
+   "se": 0.0091
+  },
+  "adaptive": {
+   "mean": 0.6998,
+   "se": 0.0062
+  },
+  "llm_correct": {
+   "mean": 0.6963,
+   "se": 0.0065
+  },
+  "llm_wrong": {
+   "mean": 0.6729,
+   "se": 0.0081
+  },
+  "flow_zone": {
+   "mean": 0.7158,
+   "se": 0.0062
+  },
+  "descent_pair": {
+   "mean": 0.6905,
+   "se": 0.0075
+  },
+  "adaptive_k1": {
+   "mean": 0.6964,
+   "se": 0.0068
+  },
+  "adaptive_k2": {
+   "mean": 0.6985,
+   "se": 0.0065
+  },
+  "adaptive_k3": {
+   "mean": 0.7034,
+   "se": 0.0061
+  },
+  "rldkt_q": {
+   "mean": 0.6883,
+   "se": 0.0078
+  }
+ },
+ "internal_published_table4": {
+  "all_easy": 0.7434,
+  "flow_zone": 0.7119,
+  "llm_correct": 0.7023,
+  "adaptive": 0.6898,
+  "random": 0.6835,
+  "all_hard": 0.6498
+ },
+ "hmab_cited_from_castleman_results": {
+  "hmab_ucb": 0.6899,
+  "hmab_castleman": 0.6722,
+  "hmab_thompson": 0.7093,
+  "hmab_ucb_c10": 0.6988,
+  "hmab_ucb_c03": 0.7137
+ },
+ "diffs_rldkt_vs_same_protocol": {
+  "random": 0.0097,
+  "all_easy": -0.0735,
+  "all_hard": 0.0564,
+  "adaptive": -0.0115,
+  "llm_correct": -0.008,
+  "llm_wrong": 0.0154,
+  "flow_zone": -0.0275,
+  "descent_pair": -0.0022,
+  "adaptive_k1": -0.0081,
+  "adaptive_k2": -0.0102,
+  "adaptive_k3": -0.0151,
+  "rldkt_q": 0.0
+ },
+ "diffs_rldkt_vs_published_table4": {
+  "all_easy": -0.0551,
+  "flow_zone": -0.0236,
+  "llm_correct": -0.014,
+  "adaptive": -0.0015,
+  "random": 0.0048,
+  "all_hard": 0.0385
+ },
+ "diffs_rldkt_vs_hmab": {
+  "hmab_ucb": -0.0016,
+  "hmab_castleman": 0.0161,
+  "hmab_thompson": -0.021,
+  "hmab_ucb_c10": -0.0105,
+  "hmab_ucb_c03": -0.0254
+ },
+ "honesty_constraints": {
+  "no_learning_gain_claim": true,
+  "scope": "Strictly scoped to the SAME immediate-success-rate bandit protocol. We do NOT claim LearnFlow beats RL-DKT on learning gain (reward caliber differs).",
+  "rldkt_internal_contradiction": "Fu 2025's reward definition is internally contradictory across its text (learning-gain vs immediate-success framings), and its 'real-time' deployment claim lacks a verifiable real deployment trace. This is a differentiation asset for LearnFlow, not a defeated baseline."
+ }
+}

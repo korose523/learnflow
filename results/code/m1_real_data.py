@@ -33,36 +33,75 @@ with open(p, encoding="utf-8", errors="replace") as f:
 print("valid rows:", len(rows))
 
 # --- A1 滑窗最优错误率 ---
+# v2 修复（审阅意见 3.1）：窗宽 W 使错误率只取 k/W（k = 窗口内错误条数，0..W 的整数）
+# 这 W+1 个离散支撑点。旧实现用 np.histogram(win_err, bins=np.arange(0, 1.0001, 0.05))，
+# 区间边界与支撑点恰好重合，浮点误差（k=4 时 1 − 16/20 = 0.19999999999999996）会把
+# 0.15 与 0.20 挤进同一区间、把 0.10 挤到下一区间，"众数区间 0.15–0.20"因此是分箱边界
+# 伪影而非分布事实。现改为按整数错误条数 k 直接计数（整数运算、无浮点），支撑点 k/W 精确。
 by_user = defaultdict(list)
 for oid, uid, pid, c, orig, ms, att in rows:
     by_user[uid].append((oid, c))
-win_err = []
 W = 20
+per_user_hist = []
 for uid, seq in by_user.items():
     seq.sort()
     cs = [c for _, c in seq]
     if len(cs) < W:
         continue
-    arr = np.asarray(cs, dtype=float)
+    arr = np.asarray(cs, dtype=np.int64)
     csum = np.concatenate([[0], np.cumsum(arr)])
-    werr = 1.0 - (csum[W:] - csum[:-W]) / W
-    win_err.append(werr)
-win_err = np.concatenate(win_err)
-mean_err = float(win_err.mean()); med_err = float(np.median(win_err))
-hist, edges = np.histogram(win_err, bins=np.arange(0, 1.0001, 0.05))
-mode_bin = float((edges[hist.argmax()] + edges[hist.argmax() + 1]) / 2)
-share_807 = float(((win_err >= 0.17) & (win_err <= 0.23)).mean())   # 错误率 17–23% ≈ 成功率 77–83%
-share_85 = float(((win_err >= 0.10) & (win_err <= 0.20)).mean())    # 成功率 80–90%
+    err_cnt = W - (csum[W:] - csum[:-W])                  # 窗口内错误条数（整数 0..W）
+    per_user_hist.append(np.bincount(err_cnt, minlength=W + 1).astype(np.int64))
+per_user_hist = np.vstack(per_user_hist)                   # (使用用户数, W+1)
+n_users_input = len(by_user)                               # 输入中出现的全部用户数
+n_users_used = int(per_user_hist.shape[0])                 # 实际贡献滑窗的用户数（≥W 条作答）
+k_counts = per_user_hist.sum(axis=0)                       # 21 个支撑点的精确频数
+n_windows = int(k_counts.sum())
+support = [round(k / W, 2) for k in range(W + 1)]
+shares = [round(float(c) / n_windows, 6) for c in k_counts]
+top = int(k_counts.max())
+modal_k = [k for k in range(W + 1) if int(k_counts[k]) == top]
+mean_err = float((k_counts * np.arange(W + 1)).sum()) / (n_windows * W)
+cum = np.cumsum(k_counts) / n_windows
+median_k = int(np.searchsorted(cum, 0.5, side="left"))
+median_err = median_k / W
+share_807 = float(k_counts[4]) / n_windows                 # 0.17 ≤ e ≤ 0.23 只含 0.20 一个支撑点
+share_85 = float(k_counts[2:5].sum()) / n_windows          # 0.10 / 0.15 / 0.20 三个支撑点
+# 众数的置信集合：离散分布的众数无点估计意义，按“学生（用户）”重抽样做 bootstrap
+BOOT = 200
+rng = np.random.default_rng(20260922)
+boot_argmax = np.zeros((BOOT, W + 1), dtype=np.int64)
+for b in range(BOOT):
+    pick = rng.integers(0, n_users_used, n_users_used)
+    tot = per_user_hist[pick].sum(axis=0)
+    boot_argmax[b] = (tot == tot.max()).astype(np.int64)
+mode_freq = boot_argmax.mean(axis=0)
+acc, ci95 = 0.0, []
+for k in np.argsort(-mode_freq):
+    if mode_freq[k] <= 0:
+        break
+    ci95.append(int(k)); acc += float(mode_freq[k])
+    if acc >= 0.95:
+        break
+k_table = [{"k_errors": k, "error_rate": support[k], "success_rate": round(1 - k / W, 2),
+            "n_windows": int(k_counts[k]), "share": shares[k],
+            "bootstrap_argmax_freq": round(float(mode_freq[k]), 4)} for k in range(W + 1)]
 results["assist09_window"] = {
-    "window": W, "n_windows": int(win_err.size), "n_users_used": len(by_user),
-    "mean_error_rate": round(mean_err, 4), "median_error_rate": round(med_err, 4),
-    "modal_bin_center": round(mode_bin, 2),
+    "window": W, "n_windows": n_windows,
+    "n_users_input": n_users_input,      # 输入中出现的全部用户数（旧字段 n_users_used 误用此值）
+    "n_users_used": n_users_used,        # 实际贡献滑窗的用户数（≥W 条作答）
+    "mean_error_rate": round(mean_err, 4), "median_error_rate": round(median_err, 2),
+    "modal_k_errors": modal_k,
+    "modal_error_rate": [round(k / W, 2) for k in modal_k],
+    "modal_error_rate_center": round(float(np.mean(modal_k)) / W, 4),
+    "bootstrap_modal_ci95_k": ci95,
+    "k_frequency_table": k_table,
     "share_err_in_17_23pct": round(share_807, 4),
     "share_err_in_10_20pct": round(share_85, 4),
-    "hist_05bins": hist.tolist(),
 }
-print("window: mean_err=%.4f median=%.4f mode_bin=%.2f share(77-83%%)=%.4f" %
-      (mean_err, med_err, mode_bin, share_807))
+print("window: n_windows=%d users_used=%d/%d mean_err=%.4f median=%.2f modal_k=%s (err=%s) boot95_k=%s" %
+      (n_windows, n_users_used, n_users_input, mean_err, median_err, modal_k,
+       [round(k / W, 2) for k in modal_k], ci95))
 
 # --- A2 难度源一致性（3 源）---
 per_prob = defaultdict(lambda: [0, 0, [], []])   # n, ncorrect, ms, att
@@ -139,15 +178,35 @@ for name, src in [("irt", S_p), ("time", S_t), ("attempts", S_a)]:
             drift[f"{name}|{tname}"] = {"error": str(ex)[:80]}
 l1s = [v["L1"] for v in drift.values() if "L1" in v]
 revs = [v["rank_reversals"] for v in drift.values() if "rank_reversals" in v]
-results["assist09_drift"] = {
+# v2 修复（审阅意见 3.4）：本块使用 min-max 归一化 + π_k = w_k·Cov(z_k,S)/Var(S) 的旧符号口径，
+# 与最终稿件口径不一致（L1_mean = 0.7597 已作废，稿件的 0.5357 出自 optimized_results.json）。
+# 旧数字不再留在主产物里，迁到 deprecated/ 并显式标注，避免复现者先撞上废弃口径。
+STALE = {
     "weights_nominal": w3.tolist(), "pi_baseline": [round(v, 4) for v in pi0],
     "transforms": drift,
     "L1_mean": round(float(np.mean(l1s)), 4), "L1_max": round(float(np.max(l1s)), 4),
     "reversal_rate": round(float(np.mean([1 if r > 0 else 0 for r in revs])), 4),
 }
-print("drift: L1_mean=%.4f L1_max=%.4f reversal_rate=%.2f" %
-      (results["assist09_drift"]["L1_mean"], results["assist09_drift"]["L1_max"],
-       results["assist09_drift"]["reversal_rate"]))
+DEPRECATED = os.path.join(OUT, "deprecated")
+os.makedirs(DEPRECATED, exist_ok=True)
+with open(os.path.join(DEPRECATED, "assist09_drift_v1_sign_mixed.json"), "w", encoding="utf-8") as f:
+    json.dump({
+        "_deprecated": True,
+        "_deprecated_on": "2026-09-22",
+        "_reason": ("旧符号口径：min-max 归一化 + π_k = w_k·Cov(z_k,S)/Var(S)，与最终稿件的"
+                    "漂移口径不一致，L1_mean = 0.7597 已作废，禁止引用。"),
+        "_superseded_by": "results/code/optimized_results.json（assist09 漂移 L1_mean = 0.5357）",
+        "_origin": "results/code/m1_real_data.py 旧版 A3 块",
+        "payload": STALE,
+    }, f, ensure_ascii=False, indent=2)
+results["assist09_drift_deprecated"] = {
+    "_deprecated": True,
+    "_reason": "旧符号口径 L1_mean = 0.7597 已作废，禁止引用。",
+    "_superseded_by": "results/code/optimized_results.json",
+    "_moved_to": "results/code/deprecated/assist09_drift_v1_sign_mixed.json",
+}
+print("drift(OLD SIGN, deprecated): L1_mean=%.4f L1_max=%.4f reversal_rate=%.2f -> deprecated/" %
+      (STALE["L1_mean"], STALE["L1_max"], STALE["reversal_rate"]))
 
 # ============================== E-B: DBE-KT22 ==============================
 print("=" * 60)

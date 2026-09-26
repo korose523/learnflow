@@ -69,6 +69,55 @@ def test_mechanism_unique_is_53():
 
 
 # ────────────────────────────────────────────────────────────
+# 1b. 头条数字三元组「登记 54 / 效果生产 2 / 成熟度 9·37·8」
+#     （审阅意见 6.2：54 单独出现会被读成「54 个都在运行」，必须始终并列）
+# ────────────────────────────────────────────────────────────
+
+def test_maturity_triple_is_9_37_8():
+    """成熟度分解必须与「登记 54」自洽，且占位机制为 8（历史文档曾写 4）。"""
+    mod = _load_module()
+    counts = mod.collect_all()
+    assert counts["maturity_complete"]["value"] == 9
+    assert counts["maturity_partial"]["value"] == 37
+    assert counts["maturity_placeholder"]["value"] == 8
+    total = (counts["maturity_complete"]["value"]
+             + counts["maturity_partial"]["value"]
+             + counts["maturity_placeholder"]["value"])
+    assert total == counts["mechanism_unique"]["value"] == 54, (
+        f"成熟度分解之和 {total} 与登记机制数不一致，分解口径已漂移"
+    )
+    assert counts["maturity_placeholder"]["ids"] == [
+        "LF-M19", "LF-M28", "LF-M29", "LF-M32",
+        "LF-M45", "LF-M49", "LF-M50", "LF-M53",
+    ]
+
+
+def test_runtime_effect_producers_at_least_14_after_route_a():
+    """路线 A 改造后，运行时构造 Effect(...) 的位置应 ≥14（改造前 2 见封存 tag audit-m2-20260911）。
+
+    注：本测试校验**当前源码**的改造后生产者数（route_a_producers.py 提供 ≥14 处字面
+    Effect( 调用）；封存审计时点的"效果生产 2"由 verify_m2_anchors 对 tag 校验，互不替代。
+    """
+    mod = _load_module()
+    counts = mod.collect_all()
+    ep = counts["effect_producers"]
+    assert ep["value"] >= 14, (
+        f"路线 A 改造后，运行时干预效果生产者应 ≥14 处，实测 {ep['value']}；"
+        f"位置：{[s['location'] for s in ep['sites']]}"
+    )
+    # 锚点用「文件 + 机制关联」而非硬编码行号，避免代码位移即脆断
+    # （封存审计时点的精确行号见 tag audit-m2-20260911，由 verify_m2_anchors 校验）。
+    locs = [s["location"] for s in ep["sites"]]
+    assert any("deep_addiction_engine.py" in s for s in locs), f"缺 LF-M44 生产者: {locs}"
+    assert any("learning_orchestrator.py" in s for s in locs), f"缺 LF-M52 生产者: {locs}"
+    # 每个生产者都必须能关联到具体机制，否则「N 个机制在运行」不可追溯
+    for s in ep["sites"]:
+        assert s["mechanism_labels"] or s["registry_impl_ref_ids"], (
+            f"{s['location']} 未能关联到任何 LF-M 机制"
+        )
+
+
+# ────────────────────────────────────────────────────────────
 # 2. 把「项目内部数字自相矛盾」钉成机器可读事实
 # ────────────────────────────────────────────────────────────
 

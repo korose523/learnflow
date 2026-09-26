@@ -124,6 +124,11 @@ PRD_DOC = BACKEND_ROOT / "docs" / "incremental_prd.md"
 SKILLTREE_SRC = APP_DIR / "services" / "meta_learning_skilltree.py"
 GAMIFICATION_SRC = APP_DIR / "services" / "gamification_service.py"
 METHOD_REGISTRY_SRC = APP_DIR / "services" / "method_registry.py"
+# 机制注册表：成熟度三元组与「干预效果生产者」的唯一静态来源（口径见 L6/L7）
+MECHANISM_REGISTRY_SRC = APP_DIR / "services" / "mechanism_registry.py"
+#: 机制成熟度取值域，与 app/services/mechanism_registry.MATURITY 保持一致
+MATURITY_LEVELS: Tuple[str, ...] = ("complete", "partial", "placeholder")
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 登记口径（registered baseline）
@@ -175,6 +180,34 @@ REGISTERED: Dict[str, Dict[str, Any]] = {
         "strict": True,
         "note": "strict：PRD §2.3 表格逐项相加。此值变化说明有人改了 PRD 表格，"
                 "必须重新核对「PRD 自相矛盾」这一论断是否仍成立。",
+    },
+    "maturity_complete": {
+        "registered": 9,
+        "strict": True,
+        "note": "strict：「登记 54 / 效果生产 2 / 成熟度 complete 9 · partial 37 · "
+                "placeholder 8」是审阅意见 6.2 要求始终并列的头条三元组，被引用即必须可复算。",
+    },
+    "maturity_partial": {
+        "registered": 37,
+        "strict": True,
+        "note": "strict：同上，成熟度三元组的中间项。",
+    },
+    "maturity_placeholder": {
+        "registered": 8,
+        "strict": True,
+        "note": "strict：占位机制数。报告曾以 4 表述（M29/M32/M49/M50），实测为 8，"
+                "更正后必须与此处一致；ID 清单见 JSON 的 maturity_placeholder.ids。",
+    },
+    "effect_producers": {
+        "registered": 16,
+        "strict": True,
+        "note": "strict：运行时真正构造 Effect(...) 的位置数（AST 静态复算）。"
+                "改造前 2 处（封存 tag audit-m2-20260911：deep_addiction_engine.py:296 / "
+                "learning_orchestrator.py:995）。路线 A · A2（2026-09-22）新增 route_a_producers.py，"
+                "贡献 14 处字面 Effect( 构造点（12 新增机制 + 把既有 LF-M44/LF-M52 显式列入以保 A3 "
+                "仿真自包含）；加既有 2 处位置 → 当前 AST 站点 = 16。运行时 opt-in 激活的**不同机制** "
+                "生产者按机制去重 = 14（> 封存时点 2，直接消解 M2 审计「冲突稀少 vs 不可发生」不可区分）。"
+                "改造后仅当 LEARN2_A2_PRODUCERS=1 时并入候选，默认关闭，不影响 936 既有测试。",
     },
 }
 
@@ -614,6 +647,129 @@ def count_prd_claimed() -> Dict[str, Any]:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# L6：机制成熟度三元组   L7：干预效果生产者
+# ─────────────────────────────────────────────────────────────────────────────
+# 为什么需要这两层（审阅意见 6.2）
+#   论文头条数字「54 种机制」单独出现会被读成「54 个都在运行」。实测口径是：
+#   登记 54 / 运行时效果生产者 2 / 成熟度 complete 9 · partial 37 · placeholder 8。
+#   三者必须始终并列，否则又是另一次数字虚高。本层把这三个数钉成可复算量。
+
+def _parse_registry_specs() -> List[Dict[str, Any]]:
+    """静态解析 mechanism_registry.py 的 _SPECS_DATA 列表，返回每条规格的字面量字段。
+
+    只用 AST 读取字面量，不 import app 代码（与 L0~L5 同一约束）。
+    """
+    tree = _parse_python(MECHANISM_REGISTRY_SRC)
+    for node in ast.walk(tree):
+        # 兼容 `_SPECS_DATA: List[...] = [...]`（AnnAssign）与 `_SPECS_DATA = [...]`（Assign）
+        if isinstance(node, ast.AnnAssign):
+            target, value = node.target, node.value
+        elif isinstance(node, ast.Assign):
+            target = next((t for t in node.targets if isinstance(t, ast.Name)), None)
+            value = node.value
+        else:
+            continue
+        if not (isinstance(target, ast.Name) and target.id == "_SPECS_DATA"):
+            continue
+        if not isinstance(value, ast.List):
+            continue
+        specs: List[Dict[str, Any]] = []
+        for elt in value.elts:
+            if not isinstance(elt, ast.Dict):
+                continue
+            rec: Dict[str, Any] = {}
+            for k, v in zip(elt.keys, elt.values):
+                if isinstance(k, ast.Constant) and isinstance(v, ast.Constant):
+                    rec[k.value] = v.value
+            specs.append(rec)
+        return specs
+    raise VerifyError(f"未在 {MECHANISM_REGISTRY_SRC} 中找到 _SPECS_DATA 列表字面量")
+
+
+def _maturity_tally(field: str) -> Dict[str, Any]:
+    specs = _parse_registry_specs()
+    for s in specs:
+        if s.get("maturity") not in MATURITY_LEVELS:
+            raise VerifyError(
+                f"机制 {s.get('id')} 的 maturity 非法：{s.get('maturity')!r}；"
+                f"可选 {MATURITY_LEVELS}"
+            )
+    ids = [s.get("id") for s in specs if s.get("maturity") == field]
+    return {
+        "value": len(ids),
+        "total": len(specs),
+        "ids": sorted(i for i in ids if i),
+        "by_maturity": {lv: sum(1 for s in specs if s.get("maturity") == lv)
+                        for lv in MATURITY_LEVELS},
+        "definition": f"mechanism_registry._SPECS_DATA 中 maturity == '{field}' 的条目数",
+    }
+
+
+def count_maturity_complete() -> Dict[str, Any]:
+    return _maturity_tally("complete")
+
+
+def count_maturity_partial() -> Dict[str, Any]:
+    return _maturity_tally("partial")
+
+
+def count_maturity_placeholder() -> Dict[str, Any]:
+    return _maturity_tally("placeholder")
+
+
+def count_effect_producers() -> Dict[str, Any]:
+    """运行时真正构造 `Effect(...)` 的位置数（测试与评估脚本不计）。
+
+    「已落地」的历史含义过宽（含只写评估记录的机制），这个数才是运行时口径的
+    「效果生产者」。定位方式：AST 找 Call(func=Name('Effect'))，排除 tests/ 与
+    显式的评估脚本目录。
+    """
+    if not APP_DIR.is_dir():
+        raise VerifyError(f"后端 app 目录不存在：{APP_DIR}")
+
+    impl_refs: Dict[str, List[str]] = {}
+    for s in _parse_registry_specs():
+        ref = str(s.get("impl_ref") or "")
+        fname = ref.split(":")[0].strip()
+        if fname and s.get("id"):
+            impl_refs.setdefault(fname, []).append(str(s["id"]))
+
+    sites: List[Dict[str, Any]] = []
+    for py in sorted(APP_DIR.rglob("*.py")):
+        rel = py.relative_to(BACKEND_ROOT).as_posix()
+        if "/tests/" in f"./{rel}" or rel.startswith("tests/") or "/scripts/" in f"./{rel}":
+            continue
+        tree = _parse_python(py)
+        parents: Dict[int, str] = {}
+        for fn in ast.walk(tree):
+            if isinstance(fn, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                for sub in ast.walk(fn):
+                    parents.setdefault(id(sub), fn.name)
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call):
+                continue
+            f = node.func
+            name = f.id if isinstance(f, ast.Name) else (f.attr if isinstance(f, ast.Attribute) else "")
+            if name != "Effect":
+                continue
+            labels = sorted({k.value for k in ast.walk(node)
+                             if isinstance(k, ast.Constant) and isinstance(k.value, str)
+                             and isinstance(k.value, str) and k.value.startswith("LF-M")})
+            sites.append({
+                "location": f"{rel}:{node.lineno}",
+                "enclosing_function": parents.get(id(node), ""),
+                "mechanism_labels": labels,
+                "registry_impl_ref_ids": impl_refs.get(Path(rel).name, []),
+            })
+    sites.sort(key=lambda s: s["location"])
+    return {
+        "value": len(sites),
+        "sites": sites,
+        "definition": "app/**/*.py 中运行时构造 Effect(...) 的位置数（排除 tests/ 与 scripts/）",
+    }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # 汇总 / 判定
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -625,6 +781,10 @@ def collect_all() -> Dict[str, Dict[str, Any]]:
         "learning_methods": count_learning_methods(),
         "skill_tree_nodes": count_skill_tree_nodes(),
         "prd_claimed": count_prd_claimed(),
+        "maturity_complete": count_maturity_complete(),
+        "maturity_partial": count_maturity_partial(),
+        "maturity_placeholder": count_maturity_placeholder(),
+        "effect_producers": count_effect_producers(),
     }
 
 
@@ -661,6 +821,24 @@ def build_verdict(counts: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
                     f"存在未映射到规范 id 的非 snake_case 方法名：{counts[key]['non_snake_ids']}"
                     "（需在 CN_METHOD_ALIAS 中补登记）"
                 )
+        if key.startswith("maturity_"):
+            # 三元组之和必须回到 mechanism_unique（54）：否则「登记 54」与分解口径对不上
+            total = counts[key]["total"]
+            if total != counts["mechanism_unique"]["value"]:
+                ok = False
+                notes.append(
+                    f"成熟度分解的条目总数 {total} ≠ mechanism_unique "
+                    f"{counts['mechanism_unique']['value']}，登记口径与分解口径不一致"
+                )
+            if key == "maturity_placeholder":
+                notes.append(f"占位机制 ID：{counts[key]['ids']}")
+        if key == "effect_producers":
+            locs = [s["location"] for s in counts[key]["sites"]]
+            notes.append("生产者位置：" + ("; ".join(locs) if locs else "无"))
+            for s in counts[key]["sites"]:
+                if not s["mechanism_labels"] and not s["registry_impl_ref_ids"]:
+                    ok = False
+                    notes.append(f"{s['location']} 未能关联到任何 LF-M 机制，请补注机制 ID")
 
         verdict[key] = {
             "status": "verified" if ok else "discrepancy",
@@ -849,6 +1027,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     ov = verdict["_overall"]
     if args.quiet:
+        # 「登记 54 / 效果生产 2 / 成熟度 9·37·8」三元组始终并列输出（审阅意见 6.2）
         print(f"verify_counts: {ov['status']} "
               f"(engine_classes={counts['engine_classes']['value']}, "
               f"mechanism_units={counts['mechanism_units']['value']}, "
@@ -856,6 +1035,11 @@ def main(argv: Optional[List[str]] = None) -> int:
               f"learning_methods={counts['learning_methods']['value']}, "
               f"skill_tree_nodes={counts['skill_tree_nodes']['value']}, "
               f"prd_claimed={counts['prd_claimed']['value']}) "
+              f"| 登记 {counts['mechanism_unique']['value']} / "
+              f"效果生产 {counts['effect_producers']['value']} / "
+              f"成熟度 complete {counts['maturity_complete']['value']}·"
+              f"partial {counts['maturity_partial']['value']}·"
+              f"placeholder {counts['maturity_placeholder']['value']} "
               f"exit={ov['exit_code']}")
     elif not args.json:
         print_report(counts, verdict, payload)

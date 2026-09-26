@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""红线段验证：跑后端全量 pytest，确认 collected 数仍为 934。
+"""红线段验证：跑后端全量 pytest，确认 collected 数仍为 936。
 
 用子进程调用（避免 pytest 的 capture 管理器吞掉输出），
 并显式设置 PYTEST_DEBUG_TEMPROOT（目录必须预先存在，否则 tmp_path 夹具大批报 WinError 3）。

@@ -1,0 +1,58 @@
+{
+  "ollama_tag": "qwen36:latest",
+  "code_label": "qwen36",
+  "manifest_path": "C:\\Users\\mac\\.ollama\\models\\manifests\\registry.ollama.ai\\library\\qwen36\\latest",
+  "manifest_sha256": "5f2d8551c774bb764ea2cf1d4164dffcb795a76c7e2e2a597a48c4a82376fa01",
+  "config_digest": "sha256:9f379d38e75a43cc4fe21811544fff2337e6a10ef825b5f6e43201455cf43e28",
+  "model_format": "gguf",
+  "quantization_level": "IQ3_S",
+  "layers": [
+    {
+      "mediaType": "application/vnd.ollama.image.model",
+      "size": 13676723168,
+      "digest": "sha256:f9c02bca7e44638ee57d1eec54b1a79a870a8eb3ff5f59ca3a86c3e4669d7e1e"
+    },
+    {
+      "mediaType": "application/vnd.ollama.image.params",
+      "size": 92,
+      "digest": "sha256:9ab4a37e1c10bea2dd5384ee477908c79a4f64bdf3eb4221cf064afa28cacaae"
+    }
+  ],
+  "container_architecture": "amd64",
+  "gguf": {
+    "gguf_version": 3,
+    "tensor_count": 733,
+    "metadata_kv_count": 54,
+    "metadata": {
+      "general.architecture": "qwen35moe",
+      "general.type": "model",
+      "general.sampling.top_k": 20,
+      "general.sampling.top_p": 0.949999988079071,
+      "general.sampling.temp": 1.0,
+      "general.name": "Qwen3.6-35B-A3B",
+      "general.basename": "Qwen3.6-35B-A3B",
+      "general.quantized_by": "Unsloth",
+      "general.size_label": "35B-A3B",
+      "general.license": "apache-2.0",
+      "general.license.link": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B/blob/main/LICENSE",
+      "general.repo_url": "https://huggingface.co/unsloth",
+      "general.base_model.count": 1,
+      "general.base_model.0.name": "Qwen3.6 35B A3B",
+      "general.base_model.0.organization": "Qwen",
+      "general.base_model.0.repo_url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+      "general.tags": "<array type=8 n=3>",
+      "qwen3_5_moe": 0
+    }
+  },
+  "base_model": {
+    "name": "Qwen3.6-35B-A3B",
+    "size_label": "35B-A3B",
+    "architecture": "qwen35moe",
+    "quantized_by": "Unsloth",
+    "license": "apache-2.0",
+    "repo_url": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+    "upstream_name": "Qwen3.6 35B A3B",
+    "upstream_organization": "Qwen"
+  },
+  "_note": "M3 稿件曾把标注模型写为「qwen3-6B 量级」。实测代码标签 qwen36 指向 Ollama 上的该模型，基座与量化以本文件的 base_model / quantization_level 为准。"
+}

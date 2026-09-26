@@ -2,7 +2,7 @@
 """把 O11/O12 优化估计器（srw7：符号校正 + 可靠性加权）附加式落库到 difficulty_fusion.py。
 
 用 str.replace + assert(count==1) 规避 Edit 工具静默不应用问题。
-不新增 pytest 测试（守住全量测试 934 红线）；正确性由外部脚本 o11_land_verify.py 复核。
+不新增 pytest 测试（守住全量测试红线：基线 920 → 难度公制层 934 → 审阅整改后现行 936）；正确性由外部脚本 o11_land_verify.py 复核。
 """
 import io, pathlib
 

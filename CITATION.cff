@@ -1,25 +1,40 @@
 cff-version: 1.2.0
 message: "If you use this software or its reproducibility artifacts, please cite it as below."
+# 身份统一（审阅意见 2.1，2026-09-22）：本 artifact 的研究主线统一为「适应性学习中难度的
+# 可测量化与可治理化」。学习成瘾指数（LAI）降级为**附属且未经验证**的模块，
+# 不再出现在标题/摘要/关键词中，也不再作为本 artifact 的测量贡献声明。
 type: software
-title: "LearnFlow: A K12 Gamified Adaptive Learning Platform and Measurement Instrument for Learning-Addiction Research"
+title: "LearnFlow: A K12 Gamified Adaptive Learning Platform and Reproducibility Artifact for Difficulty Measurement, Calibration and Governance Research"
 abstract: >-
   LearnFlow is a K12 gamified adaptive-learning platform released primarily as a reproducible
-  research artifact for the study of learning addiction. Its measurement contribution is a
-  dual-source, five-dimension framework that combines behavioural logs (durations, night-time
-  ratio, hint dependence) with a self-report instrument layer covering the dimensions logs
-  structurally cannot observe: behavioural control, sleep and social impairment, and
-  time-perception bias. Unmeasured dimensions are excluded from the index weighting and
-  reported through an explicit coverage object rather than silently scored as healthy. The
-  artifact also accompanies empirical work on the commensurability of difficulty scales,
-  external-validity testing of the 85% success-rate rule, ordered-action bandits with a
-  formalised flow channel, and reliability boundaries of LLM-based difficulty annotation.
+  research artifact for the study of difficulty in adaptive learning. The artifact supports four
+  connected lines of work: (1) measurement — whether difficulty sources defined on different
+  scales are commensurable, and how far a linear min-max fusion drifts under monotone
+  reparameterisation relative to an empirical-CDF-to-logit quantile metric; (2) target — the
+  external validity of the 80-85% success-rate rule on real learner logs; (3) decision —
+  ordered difficulty sequencing under a cold start, including the reliability boundary of
+  LLM-based difficulty annotation; (4) governance — an intervention ledger and a seven-tuple
+  audit schema for the dozens of gamification mechanisms that coexist in one system.
   Every headline count in the documentation is recomputed from source by scripts under
   learnflow-backend/scripts/, and the consistency check fails loudly when a documented number
-  diverges from the code.
+  diverges from the code. The headline mechanism count is always reported as a triple —
+  registered 54 / runtime effect producers 2 / maturity complete 9, partial 37, placeholder 8 —
+  so the registered figure is never read as "54 mechanisms are running".
+  The repository also contains a behavioural-log plus self-report measurement layer (a
+  five-dimension learning-addiction index, LAI). It is an AUXILIARY, UNVALIDATED module: it has
+  no user data, its self-report items are purpose-built and have not undergone psychometric
+  validation, and it is not used or validated in any of the four lines of work above. It is
+  retained for engineering completeness only, and the README states this limitation
+  unconditionally.
 authors:
-  # 署名：仓库所有者真实姓名 + ORCID（满足 IEEE 全系 TLT / TKDE / THMS 的强制 ORCID 要求）。
-  # 单位：Youngsan University（Busan, KR）计算机学院，博士研究生（2025-09 起）。
-  - name: "翁泽潇"
+  # 署名（审阅意见 §9）：与稿件作者写法统一为 Weng Zexiao（此前 CITATION 写"翁泽潇"）。
+  # 单位：Youngsan University（Busan, KR）计算机与信息工程系，博士研究生（2025-09 起）。
+  # 支撑论文（M1/M2/M3）的作者块为 `Zexiao Weng¹, MinPo Jung¹,*`，
+  # ¹ Department of Computer and Information Engineering, Graduate School, Youngsan University,
+  #    Busan 48015, Republic of Korea；通讯 minpo@ysu.ac.kr，ORCID 0009-0003-3369-757X。
+  # 本软件 artifact 的署名沿用 v0.1.0 记录（Weng 一人）；Jung 的收入见 .zenodo.json 的 contributors。
+  - family-names: "Weng"
+    given-names: "Zexiao"
     alias: "korose523"
     orcid: "https://orcid.org/0009-0009-8600-8954"
     website: "https://github.com/korose523"
@@ -28,17 +43,19 @@ date-released: "2026-09-11"
 license: MIT
 doi: "10.5281/zenodo.22719229"
 # Zenodo concept DOI（跨版本，始终指向最新版）: 10.5281/zenodo.22719228
+# v0.2.0（元数据以难度为中心、LAI 降为附属模块）已就绪，见 .zenodo.json；
+# 上传新版本后本文件的 version / doi 应同步更新，评审人打开 DOI 看到的研究主题自此统一。
 repository-code: "https://github.com/korose523/learnflow"
 url: "https://github.com/korose523/learnflow"
 keywords:
   - adaptive learning
-  - learning addiction
-  - psychological measurement
-  - self-report instruments
   - difficulty calibration
-  - flow channel
+  - commensurability
+  - optimal error rate
+  - ordered bandits
+  - cold start
+  - intervention governance
   - gamification
   - educational data mining
   - reproducibility
   - K12 education
-  - bandit algorithms

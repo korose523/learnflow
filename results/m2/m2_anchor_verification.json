@@ -1,0 +1,78 @@
+{
+  "generated_by": "results/m2/verify_m2_anchors.py",
+  "audit_tag": "audit-m2-20260911",
+  "baseline_commit": "8a328430d36860043f3bf80e8e0bf2a82edd2ecd",
+  "anchor_source": "git show <tag>:<path>（封存树，非当前工作树）",
+  "checked": 7,
+  "failed": 0,
+  "verdict": "verified",
+  "checks": [
+    {
+      "check": "A1 全仓库 Effect( 构造点恰为 2 处",
+      "ok": true,
+      "detail": "实际 2 处：engine.py:296(LF-M44), orchestrator.py:986(LF-M52)"
+    },
+    {
+      "check": "A2 LF-M44 在 deep_addiction_engine.py:296 构造 Effect（visible=True / health=False）",
+      "ok": true,
+      "detail": "{'file': 'engine', 'line': 296, 'mechanism_id': 'LF-M44', 'user_visible': True, 'health_critical': False, 'line_text': 'return Effect('}"
+    },
+    {
+      "check": "A3 LF-M52 在 learning_orchestrator.py:986 构造 Effect（visible=False / health=True）",
+      "ok": true,
+      "detail": "{'file': 'orchestrator', 'line': 986, 'mechanism_id': 'LF-M52', 'user_visible': False, 'health_critical': True, 'line_text': 'fomo_effects.append(Effect('}"
+    },
+    {
+      "check": "A4 _DIRECTION 登记 12 个机制（9 approach + 3 withdraw），静态潜在对 = 27",
+      "ok": true,
+      "detail": "total=12 approach=9 withdraw=3 pairs=27"
+    },
+    {
+      "check": "A4b LF-M44 在方向表中为 approach、LF-M52 为 withdraw",
+      "ok": true,
+      "detail": "LF-M44=approach, LF-M52=withdraw"
+    },
+    {
+      "check": "A5 方向消解的比较范围以 user_visible 过滤（故 LF-M52 从不进入方向比较）",
+      "ok": true,
+      "detail": "user_visible)"
+    },
+    {
+      "check": "A6 第 1 层健康一票否决存在（health_critical 分支）",
+      "ok": true,
+      "detail": "health_critical Effect 命中 → 丢弃全部「拉回型」(approach) Effect,"
+    }
+  ],
+  "effect_producers": [
+    {
+      "file": "engine",
+      "line": 296,
+      "mechanism_id": "LF-M44",
+      "user_visible": true,
+      "health_critical": false,
+      "line_text": "return Effect("
+    },
+    {
+      "file": "orchestrator",
+      "line": 986,
+      "mechanism_id": "LF-M52",
+      "user_visible": false,
+      "health_critical": true,
+      "line_text": "fomo_effects.append(Effect("
+    }
+  ],
+  "direction_table": {
+    "LF-M07": "approach",
+    "LF-M08": "approach",
+    "LF-M10": "approach",
+    "LF-M13": "approach",
+    "LF-M25": "approach",
+    "LF-M26": "approach",
+    "LF-M33": "approach",
+    "LF-M35": "approach",
+    "LF-M44": "approach",
+    "LF-M51": "withdraw",
+    "LF-M52": "withdraw",
+    "LF-M53": "withdraw"
+  }
+}

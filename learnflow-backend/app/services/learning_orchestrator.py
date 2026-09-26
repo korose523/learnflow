@@ -2,6 +2,7 @@
 """
 import json
 import logging
+import os
 import random
 from dataclasses import dataclass
 from datetime import datetime, timedelta, UTC
@@ -183,7 +184,15 @@ for _step, _keys in PIPELINE_MECHANISM_MAP.items():
 # 故此处做惰性导入, 避免模块顶层 import 触发环路。
 def _build_fomo_arbitrator() -> "MechanismArbitrator":
     from app.services.rl_arbitrator import RLArbitrator
-    return MechanismArbitrator(rl_arbitrator=RLArbitrator())
+
+    # 路线 A · A1（2026-09-22）：账本落库 sink，默认关闭，仅 LEARN2_LEDGER_ENABLED=1 时注入。
+    # 未启用时 trace_sink=None，行为与旧版完全一致（不改动既有 936 条测试、不改变效果生产者基线）。
+    sink = None
+    if os.environ.get("LEARN2_LEDGER_ENABLED") == "1":
+        from app.services.arbitration_ledger import LedgerTraceSink
+
+        sink = LedgerTraceSink()
+    return MechanismArbitrator(rl_arbitrator=RLArbitrator(), trace_sink=sink)
 
 
 _FOMO_ARBITRATOR = _build_fomo_arbitrator()
@@ -1003,6 +1012,18 @@ class LearningOrchestrator:
         # 把 0..1 成瘾风险传入仲裁器: 既驱动 1.5 层「LAI 风险自适应降权」(高风险档
         # 丢弃高成瘾化拉回机制, 额外伦理护栏), 也决定 RL 决策的上下文风险档 (tier)。
         # 风险为 0 时 (绝大多数正常提交) 与各层行为完全不变, 向后兼容。
+        # 路线 A · A2（2026-09-22，opt-in）：把 ≥14 个机制升为真正的干预效果生产者，
+        # 并入同一仲裁器统一仲裁，使运行时冲突"可能发生"（消解"冲突稀少 vs 不可发生"）。
+        # 默认关闭：LEARN2_A2_PRODUCERS!=1 时行为与旧版完全一致，936 条既有测试不受影响。
+        if os.environ.get("LEARN2_A2_PRODUCERS") == "1":
+            from app.services.route_a_producers import (
+                install_route_a_directions, build_route_a_new_effects,
+            )
+            install_route_a_directions(_FOMO_ARBITRATOR)
+            # 仅注入 12 个新增生产者；既有 LF-M44/LF-M52 由 FOMO 路径各自产出，
+            # 避免候选集出现重复机制（否则 Layer-2 同桶会多计 dropped_by_conflict）。
+            fomo_effects.extend(
+                build_route_a_new_effects(_fomo_ctx.user_id, _fomo_ctx.session_id))
         _fomo_delivered = _FOMO_ARBITRATOR.arbitrate(
             _fomo_ctx, fomo_effects, lai_risk=_lai_risk
         )

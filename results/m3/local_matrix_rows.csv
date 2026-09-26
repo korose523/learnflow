@@ -1,0 +1,2 @@
+model_id,family,scale_tier,params_billions,architecture,eval_status,datasets,protocol,parse_rate,spearman_rho,accuracy,cohen_kappa,reliability_verdict,source_anchor
+qwen36:latest,Qwen,S3_30-70B,34.7,MoE(A3B active),EVALUATED,DBE-KT22,E1-A(schema enum+锚定),1.0,0.4635,0.55,0.307,E1-A parse_rate=1.0; ρ_E1A=0.4635,results/m3/local_matrix.json#/models/qwen36:latest

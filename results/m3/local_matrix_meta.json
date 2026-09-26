@@ -1,0 +1,9 @@
+{
+  "qwen36:latest": {
+    "family": "Qwen",
+    "params_b": 34.7,
+    "architecture": "MoE (Qwen3.6-35B-A3B)",
+    "quantization": "IQ3_S",
+    "note": "审计锚点模型；params_b / quantization 取自本机 /api/tags 与 /api/show 实测返回值（parameter_size=34.7B, quantization_level=IQ3_S, family=qwen35moe）"
+  }
+}

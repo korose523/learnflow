@@ -1,0 +1,26 @@
+{
+  "a1": {
+    "experiment": "A1",
+    "dataset": "Junyi",
+    "split_protocol": "O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；融合信号仅 A 内、IRT 仅 B 内",
+    "n_items": 1274,
+    "n_persons_b_half": 35052,
+    "n_responses_used_for_irt": 4238666,
+    "min_b_half_responses": 500,
+    "mean_abs_b": 0.9609458692732521,
+    "spearman_fusion": 0.8959610067667809,
+    "spearman_success": 0.9723450145866722,
+    "note": "融合=A 半 O5 七信号等权符号校正融合(ECDF→logit)；仅成功率=B 半失败率 logit；IRT b_j 与仅成功率同源于 B 半（不独立，计划已声明）；每题 B 半 IRT 响应上限 4000（远>500）。"
+  },
+  "a2": {
+    "experiment": "A2",
+    "dataset": "DBE-KT22",
+    "split_protocol": "题级 A/B 蓄水池留出（等权融合无参数，全样本评估，与 O4 一致）",
+    "n_items": 212,
+    "n_transactions": 161953,
+    "weighted_kappa_expert_vs_reference": 0.12297651472326414,
+    "spearman_fusion": 0.20509836810285337,
+    "spearman_success": 0.22043569539610774,
+    "note": "DBE 仅单专家难度标注(Questions.difficulty)，无法算编码者间κ；κ 为专家标签 vs 行为难度(融合)三分位参照编码的线性加权κ(1<2<3)。Spearman 基于全 212 题（等权融合无泄漏风险）。"
+  }
+}

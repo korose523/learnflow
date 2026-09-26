@@ -1,0 +1,199 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.6.0
+rootdir: E:\learnflow\learnflow-backend
+configfile: pytest.ini
+plugins: anyio-4.15.1, asyncio-1.4.0, cov-7.1.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 936 items
+
+tests\test_abtest_framework_v2.py ..........                             [  1%]
+tests\test_addiction_methods_v3.py ..........................            [  3%]
+tests\test_advanced_methods.py .............                             [  5%]
+tests\test_ai_layer.py ....................                              [  7%]
+tests\test_auth_v3.py .........                                          [  8%]
+tests\test_class_pet.py ..........                                       [  9%]
+tests\test_class_pet_api_integration.py ......                           [ 10%]
+tests\test_container_migration.py ...................................... [ 14%]
+..                                                                       [ 14%]
+tests\test_count_verification.py .......                                 [ 15%]
+tests\test_data_integrity_fixes.py ..........                            [ 16%]
+tests\test_dataclass_state_store.py .........................            [ 18%]
+tests\test_deep_addiction.py .........................                   [ 21%]
+tests\test_difficulty_fusion.py ..............                           [ 22%]
+tests\test_duolingo.py ........................                          [ 25%]
+tests\test_experiment_completion.py ..                                   [ 25%]
+tests\test_experiment_power.py .........                                 [ 26%]
+tests\test_fomo_arbitrator.py ...                                        [ 27%]
+tests\test_habit_addiction.py ...............                            [ 28%]
+tests\test_intervention_reward.py ........                               [ 29%]
+tests\test_lai_and_abtest.py ...............                             [ 31%]
+tests\test_learning_event_builder.py ...                                 [ 31%]
+tests\test_learning_methods.py ..............                            [ 32%]
+tests\test_mechanism_arbitrator.py .............                         [ 34%]
+tests\test_mechanism_landing.py ...                                      [ 34%]
+tests\test_mechanism_registry.py ..............                          [ 36%]
+tests\test_memory_science.py ..................                          [ 38%]
+tests\test_meta_skilltree.py ...........                                 [ 39%]
+tests\test_method_registry.py .......................................... [ 43%]
+........................................                                 [ 47%]
+tests\test_minor_protection_wiring.py .........................          [ 50%]
+tests\test_new_features.py ............................................. [ 55%]
+.                                                                        [ 55%]
+tests\test_new_features_2.py ............................                [ 58%]
+tests\test_onboarding.py ...............                                 [ 60%]
+tests\test_onboarding_api.py ................                            [ 61%]
+tests\test_optimal_difficulty.py .....................................   [ 65%]
+tests\test_placement_api.py ....                                         [ 66%]
+tests\test_placement_test.py ...........                                 [ 67%]
+tests\test_positive_addiction.py ..............................          [ 70%]
+tests\test_research_consent.py .................                         [ 72%]
+tests\test_research_data_integrity.py .......                            [ 73%]
+tests\test_reward_audit_guard.py ..........                              [ 74%]
+tests\test_rl_coldstart.py ............                                  [ 75%]
+tests\test_rl_intervention_wiring.py ....                                [ 75%]
+tests\test_runtime_config.py ...                                         [ 76%]
+tests\test_secondary_mechanism_wiring.py ....                            [ 76%]
+tests\test_self_report_measurement.py ......................             [ 79%]
+tests\test_services.py ................................................. [ 84%]
+....                                                                     [ 84%]
+tests\test_social_system.py ...............                              [ 86%]
+tests\test_sql_experiment_store.py ..............                        [ 87%]
+tests\test_state_backend_switch.py ................                      [ 89%]
+tests\test_state_store.py ......                                         [ 90%]
+tests\test_student_flow.py .............................                 [ 93%]
+tests\test_teacher_ai.py ............                                    [ 94%]
+tests\test_team_competition.py .......................                   [ 97%]
+tests\test_ux_addiction.py ............................                  [100%]
+
+============================== warnings summary ===============================
+tests/test_ai_layer.py::test_analytics_endpoints
+  E:\learnflow\learnflow-backend\.venv\Lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+tests/test_mechanism_landing.py::test_xp_leveling_gate_suppresses
+  E:\learnflow\learnflow-backend\tests\test_mechanism_landing.py:74: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables if t.name != "learning_events"]
+
+tests/test_minor_protection_wiring.py::TestProcessSubmissionIntegration::test_response_carries_minor_protection_verdict
+  E:\learnflow\learnflow-backend\tests\test_minor_protection_wiring.py:289: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables
+
+tests/test_research_consent.py::test_resolve_adult_self_granted
+tests/test_research_consent.py::test_resolve_minor_self_granted_invalid
+tests/test_research_consent.py::test_resolve_minor_guardian_granted
+tests/test_research_consent.py::test_resolve_no_record
+tests/test_research_consent.py::test_resolve_revoked
+tests/test_research_consent.py::test_resolve_multi_record_takes_latest
+tests/test_research_consent.py::test_resolve_db_error_returns_none
+  E:\learnflow\learnflow-backend\tests\test_research_consent.py:108: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables if t.name != "learning_events"]
+
+tests/test_research_consent.py::test_orchestrator_marks_and_does_not_block
+  E:\learnflow\learnflow-backend\tests\test_research_consent.py:217: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables if t.name != "learning_events"]
+
+tests/test_rl_intervention_wiring.py::test_rl_observe_called_and_q_updated
+tests/test_rl_intervention_wiring.py::test_rl_fault_tolerance_does_not_break_submission
+tests/test_rl_intervention_wiring.py::test_llm_unavailable_falls_back_to_rule_message
+tests/test_rl_intervention_wiring.py::test_llm_available_personalizes_message
+  E:\learnflow\learnflow-backend\tests\test_rl_intervention_wiring.py:61: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables
+
+tests/test_secondary_mechanism_wiring.py::test_process_submission_includes_evaluations
+  E:\learnflow\learnflow-backend\tests\test_secondary_mechanism_wiring.py:143: SAWarning: Cannot correctly sort tables; there are unresolvable cycles between tables "classes, users", which is usually caused by mutually dependent foreign key constraints.  Foreign key constraints involving these tables will not be considered; this warning may raise an error in a future release.
+    tables = [t for t in Base.metadata.sorted_tables if t.name != "learning_events"]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=============================== tests coverage ================================
+_______________ coverage: platform win32, python 3.11.9-final-0 _______________
+
+Name                                         Stmts   Miss  Cover   Missing
+--------------------------------------------------------------------------
+app\__init__.py                                  1      0   100%
+app\api\__init__.py                              2      0   100%
+app\api\admin.py                                70     31    56%   17-19, 54-67, 93-101, 117-125, 149-161, 171, 213-217
+app\api\analytics.py                            63      8    87%   32-34, 56-59, 81
+app\api\auth.py                                133     71    47%   34, 36, 38, 40, 60-73, 79-120, 129, 140, 155-178, 187-199, 214-228, 238, 252, 258
+app\api\class_pet.py                           105     51    51%   55-61, 66-72, 81, 86, 120-122, 133-135, 153, 156-168, 180, 182-194, 205, 207-209, 211-214
+app\api\gamification.py                        312    172    45%   74-148, 165-199, 226-300, 321-329, 341-348, 357-360, 368-371, 379-383, 400, 408, 419, 429-433, 445-450, 466-477, 501-517, 527, 535, 549-552, 562, 574, 586, 619-633, 650-671, 690, 773-782, 790, 799-802, 815-818, 832, 853-895
+app\api\instrument.py                           69     14    80%   92-94, 147, 163-168, 214-239
+app\api\k12.py                                  30     18    40%   26-29, 49-82
+app\api\onboarding.py                           80     16    80%   79, 182-200
+app\api\parent.py                              146     99    32%   35-36, 39, 62-104, 138-150, 171-208, 224-239, 272-330, 353-358, 371-375, 394-408
+app\api\placement.py                            45      0   100%
+app\api\student.py                             172    112    35%   55-117, 129-145, 155-163, 182-202, 218-249, 265-307, 322-358, 383-389, 418-421, 438-443, 458-464
+app\api\teacher.py                             302    225    25%   28, 61-114, 133-155, 199-216, 232-240, 261-309, 320-328, 350-360, 376, 379-399, 404, 407-449, 462-463, 473-520, 529-552, 562-570, 587-627, 647-670, 680-689, 711-745
+app\core\__init__.py                             3      0   100%
+app\core\config.py                              68      3    96%   78, 87, 101
+app\core\database.py                            87     63    28%   29-30, 56-66, 83-110, 117-160, 166-168
+app\core\security.py                            24      0   100%
+app\main.py                                    121     96    21%   37-39, 44-158, 164-204, 231-232, 242-243
+app\models\__init__.py                          10      0   100%
+app\models\analytics.py                         31      0   100%
+app\models\class_pet.py                         29      1    97%   64
+app\models\consent.py                           61      0   100%
+app\models\curriculum.py                        67      4    94%   21, 77-79
+app\models\instrument.py                        22      0   100%
+app\models\pet.py                               54      3    94%   88-94, 98
+app\models\progression.py                       59      0   100%
+app\models\task.py                              66      1    98%   93
+app\models\user.py                              48     10    79%   13, 57-66
+app\seed_k12.py                                 70     70     0%   13-169
+app\services\__init__.py                        11      0   100%
+app\services\_ml_utils.py                       91     13    86%   29, 53, 55, 61, 73, 94-95, 103, 107, 119-121, 130
+app\services\ab_test_framework.py              487     68    86%   301, 324-325, 364-365, 369-370, 392, 395-397, 483, 492, 503, 531-532, 610-630, 641-646, 653-657, 671-672, 705-720, 737-742, 747-748, 848, 882, 886, 893, 921, 935, 969, 998-1000, 1014, 1035-1037, 1046, 1072, 1093-1095, 1109, 1145, 1155, 1166
+app\services\addiction_engine_v3.py             81      7    91%   77, 81, 85, 241, 243, 245, 247
+app\services\advanced_methods_engine.py         65      5    92%   132, 290-291, 296-297
+app\services\advanced_methods_v2.py             31      2    94%   99, 220
+app\services\anti_addiction.py                  61     15    75%   29, 36, 38, 90-94, 105-111
+app\services\anti_addiction_compliance.py      139      4    97%   283, 315-317
+app\services\audit.py                           42      0   100%
+app\services\cache.py                           99     45    55%   33-34, 54-55, 63-69, 73-74, 79-86, 91-99, 109-111, 121, 126-129, 143, 147, 157, 161, 165, 175-176
+app\services\causal_effects.py                  24      1    96%   36
+app\services\class_pet_service.py               73      0   100%
+app\services\dda.py                             74     13    82%   112-115, 117-126, 154
+app\services\deep_addiction_engine.py          182     12    93%   169, 267, 317, 385-389, 450, 458, 513, 597
+app\services\difficulty_fusion.py              130     69    47%   90, 94, 106, 124, 127, 173-175, 204-231, 252-261, 266, 275, 306-338
+app\services\duolingo_addiction_engine.py      305     41    87%   143, 156-160, 164-177, 272-278, 292, 295-298, 327, 340, 412, 424, 501, 539, 555, 572-582, 617, 639, 686, 725
+app\services\experiment_power.py                56      5    91%   31, 42, 56, 59, 85
+app\services\feature_store.py                   94      8    91%   50, 60, 87, 93, 105, 127, 153, 182
+app\services\feedback_service.py               127     11    91%   132, 183-198, 207, 225, 229, 296
+app\services\gamification_service.py           377     35    91%   175-176, 191, 267-269, 274-275, 286, 343-344, 364-366, 390, 404, 464, 534, 563, 590-602, 617, 683, 699, 705, 711
+app\services\habit_addiction_engine.py          99      0   100%
+app\services\instrument_catalog.py              75      2    97%   225, 254
+app\services\intervention_reward.py             32      0   100%
+app\services\knowledge_tracing.py               93      6    94%   139, 163, 196, 203, 212-213
+app\services\learning_addiction_index.py       194      7    96%   200, 207-208, 453, 455, 457, 459
+app\services\learning_event_builder.py          10      0   100%
+app\services\learning_methods_engine.py        136      9    93%   322, 329, 448, 489, 524, 531, 533, 571, 584
+app\services\learning_methods_engine_v3.py      79      2    97%   242, 247
+app\services\learning_orchestrator.py          451     95    79%   229-230, 234-235, 448, 499-631, 791, 811, 815, 848-868, 919, 926, 942, 986, 1028-1029, 1074, 1190-1203, 1208-1216, 1261, 1357-1358, 1366
+app\services\llm_intervention.py                38      7    82%   40-41, 69-70, 75-76, 79
+app\services\mechanism_arbitrator.py           170     10    94%   39, 180-183, 267, 270, 388-389, 412
+app\services\mechanism_registry.py             149     15    90%   182, 238, 241, 243, 245, 247, 249, 251, 253, 512, 514, 517, 554, 561, 568
+app\services\memory_science_engine.py          143      6    96%   57, 86, 333, 369-370, 402
+app\services\meta_learning_skilltree.py        162     14    91%   223, 226, 267-269, 323, 330, 418-430, 455
+app\services\method_registry.py                175     21    88%   142, 170, 172, 175, 177, 179, 184, 186, 190, 194, 198, 566, 568, 571, 599, 609, 613, 619-621, 626
+app\services\ml_risk_model.py                   98      5    95%   69, 71, 81, 111-112
+app\services\ollama_client.py                   40     10    75%   27-39, 45, 54
+app\services\onboarding_engine.py               75      1    99%   448
+app\services\onboarding_service.py              72     23    68%   107-109, 117-144, 149-154
+app\services\optimal_difficulty.py             199      3    98%   44, 57, 148
+app\services\pet_service.py                     92     12    87%   79-81, 132-140, 163
+app\services\placement_test_engine.py          155     10    94%   122, 195, 244, 252-253, 261, 267-268, 301, 312
+app\services\positive_addiction_engine.py      236     20    92%   166-168, 192, 202, 224, 231, 239, 289, 326-341
+app\services\progression_repository.py          79     16    80%   81-82, 89-91, 130-133, 198-221, 228-234
+app\services\research_consent.py                46      0   100%
+app\services\risk_monitor.py                   132     12    91%   92-94, 98-101, 110-111, 136, 154, 170
+app\services\rl_arbitrator.py                   70      9    87%   53, 86-87, 92-96, 118
+app\services\seed_data.py                       21     21     0%   10-79
+app\services\self_report_service.py             61      2    97%   87, 92
+app\services\social_addiction_engine.py        194      9    95%   209, 244, 246, 250, 361, 365, 377, 403, 432
+app\services\spaced_repetition.py               35      6    83%   70-75, 92
+app\services\state_store.py                    216     39    82%   41, 46, 51, 56, 61, 235, 273-281, 286-292, 314-320, 324-325, 342, 345-348, 363-364, 371-373, 382-383, 391-392, 409, 423-424, 428-431, 438-439, 453
+app\services\teacher_ai_assistant.py           232     36    84%   91-97, 125-126, 204, 240-242, 247-254, 285, 290, 295, 313-314, 366-368, 370-373, 390, 395-396, 399, 435
+app\services\team_competition_engine.py        340     55    84%   137, 147, 185, 211-216, 233-236, 245-255, 322, 342, 346, 414, 466-496, 510, 517, 549, 587, 610, 614-617, 622-626, 644
+app\services\ux_addiction_engine.py            124      2    98%   640-641
+--------------------------------------------------------------------------
+TOTAL                                         9422   1907    80%
+================= 936 passed, 16 warnings in 64.63s (0:01:04) =================

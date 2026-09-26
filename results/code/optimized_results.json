@@ -2,40 +2,59 @@
   "o1_window_sensitivity": {
     "all": {
       "n_windows": 286150,
+      "n_users_input": 4217,
+      "n_users_used": 2314,
       "mean_err": 0.3511,
       "median_err": 0.3,
-      "modal_bin": [
-        0.15,
-        0.2
+      "modal_k": [
+        5
       ],
-      "share_success_77_83": 0.1051
+      "modal_error_rate": [
+        0.25
+      ],
+      "share_success_77_83": 0.1051,
+      "share_success_80_90": 0.264
     },
     "original_only(main_problem)": {
       "n_windows": 216993,
+      "n_users_input": 4217,
+      "n_users_used": 2112,
       "mean_err": 0.3334,
       "median_err": 0.3,
-      "modal_bin": [
-        0.15,
+      "modal_k": [
+        4
+      ],
+      "modal_error_rate": [
         0.2
       ],
-      "share_success_77_83": 0.1093
+      "share_success_77_83": 0.1093,
+      "share_success_80_90": 0.2896
     },
     "tutor_mode_test": {
       "n_windows": 0,
+      "n_users_input": 30,
+      "n_users_used": 0,
       "mean_err": null,
       "median_err": null,
-      "modal_bin": null,
-      "share_success_77_83": null
+      "modal_k": null,
+      "modal_error_rate": null,
+      "share_success_77_83": null,
+      "share_success_80_90": null
     },
     "no_hint_correction": {
       "n_windows": 231125,
+      "n_users_input": 4106,
+      "n_users_used": 2021,
       "mean_err": 0.2183,
       "median_err": 0.2,
-      "modal_bin": [
-        0.15,
-        0.2
+      "modal_k": [
+        3
       ],
-      "share_success_77_83": 0.1479
+      "modal_error_rate": [
+        0.15
+      ],
+      "share_success_77_83": 0.1479,
+      "share_success_80_90": 0.4452
     }
   },
   "o1_metric_comparison": {

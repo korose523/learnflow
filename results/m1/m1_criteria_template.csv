@@ -1,0 +1,7 @@
+﻿item_id,expert_label_1_2_3,behavior_block_A_anchor,criterion_block_B_anchor
+DBE_001,2,dbekt22/responses.csv:col=success_rate,A2:dbekt22/expert_labels.csv:label
+DBE_002,3,dbekt22/responses.csv:col=hint_rate,A2:dbekt22/expert_labels.csv:label
+DBE_003,1,dbekt22/responses.csv:col=self_report_diff,A2:dbekt22/expert_labels.csv:label
+JUNYI_0001,,junyi/responses_A_half.csv:col=success_rate,A1:junyi/responses_B_half.csv:IRT-1PL:b_j
+JUNYI_0002,,junyi/responses_A_half.csv:col=success_rate,A1:junyi/responses_B_half.csv:IRT-1PL:b_j
+JUNYI_0003,,junyi/responses_A_half.csv:col=success_rate,A1:junyi/responses_B_half.csv:IRT-1PL:b_j

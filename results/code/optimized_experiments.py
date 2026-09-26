@@ -29,27 +29,37 @@ with open(os.path.join(DATA, "assist09_corrected.csv"), encoding="utf-8", errors
 print("assist09 rows:", len(rows))
 
 def window_stats(sub, W=20):
+    # v2 修复（审阅意见 3.1）：与 m1_real_data.py 同源的等宽分箱（bins=arange(0,1.0001,0.05)）
+    # 遇浮点误差会把 0.15 与 0.20 并进同一区间，须改为按整数错误条数 k 计数。
     by_user = defaultdict(list)
     for d in sub:
         by_user[d["user_id"]].append((int(d["order_id"]), int(d["correct"])))
-    out = []
+    hist = np.zeros(W + 1, dtype=np.int64)
+    n_users_used = 0
     for uid, seq in by_user.items():
         seq.sort()
         cs = [c for _, c in seq]
         if len(cs) < W:
             continue
-        arr = np.asarray(cs, float)
+        arr = np.asarray(cs, dtype=np.int64)
         csu = np.concatenate([[0], np.cumsum(arr)])
-        out.append(1.0 - (csu[W:] - csu[:-W]) / W)
-    if not out:
-        return {"n_windows": 0, "mean_err": None, "median_err": None,
-                "modal_bin": None, "share_success_77_83": None}
-    a = np.concatenate(out)
-    hist, edges = np.histogram(a, bins=np.arange(0, 1.0001, 0.05))
-    return {"n_windows": int(a.size), "mean_err": round(float(a.mean()), 4),
-            "median_err": round(float(np.median(a)), 4),
-            "modal_bin": [round(float(edges[hist.argmax()]), 2), round(float(edges[hist.argmax() + 1]), 2)],
-            "share_success_77_83": round(float(((a >= 0.17) & (a <= 0.23)).mean()), 4)}
+        hist += np.bincount(W - (csu[W:] - csu[:-W]), minlength=W + 1)
+        n_users_used += 1
+    n = int(hist.sum())
+    if n == 0:
+        return {"n_windows": 0, "n_users_input": len(by_user), "n_users_used": 0,
+                "mean_err": None, "median_err": None, "modal_k": None,
+                "modal_error_rate": None, "share_success_77_83": None,
+                "share_success_80_90": None}
+    mean_err = float((hist * np.arange(W + 1)).sum()) / (n * W)
+    median_k = int(np.searchsorted(np.cumsum(hist) / n, 0.5, side="left"))
+    top = int(hist.max())
+    modal_k = [k for k in range(W + 1) if int(hist[k]) == top]
+    return {"n_windows": n, "n_users_input": len(by_user), "n_users_used": n_users_used,
+            "mean_err": round(mean_err, 4), "median_err": round(median_k / W, 2),
+            "modal_k": modal_k, "modal_error_rate": [round(k / W, 2) for k in modal_k],
+            "share_success_77_83": round(float(hist[4]) / n, 4),
+            "share_success_80_90": round(float(hist[2:5].sum()) / n, 4)}
 
 R["o1_window_sensitivity"] = {
     "all": window_stats(rows),
@@ -58,7 +68,8 @@ R["o1_window_sensitivity"] = {
     "no_hint_correction": window_stats([d for d in rows if d.get("hint_count", "0") in ("0", "")]),
 }
 for k, v in R["o1_window_sensitivity"].items():
-    print(f"[O1] {k}: mean={v['mean_err']} mode={v['modal_bin']}")
+    print(f"[O1] {k}: mean={v['mean_err']} modal_err={v['modal_error_rate']} "
+          f"users_used={v['n_users_used']}/{v['n_users_input']}")
 
 # 难度源（复用第一批口径）
 per_prob = defaultdict(lambda: [0, 0, [], []])

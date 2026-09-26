@@ -1,7 +1,7 @@
 """步骤 13 孤儿机制评估钩子测试 (28 机制接编排器)
 
-* test_scan_all_53_mechanisms_landed
-    —— 审计矩阵必须 53/53 全落地 (orphan=0), 这是接线的验收指标
+* test_scan_all_54_mechanisms_landed
+    —— 审计矩阵必须 54/54 全落地 (orphan=0), 这是接线的验收指标
 * test_evaluation_returns_all_28_with_real_outputs
     —— 评估钩子默认全开时返回 28 个键, 每个都是真实引擎输出且无 error
 * test_gate_suppresses_evaluation
@@ -35,7 +35,7 @@ def _load_scan_module():
     return mod
 
 
-def test_scan_all_53_mechanisms_landed():
+def test_scan_all_54_mechanisms_landed():
     """接线验收: 审计矩阵 53/53 全部落地, orphan=0。"""
     mod = _load_scan_module()
     rows = mod.build_landing_rows(BACKEND_ROOT)

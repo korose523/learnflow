@@ -1,0 +1,132 @@
+{
+ "protocol": {
+  "source": "Castleman et al. (2024), Hierarchical MAB for Concurrent ITS",
+  "data": "Junyi real arms, ability-decile conditional p (same as M3 5.3 v2)",
+  "horizon_T": 40,
+  "n_sims": 500,
+  "seed": 42,
+  "reward": "immediate success rate (NOT learning gain) -- matches 5.3",
+  "hierarchy": "Level1=difficulty band {easy,normal,hard} (concept MAB), Level2=specific problem within band (problem MAB)",
+  "samplers": "UCB1 (c=2.0) and Thompson; top reward may use Castleman Eq.7 difficulty adjustment (variant hmab_castleman)",
+  "omitted_for_comparability": [
+   "ZPDES mastered/unmastered belief-state transitions",
+   "MCM memory-decay model",
+   "Eq.8 initial Gaussian difficulty skew",
+   "modified-MAPLE transient difficulty ranking"
+  ],
+  "note": "All M3 v2 internal strategies are RE-RUN on the identical 500 sims so the comparison is free of RNG-distribution mismatch. Reproduced internal means differ slightly from the published Table 4 because they are an independent 500-sim MC sample of the same data/protocol; both are reported below."
+ },
+ "m3_v2_published": {
+  "all_easy": 0.7434,
+  "flow_zone": 0.7119,
+  "llm_correct": 0.7023,
+  "adaptive": 0.6898,
+  "random": 0.6835,
+  "all_hard": 0.6498
+ },
+ "results": {
+  "random": {
+   "mean": 0.6786,
+   "se": 0.0078
+  },
+  "all_easy": {
+   "mean": 0.7618,
+   "se": 0.0068
+  },
+  "all_hard": {
+   "mean": 0.6319,
+   "se": 0.0091
+  },
+  "adaptive": {
+   "mean": 0.6998,
+   "se": 0.0062
+  },
+  "llm_correct": {
+   "mean": 0.6963,
+   "se": 0.0065
+  },
+  "llm_wrong": {
+   "mean": 0.6729,
+   "se": 0.0081
+  },
+  "flow_zone": {
+   "mean": 0.7158,
+   "se": 0.0062
+  },
+  "descent_pair": {
+   "mean": 0.6905,
+   "se": 0.0075
+  },
+  "adaptive_k1": {
+   "mean": 0.6964,
+   "se": 0.0068
+  },
+  "adaptive_k2": {
+   "mean": 0.6985,
+   "se": 0.0065
+  },
+  "adaptive_k3": {
+   "mean": 0.7034,
+   "se": 0.0061
+  },
+  "hmab_ucb": {
+   "mean": 0.6899,
+   "se": 0.0075
+  },
+  "hmab_castleman": {
+   "mean": 0.6722,
+   "se": 0.0075
+  },
+  "hmab_thompson": {
+   "mean": 0.7093,
+   "se": 0.0074
+  },
+  "hmab_ucb_c10": {
+   "mean": 0.6988,
+   "se": 0.0073,
+   "c": 1.0
+  },
+  "hmab_ucb_c03": {
+   "mean": 0.7137,
+   "se": 0.0073,
+   "c": 0.3
+  }
+ },
+ "comparison_hmab_vs_table4": {
+  "hmab_ucb": {
+   "hmab_mean": 0.6899,
+   "vs_all_easy": -0.0535,
+   "vs_flow_zone": -0.022,
+   "vs_llm_correct": -0.0124,
+   "vs_random": 0.0064
+  },
+  "hmab_castleman": {
+   "hmab_mean": 0.6722,
+   "vs_all_easy": -0.0712,
+   "vs_flow_zone": -0.0397,
+   "vs_llm_correct": -0.0301,
+   "vs_random": -0.0113
+  },
+  "hmab_thompson": {
+   "hmab_mean": 0.7093,
+   "vs_all_easy": -0.0341,
+   "vs_flow_zone": -0.0026,
+   "vs_llm_correct": 0.007,
+   "vs_random": 0.0258
+  },
+  "hmab_ucb_c10": {
+   "hmab_mean": 0.6988,
+   "vs_all_easy": -0.0446,
+   "vs_flow_zone": -0.0131,
+   "vs_llm_correct": -0.0035,
+   "vs_random": 0.0153
+  },
+  "hmab_ucb_c03": {
+   "hmab_mean": 0.7137,
+   "vs_all_easy": -0.0297,
+   "vs_flow_zone": 0.0018,
+   "vs_llm_correct": 0.0114,
+   "vs_random": 0.0302
+  }
+ }
+}

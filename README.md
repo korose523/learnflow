@@ -1,10 +1,15 @@
 # LearnFlow
 
-> **为一个面向 K12 的学习成瘾化研究，提供可测量、可审计、可复现的系统与测量底座。**
+> **为「适应性学习中难度的可测量化与可治理化」提供可测量、可审计、可复现的系统与测量底座。**
 > 平台以游戏化自适应学习为载体，同时作为**实证研究可复现性 artifact** 发布。
 
-[![tests](https://img.shields.io/badge/tests-934%20passed-brightgreen)](#测试)
-[![mechanisms](https://img.shields.io/badge/mechanisms-54%20(LF--M01%E2%80%A6LF--M54)-blue)](#可复现性)
+> **身份说明（2026-09-22）**：本仓库的研究主线**唯一**是**难度**（测量 → 目标 → 决策 → 治理，
+> 见 §难度研究主线）。历史版本曾把「学习成瘾化」写为主线，现已降级为
+> **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
+> 声明两个研究主线。
+
+[![tests](https://img.shields.io/badge/tests-936%20passed-brightgreen)](#测试)
+[![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%202%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -13,23 +18,35 @@
 ## English Overview
 
 **LearnFlow** is a K12 gamified adaptive-learning platform, released primarily as a
-**reproducible research artifact for the study of learning addiction (AI-assisted)**.
+**reproducible research artifact for the study of _difficulty_ in adaptive learning (AI-assisted)**.
 
-Its measurement contribution is a **dual-source, five-dimension framework**: a behavioural
-log (durations, night-time ratio, hint dependence) is combined with a **self-report
-instrument layer** to cover the dimensions that behavioural logs structurally cannot
-observe — behavioural control, sleep/social impairment, and time-perception bias.
+Its research contribution supports four connected lines of work:
 
-Two properties are load-bearing for reviewers:
+| Line | Question |
+|---|---|
+| **Measurement** | Are difficulty sources defined on different scales commensurable? |
+| **Target** | Does the 80–85% success-rate rule hold on real learner logs? |
+| **Decision** | How does difficulty enter ordered sequencing under a cold start, and where does an LLM difficulty prior stop being reliable? |
+| **Governance** | Do the dozens of coexisting gamification mechanisms actually collide at runtime? |
 
-- **Measurement honesty.** 45% of the index weight depends on self-report. When a dimension
-  is unmeasured, it is **excluded from the weighting and reported via a coverage object** —
-  never silently scored as healthy. The API returns the score *together with* its coverage.
-  The self-report items are **purpose-built and not yet psychometrically validated**; the
-  documentation states this unconditionally.
+Three properties are load-bearing for reviewers:
+
+- **Mechanism accounting is a triple, never a single number.** The registered mechanism count
+  (54) is always reported together with the **runtime effect-producer count (2)** and the
+  **maturity breakdown (complete 9 / partial 37 / placeholder 8)**. A registered count alone
+  would be read as "54 mechanisms are running", which is not what the code does.
 - **Machine-verifiable numbers.** Every headline count in the documentation is recomputed
   from source by scripts in `learnflow-backend/scripts/`, and the check fails loudly when a
   document number diverges from the code. See [Reproducibility](#可复现性).
+- **Failed implementations are not results.** Annotation runs that failed for engineering
+  reasons (truncated thinking blocks, unparseable output formats) are reported separately
+  from valid protocol comparisons, and never enter a capability claim.
+
+> **Auxiliary, unvalidated module.** The repository also contains a behavioural-log plus
+> self-report measurement layer (a five-dimension learning-addiction index, LAI). It has no
+> user data, its self-report items are purpose-built and **not yet psychometrically validated**,
+> and it is **not used or validated in any of the four lines of work above**. It is retained
+> for engineering completeness only; see [§附属模块](#附属模块学习成瘾指数lai未经验证).
 
 ## 这是什么
 
@@ -40,20 +57,33 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 
 | 角色 | 说明 |
 |---|---|
-| **测量系统** | 学习成瘾化的**双源五维**测量层：行为日志 + 自陈量表，含覆盖度报告与「未测不得谎报为健康」的强制约束 |
-| **软件系统** | 可运行的自适应学习平台：动态难度调节（DDA）、记忆科学复习调度（FSRS）、游戏化干预引擎、防沉迷与未成年保护护栏、家长门户 |
-| **研究 artifact** | 为一系列实证论文提供**可引用、可复现**的系统底座与统计脚本；所有头部数字均可由代码复算 |
-
-> 🔬 **成瘾化研究主线的测量定义**（五维如何测量、哪些维度其实测不到、必须声明的信效度局限）
-> 已随写作过程产物归档至 `learnflow_archive_20260913/docs/LearnFlow_成瘾化研究_测量框架.md`；
-> 权威测量实现见 `learnflow-backend/app/services/learning_addiction_index.py`。
+| **研究 artifact** | 为难度研究（测量 / 目标 / 决策 / 治理四条链）提供**可引用、可复现**的系统底座与统计脚本；所有头部数字均可由代码复算 |
+| **软件系统** | 可运行的自适应学习平台：动态难度调节（DDA）、记忆科学复习调度（FSRS）、游戏化干预引擎、教育与未成年保护护栏、家长门户 |
+| **附属模块** | 学习成瘾指数（LAI）行为日志 + 自陈量表测量层：**未经心理测量学验证，非研究主线**，仅为工程完整性保留 |
 
 ---
 
-## 成瘾化研究主线
+## 难度研究主线
 
-本项目的核心研究问题是：**如何在 K12 学习场景中，把「成瘾化」从主观判断变成可测量、
-可审计、且诚实披露其边界的量。** 技术实现围绕这一个问题组织。
+本项目的核心研究问题是：**适应性学习系统每天都要回答「下一题给什么难度」，而支撑这一
+决策的核心量「难度」从未被当作可测量、可校准、可决策、可治理的形式对象来处理。**
+四条链彼此递进，构成学位论文的整合结构：
+
+| 链 | 问题 | 状态 |
+|---|---|---|
+| **1 测量** | 难度各源是否可公度？线性归一化加权的有效权重是否随单调重参数化漂移？ | 已执行（合成 + assist09 真实数据） |
+| **2 目标** | 最优错误率 15.87%（85% 规则）在外部分布上是否成立？ | 描述性证据；因果侧识别**尚未执行**（见 `docs/因果侧识别策略.md`） |
+| **3 决策** | 难度如何进入带记忆的序贯决策？LLM 难度先验可信到哪里？ | 已执行（Junyi 真实臂 + LLM 标注协议审计） |
+| **4 治理** | 数十个干预机制并存时，冲突是否真的发生？ | **内部静态审计**（无真实用户日志，运行时冲突频率未测） |
+
+> 🔬 计划书与进展报告见 `docs/研究计划与报告/`；三篇支撑稿见 `docs/M1_*.md`、`docs/M2_*.md`、`docs/M3_*.md`。
+
+---
+
+## 附属模块：学习成瘾指数（LAI，未经验证）
+
+> ⚠️ **本节描述的不是本研究主线，且该模块未经验证、无用户数据、未在任何一篇支撑稿中使用。**
+> 保留它是为了工程完整性（四端界面与 API 仍在运行），**不得**把它写成本 artifact 的测量贡献。
 
 ### 双源五维测量
 
@@ -184,7 +214,7 @@ cd learnflow-frontend && cp .env.example .env.local
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前 934 passed）
+# 全量测试（当前 936 passed）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
@@ -210,25 +240,36 @@ npm run build     # 构建
 cd learnflow-backend
 
 # 机制数 / 学习方法数 / 技能树节点数 —— 权威计数与交叉校验
+# 静默模式同时输出机制头条三元组：登记 54 / 效果生产 2 / 成熟度 9·37·8
 .venv/Scripts/python scripts/verify_counts.py
 
 # 代码资产数字（Python 行数、服务模块数、源文件数、API 端点、测试数）
 # --doc-check 在「文档数字 ≠ 代码事实」时以退出码 1 报错
 .venv/Scripts/python scripts/verify_asset_numbers.py --doc-check --with-pytest
+
+# 滑窗错误率的离散支撑点口径（M1 8.1 / 报告 3.7 / 计划书 RQ2 依赖的数字）
+python ../results/code/verify_window_support.py
 ```
+
+> ⚠️ **机制数字必须三个并列**：`登记 54 / 运行时效果生产者 2 / 成熟度 complete 9 · partial 37 · placeholder 8`。
+> 只写「54 机制」会被读成「54 个都在运行」——运行时真正构造干预效果的只有 2 处
+> （`deep_addiction_engine.py:296` LF-M44、`learning_orchestrator.py:986` LF-M52），
+> 其余机制只写评估记录或不构造效果。三元组由 `verify_counts.py` 复算，`tests/test_count_verification.py` 钉死。
 
 主要统计脚本：
 
 | 脚本 | 产出 |
 |---|---|
-| `scripts/verify_counts.py` | 机制唯一数（54）、学习方法数（28）、技能树节点数（16）、注册表指纹 |
+| `scripts/verify_counts.py` | 机制唯一数（54）、学习方法数（28）、技能树节点数（16）、**成熟度三元组（9/37/8）**、**效果生产者数（2）**、注册表指纹 |
 | `scripts/verify_asset_numbers.py` | 代码资产数字 + 文档一致性门禁（`--doc-check`） |
 | `scripts/scan_mechanism_landing.py` | 机制运行时可达性扫描（落地 / 孤儿 / 编排器接线） |
 | `scripts/power_table.py` | 实验功效与样本量测算表（离线分析工具） |
+| `../results/code/verify_window_support.py` | assist09 滑窗错误率的 21 个离散支撑点口径（反分箱伪影） |
+| `../results/code/record_llm_model.py` | LLM 标注模型的 manifest / digest / 量化 / 基座元数据 |
 
 机读产物落在 `learnflow-backend/artifacts/`：
 
-- `count_verification.json` —— 计数核验（含 `cross_validation_passed`）
+- `count_verification.json` —— 计数核验（含 `cross_validation_passed`、`maturity_*`、`effect_producers`）
 - `mechanism_landing_status.json` —— 逐机制落地状态（`total` / `landed` / `orphan` / `orchestrator_wired`）
 - `asset_numbers.json` —— 代码资产数字快照
 - `impl_ref_integrity.json` —— 实现引用完整性
@@ -237,7 +278,10 @@ cd learnflow-backend
 
 | 指标 | 值 | 复算来源 |
 |---|---|---|
-| 游戏化机制（唯一） | **54**（`LF-M01`…`LF-M54`） | `verify_counts.py` |
+| 游戏化机制（登记） | **54**（`LF-M01`…`LF-M54`） | `verify_counts.py` |
+| 运行时干预效果生产者 | **2** | `verify_counts.py` / `effect_producers` |
+| 机制成熟度 | **complete 9 / partial 37 / placeholder 8** | `verify_counts.py` / `maturity_*` |
+| 占位机制 ID | `LF-M19, M28, M29, M32, M45, M49, M50, M53` | `verify_counts.py` / `maturity_placeholder.ids` |
 | 学习方法 | **28**（`LF-L01`…`LF-L28`） | `verify_counts.py` |
 | 元学习技能树节点 | **16** | `verify_counts.py` |
 | 机制运行时落地 | **54 / 54**，孤儿 0 | `scan_mechanism_landing.py` |
@@ -333,6 +377,12 @@ learnflow/
 ## 引用
 
 见 [`CITATION.cff`](CITATION.cff)。归档后的版本将获得 Zenodo DOI，届时请引用带 DOI 的具体版本。
+
+> ⚠️ **已知的不一致（正在修复）**：Zenodo 现存 `10.5281/zenodo.22719229` 为 **v0.1.0（2026-09-11）**，
+> 其记录标题写的是「学习成瘾测量工具」，与本仓库当前统一的难度研究主线不一致。
+> v0.2.0 的元数据（标题 / 描述 / 关键词以难度为中心，LAI 明确标注为附属未验证模块）
+> 已准备在 [`.zenodo.json`](.zenodo.json)，上传新版本后该记录即与稿件正文统一。
+> 在此之前引用时请以本仓库 README 与 `CITATION.cff` 的主题为准。
 
 ## 贡献与支持
 

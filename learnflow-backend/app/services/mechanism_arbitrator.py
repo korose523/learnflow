@@ -66,6 +66,11 @@ class ArbitrationTrace:
     dropped_by_risk: List[str] = field(default_factory=list)
     delivered: List[str] = field(default_factory=list)
     reason: str = ""
+    # 路线 A · A1（2026-09-22）：账本落库字段，由仲裁器在每次仲裁时填充，
+    # 使第 5 章三类一致性检查首次可实跑。新增字段均带默认值，向后兼容。
+    budget_consumed: float = 0.0  # 本轮下发的用户可见、非健康机制的加权成本之和
+    preempted_by: List[str] = field(default_factory=list)  # 被冲突/预算抢占而未下发的机制
+    arbitration_decision: str = ""  # "executed" / "blocked"
 
 
 class MemoryBudgetStore:
@@ -210,6 +215,12 @@ class MechanismArbitrator:
         effects = self._apply_budget(ctx, effects, trace)
 
         trace.delivered = [e.mechanism_id for e in effects]
+        # 路线 A · A1：填充账本落库字段（纯计算，无 I/O，向后兼容）
+        trace.preempted_by = trace.dropped_by_conflict + trace.dropped_by_budget
+        trace.arbitration_decision = "executed" if trace.delivered else "blocked"
+        trace.budget_consumed = float(
+            sum(e.cost for e in effects if e.user_visible and not e.health_critical)
+        )
         if self.trace_sink is not None:
             self.trace_sink(trace)
         ctx.trace.append(f"ARBITRATE delivered={trace.delivered}")

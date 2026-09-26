@@ -1,0 +1,50 @@
+{
+  "_comment": [
+    "此文件为 Zenodo 在发布新版本时读取的元数据（审阅意见 2.1）。",
+    "v0.1.0 的 Zenodo 记录标题为「学习成瘾测量工具」，与本 artifact 的研究主线（难度的",
+    "可测量化与可治理化）不一致；上传 v0.2.0 后记录标题/描述将统一为难度路线，",
+    "LAI 明确降为『附属模块·未验证』。发布后请同步更新 CITATION.cff 的 version 与 doi。"
+  ],
+  "title": "LearnFlow: A K12 Gamified Adaptive Learning Platform and Reproducibility Artifact for Difficulty Measurement, Calibration and Governance Research",
+  "description": "<p>LearnFlow is a K12 gamified adaptive-learning platform released primarily as a reproducible research artifact for the study of <strong>difficulty</strong> in adaptive learning.</p><p>Four connected lines of work are supported by this artifact:</p><ol><li><strong>Measurement</strong> — commensurability of difficulty sources defined on different scales; drift of linear min-max fusion versus an empirical-CDF-to-logit quantile metric under monotone reparameterisation.</li><li><strong>Target</strong> — external validity of the 80-85% success-rate rule on real learner logs (assist09).</li><li><strong>Decision</strong> — ordered difficulty sequencing under a cold start, and the reliability boundary of LLM-based difficulty annotation.</li><li><strong>Governance</strong> — an intervention ledger and a seven-tuple audit schema for coexisting gamification mechanisms.</li></ol><p><strong>Mechanism accounting.</strong> The headline mechanism count is always reported as a triple — registered 54 / runtime effect producers 2 / maturity complete 9, partial 37, placeholder 8 — so that the registered figure is never read as &quot;54 mechanisms are running&quot;. Reproduce with <code>learnflow-backend/scripts/verify_counts.py</code>.</p><p><strong>Auxiliary, unvalidated module.</strong> The repository also contains a behavioural-log plus self-report measurement layer (a five-dimension learning-addiction index, LAI). It has no user data, its self-report items are purpose-built and have not undergone psychometric validation, and it is <em>not</em> used or validated in any of the four lines of work above. It is retained for engineering completeness only.</p><p><strong>Reproducibility.</strong> Every headline count in the documentation is recomputed from source by scripts under <code>learnflow-backend/scripts/</code>; the consistency check fails loudly when a documented number diverges from the code.</p>",
+  "creators": [
+    {
+      "name": "Weng, Zexiao",
+      "affiliation": "Department of Computer and Information Engineering, Graduate School, Youngsan University, Busan 48015, Republic of Korea",
+      "orcid": "0009-0009-8600-8954"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Jung, MinPo",
+      "affiliation": "Youngsan University, Busan, Republic of Korea",
+      "type": "Supervisor",
+      "orcid": "0009-0003-3369-757X"
+    }
+  ],
+  "keywords": [
+    "adaptive learning",
+    "difficulty calibration",
+    "commensurability",
+    "optimal error rate",
+    "ordered bandits",
+    "cold start",
+    "intervention governance",
+    "gamification",
+    "educational data mining",
+    "reproducibility",
+    "K12 education"
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "version": "0.2.0",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/korose523/learnflow",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    }
+  ]
+}

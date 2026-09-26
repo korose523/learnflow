@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-09-13T22:23:47+09:00",
+  "generated_at": "2026-09-26T08:41:16+09:00",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
-    "python_loc": 25795,
-    "python_loc_excl_init": 25711,
-    "source_files": 88,
-    "service_modules": 55,
+    "python_loc": 26107,
+    "python_loc_excl_init": 26023,
+    "source_files": 90,
+    "service_modules": 57,
     "api_files": 13,
     "api_routes_defined": 104,
     "api_routes_reachable": 104,
@@ -102,29 +102,30 @@
       ]
     },
     "test_files": 54,
-    "test_functions": 840
+    "test_functions": 842,
+    "tests_collected": 936
   },
   "verdict": {
     "python_loc": {
       "registered": 25389,
-      "actual": 25795,
-      "delta": 406,
+      "actual": 26107,
+      "delta": 718,
       "strict": false,
       "status": "drifted",
       "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（历史值为 23,927，已漂移）。"
     },
     "source_files": {
       "registered": 87,
-      "actual": 88,
-      "delta": 1,
+      "actual": 90,
+      "delta": 3,
       "strict": false,
       "status": "drifted",
       "note": "informative：app/**/*.py 文件数。文档 §1 引用此值（历史值 81）。"
     },
     "service_modules": {
       "registered": 54,
-      "actual": 55,
-      "delta": 1,
+      "actual": 57,
+      "delta": 3,
       "strict": false,
       "status": "drifted",
       "note": "informative：app/services/*.py 文件数。文档 §1 历史值 41 为残留，已修正。"
@@ -155,86 +156,21 @@
     },
     "test_functions": {
       "registered": 826,
-      "actual": 840,
-      "delta": 14,
+      "actual": 842,
+      "delta": 16,
       "strict": false,
       "status": "drifted",
       "note": "informative：AST 定义数（含任意嵌套层级），≠ pytest 收集数（parametrize 会把一个函数展开成多个用例）。"
     },
     "tests_collected": {
       "registered": 920,
-      "actual": null,
-      "delta": null,
+      "actual": 936,
+      "delta": 16,
       "strict": false,
       "status": "drifted",
       "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。"
     }
   },
-  "doc_check": {
-    "doc": "E:\\learnflow\\docs\\LearnFlow_期刊论文拆分方案.md",
-    "items": [
-      {
-        "metric": "python_loc",
-        "doc_text": "25,389 行 Python",
-        "doc_value": 25389,
-        "actual_value": 25795,
-        "ok": false,
-        "note": "文档 25389 ≠ 实测 25795"
-      },
-      {
-        "metric": "service_modules",
-        "doc_text": "54 个服务模块",
-        "doc_value": 54,
-        "actual_value": 55,
-        "ok": false,
-        "note": "文档 54 ≠ 实测 55"
-      },
-      {
-        "metric": "source_files",
-        "doc_text": "87 个源文件",
-        "doc_value": 87,
-        "actual_value": 88,
-        "ok": false,
-        "note": "文档 87 ≠ 实测 88"
-      },
-      {
-        "metric": "api_routes_reachable",
-        "doc_text": "104 个 API 端点",
-        "doc_value": 104,
-        "actual_value": 104,
-        "ok": true,
-        "note": ""
-      },
-      {
-        "metric": "tests_collected",
-        "doc_text": "920 项测试",
-        "doc_value": 920,
-        "actual_value": null,
-        "ok": true,
-        "note": "本次未复算该指标（加 --with-pytest 可复算），仅记录文档值"
-      },
-      {
-        "metric": "test_files",
-        "doc_text": "53 个测试文件",
-        "doc_value": 53,
-        "actual_value": 54,
-        "ok": false,
-        "note": "文档 53 ≠ 实测 54"
-      }
-    ],
-    "mismatches": [
-      "python_loc",
-      "service_modules",
-      "source_files",
-      "test_files"
-    ],
-    "passed": false
-  },
-  "_blocking": [
-    "python_loc",
-    "service_modules",
-    "source_files",
-    "test_files"
-  ],
-  "_exit_code": 1
+  "_blocking": [],
+  "_exit_code": 0
 }

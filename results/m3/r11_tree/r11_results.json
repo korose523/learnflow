@@ -1,0 +1,172 @@
+{
+  "protocol": "R11 empirical test: structured feature engineering + tree ensemble vs LLM direct rating",
+  "seed": 42,
+  "baseline_direct_rating": {
+    "DBE_E1A": 0.2195,
+    "XES_E2X": -0.0379
+  },
+  "data_availability": {
+    "DBE": "Questions.csv (text+expert difficulty) + E1A LLM rating available",
+    "XES": "metadata/questions.json (text) + E2X emp_quartile + LLM rating available"
+  },
+  "datasets": {
+    "DBE": {
+      "n": 212,
+      "feature_names_struct": [
+        "char_len",
+        "word_count",
+        "n_img",
+        "n_tags",
+        "num_density",
+        "has_latex",
+        "has_code",
+        "n_choices",
+        "n_correct_choices",
+        "n_kc"
+      ],
+      "feature_names_with_llm": [
+        "char_len",
+        "word_count",
+        "n_img",
+        "n_tags",
+        "num_density",
+        "has_latex",
+        "has_code",
+        "n_choices",
+        "n_correct_choices",
+        "n_kc",
+        "llm_rating"
+      ],
+      "target": "expert",
+      "baseline_direct_rating": {
+        "rho": 0.21948089348383534,
+        "pvalue": 0.0012994469986922013,
+        "rmse": 0.8768511416017555,
+        "ci95": [
+          0.08646934261404497,
+          0.3449534506806426
+        ],
+        "n": 212
+      },
+      "tree_struct_only": {
+        "RandomForest": {
+          "rho": 0.5622821583915634,
+          "pvalue": 4.53080736086827e-19,
+          "rmse": 0.575822195101589,
+          "ci95": [
+            0.4461643226039252,
+            0.6618345723588326
+          ],
+          "n": 212
+        },
+        "GradientBoosting": {
+          "rho": 0.48930036950053835,
+          "pvalue": 3.6726403966542007e-14,
+          "rmse": 0.620513534194605,
+          "ci95": [
+            0.3635828021655257,
+            0.5974114520689061
+          ],
+          "n": 212
+        }
+      },
+      "tree_struct_plus_llm": {
+        "RandomForest": {
+          "rho": 0.5531960800931042,
+          "pvalue": 2.1574863503048813e-18,
+          "rmse": 0.5857425352405534,
+          "ci95": [
+            0.43995735122954543,
+            0.6546442404859697
+          ],
+          "n": 212
+        },
+        "GradientBoosting": {
+          "rho": 0.4829798756741697,
+          "pvalue": 8.657163306696417e-14,
+          "rmse": 0.6249658098514226,
+          "ci95": [
+            0.3565764508987486,
+            0.5957658468433007
+          ],
+          "n": 212
+        }
+      },
+      "primary_model": "RandomForest"
+    },
+    "XES": {
+      "n": 120,
+      "feature_names_struct": [
+        "char_len",
+        "word_count",
+        "n_math",
+        "n_options",
+        "num_density"
+      ],
+      "feature_names_with_llm": [
+        "char_len",
+        "word_count",
+        "n_math",
+        "n_options",
+        "num_density",
+        "llm_rating"
+      ],
+      "target": "emp_quartile",
+      "baseline_direct_rating": {
+        "rho": -0.037913385037428145,
+        "pvalue": 0.6809837633240541,
+        "rmse": 1.4634434279010127,
+        "ci95": [
+          -0.21793416331102364,
+          0.13942670609594027
+        ],
+        "n": 120
+      },
+      "tree_struct_only": {
+        "RandomForest": {
+          "rho": 0.1817175643602508,
+          "pvalue": 0.04699438020182907,
+          "rmse": 1.1435712064260217,
+          "ci95": [
+            0.0016270591815351356,
+            0.3538045802858094
+          ],
+          "n": 120
+        },
+        "GradientBoosting": {
+          "rho": 0.17880893990144833,
+          "pvalue": 0.050697701090463905,
+          "rmse": 1.217645862103953,
+          "ci95": [
+            0.003455630153803501,
+            0.3463385617544385
+          ],
+          "n": 120
+        }
+      },
+      "tree_struct_plus_llm": {
+        "RandomForest": {
+          "rho": 0.1996849019849766,
+          "pvalue": 0.02877067549775382,
+          "rmse": 1.129022646104438,
+          "ci95": [
+            0.025746618842076293,
+            0.36886826898796615
+          ],
+          "n": 120
+        },
+        "GradientBoosting": {
+          "rho": 0.18935242733246033,
+          "pvalue": 0.03832905112383065,
+          "rmse": 1.2126764649833128,
+          "ci95": [
+            0.014936655038372134,
+            0.3505164228998559
+          ],
+          "n": 120
+        }
+      },
+      "primary_model": "RandomForest"
+    }
+  }
+}

@@ -1,0 +1,446 @@
+{
+  "settings": {
+    "D": 10,
+    "SEEDS": 60,
+    "ALPHA": 1.5,
+    "PSTAR": 0.75,
+    "SG": 0.18,
+    "ETA": 0.06,
+    "LAM": 0.015
+  },
+  "grid": [
+    {
+      "T": 40,
+      "OBS_NOISE": 0.0,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 2.39106,
+          "sd": 0.08302
+        },
+        "all_easy_latent": {
+          "mean": 1.2484,
+          "sd": 0.03535
+        },
+        "all_hard_latent": {
+          "mean": 0.00046,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 0.63122,
+          "sd": 0.27111
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 1.14266,
+      "delta_sd": 0.05371,
+      "paired_t": 164.8067,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 40,
+      "OBS_NOISE": 0.05,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 2.34135,
+          "sd": 0.08536
+        },
+        "all_easy_latent": {
+          "mean": 1.2484,
+          "sd": 0.03535
+        },
+        "all_hard_latent": {
+          "mean": 0.00046,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 0.62781,
+          "sd": 0.29839
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 1.09295,
+      "delta_sd": 0.05769,
+      "paired_t": 146.7364,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 40,
+      "OBS_NOISE": 0.15,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 2.04385,
+          "sd": 0.1156
+        },
+        "all_easy_latent": {
+          "mean": 1.2484,
+          "sd": 0.03535
+        },
+        "all_hard_latent": {
+          "mean": 0.00046,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 0.63025,
+          "sd": 0.27798
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 0.79545,
+      "delta_sd": 0.09889,
+      "paired_t": 62.3061,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 80,
+      "OBS_NOISE": 0.0,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 4.78085,
+          "sd": 0.10995
+        },
+        "all_easy_latent": {
+          "mean": 2.20218,
+          "sd": 0.0438
+        },
+        "all_hard_latent": {
+          "mean": 0.0009,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 1.81938,
+          "sd": 0.5419
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 2.57868,
+      "delta_sd": 0.07075,
+      "paired_t": 282.3083,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 80,
+      "OBS_NOISE": 0.05,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 4.71499,
+          "sd": 0.11137
+        },
+        "all_easy_latent": {
+          "mean": 2.20218,
+          "sd": 0.0438
+        },
+        "all_hard_latent": {
+          "mean": 0.0009,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 1.83619,
+          "sd": 0.46829
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 2.51282,
+      "delta_sd": 0.07426,
+      "paired_t": 262.0927,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 80,
+      "OBS_NOISE": 0.15,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 4.25201,
+          "sd": 0.14139
+        },
+        "all_easy_latent": {
+          "mean": 2.20218,
+          "sd": 0.0438
+        },
+        "all_hard_latent": {
+          "mean": 0.0009,
+          "sd": 2e-05
+        },
+        "random_latent": {
+          "mean": 1.84491,
+          "sd": 0.44234
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 2.04984,
+      "delta_sd": 0.11914,
+      "paired_t": 133.2734,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 120,
+      "OBS_NOISE": 0.0,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 7.17712,
+          "sd": 0.14308
+        },
+        "all_easy_latent": {
+          "mean": 3.15801,
+          "sd": 0.05837
+        },
+        "all_hard_latent": {
+          "mean": 0.00135,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 3.20908,
+          "sd": 0.46633
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 4.01911,
+      "delta_sd": 0.08833,
+      "paired_t": 352.4429,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 120,
+      "OBS_NOISE": 0.05,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 7.08996,
+          "sd": 0.14624
+        },
+        "all_easy_latent": {
+          "mean": 3.15801,
+          "sd": 0.05837
+        },
+        "all_hard_latent": {
+          "mean": 0.00135,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 3.26656,
+          "sd": 0.59126
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 3.93195,
+      "delta_sd": 0.09404,
+      "paired_t": 323.8844,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 120,
+      "OBS_NOISE": 0.15,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 6.46602,
+          "sd": 0.17553
+        },
+        "all_easy_latent": {
+          "mean": 3.15801,
+          "sd": 0.05837
+        },
+        "all_hard_latent": {
+          "mean": 0.00135,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 3.34269,
+          "sd": 0.50004
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 3.30801,
+      "delta_sd": 0.13843,
+      "paired_t": 185.0986,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 200,
+      "OBS_NOISE": 0.0,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 11.94225,
+          "sd": 0.16767
+        },
+        "all_easy_latent": {
+          "mean": 5.05875,
+          "sd": 0.0689
+        },
+        "all_hard_latent": {
+          "mean": 0.00223,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 6.01067,
+          "sd": 0.43161
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 6.8835,
+      "delta_sd": 0.10186,
+      "paired_t": 523.4472,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 200,
+      "OBS_NOISE": 0.05,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 11.81951,
+          "sd": 0.17067
+        },
+        "all_easy_latent": {
+          "mean": 5.05875,
+          "sd": 0.0689
+        },
+        "all_hard_latent": {
+          "mean": 0.00223,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 6.01084,
+          "sd": 0.55862
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 6.76076,
+      "delta_sd": 0.10752,
+      "paired_t": 487.0505,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 200,
+      "OBS_NOISE": 0.15,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 10.86908,
+          "sd": 0.22275
+        },
+        "all_easy_latent": {
+          "mean": 5.05875,
+          "sd": 0.0689
+        },
+        "all_hard_latent": {
+          "mean": 0.00223,
+          "sd": 3e-05
+        },
+        "random_latent": {
+          "mean": 5.95985,
+          "sd": 0.42497
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 5.81033,
+      "delta_sd": 0.17715,
+      "paired_t": 254.0538,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 300,
+      "OBS_NOISE": 0.0,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 17.91093,
+          "sd": 0.22148
+        },
+        "all_easy_latent": {
+          "mean": 7.43957,
+          "sd": 0.08912
+        },
+        "all_hard_latent": {
+          "mean": 0.00334,
+          "sd": 4e-05
+        },
+        "random_latent": {
+          "mean": 9.35318,
+          "sd": 0.5817
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 10.47136,
+      "delta_sd": 0.13472,
+      "paired_t": 602.0681,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 300,
+      "OBS_NOISE": 0.05,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 17.74632,
+          "sd": 0.22177
+        },
+        "all_easy_latent": {
+          "mean": 7.43957,
+          "sd": 0.08912
+        },
+        "all_hard_latent": {
+          "mean": 0.00334,
+          "sd": 4e-05
+        },
+        "random_latent": {
+          "mean": 9.5176,
+          "sd": 0.59058
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 10.30675,
+      "delta_sd": 0.1379,
+      "paired_t": 578.9239,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    },
+    {
+      "T": 300,
+      "OBS_NOISE": 0.15,
+      "final_gain": {
+        "flow_zone_latent": {
+          "mean": 16.39437,
+          "sd": 0.25624
+        },
+        "all_easy_latent": {
+          "mean": 7.43957,
+          "sd": 0.08912
+        },
+        "all_hard_latent": {
+          "mean": 0.00334,
+          "sd": 4e-05
+        },
+        "random_latent": {
+          "mean": 9.42236,
+          "sd": 0.51675
+        }
+      },
+      "delta_flowzone_minus_alleasy_mean": 8.9548,
+      "delta_sd": 0.20154,
+      "paired_t": 344.1722,
+      "paired_p": 0.0,
+      "flow_zone_wins": true
+    }
+  ],
+  "base_T120_noise005": {
+    "T": 120,
+    "OBS_NOISE": 0.05,
+    "final_gain": {
+      "flow_zone_latent": {
+        "mean": 7.08996,
+        "sd": 0.14624
+      },
+      "all_easy_latent": {
+        "mean": 3.15801,
+        "sd": 0.05837
+      },
+      "all_hard_latent": {
+        "mean": 0.00135,
+        "sd": 3e-05
+      },
+      "random_latent": {
+        "mean": 3.26656,
+        "sd": 0.59126
+      }
+    },
+    "delta_flowzone_minus_alleasy_mean": 3.93195,
+    "delta_sd": 0.09404,
+    "paired_t": 323.8844,
+    "paired_p": 0.0,
+    "flow_zone_wins": true
+  },
+  "verdict": "flow_zone 在 final_gain 上优于 all_easy 的结论，在 15 个 (T,noise) 组合中全部 15 个成立；T=120/noise=0.05（与 §5.9 主表同口径）Δ=+3.9320。→ 结论对视野长度与观测噪声稳健，解除 'T-sensitivity ablation pending'。"
+}

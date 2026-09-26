@@ -241,8 +241,18 @@ recs = defaultdict(list)
 for (c, k), r in last.items():
     recs[c].append(r)
 
-results = {"model": MODEL, "design": "v2: /no_think + anchored rubric + batch-ranking Bradley-Terry",
+results = {"model": MODEL,
+           # 审阅意见 4.4 更正：旧 design 字符串写 "/no_think"，但 prompt 与 API body 中
+           # 都没有 /no_think（见本文件头注释：「/no_think 软开关实测不稳定」），实际
+           # 生效的是 format:json 语法约束解码。此处按实际实现改写。
+           "design": "JSON-schema 约束解码（format:json，未用 /no_think）+ 锚定量表绝对评级 + 批量排序 Bradley-Terry",
            "end": time.strftime("%F %T")}
+
+# 模型身份：标签 "qwen36" 无法自证基座/量化/版本，附上 record_llm_model.py 的实测产物
+_manifest_path = os.path.join(OUT, "llm_model_manifest.json")
+if os.path.isfile(_manifest_path):
+    with open(_manifest_path, encoding="utf-8") as _f:
+        results["model_manifest"] = json.load(_f)
 
 
 def e1_metrics(pairs, name):

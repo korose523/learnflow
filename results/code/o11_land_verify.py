@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""O11 落库外部验证（不进 pytest 收集，故全量测试计数不变 = 934）。
+"""O11 落库外部验证（不进 pytest 收集，故全量测试计数不变；现行 936）。
 
 验证 estimate_optimized_difficulty 在真实缓存上以**落地版函数本体**复现
 o11_fusion_optimization.json 的 signed7 / srw7 留出增益，并检查边界行为。

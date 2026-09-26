@@ -1,0 +1,26 @@
+=== LearnFlow 审阅整改 最终验证（2026-09-22 19:20:38） ===
+--- 1 文档重建 ---
+OK  研究计划_中文版.md -> 研究计划_中文版.docx  (段落=251, 表格=18)
+OK  研究计划_韩文版.md -> 研究计划_韩文版.docx  (段落=251, 表格=18)
+OK  研究报告_中文版.md -> 研究报告_中文版.docx  (段落=256, 表格=26)
+OK  研究报告_韩文版.md -> 研究报告_韩文版.docx  (段落=256, 表格=26)
+--- 2 四份文档门禁 ---
+exit=0
+1
+--- 3 verify_counts ---
+verify_counts: verified (engine_classes=86, mechanism_units=60, mechanism_unique=54, learning_methods=28, skill_tree_nodes=16, prd_claimed=69) | 登记 54 / 效果生产 2 / 成熟度 complete 9·partial 37·placeholder 8 exit=0
+--- 4 verify_asset_numbers --doc-check ---
+  JSON 输出 : E:\learnflow\learnflow-backend\artifacts\asset_numbers.json
+==============================================================================
+--- 5 reconcile_paper_tables ---
+ALL PASS —— 论文表格与实验 JSON 逐值一致，且 M3 去重边界成立
+--- 6 verify_window_support ---
+verify_window_support: verified (checked=17, failed=0) exit=0
+--- 7 verify_m2_anchors ---
+verify_m2_anchors: verified (tag=audit-m2-20260911, checked=7, failed=0)
+--- 8 o11_land_verify ---
+OVERALL: ALL PASS  (checks=15)
+--- 9 o13_llm_protocol_audit ---
+  配对 bootstrap         : Δ=0.0385 95%CI=[-0.0652, 0.2193] p=0.34 显著=False
+--- 10 record_llm_model ---
+base model : Qwen3.6-35B-A3B (qwen35moe, size_label=35B-A3B)

@@ -1,0 +1,83 @@
+# -*- coding: utf-8 -*-
+"""Regenerate r09_edits.md from the already-written r09_results.json (avoids re-streaming 3GB)."""
+import json
+
+d = json.load(open("E:/learnflow/results/m3/r09_nonstationary/r09_results.json", "r", encoding="utf-8"))
+aggA = d["aggregate"]["A_time_window"]
+aggB = d["aggregate"]["B_attempt_order"]
+da = d["data_availability"]
+v = d["verdict"]
+
+nA = aggA["n_items"]; sigA = aggA["n_significant"]; propA = aggA["prop_significant"]
+meanA = aggA["delta_mean"]; seA = aggA["delta_se"]
+nB = aggB["n_items"]; sigB = aggB["n_significant"]; propB = aggB["prop_significant"]
+meanB = aggB["delta_mean"]; seB = aggB["delta_se"]
+
+def pc(x):
+    return ("%.1f" % (100 * x)) if isinstance(x, float) else "NA"
+
+L = []
+L.append("# R09 非平稳性诊断 · 可直接粘贴段落（M3 §3.4 / §5.6）\n")
+
+L.append("## 实证发现（中文，可粘贴）\n")
+L.append(
+    "我们在 Junyi 真实逐次作答日志（Log_Problem.csv，含 calendar 时间戳、学生对每题的尝试序号 "
+    "total_attempt_cnt 与 is_correct）上，对达到至少 %d 次尝试的 %d 道题（即 M3 cache 的全部 %d 道核心题），"
+    "做了两类平稳性诊断：(A) 按作答日历时间以中位数切分早/晚期窗口，比较两窗口成功率之差 Δ_A；"
+    "(B) 按学生内尝试序号取前后半段并池化，比较成功率之差 Δ_B。"
+    "两者均以自助法（B=1000，种子=42）估计 Δ 的 95%% 置信区间，区间不跨 0 视为显著漂移。"
+    % (50, nA, da["n_m3_cache_core_items"])
+)
+L.append("")
+L.append(
+    "**时间窗口诊断(A)**：%d / %d 道（%s%%）题呈现统计显著的日历漂移，平均 Δ_A=%+.4f"
+    "（均值±SE=%+.4f±%.4f）。但需注意：每题尝试量极大（中位几千次），使得即使极小的差异也达到显著；"
+    "其效应幅度仅约 +0.3 个百分点/整年，实际日历漂移可视为**可忽略**。"
+    % (sigA, nA, pc(propA), meanA, meanA, seA)
+)
+L.append("")
+L.append(
+    "**尝试序诊断(B)**：%d / %d 道（%s%%）题呈现显著漂移，平均 Δ_B=%+.4f（均值±SE=%+.4f±%.4f），"
+    "即一名学生对该题‘前半段尝试’的成功率平均比‘后半段’高约 44 个百分点。"
+    "这是掌握式学习中‘首遇→失败后重试’结构的真实、且幅度很大的尝试序依赖"
+    "（早期尝试多为初遇成功，后期尝试多为挣扎重试），并非统计假象。"
+    % (sigB, nB, pc(propB), meanB, meanB, seB)
+)
+L.append("")
+L.append("## 对 M3 §3.4 的含义\n")
+L.append(
+    "M3 §3.4 把‘可提取性/成功率’当作不随时间与作答次序漂移的平稳 MDP 状态与平稳奖励。"
+    "本诊断给出分化的证据：在**日历时间轴**上，平稳奖励近似成立（幅度可忽略）；"
+    "但在**尝试序轴（即 MDP 的自然时间步）**上，逐次成功率存在约 44 个百分点的强非平稳——"
+    "至少对这部分题目，固定的平稳奖励会系统地高估/低估真实即时奖励，削弱 M3 规划器基于该奖励所做"
+    "序贯决策的最优性保证。简言之：M3 的平稳奖励假设在‘尝试序’维度上被数据明确违反，"
+    "在‘日历时间’维度上近似成立。"
+)
+L.append("")
+L.append("## 诚实裁决\n")
+L.append(
+    "M3 当前的平稳-MDP/平稳奖励假设**对尝试序维度不成立**（覆盖率 100% 的题均有大幅漂移），"
+    "对日历时间维度近似成立。建议在 §3.4 与 §5.6 显式标注这一覆盖边界，"
+    "并对尝试序非平稳题引入非平稳处理。理论背景可引用 Nguyen et al. (2025)："
+    "“当连续难度轴上的奖励发生移位时，存在无需先验即可获得最优动态遗憾的算法”；"
+    "但本稿**未实现也未比较**其 MDBE 非平稳 Lipschitz 算法，仅作理论背景引用。"
+)
+L.append("")
+L.append("## Verdict 建议（一行）\n")
+L.append(
+    "**R09 verdict: COMPARABLE_WITH_COVERAGE_CAVEAT** —— LearnFlow 真实数据显示逐次成功率在尝试序轴存在约 44pp 的"
+    "强非平稳（100% 题显著）、在日历时间轴近似平稳（幅度≈0.3pp/年）；M3 平稳奖励假设需在 §3.4/§5.6 标注覆盖边界。"
+    "方法覆盖：真实日历时间(A)+真实学生内尝试序(B)双诊断，未使用代理、未实现/比较 Nguyen 2025 MDBE。"
+)
+L.append("")
+L.append("## 数据可用性说明（粘贴用，可选）\n")
+L.append(
+    "Log_Problem.csv 含真实 timestamp_TW（日历时间，范围 %s 至 %s）与 total_attempt_cnt（学生内尝试序号），"
+    "覆盖 %d 道独立题、%d 名学生、%d 条逐次作答。因此 A、B 均为基于**真实次序**的检验，"
+    "无需以 pt 聚合做代理诊断（proxy_used=False）。"
+    % (da["timestamp_range"][0], da["timestamp_range"][1],
+       da["n_distinct_ucid_in_log"], da["n_distinct_users_in_log"], 16217311)
+)
+
+open("E:/learnflow/results/m3/r09_nonstationary/r09_edits.md", "w", encoding="utf-8").write("\n".join(L))
+print("[write] r09_edits.md regenerated")
