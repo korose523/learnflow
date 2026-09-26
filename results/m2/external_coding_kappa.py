@@ -45,8 +45,9 @@ from typing import Dict, List, Tuple
 SYSTEMS: List[Dict[str, str]] = [
     {"name": "Ludilearn", "repo": "DigiDago/moodle-format_ludilearn",
      "status": "已编码（E2，6 个机制）；A4 须升级为双编码", "n_mechanisms": "6"},
-    {"name": "Level Up XP", "repo": "danbetcher/moodle-levelup",
-     "status": "已编码（E2，11 个机制）；A4 须升级为双编码", "n_mechanisms": "11"},
+    {"name": "Level Up XP", "repo": "FMCorz/moodle-block_xp",
+     "status": "已编码（E2，11 个机制，commit 65541fdc…）；A4 须升级为双编码",
+     "n_mechanisms": "11"},
     {"name": "Habitica（候选，待 clone 复核）", "repo": "HabitRPG/habitica",
      "status": "候选（开源 gamified 任务管理，替换待导师/编码者确认）", "n_mechanisms": "?"},
     {"name": "Khan Academy 练习系统（候选，待 clone 复核）", "repo": "Khan/khan-exercises",
