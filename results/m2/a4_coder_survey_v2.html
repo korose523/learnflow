@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 外部系统机制编码问卷 v2 · 4 系统 / 33 实例</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --text:#1f2328; --muted:#5b6570;
+    --line:#e3e6ea; --accent:#2563eb; --accent-soft:#eff4ff;
+    --ok:#16a34a; --warn:#d97706; --warn-soft:#fff7ed;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:980px;margin:0 auto;padding:28px 18px 80px}
+  h1{font-size:22px;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:13px}
+  .banner{background:var(--accent-soft);border:1px solid #c7d7fe;border-radius:10px;
+          padding:12px 14px;font-size:13px;margin:16px 0;color:#1e3a8a}
+  .flag{background:var(--warn-soft);border:1px solid #fed7aa;border-radius:8px;
+        padding:8px 11px;font-size:12.5px;margin:8px 0 0;color:#9a3412}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;
+         padding:16px 18px;margin-bottom:14px}
+  .bar{position:sticky;top:0;z-index:5;background:var(--card);
+       border:1px solid var(--line);border-radius:12px;padding:12px 16px;
+       margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .bar .grow{flex:1;min-width:220px}
+  select,input[type=text]{padding:7px 10px;border:1px solid var(--line);border-radius:8px;
+                         font-size:14px;background:#fff}
+  button{background:var(--accent);color:#fff;border:0;border-radius:8px;
+         padding:9px 16px;font-size:14px;cursor:pointer}
+  button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;
+        font-size:13px;cursor:pointer}
+  .chip.on{border-color:var(--accent);background:var(--accent-soft);color:#1e3a8a}
+  .item{border-top:1px solid var(--line);padding:16px 0}
+  .item:first-child{border-top:0;padding-top:0}
+  .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .id{font-weight:700;font-size:15px}
+  .sys{font-size:12px;color:#fff;background:#334155;border-radius:999px;padding:2px 9px}
+  .sha{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+  .anchor{font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+          color:var(--muted);word-break:break-all}
+  .desc{background:#fafbfc;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+        padding:10px 12px;margin:10px 0 12px;font-size:13.5px;white-space:pre-wrap}
+  .q{margin:12px 0 4px;font-weight:600;font-size:14px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  label.opt{display:flex;align-items:flex-start;gap:7px;border:1px solid var(--line);
+            border-radius:8px;padding:7px 11px;cursor:pointer;background:#fff;font-size:13px;
+            max-width:100%}
+  label.opt:hover{border-color:var(--accent)}
+  label.opt input{accent-color:var(--accent);margin:2px 0 0}
+  label.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+  .code{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+  textarea{width:100%;font:12px ui-monospace,Menlo,Consolas,monospace;
+           border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:8px}
+  textarea.big{height:190px}
+  .stat{font-size:13px;color:var(--muted)}
+  .done{color:var(--ok);font-weight:600}
+  .note-in{width:100%;height:44px;font:13px inherit;border:1px solid var(--line);
+           border-radius:8px;padding:7px 9px;margin-top:8px}
+  .sysbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>A4 外部系统机制编码问卷 v2</h1>
+  <div class="sub">M2 论文 · 跨系统复现双编码 · 33 个机制实例 / 4 个外部系统 · 闭集 CODEBOOK v2（§3.1）</div>
+
+  <div class="banner">
+    <b>编码须知</b><br>
+    1. 每题给出该代码点的<b>锚点（pinned commit + file:line）</b>与<b>源码级功能描述</b>。请只依据这些信息独立判断，
+       <b>不得查看或打听另一名编码者的答案</b>；切换「编码者」会切到独立的本机存档，看不到对方数据。<br>
+    2. 三问均为<b>闭集单选</b>：target_construct（6 类）· direction（3 类，有序 withdraw &lt; neutral &lt; approach）· channel（13 类）。<br>
+    3. 边界裁决（§3.1）：含学习者自身成就/进展反馈 → ACHIEVEMENT；纯促活无成就反馈 → ENGAGEMENT；
+       相对位置/名次/分组 → SOCIAL；个性化外观或自主选择 → IDENTITY_AUTONOMY；计时/节奏/限时 → TEMPORAL；
+       防作弊/限流/规则 → COMPLIANCE。<br>
+    4. 若某代码点在<b>默认配置下不生效</b>或需开关开启才构建，请在备注中说明，并按<b>默认状态</b>编码。<br>
+    5. 全部作答后点「生成 CSV」。答案自动存本机浏览器，可中断续填。
+  </div>
+
+  <div class="bar">
+    <div class="grow">
+      <div>编码者：
+        <select id="coder">
+          <option value="coderA">coderA</option>
+          <option value="coderB">coderB</option>
+        </select>
+        <span class="code" id="ns"></span>
+      </div>
+      <div class="stat" id="stat">已作答 0 / 33</div>
+    </div>
+    <button class="ghost" id="clear">清空本编码者答卷</button>
+    <button id="gen">生成 CSV</button>
+  </div>
+
+  <div class="sysbar" id="sysbar"></div>
+  <div class="panel" id="items"></div>
+
+  <div class="panel" id="out" style="display:none">
+    <b>生成的 CSV（可直接复制，或点下方下载）</b>
+    <textarea class="big" id="csv" readonly></textarea>
+    <div style="margin-top:10px;display:flex;gap:10px">
+      <button id="dl">下载 CSV</button>
+      <button class="ghost" id="copy">复制到剪贴板</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SYSTEMS = ["Ludilearn", "Level Up XP", "Habitica", "Anki"];
+const CONSTRUCT = [
+  ["IDENTITY_AUTONOMY","身份/自主","自我表达、个性化、自主感"],
+  ["ACHIEVEMENT","成就/表现","成就、精通、等级、分数、XP、进度等『自身进展/表现反馈』"],
+  ["SOCIAL","社交比较/分层","排行榜、名次、相对位置、分组/层级/地位分化"],
+  ["ENGAGEMENT","参与度","参与/活跃；不含自身成就反馈的促活"],
+  ["TEMPORAL","时长/节奏","计时、节奏控制、惩罚性限时"],
+  ["COMPLIANCE","合规","防作弊、限速、规则引擎、安全/合规护栏"]
+];
+const DIRECTION = [
+  ["withdraw","推开/限制","休息、保护、负向限制（强制休息、扣分、拦截）"],
+  ["neutral","中性","既不促学也不限制（纯展示、纯配置）"],
+  ["approach","拉回/促学","加时、增益、正向促学"]
+];
+const CHANNEL = [
+  ["VISUAL_CUSTOMIZATION","头像/个性化"],["BADGE","徽章"],["PROGRESS_BAR","进度条"],
+  ["LEADERBOARD","排行榜/名次"],["SCORE_PANEL","分数/数值面板"],["TIMER","计时器"],
+  ["CHEATGUARD","防作弊拦截"],["GROUPING","分组"],["LEVEL_INFO","等级/经验信息"],
+  ["NOTIFICATION","通知/横幅"],["RATE_LIMIT","限流窗口"],
+  ["RULE_ENGINE","规则引擎"],["XP_STATE","经验状态"]
+];
+const ITEMS = [
+ {
+  "item_id": "LUDI_1",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "lang/en/format_ludilearn.php:202 settings:avatardescription",
+  "desc": "该游戏元素允许学习者获得物品并自定义其在课程中的视觉形象。学习者随课程进度解锁发型、服装、配饰等物品。解锁条件按活动类型而定：评分活动需得分超过设定阈值（如 80%）；仅完成类活动完成即解锁；评分与完成混合的活动以得分为准，完成不再额外影响。"
+ },
+ {
+  "item_id": "LUDI_2",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "lang/en/format_ludilearn.php:194 settings:badgedescription",
+  "desc": "该游戏元素因完成活动而授予学习者徽章。评分活动按分数达到各档阈值自动授予金/银/铜三级徽章；仅完成类活动在完成时直接授予金徽章；评分与完成混合的活动可获得三级徽章之一及与完成关联的奖励徽章。"
+ },
+ {
+  "item_id": "LUDI_3",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "lang/en/format_ludilearn.php:198 settings:progressiondescription",
+  "desc": "该游戏元素以『旅程』形式展示学习者在整个课程中的总体进度，并自动适配活动类型：评分活动的进度直接对应得分百分比；仅完成类活动一经标记完成即 +100%；评分与完成混合的活动以得分为准。"
+ },
+ {
+  "item_id": "LUDI_4",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "lang/en/format_ludilearn.php:133 ranking",
+  "desc": "语言串 $string['ranking'] = 'Ranking' 所定义的排名元素，用于在课程中呈现学习者的排名（rank）视图；同文件另有 best time / average time / reference time 等与排名并列展示的计时类字符串。"
+ },
+ {
+  "item_id": "LUDI_5",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "lang/en/format_ludilearn.php:189 settings:scoredescription",
+  "desc": "该游戏元素让学习者通过完成课程活动累积积分，并自动适配活动类型：评分活动按得分直接换算（并可乘系数放大为游戏化分值）；仅完成类活动完成时获得固定完成奖励分；评分与完成混合的活动同时计入得分与额外加成百分比。"
+ },
+ {
+  "item_id": "LUDI_6",
+  "system": "Ludilearn",
+  "commit": "eb69582fb4def6e4cbb26c2146ceb90435951c53",
+  "anchor": "classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20",
+  "desc": "计时器游戏元素，仅作用于测验（quiz）类活动：显示学习者完成测验所用时间，并对错误施加超时惩罚。类中常量 DEFAULT_PENALTIES = 20，即每丢失 1 分按 20 秒计入学习者最终用时（源码注释示例：扣 20 秒/分，2 分题得 0 分则加 40 秒）。"
+ },
+ {
+  "item_id": "LUXP_1",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/badge/badge_manager.php",
+  "desc": "badge_manager 类，负责徽章的授予与查询：提供 award_badge($userid, $badgeid, $issuerid) 与 get_compatible_badges($context) 等方法（源码注释标注为 stub）。"
+ },
+ {
+  "item_id": "LUXP_10",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/rule/the_dictator.php, ruletype/*.php",
+  "desc": "the_dictator 类（implements dictator），是规则的裁决/执行器：持有数据库与过滤器处理器，并缓存上下文中的规则；源码标注 @deprecated（自 XP 20 起改用 world_rule_manager）。"
+ },
+ {
+  "item_id": "LUXP_11",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/xp/state.php, user_state.php",
+  "desc": "state 接口，表示『某对象的 XP 状态』：get_id() 返回该对象 ID，get_level() 返回其当前等级。"
+ },
+ {
+  "item_id": "LUXP_2",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/form/cheatguard.php",
+  "desc": "cheatguard 动态表单类（extends dynamic_form，路由名 'rules'），用于配置防作弊（cheat guard）相关规则与拦截设置，含表单定义 definition() 与动态提交处理。"
+ },
+ {
+  "item_id": "LUXP_3",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/division/group_division.php",
+  "desc": "group_division 类（implements division），按 Moodle 分组（groupid）对学习者进行划分/分群，提供 get_id() 与 get_name() 等接口。"
+ },
+ {
+  "item_id": "LUXP_4",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/leaderboard/course_user_leaderboard.php",
+  "desc": "course_user_leaderboard 类（implements leaderboard），按课程内用户状态生成排行榜；依赖 columns、ranker、levelsinfo、userfilter 等字段，数据表为 block_xp。"
+ },
+ {
+  "item_id": "LUXP_5",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/xp/levels_info.php, level.php",
+  "desc": "levels_info 接口（extends JsonSerializable），描述等级体系信息：get_count() 返回等级总数，get_level($level) 返回指定等级的 level 对象。"
+ },
+ {
+  "item_id": "LUXP_6",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/notification/course_level_up_notification_service.php",
+  "desc": "course_level_up_notification_service 类，提供课程『升级通知』服务：含用户偏好常量 USERPREF_NOTIFY（'block_xp_notify_level_up_'）与 get_levels_to_notify_for() 等方法。"
+ },
+ {
+  "item_id": "LUXP_7",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/form/promo.php",
+  "desc": "promo 表单类（extends moodleform），定义促销/推广横幅（promo banner）相关的表单定义 definition()。"
+ },
+ {
+  "item_id": "LUXP_8",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/xp/rank.php, state_rank.php",
+  "desc": "rank 接口，描述『名次』：get_rank() 返回该状态在群体中的排名序号，get_state() 返回其对应的 state 对象。"
+ },
+ {
+  "item_id": "LUXP_9",
+  "system": "Level Up XP",
+  "commit": "65541fdc9c77511a906353f6660e195eeaa51893",
+  "anchor": "classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）",
+  "desc": "limit_spec 类，定义速率上限规格：含时间窗口常量 WINDOW_1H / WINDOW_DAILY / WINDOW_WEEKLY / WINDOW_MONTHLY / WINDOW_HOURLY，以及 $max（窗口内允许次数上限）与 $scope（作用范围 NONE/ENV/PARENT/OBJECT）。"
+ },
+ {
+  "item_id": "HABI_1",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/ops/scoreTask.js:36",
+  "desc": "这段代码位于 _calculateDelta 函数内，在任务被勾选（direction 为 up）或被反向取消（direction 为 down）时计算本次该任务 value 的增减步长，公式为以 0.9747 为底、以任务当前 value 为指数的幂，方向为 down 时取负。由于 0.9747 小于 1，同一任务被反复向同一方向打卡时单次步长随之变小，源码注释把该数值的取值范围称作「task redness」（第 34 行）。value 的取值被 _getTaskValue 限制在 -47.27（MIN_TASK_VALUE）到 21.27（MAX_TASK_VALUE）之间。若每日任务带有检查清单且在跨日重置中被反向打卡，步长按清单完成比例缩减；若为待办任务且在非重置场景下打卡，步长按已完成清单项数放大。"
+ },
+ {
+  "item_id": "HABI_2",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/ops/scoreTask.js:117",
+  "desc": "这是 _subtractPoints 函数中的一行，该函数用于减少用户的生命值（stats.hp），在两类情形下被调用：一是习惯被打卡后算出的增量 delta 不为正时（scoreTask.js:281），二是每日任务在跨日重置中被判为到期未完成时（scoreTask.js:308）。伤害量由本次增量 delta、一个基于用户体质属性 statsComputed(user).con 的减免系数 conBonus（第 114-115 行，下限 0.1）、任务难度系数 task.priority 以及常数 2 相乘得到；若算得的结果为 -1 以内的负值，则仍至少扣除 1 点生命值。该函数在开头对属于某小组看板且类型为每日任务的任务直接返回原生命值，不执行扣减。"
+ },
+ {
+  "item_id": "HABI_3",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/ops/scoreTask.js:143",
+  "desc": "在 _addPoints 中，若任务带有非零的连续打卡计数 task.streak，本行以 currStreak / 100 + 1 计算出一个系数并乘到本次任务的金币收益 gpMod 上，源码注释给出的例子是 1 天连胜对应 1.01、2 天对应 1.02。第 145-147 行规定，当该系数带来的增益不足 1 枚金币时按方向强制保底 ±1 枚。因连胜多出的这部分金币会被写入 user._tmp.streakBonus（第 150 行），源码注释说明这是为后续向用户发送连胜加成通知所用。"
+ },
+ {
+  "item_id": "HABI_4",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/ops/scoreTask.js:342",
+  "desc": "在每日任务被勾选（direction 为 up）且不属于小组任务时，第 338 行先将该任务的 streak 计数加 1；若加 1 后的 streak 为 21 的整数倍（第 340 行），则用户的 achievements.streak 计数加 1，并随即调用本行向用户推送一条 STREAK_ACHIEVEMENT 通知。第 372-374 行存在对称逻辑：当用户撤销（direction 为 down）一次完成且撤销前的 streak 恰为 21 的倍数时，该计数减 1（下限 0）。"
+ },
+ {
+  "item_id": "HABI_5",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/server/libs/cron.js:268",
+  "desc": "这是每日重置（cron 函数）处理未完成每日任务时的条件判断。当某每日任务在跨日时被判定为到期未完成（scheduleMisses > evadeTask，第 250 行）且 cron 未运行于安全模式下，代码先置 perfect = false 并累计未完成计数，随后仅在本行条件成立（即用户未开启「休息」偏好 user.preferences.sleep）时才调用 scoreTask 以 down 方向对该任务执行扣分与生命值扣减。同一分支内在非半安全模式下还会把这次负增量乘以难度系数累加到 user.party.quest.progress.down（第 279 行）。处于「休息」状态时上述分数扣减、生命值扣减与该项 boss 伤害累加均不执行；同文件第 359 行对每日魔力补给使用了相同的 sleep 判断条件。"
+ },
+ {
+  "item_id": "HABI_6",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/server/libs/cron.js:332",
+  "desc": "在每日重置遍历完所有每日任务之后，本行检查两项条件：标志 perfect 仍为 true（即当天没有到期未完成的每日任务，参见第 256 行），且当天至少有一个每日任务到期（atLeastOneDailyDue）。两项同时成立时用户的 achievements.perfect 计数加 1，并把 str / int / per / con 四项 buff 统一设为用户等级经 common.capByLevel 限制后再除以 2 并向上取整的数值（第 334-342 行）。若条件不成立，第 344-351 行把这四项 buff 连同 stealth、streaks 一起重置为 0。"
+ },
+ {
+  "item_id": "HABI_7",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/fns/updateStats.js:35",
+  "desc": "这是 updateStats 升级循环内的一步。当累计经验 stats.exp 达到当前等级的升级阈值时代码进入 while 循环（第 26 行）；每次迭代先扣除该级所需经验并把等级加 1（受 MAX_LEVEL_HARD_CAP 限制，第 28-32 行），随后在本行把用户的生命值直接设为常量 MAX_HEALTH 即回满，该常量与 MAX_LEVEL_HARD_CAP、MAX_STAT_POINTS 一同从 ../constants 引入。之后按用户是否开启 automaticAllocation 决定调用 autoAllocate 还是把可得属性点写回 user.stats.points（第 42-55 行）。"
+ },
+ {
+  "item_id": "HABI_8",
+  "system": "Habitica",
+  "commit": "bce89c627c756d72e6b2403a91e8ac2cf7116e4d",
+  "anchor": "website/common/script/fns/randomDrop.js:51",
+  "desc": "randomDrop 用于决定用户完成任务时是否掉落物品（蛋、孵化药水、食物等）。掉落概率 chance 在第 47 行以任务当前 value 与常数 21.27 之差的绝对值为基线（上限 37.5，除以 150 再加 0.02），随后依次乘以任务难度 task.priority、随等级线性衰减的新手加成（第 50 行）、本行的连续打卡天数加成、感知属性加成（第 52 行）、贡献者等级（第 53 行）、转生次数（第 54 行）、连胜成就次数（第 55 行）、暴击系数（第 57 行）与检查清单完成项加成（第 58-62 行），最后经 diminishingReturns 函数收敛到上限 0.75（第 63 行）。此外第 79-86 行依据订阅状态、感知与贡献等级算出每日掉落数上限，达到上限时本函数直接返回不再掉落。"
+ },
+ {
+  "item_id": "ANKI_1",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/deckconfig/mod.rs:44",
+  "desc": "默认值表中的整数字段 new_per_day 取值 20，规定该卡组每天引入的新卡上限。构建当日待答队列时读取该数值，学习者当天已引入的新卡达到该数量后，队列不再提供新的新卡。"
+ },
+ {
+  "item_id": "ANKI_2",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/deckconfig/mod.rs:45",
+  "desc": "默认值表中的字段 reviews_per_day 取值 200，规定该卡组每天安排的到期复习卡上限。构建当日队列时读取，学习者当天已作答的复习卡达到该数量后，队列不再提供后续到期的复习卡。"
+ },
+ {
+  "item_id": "ANKI_3",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/deckconfig/mod.rs:96",
+  "desc": "DeckConfig 默认实现给出的学习步骤序列，由 1.0 与 10.0 两个分钟值组成。新卡当天每答好一次沿序列前进一格，走完后离开当天的分钟级队列；首项同时用作答坏后的重排延迟。可见效果是新卡以约 1 分钟再约 10 分钟的间隔反复出现。"
+ },
+ {
+  "item_id": "ANKI_4",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/config/mod.rs:233",
+  "desc": "配置读取函数，读取配置项 LearnAheadSecs（底层键名 collapseTime），键缺失时返回 1200 秒。构建队列时以该秒数为时间窗：到期时间落在「当前时刻加该秒数」之前的当日学习卡会被提前纳入待答队列。可见效果是当天学习卡早于标注到期时刻出现。"
+ },
+ {
+  "item_id": "ANKI_5",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/scheduler/mod.rs:69",
+  "desc": "处理调度器读不到已配置 rollover 小时的情形：把值写回并返回 4，即以本地当天第 4 小时为新一天的起点。该值决定 days_elapsed 与下一次分界时间戳。可见效果是该小时之前的作答计入上一日，之后才计入新的一天。"
+ },
+ {
+  "item_id": "ANKI_6",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/scheduler/answering/mod.rs:194",
+  "desc": "位于 apply_study_state 内，在一次作答落盘前执行：若新状态被标为 leeched 且卡组配置的 leech_action 取 Suspend，就把该卡的队列字段改写为 Suspended。可见效果是这张卡不再出现在任何待答队列中，除非手动解除。"
+ },
+ {
+  "item_id": "ANKI_7",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/scheduler/states/review.rs:294",
+  "desc": "函数 leech_threshold_met 接收遗忘次数与阈值，阈值大于 0 时取其一半向上取整，当遗忘次数达到阈值且两者之差能被该半数整除时返回真，阈值为 0 时恒假。调用点在 answer_again，结果写入 ReviewState.leeched。"
+ },
+ {
+  "item_id": "ANKI_8",
+  "system": "Anki",
+  "commit": "1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748",
+  "anchor": "rslib/src/scheduler/states/load_balancer.rs:324",
+  "desc": "按候选日期落在星期几产出 0 到 1 的权重，三档对应 0.0001、0.5、1.0，经 select_weighted_interval 决定卡牌在哪天到期。注意：默认的全 1.0 七元向量配置不产生偏移，且仅 LoadBalancerEnabled 为真时才被构建调用。"
+ }
+];
+const FLAGGED = {"LUDI_5": ["construct"], "LUXP_11": ["construct", "channel"]};
+
+let answers = {};
+let notes = {};
+const coderSel = document.getElementById("coder");
+const key = () => "a4_survey_v2_" + coderSel.value;
+const keyN = () => "a4_survey_v2_" + coderSel.value + "_notes";
+
+function load() {
+  answers = JSON.parse(localStorage.getItem(key()) || "{}");
+  notes = JSON.parse(localStorage.getItem(keyN()) || "{}");
+}
+function save() {
+  localStorage.setItem(key(), JSON.stringify(answers));
+  localStorage.setItem(keyN(), JSON.stringify(notes));
+}
+
+function opts(name, list) {
+  return list.map(function (row) {
+    const code = row[0], label = row[1], hint = row[2];
+    return '<label class="opt"><input type="radio" name="' + name + '" value="' + code + '">' +
+      '<span><b>' + label + '</b> <span class="code">' + code + '</span>' +
+      (hint ? '<br><span class="code">' + hint + '</span>' : '') + '</span></label>';
+  }).join("");
+}
+
+function flagHtml(id) {
+  const f = FLAGGED[id];
+  if (!f) return "";
+  const zh = f.map(function (x) { return x === "construct" ? "target_construct" : x; }).join(" / ");
+  return '<div class="flag">⚠ 事先标注的歧义项（' + zh + '）：请在下方备注写明你的裁定依据。</div>';
+}
+
+let filter = "ALL";
+
+function render() {
+  const list = ITEMS.filter(function (it) { return filter === "ALL" || it.system === filter; });
+  document.getElementById("items").innerHTML = list.map(function (it) {
+    return '<div class="item" data-item="' + it.item_id + '">' +
+      '<div class="hd"><span class="id">' + it.item_id + '</span>' +
+      '<span class="sys">' + it.system + '</span>' +
+      '<span class="sha">' + it.commit.slice(0, 7) + '</span>' +
+      '<span class="anchor">' + it.anchor + '</span></div>' +
+      '<div class="desc">' + it.desc + '</div>' + flagHtml(it.item_id) +
+      '<div class="q">Q1 · target_construct（该代码点意图触发的行为科学构念）</div>' +
+      '<div class="opts">' + opts(it.item_id + "__c", CONSTRUCT) + '</div>' +
+      '<div class="q">Q2 · direction（干预的语义方向，有序 withdraw &lt; neutral &lt; approach）</div>' +
+      '<div class="opts">' + opts(it.item_id + "__d", DIRECTION) + '</div>' +
+      '<div class="q">Q3 · channel（干预落地的载体/通道）</div>' +
+      '<div class="opts">' + opts(it.item_id + "__h", CHANNEL) + '</div>' +
+      '<input class="note-in" type="text" data-note="' + it.item_id + '" placeholder="备注（可选；歧义项请写裁定依据）" value="' +
+        (notes[it.item_id] || "").replace(/"/g, "&quot;") + '">' +
+      '</div>';
+  }).join("");
+
+  document.querySelectorAll("input[type=radio]").forEach(function (r) {
+    if (answers[r.name] === r.value) { r.checked = true; r.closest("label").classList.add("on"); }
+    r.addEventListener("change", function () {
+      answers[r.name] = r.value;
+      document.querySelectorAll('input[name="' + r.name + '"]').forEach(function (x) {
+        x.closest("label").classList.remove("on");
+      });
+      r.closest("label").classList.add("on");
+      save();
+      stat();
+    });
+  });
+  document.querySelectorAll("input[data-note]").forEach(function (t) {
+    t.addEventListener("input", function () {
+      notes[t.getAttribute("data-note")] = t.value;
+      save();
+    });
+  });
+  stat();
+}
+
+function answeredCount() {
+  return ITEMS.filter(function (it) {
+    return answers[it.item_id + "__c"] && answers[it.item_id + "__d"] && answers[it.item_id + "__h"];
+  }).length;
+}
+function stat() {
+  const n = answeredCount();
+  const el = document.getElementById("stat");
+  el.innerHTML = '已作答 <b class="' + (n === ITEMS.length ? "done" : "") + '">' + n + ' / ' +
+    ITEMS.length + '</b>' + (n === ITEMS.length ? " ✓ 全部完成，可生成 CSV" : "（每题需三问全答）");
+}
+
+function renderSysbar() {
+  document.getElementById("sysbar").innerHTML =
+    ['ALL'].concat(SYSTEMS).map(function (s) {
+      const label = s === "ALL" ? "全部（" + ITEMS.length + "）" :
+        s + "（" + ITEMS.filter(function (i) { return i.system === s; }).length + "）";
+      return '<span class="chip' + (filter === s ? " on" : "") + '" data-sys="' + s + '">' + label + '</span>';
+    }).join("");
+  document.querySelectorAll(".chip[data-sys]").forEach(function (c) {
+    c.addEventListener("click", function () {
+      filter = c.getAttribute("data-sys");
+      renderSysbar();
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+}
+
+function esc(v) {
+  v = String(v == null ? "" : v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+function buildCsv() {
+  const coder = coderSel.value;
+  const rows = [["system", "item_id", "commit", "target_construct", "direction", "channel",
+                 "coder", "source_anchor", "note"]];
+  ITEMS.forEach(function (it) {
+    rows.push([it.system, it.item_id, it.commit, answers[it.item_id + "__c"] || "",
+               answers[it.item_id + "__d"] || "", answers[it.item_id + "__h"] || "",
+               coder, it.anchor, notes[it.item_id] || ""]);
+  });
+  return rows.map(function (r) { return r.map(esc).join(","); }).join("\n");
+}
+
+document.getElementById("gen").addEventListener("click", function () {
+  const n = answeredCount();
+  if (n < ITEMS.length) {
+    if (!confirm("尚有 " + (ITEMS.length - n) + " 题未答完。仍要生成（未答项留空）？")) return;
+  }
+  document.getElementById("csv").value = buildCsv();
+  document.getElementById("out").style.display = "block";
+  document.getElementById("out").scrollIntoView({ behavior: "smooth" });
+});
+document.getElementById("dl").addEventListener("click", function () {
+  const blob = new Blob(["\ufeff" + buildCsv()], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "a4_" + coderSel.value + "_survey_v2.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+document.getElementById("copy").addEventListener("click", async function () {
+  await navigator.clipboard.writeText(buildCsv());
+  alert("CSV 已复制到剪贴板");
+});
+document.getElementById("clear").addEventListener("click", function () {
+  if (!confirm("清空『" + coderSel.value + "』本机已保存的答卷？")) return;
+  localStorage.removeItem(key());
+  localStorage.removeItem(keyN());
+  load();
+  render();
+});
+coderSel.addEventListener("change", function () {
+  load();
+  document.getElementById("ns").textContent = "存档键：" + key();
+  render();
+  stat();
+});
+
+load();
+document.getElementById("ns").textContent = "存档键：" + key();
+renderSysbar();
+render();
+</script>
+</body>
+</html>

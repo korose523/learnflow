@@ -1,0 +1,9 @@
+system,item_id,commit,source_anchor,desc_zh
+Anki,ANKI_1,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/deckconfig/mod.rs:44,默认值表中的整数字段 new_per_day 取值 20，规定该卡组每天引入的新卡上限。构建当日待答队列时读取该数值，学习者当天已引入的新卡达到该数量后，队列不再提供新的新卡。
+Anki,ANKI_2,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/deckconfig/mod.rs:45,默认值表中的字段 reviews_per_day 取值 200，规定该卡组每天安排的到期复习卡上限。构建当日队列时读取，学习者当天已作答的复习卡达到该数量后，队列不再提供后续到期的复习卡。
+Anki,ANKI_3,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/deckconfig/mod.rs:96,DeckConfig 默认实现给出的学习步骤序列，由 1.0 与 10.0 两个分钟值组成。新卡当天每答好一次沿序列前进一格，走完后离开当天的分钟级队列；首项同时用作答坏后的重排延迟。可见效果是新卡以约 1 分钟再约 10 分钟的间隔反复出现。
+Anki,ANKI_4,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/config/mod.rs:233,配置读取函数，读取配置项 LearnAheadSecs（底层键名 collapseTime），键缺失时返回 1200 秒。构建队列时以该秒数为时间窗：到期时间落在「当前时刻加该秒数」之前的当日学习卡会被提前纳入待答队列。可见效果是当天学习卡早于标注到期时刻出现。
+Anki,ANKI_5,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/scheduler/mod.rs:69,处理调度器读不到已配置 rollover 小时的情形：把值写回并返回 4，即以本地当天第 4 小时为新一天的起点。该值决定 days_elapsed 与下一次分界时间戳。可见效果是该小时之前的作答计入上一日，之后才计入新的一天。
+Anki,ANKI_6,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/scheduler/answering/mod.rs:194,位于 apply_study_state 内，在一次作答落盘前执行：若新状态被标为 leeched 且卡组配置的 leech_action 取 Suspend，就把该卡的队列字段改写为 Suspended。可见效果是这张卡不再出现在任何待答队列中，除非手动解除。
+Anki,ANKI_7,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/scheduler/states/review.rs:294,函数 leech_threshold_met 接收遗忘次数与阈值，阈值大于 0 时取其一半向上取整，当遗忘次数达到阈值且两者之差能被该半数整除时返回真，阈值为 0 时恒假。调用点在 answer_again，结果写入 ReviewState.leeched。
+Anki,ANKI_8,1f7c8d7c4c402da06ab10b8f5d0acca6d5abf748,rslib/src/scheduler/states/load_balancer.rs:324,按候选日期落在星期几产出 0 到 1 的权重，三档对应 0.0001、0.5、1.0，经 select_weighted_interval 决定卡牌在哪天到期。注意：默认的全 1.0 七元向量配置不产生偏移，且仅 LoadBalancerEnabled 为真时才被构建调用。
