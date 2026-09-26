@@ -1,0 +1,100 @@
+{
+  "qwen3:1.7b": {
+    "family": "Qwen",
+    "params_b": 2.0,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "2.0B",
+    "measured_families": [
+      "qwen3"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "qwen3:8b": {
+    "family": "Qwen",
+    "params_b": 8.2,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "8.2B",
+    "measured_families": [
+      "qwen3"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "llama3.2:1b": {
+    "family": "Llama",
+    "params_b": 1.2,
+    "quantization": "Q8_0",
+    "architecture": "dense",
+    "measured_parameter_size": "1.2B",
+    "measured_families": [
+      "llama"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "llama3.1:8b": {
+    "family": "Llama",
+    "params_b": 8.0,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "8.0B",
+    "measured_families": [
+      "llama"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "mistral:7b": {
+    "family": "Mistral",
+    "params_b": 7.2,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "7.2B",
+    "measured_families": [
+      "llama"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "deepseek-v2:16b": {
+    "family": "DeepSeek",
+    "params_b": 15.7,
+    "quantization": "Q4_0",
+    "architecture": "dense",
+    "measured_parameter_size": "15.7B",
+    "measured_families": [
+      "deepseek2"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-24; never guessed"
+  },
+  "deepseek-r1:1.5b": {
+    "family": "DeepSeek",
+    "params_b": 1.8,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "1.8B",
+    "measured_families": [
+      "qwen2"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-27; never guessed. IDENTITY CAVEAT: /api/show details.families=[qwen2] —— 该权重为 DeepSeek-R1-Distill-Qwen，骨架蒸馏自 Qwen2；族别按发布方系列记为 DeepSeek，但不可解释为「DeepSeek 自研模型」。⚠ 与 F1_Qwen 共享 Qwen2 骨架 → 族间独立性受限，跨族一般性主张须据此收窄",
+    "identity_caveat": "weights distilled from Qwen2 (details.families=[qwen2]); family recorded by release series (DeepSeek-R1); shares Qwen2 backbone with F1_Qwen"
+  },
+  "deepseek-r1:32b": {
+    "family": "DeepSeek",
+    "params_b": 32.8,
+    "quantization": "Q4_K_M",
+    "architecture": "dense",
+    "measured_parameter_size": "32.8B",
+    "measured_families": [
+      "qwen2"
+    ],
+    "digest": "",
+    "note": "params_b/quantization measured from /api/show 2026-09-27; never guessed. IDENTITY CAVEAT: /api/show details.families=[qwen2] —— 该权重为 DeepSeek-R1-Distill-Qwen，骨架蒸馏自 Qwen2；族别按发布方系列记为 DeepSeek，但不可解释为「DeepSeek 自研模型」。⚠ 与 F1_Qwen 共享 Qwen2 骨架 → 族间独立性受限，跨族一般性主张须据此收窄",
+    "identity_caveat": "weights distilled from Qwen2 (details.families=[qwen2]); family recorded by release series (DeepSeek-R1); shares Qwen2 backbone with F1_Qwen"
+  }
+}
