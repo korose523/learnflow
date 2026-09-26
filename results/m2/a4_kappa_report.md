@@ -1,56 +1,96 @@
-# M2 A4 双编码 Cohen κ —— Provisional 报告（2026-09-26）
+# M2 A4 双编码 Cohen κ —— 权威报告（更新：2026-09-27）
 
-> **状态：Provisional / 未达投稿门槛，A4 仍 UNCHECKED。**
+> **状态：κ 三字段全部达门槛（≥0.41），direction 达"良好"；但 A4 仍 UNCHECKED。**
+> 本文件为内部工作报告，非投稿稿 §6 终稿。M2 稿 §6 自设红线（"A4 完成前不报告任何 κ 值"）
+> 且清单第 19 项规则为"完成并报告 κ 后方可勾销"——**A4 在系统数维度仍未完成（仅 2 系统，要求 ≥4）**，
+> 故 κ 仅记于工作稿，待 A4 完整闭环后方可写入 §6 并勾销。
 
-> 本文件为内部工作报告，非投稿稿 §6 终稿。M2 稿 §6 自设红线（"A4 完成前不报告任何 κ 值"），故 κ 仅在此与工作稿中记录，待 A4 真正完成（coderB 收敛多值 + ≥4 系统 + κ≥0.41）后方可写入 §6 并勾销清单第 19 项。
+## 1. 当前权威 κ（coderA vs coderB v2，17 项）
 
-## 1. 方法（透明、可审计）
-- 双编码：coderA（E2 真实锚点） vs coderB，17 个实例（Ludilearn 6 + Level Up XP 11）。
-- coderB 原 CSV 含 12 个 `target_construct`、6 个 `channel` 多值单元格（分隔符 `?·?` / ` · ` / ` / `，LUXP_3 末位带 `?` 不确定标记）。
-- 因 κ 管道要求每格恰一个标签，采用**预注册裁定规则**把多值格收敛为单标签：
-  - 首候选 = coderB 列出的第一个（视作主判定）→ 主估计；
-  - 上界：若 coderA 标签出现在候选集 → 视为该格一致；
-  - 下界：若候选集存在 ≠coderA 的标签 → 取该标签（最差情形）。
-- 注：上述规则**不替代 coderB 人工收敛**；区间越宽，说明编码方案/训练越不充分。
-
-## 2. κ 区间估计（17 项，两编码者）
-
-| 字段 | 下界 | 主估(首候选) | 上界 | 判定(主估) |
+| 字段 | 下界 | 主估(首候选) | 上界 | 判定 |
 |---|---|---|---|---|
-| target_construct | 0.034 | 0.346 | 0.485 | 不足(<0.40) |
-| direction | 0.577 | 0.577 | 0.577 | 可接受(0.41–0.60) |
-| channel | 0.332 | 0.572 | 0.572 | 可接受(0.41–0.60) |
+| target_construct | 0.549 | **0.549** | 0.549 | 可接受 (0.41–0.60) |
+| direction | 0.642 | **0.642** | 0.642 | **良好 (≥0.61)** |
+| channel | 0.393 | **0.452** | 0.452 | 可接受 (0.41–0.60) |
 
-## 3. 逐字段解读
-- **target_construct（名义）**：主估 0.346 = **不足(<0.40)**；区间 [0.034, 0.485] 极宽，说明 coderB 在该字段的构念判定与 coderA 严重发散，且编码方案本身模糊。这是 A4 当前最薄弱的一环。
-- **direction（有序·加权 κ）**：0.577 = **可接受(0.41–0.60)**，但仅勉强过线；两编码者在 LUDI_6/LUXP_1/3/7/10 的 withdraw/neutral/approach 判定上分歧明显。
-- **channel（名义）**：主估 0.572 = **可接受**，下界 0.332 仍不足；差异多来自 coderB 的 channel 多值候选（如 分数/进度、等级/经验信息）。
+- 数据源：`a4_coderA.csv`（coderA，E2 真实锚点） vs `a4_coderB_v2.csv`（coderB 重编码版）。
+- 两侧均为人类编码；脚本只做对齐 + 多值收敛 + 数学，**不代任何一方判定语义**。
+- 复算：`python results/m2/a4_kappa_v2.py --coder-b results/m2/a4_coderB_v2.csv`
+- **三字段全一致项：3/17**（κ 已作几率校正，不可按原始一致率的朴素读法理解）。
 
-## 4. 根因分析
-1. **coderB 多值单元格未收敛**：12+6 格列出多个候选，κ 只能在裁定规则下近似，真实 IRR 须由 coderB 把每格收敛为单一标签后重算。
-2. **CODEBOOK 标签集不一致（关键根因）**：A4 方案 §3 的 `target_construct`/`channel` 允许取值为**英文**（reward/nudge/badge/notification…），但 coderA/coderB 实际都用**中文**（身份/自主、成就/表现…）。两套词汇不映射，Cohen κ 自然偏低。→ 须先把 CODEBOOK 收敛为**单一、闭集、中英对齐**的标签表，再令双方据此重编码。
+### 与 v1 的对比（coderB 重编码前后的进步）
 
-## 5. LevelUpXP 源仓库纠错（重要更正）
-- **此前结论"LevelUpXP 404 / 不可复现"系误检**：当时查的是已失效的 `danbetcher/moodle-levelup`。
-- **真实源为 `FMCorz/moodle-block_xp`**（commit `65541fdc9c77511a906353f6660e195eeaa51893`，Release v20.0），M2 稿 §6 已据此引用。
-- **11 个 LUXP 锚点文件在该 commit 下全部 HTTP 200 核验通过**（badge_manager / cheatguard / group_division / levels_info / course_level_up_notification_service / promo / rank / limit_spec / the_dictator / state / course_user_leaderboard）。
-- 结论：coderB 的 LUXP_* 判定**具备可复现锚点**，其独立性与可核查性不受影响；此前"LevelUpXP 不可获取"的担忧撤销。
+| 字段 | v1（旧 coderB，多值未收敛） | v2（重编码后） | 变化 |
+|---|---|---|---|
+| target_construct | 0.346（不足） | **0.549（可接受）** | ↑0.203，跨过门槛 |
+| direction | 0.577（可接受） | **0.642（良好）** | ↑0.065，升档 |
+| channel | 0.572（可接受） | 0.452（可接受） | ↓0.120，仍达标 |
 
-## 6. A4 完整性门槛（仍缺）
-- A4 要求**≥4 个外部系统**双编码；当前仅 2 个（Ludilearn + Level Up XP）已编码，缺 ≥2 个（候选 Habitica / Khan Academy 待 clone 复核）。
-- 故 A4 在"系统数"维度仍未闭环，即便 κ 达标也不能勾销清单第 19 项。
+## 2. 仍未闭环的五项（决定能否写 §6 / 勾销 19）
 
-## 7. 下一步（coderB / 编码负责人）
-1. 把 `a4_coderB.csv` 中 12 个 target_construct、6 个 channel 多值格**收敛为单一标签**。
-2. 依**修正后的闭集 CODEBOOK（中英对齐）**重编码全部 17 项（尤其 target_construct）。
-3. 补 ≥2 个可公开获取、非同源的外部系统并双编码。
-4. 重跑 `external_coding_kappa.py --coder-a a4_coderA.csv --coder-b <收敛后 coderB>`；全部字段 κ≥0.41 后，方可写入 M2 §6 并勾销第 19 项。
+### ① v2 闭集 CODEBOOK **未被 coderB 采用**
+coderB v2 填的仍是**旧中文词汇**（身份/自主、成就/表现、社交分层、胜任/进度…），
+而非 §3.1 定义的闭集码（IDENTITY_AUTONOMY / ACHIEVEMENT / SOCIAL / …）。
+→ κ 是在**旧词表**上算出的，闭集方案实际未落地。
 
-## 8. 复算命令
+### ② channel 的 κ 被"近义异名"结构性压低（最易修复）
+`channel` 的分歧几乎全是**同义不同词**，而非真实判断冲突：
+
+| item | coderA | coderB | 语义是否真冲突 |
+|---|---|---|---|
+| LUDI_1 | 头像定制 | 头像 | 否（同指） |
+| LUDI_2 | 徽章图 | 徽章 | 否 |
+| LUDI_3 | 进度条 | 进度 | 否 |
+| LUDI_5 | 数值面板 | 积分 | 否 |
+| LUDI_6 | 计时器+扣分 | 计时器 | 否 |
+| LUXP_4 | 排行榜 | 课程排行榜 | 否 |
+| LUXP_6 | 弹窗通知 | 升级弹窗 | 否 |
+| LUXP_11 | 数值 | 经验状态 | 部分 |
+
+→ 若双方改用 §3.1.2 的**闭集 13 类 channel**，这些将全部归同，`channel` κ 预期大幅上升。
+**这是当前投入产出比最高的一步修复。**
+
+### ③ channel 仍有 2 个多值格未收敛
+`LUXP_5 = "等级 / 经验信息"`、`LUXP_8 = "名次 / 排行"`（含 ` / ` 分隔符）。
+现按"首候选"规则收敛为 `等级` / `名次`，κ 区间因此有 0.393–0.452 的宽度。
+→ coderB 须把这两格收敛为单一闭集码。
+
+### ④ 独立性存疑（须由 coderB 书面确认，最要紧）
+`LUXP_3`、`LUXP_5` 上，coderB **从 v1 的 `身份/自主`、`成就/表现` 改成了 `社交分层`、`胜任/进度`**——
+这恰是 coderA 的**特有措辞**（非通用词），且 coderA 数据就在本仓库、§3.1.4 表也并列了 A 的原标签。
+若 coderB 编码时可见 coderA 结果，则**独立性受损、κ 被人为抬高，不可用于投稿**。
+→ 须确认 coderB 是否**盲编**（编码时未见 coderA 结果）。若非盲编，须重新盲编。
+
+### ⑤ A4 系统数未达 ≥4（与 κ 无关的独立缺口）
+当前仍仅 **2 个系统**（Ludilearn + Level Up XP）双编码，A4 要求 ≥4；
+Habitica / Khan Academy 仍为候选、待 clone 复核。此项不闭环，第 19 项不可勾销。
+
+## 3. 已更正的历史错误
+
+- **LevelUpXP "404 / 不可复现" 系误检**：查的是已失效的 `danbetcher/moodle-levelup`。
+  真实源 `FMCorz/moodle-block_xp`（commit `65541fdc`，Release v20.0），
+  **11 个 LUXP 锚点全部 HTTP 200 核验通过** → coderB 判定具备可复现锚点。
+- **v1 coderB 曾为 GBK 编码**、含 12+6 个多值格；v2 已归一化 UTF-8 且仅剩 2 个多值格。
+- **原 CODEBOOK（§3）已废止**：`target_construct` 用英文且把 channel 词混入 construct 列，
+  与中文实务脱节，是 v1 `target_construct` κ=0.346 的结构性根因；以 §3.1 闭集版为准。
+
+## 4. 下一步（按顺序，前三项完成即可进 §6）
+
+1. **coderB 书面确认盲编**（独立性）；若否 → 重新盲编。
+2. **coderB 按 §3.1 闭集重填 `channel`**（13 类）并收敛 `LUXP_5`/`LUXP_8` 多值格；
+   建议同时把 `target_construct` 也改用闭集码，使三字段口径统一。
+3. **补 ≥2 个可公开获取、非同源的外部系统**并双编码（达 A4 的 ≥4 系统）。
+4. 复算 κ（全字段 ≥0.41）→ 写入 M2 §6 双编码 κ 表 → 勾销清单第 19 项。
+
+## 5. 复算命令
+
 ```bash
-python results/m2/external_coding_kappa.py \
-  --coder-a results/m2/a4_coderA.csv \
-  --coder-b results/m2/a4_coderB_resolved_first.csv   # 首候选裁定版（仅用于试算）
+# 当前（coderA vs coderB v2，旧中文词表）
+python results/m2/a4_kappa_v2.py --coder-b results/m2/a4_coderB_v2.csv
+
+# 闭集重编码后（替换路径即可，脚本通用）
+python results/m2/a4_kappa_v2.py --coder-b results/m2/<闭集版 coderB>.csv
 ```
 
-> 数据文件：`a4_coderA.csv` / `a4_coderB.csv`（原始）/ `a4_coderB_resolved_first.csv`（裁定版）/ 本报告。
+> 数据文件：`a4_coderA.csv` / `a4_coderB.csv`(v1) / `a4_coderB_v2.csv`(v2，当前权威) /
+> `a4_coderB_v2_template.csv`(coderB 填写原件) / 本报告。
