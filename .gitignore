@@ -98,3 +98,6 @@ learnflow-backend/artifacts/state/
 # 同理：LEARNFLOW_EXPERIMENT_BACKEND=json 时的实验落盘文件，
 # 含被试分组信息（谁被分到 control/treatment），同样属研究原始数据，不可归档。
 learnflow-backend/artifacts/experiments.json
+
+# A4: 外部系统源码临时快照（第三方 GPL 代码，不入库）
+_src_snippets/*.php

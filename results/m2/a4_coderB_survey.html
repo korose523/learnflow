@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A4 外部系统机制编码问卷 · coderB</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --card:#fff; --text:#1f2328; --muted:#5b6570;
+    --line:#e3e6ea; --accent:#2563eb; --accent-soft:#eff4ff;
+    --ok:#16a34a; --warn:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+       font:15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:940px;margin:0 auto;padding:28px 18px 80px}
+  h1{font-size:22px;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:13px}
+  .banner{background:var(--accent-soft);border:1px solid #c7d7fe;border-radius:10px;
+          padding:12px 14px;font-size:13px;margin:16px 0;color:#1e3a8a}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;
+         padding:16px 18px;margin-bottom:14px}
+  .bar{position:sticky;top:0;z-index:5;background:var(--card);
+       border:1px solid var(--line);border-radius:12px;padding:12px 16px;
+       margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .bar .grow{flex:1;min-width:180px}
+  input[type=text]{padding:7px 10px;border:1px solid var(--line);border-radius:8px;font-size:14px;width:170px}
+  button{background:var(--accent);color:#fff;border:0;border-radius:8px;
+         padding:9px 16px;font-size:14px;cursor:pointer}
+  button.ghost{background:#fff;color:var(--accent);border:1px solid var(--accent)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .item{border-top:1px solid var(--line);padding:16px 0}
+  .item:first-child{border-top:0;padding-top:0}
+  .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .id{font-weight:700;font-size:15px}
+  .sys{font-size:12px;color:#fff;background:#334155;border-radius:999px;padding:2px 9px}
+  .anchor{font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+          color:var(--muted);word-break:break-all}
+  .desc{background:#fafbfc;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;
+        padding:10px 12px;margin:10px 0 12px;font-size:14px}
+  .q{margin:12px 0 4px;font-weight:600;font-size:14px}
+  .hint{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .opts{display:flex;flex-wrap:wrap;gap:8px}
+  label.opt{display:flex;align-items:center;gap:7px;border:1px solid var(--line);
+            border-radius:8px;padding:7px 11px;cursor:pointer;background:#fff;font-size:13px}
+  label.opt:hover{border-color:var(--accent)}
+  label.opt input{accent-color:var(--accent);margin:0}
+  label.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+  .code{font:12px ui-monospace,Menlo,Consolas,monospace;color:var(--muted)}
+  textarea{width:100%;height:170px;font:12px ui-monospace,Menlo,Consolas,monospace;
+           border:1px solid var(--line);border-radius:8px;padding:10px;margin-top:10px}
+  .stat{font-size:13px;color:var(--muted)}
+  .done{color:var(--ok);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>A4 外部系统机制编码问卷（coderB）</h1>
+  <div class="sub">M2 论文 · 跨系统复现双编码 · 17 个机制实例 · 闭集 CODEBOOK v2（§3.1）</div>
+
+  <div class="banner">
+    <b>编码须知</b><br>
+    1. 每题给出该代码点的<b>真实功能描述</b>（摘自源码/语言串），请据此独立判断，<b>请勿参考 coderA 的编码结果</b>（盲编要求）。<br>
+    2. 三问均为<b>闭集单选</b>：target_construct（6 类）· direction（3 类，有序）· channel（13 类）。<br>
+    3. 判断依据见 §3.1 边界裁决：含"学习者自身成就/进展反馈"→ ACHIEVEMENT；纯促活无成就反馈 → ENGAGEMENT；
+       涉及相对位置/他人比较/分组 → SOCIAL；个性化外观/自主 → IDENTITY_AUTONOMY。<br>
+    4. 全部作答后点「生成 CSV」，可直接下载或复制。答卷会自动存本机浏览器，可中断续填。
+  </div>
+
+  <div class="bar">
+    <div class="grow">
+      <div>编码者：<input type="text" id="coder" value="coderB"></div>
+      <div class="stat" id="stat">已作答 0 / 17</div>
+    </div>
+    <button class="ghost" id="clear">清空重填</button>
+    <button id="gen">生成 CSV</button>
+  </div>
+
+  <div class="panel" id="items"></div>
+
+  <div class="panel" id="out" style="display:none">
+    <b>生成的 CSV（可直接复制，或点下方下载）</b>
+    <textarea id="csv" readonly></textarea>
+    <div style="margin-top:10px;display:flex;gap:10px">
+      <button id="dl">下载 a4_coderB_survey.csv</button>
+      <button class="ghost" id="copy">复制到剪贴板</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CONSTRUCT = [
+  ["IDENTITY_AUTONOMY","身份/自主","自我表达、个性化、自主感（SDT 自主/胜任）"],
+  ["ACHIEVEMENT","成就/表现","成就、精通、等级、分数、XP、进度等『自身进展/表现反馈』"],
+  ["SOCIAL","社交比较/分层","排行榜、名次、相对位置、分组/层级/地位分化"],
+  ["ENGAGEMENT","参与度","参与/活跃激励；不含自身成就反馈的促活（横幅/提醒）"],
+  ["TEMPORAL","时长/节奏","计时、节奏控制、惩罚性限时"],
+  ["COMPLIANCE","合规","防作弊、限速、规则引擎、安全/合规护栏"]
+];
+const DIRECTION = [
+  ["withdraw","推开/限制","休息、保护、负向限制（如强制休息、扣分、拦截）"],
+  ["neutral","中性","既不促学也不限制（如纯展示、纯配置）"],
+  ["approach","拉回/促学","加时、激励、正向促学"]
+];
+const CHANNEL = [
+  ["VISUAL_CUSTOMIZATION","头像/个性化"],["BADGE","徽章"],["PROGRESS_BAR","进度条"],
+  ["LEADERBOARD","排行榜/名次"],["SCORE_PANEL","分数/数值面板"],["TIMER","计时器"],
+  ["CHEATGUARD","防作弊拦截"],["GROUPING","分组"],["LEVEL_INFO","等级/经验信息"],
+  ["NOTIFICATION","通知/升级通知/促销横幅"],["RATE_LIMIT","限流窗口"],
+  ["RULE_ENGINE","规则引擎"],["XP_STATE","经验状态"]
+];
+
+const ITEMS = [
+ ["LUDI_1","Ludilearn","lang/en/format_ludilearn.php:202 settings:avatardescription",
+  "该游戏元素允许学习者获得物品并自定义其在课程中的视觉形象。学习者随课程进度解锁发型、服装、配饰等物品。解锁条件按活动类型而定：评分活动需得分超过设定阈值（如 80%）；仅完成类活动完成即解锁；评分与完成混合的活动以得分为准，完成不再额外影响。"],
+ ["LUDI_2","Ludilearn","lang/en/format_ludilearn.php:194 settings:badgedescription",
+  "该游戏元素因完成活动而授予学习者徽章。评分活动按分数达到各档阈值自动授予金/银/铜三级徽章；仅完成类活动在完成时直接授予金徽章；评分与完成混合的活动可获得三级徽章之一及与完成关联的奖励徽章。"],
+ ["LUDI_3","Ludilearn","lang/en/format_ludilearn.php:198 settings:progressiondescription",
+  "该游戏元素以『旅程』形式展示学习者在整个课程中的总体进度，并自动适配活动类型：评分活动的进度直接对应得分百分比；仅完成类活动一经标记完成即 +100%；评分与完成混合的活动以得分为准。"],
+ ["LUDI_4","Ludilearn","lang/en/format_ludilearn.php:133 ranking",
+  "语言串 $string['ranking'] = 'Ranking' 所定义的排名元素，用于在课程中呈现学习者的排名（rank）视图；同文件另有 best time / average time / reference time 等与排名并列展示的计时类字符串。"],
+ ["LUDI_5","Ludilearn","lang/en/format_ludilearn.php:189 settings:scoredescription",
+  "该游戏元素让学习者通过完成课程活动累积积分，并自动适配活动类型：评分活动按得分直接换算（并可乘系数放大为游戏化分值）；仅完成类活动完成时获得固定完成奖励分；评分与完成混合的活动同时计入得分与额外加成百分比。"],
+ ["LUDI_6","Ludilearn","classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20",
+  "计时器游戏元素，仅作用于测验（quiz）类活动：显示学习者完成测验所用时间，并对错误施加超时惩罚。类中常量 DEFAULT_PENALTIES = 20，即每丢失 1 分按 20 秒计入学习者最终用时（源码注释示例：扣 20 秒/分，2 分题得 0 分则加 40 秒）。"],
+ ["LUXP_1","Level Up XP","classes/local/badge/badge_manager.php",
+  "badge_manager 类，负责徽章的授予与查询：提供 award_badge($userid, $badgeid, $issuerid) 与 get_compatible_badges($context) 等方法（源码注释标注为 stub）。"],
+ ["LUXP_2","Level Up XP","classes/form/cheatguard.php",
+  "cheatguard 动态表单类（extends dynamic_form，路由名 'rules'），用于配置防作弊（cheat guard）相关规则与拦截设置，含表单定义 definition() 与动态提交处理。"],
+ ["LUXP_3","Level Up XP","classes/local/division/group_division.php",
+  "group_division 类（implements division），按 Moodle 分组（groupid）对学习者进行划分/分群，提供 get_id() 与 get_name() 等接口。"],
+ ["LUXP_4","Level Up XP","classes/local/leaderboard/course_user_leaderboard.php",
+  "course_user_leaderboard 类（implements leaderboard），按课程内用户状态生成排行榜；依赖 columns、ranker、levelsinfo、userfilter 等字段，数据表为 block_xp。"],
+ ["LUXP_5","Level Up XP","classes/local/xp/levels_info.php, level.php",
+  "levels_info 接口（extends JsonSerializable），描述等级体系信息：get_count() 返回等级总数，get_level($level) 返回指定等级的 level 对象。"],
+ ["LUXP_6","Level Up XP","classes/local/notification/course_level_up_notification_service.php",
+  "course_level_up_notification_service 类，提供课程『升级通知』服务：含用户偏好常量 USERPREF_NOTIFY（'block_xp_notify_level_up_'）与 get_levels_to_notify_for() 等方法。"],
+ ["LUXP_7","Level Up XP","classes/form/promo.php",
+  "promo 表单类（extends moodleform），定义促销/推广横幅（promo banner）相关的表单定义 definition()。"],
+ ["LUXP_8","Level Up XP","classes/local/xp/rank.php, state_rank.php",
+  "rank 接口，描述『名次』：get_rank() 返回该状态在群体中的排名序号，get_state() 返回其对应的 state 对象。"],
+ ["LUXP_9","Level Up XP","classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）",
+  "limit_spec 类，定义速率上限规格：含时间窗口常量 WINDOW_1H / WINDOW_DAILY / WINDOW_WEEKLY / WINDOW_MONTHLY / WINDOW_HOURLY，以及 $max（窗口内允许次数上限）与 $scope（作用范围 NONE/ENV/PARENT/OBJECT）。"],
+ ["LUXP_10","Level Up XP","classes/local/rule/the_dictator.php, ruletype/*.php",
+  "the_dictator 类（implements dictator），是规则的裁决/执行器：持有数据库与过滤器处理器，并缓存上下文中的规则；源码标注 @deprecated（自 XP 20 起改用 world_rule_manager）。"],
+ ["LUXP_11","Level Up XP","classes/local/xp/state.php, user_state.php",
+  "state 接口，表示『某对象的 XP 状态』：get_id() 返回该对象 ID，get_level() 返回其当前等级。"]
+];
+
+const KEY = "a4_coderB_survey_v1";
+const answers = JSON.parse(localStorage.getItem(KEY) || "{}");
+const coderInput = document.getElementById("coder");
+
+function opts(name, list) {
+  return list.map(([code, label, hint]) =>
+    `<label class="opt" data-for="${name}"><input type="radio" name="${name}" value="${code}">
+      <span><b>${label}</b> <span class="code">${code}</span>${hint ? `<br><span class="code">${hint}</span>` : ""}</span></label>`
+  ).join("");
+}
+
+function render() {
+  document.getElementById("items").innerHTML = ITEMS.map(([id, sys, anchor, desc]) => `
+    <div class="item" data-item="${id}">
+      <div class="hd"><span class="id">${id}</span><span class="sys">${sys}</span>
+        <span class="anchor">${anchor}</span></div>
+      <div class="desc">${desc}</div>
+      <div class="q">Q1 · target_construct（该代码点意图触发的行为科学构念）</div>
+      <div class="opts">${opts(id + "__c", CONSTRUCT)}</div>
+      <div class="q">Q2 · direction（干预的语义方向，有序 withdraw &lt; neutral &lt; approach）</div>
+      <div class="opts">${opts(id + "__d", DIRECTION)}</div>
+      <div class="q">Q3 · channel（干预落地的载体/通道）</div>
+      <div class="opts">${opts(id + "__h", CHANNEL)}</div>
+    </div>`).join("");
+
+  document.querySelectorAll("input[type=radio]").forEach(r => {
+    if (answers[r.name] === r.value) { r.checked = true; r.closest("label").classList.add("on"); }
+    r.addEventListener("change", () => {
+      answers[r.name] = r.value;
+      document.querySelectorAll(`input[name="${r.name}"]`).forEach(x => x.closest("label").classList.remove("on"));
+      r.closest("label").classList.add("on");
+      localStorage.setItem(KEY, JSON.stringify(answers));
+      stat();
+    });
+  });
+  stat();
+}
+
+function answeredCount() {
+  return ITEMS.filter(([id]) =>
+    answers[id + "__c"] && answers[id + "__d"] && answers[id + "__h"]).length;
+}
+function stat() {
+  const n = answeredCount();
+  const el = document.getElementById("stat");
+  el.innerHTML = `已作答 <b class="${n === ITEMS.length ? "done" : ""}">${n} / ${ITEMS.length}</b>` +
+    (n === ITEMS.length ? " ✓ 全部完成，可生成 CSV" : "（每题需三问全答）");
+}
+
+function esc(v) {
+  v = String(v == null ? "" : v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+function buildCsv() {
+  const coder = (coderInput.value || "coderB").trim();
+  const rows = [["system", "item_id", "target_construct", "direction", "channel", "coder", "source_anchor"]];
+  ITEMS.forEach(([id, sys, anchor]) => {
+    rows.push([sys, id, answers[id + "__c"] || "", answers[id + "__d"] || "",
+               answers[id + "__h"] || "", coder, anchor]);
+  });
+  return rows.map(r => r.map(esc).join(",")).join("\n");
+}
+
+document.getElementById("gen").addEventListener("click", () => {
+  const n = answeredCount();
+  if (n < ITEMS.length) {
+    if (!confirm(`尚有 ${ITEMS.length - n} 题未答完。仍要生成（未答项留空）？`)) return;
+  }
+  const csv = buildCsv();
+  document.getElementById("csv").value = csv;
+  document.getElementById("out").style.display = "block";
+  document.getElementById("out").scrollIntoView({ behavior: "smooth" });
+});
+document.getElementById("dl").addEventListener("click", () => {
+  const blob = new Blob(["\ufeff" + buildCsv()], { type: "text/csv;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "a4_coderB_survey.csv";
+  a.click(); URL.revokeObjectURL(a.href);
+});
+document.getElementById("copy").addEventListener("click", async () => {
+  await navigator.clipboard.writeText(buildCsv());
+  alert("CSV 已复制到剪贴板");
+});
+document.getElementById("clear").addEventListener("click", () => {
+  if (!confirm("清空本机已保存的答卷？")) return;
+  localStorage.removeItem(KEY);
+  location.reload();
+});
+
+render();
+</script>
+</body>
+</html>

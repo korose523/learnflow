@@ -1,0 +1,18 @@
+﻿item_id,system,coderA_construct_raw,proposed_construct,coderA_direction,proposed_direction,coderA_channel_raw,proposed_channel,confirm_construct,confirm_direction,confirm_channel,note
+LUDI_1,Ludilearn,身份/自主,IDENTITY_AUTONOMY,approach,approach,头像定制,VISUAL_CUSTOMIZATION,,,,
+LUDI_2,Ludilearn,成就/表现,ACHIEVEMENT,approach,approach,徽章图,BADGE,,,,
+LUDI_3,Ludilearn,进度/坚持,ACHIEVEMENT,approach,approach,进度条,PROGRESS_BAR,,,进度归入「自身进展反馈」
+LUDI_4,Ludilearn,社交比较,SOCIAL,approach,approach,排行榜,LEADERBOARD,,,,
+LUDI_5,Ludilearn,参与度/表现,ACHIEVEMENT,approach,approach,数值面板,SCORE_PANEL,,,"⚠️ 亦可作 ENGAGEMENT；按「分数=表现反馈」归 ACHIEVEMENT，须裁定"
+LUDI_6,Ludilearn,时长/节奏,TEMPORAL,withdraw,withdraw,计时器+扣分,TIMER,,,,
+LUXP_1,Level Up XP,成就,ACHIEVEMENT,approach,approach,徽章,BADGE,,,,
+LUXP_2,Level Up XP,合规,COMPLIANCE,withdraw,withdraw,防作弊拦截,CHEATGUARD,,,,
+LUXP_3,Level Up XP,社交分层,SOCIAL,approach,approach,分组,GROUPING,,,,
+LUXP_4,Level Up XP,社交比较,SOCIAL,approach,approach,排行榜,LEADERBOARD,,,,
+LUXP_5,Level Up XP,胜任/进度,ACHIEVEMENT,approach,approach,进度+等级,LEVEL_INFO,,,等级/经验归入「自身进展反馈」
+LUXP_6,Level Up XP,参与度,ENGAGEMENT,approach,approach,弹窗通知,NOTIFICATION,,,"⚠️ §3.1.4 曾按「升级通知=成就反馈」归 ACHIEVEMENT，与此处标签级 ENGAGEMENT 冲突，须裁定"
+LUXP_7,Level Up XP,参与度,ENGAGEMENT,approach,approach,促销横幅,NOTIFICATION,,,,
+LUXP_8,Level Up XP,社交比较,SOCIAL,approach,approach,名次,LEADERBOARD,,,,
+LUXP_9,Level Up XP,行为速率,COMPLIANCE,withdraw,withdraw,限流窗口,RATE_LIMIT,,,限速归入合规护栏
+LUXP_10,Level Up XP,行为触发,COMPLIANCE,approach,approach,规则引擎,RULE_ENGINE,,,规则执行归入合规
+LUXP_11,Level Up XP,参与度,ENGAGEMENT,approach,approach,数值,SCORE_PANEL,,,"⚠️ 双重歧义：construct 同 LUXP_6；channel「数值」亦可读作 XP_STATE，须裁定"
