@@ -1,0 +1,12 @@
+﻿system,item_id,target_construct,direction,channel,coder,source_anchor
+# ===== 以下为格式示例（非真实编码数据），两名编码者各自复制本表头后填写 =====
+# Ludilearn 示例（机制实例须由编码者实际 clone 并逐 file:line 清点，勿直接照抄）
+Ludilearn,L1,reward,approach,point,coderA,classes/local/gameelements/score.php:42
+Ludilearn,L2,badge,neutral,badge,coderA,classes/local/gameelements/badge.php:18
+Ludilearn,L3,notification,approach,notification,coderA,classes/local/gameelements/timer.php:73
+LevelUpXP,P1,reward,approach,point,coderA,classes/observer.php:210
+LevelUpXP,P2,nudge,neutral,notification,coderA,classes/observer.php:255
+Habitica,H1,nudge,approach,notification,coderA,client/components/tasks/Task.jsx:130
+Habitica,H2,reward,approach,point,coderA,common/task-scores.js:55
+KhanAcademy,K1,reminder,neutral,notification,coderA,exercises/stepwise-hint.js:88
+KhanAcademy,K2,badge,neutral,badge,coderA,explore/badges.js:40
