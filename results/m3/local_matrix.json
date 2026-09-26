@@ -1,0 +1,112 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "E:\\learnflow\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "deepseek-r1:1.5b": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": -0.0088,
+      "e1a_spearman_p": 0.89891023,
+      "e1a_accuracy": 0.1887,
+      "e1a_cohen_kappa": -0.0215,
+      "e1a_llm_dist": {
+        "1": 10,
+        "2": 32,
+        "3": 170
+      },
+      "e1a_spearman_ci95": [
+        -0.1569,
+        0.1418
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": -0.0088,
+      "e1a_spearman_none_as_zero_p": 0.89891023,
+      "e1a_spearman_none_as_zero_ci95": [
+        -0.1569,
+        0.1418
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 108,
+      "e1b_parse_fail": 14,
+      "e1b_n_pair_constraints": 1356,
+      "e1b_n_total_comparisons": 1368,
+      "e1b_spearman": 0.0591,
+      "e1b_spearman_p": 0.39159257,
+      "paired_bootstrap": {
+        "reps_used": 200,
+        "rho_absolute_mean": -0.0014,
+        "rho_absolute_ci95": [
+          -0.1569,
+          0.1418
+        ],
+        "rho_bt_mean": 0.0205,
+        "rho_bt_ci95": [
+          -0.1338,
+          0.1584
+        ],
+        "delta_abs_minus_bt_mean": -0.0218,
+        "delta_abs_minus_bt_ci95": [
+          -0.2045,
+          0.1874
+        ],
+        "delta_p_two_sided": 0.76,
+        "significant_at_0.05": false
+      },
+      "e1b_spearman_ci95": [
+        -0.1338,
+        0.1584
+      ]
+    }
+  },
+  "run_cells": {
+    "deepseek-r1:1.5b": {
+      "model_id": "deepseek-r1:1.5b",
+      "family": "DeepSeek",
+      "architecture": "dense",
+      "params_billions": 1.8,
+      "scale_tier": "S1_<7B",
+      "model_digest": {
+        "digest": "e0979632db5a88d1a53884cb2a941772d10ff5d055aabaa6801c4e36f3a6c2d7",
+        "digest_source": "api/tags",
+        "size_bytes": 1117322768,
+        "modified_at": "2026-09-27T02:17:32.9600353+09:00",
+        "family": "qwen2",
+        "parameter_size": "1.8B",
+        "quantization_level": "Q4_K_M",
+        "format": "gguf",
+        "model_info_subset": {
+          "general.architecture": "qwen2",
+          "general.parameter_count": 1777088000,
+          "qwen2.block_count": 28,
+          "qwen2.context_length": 131072
+        },
+        "raw_top_keys": [
+          "capabilities",
+          "details",
+          "license",
+          "model_info",
+          "modelfile",
+          "modified_at",
+          "parameters",
+          "template",
+          "tensors"
+        ]
+      },
+      "e1a_new_records": 212,
+      "e1a_wall_seconds": 743.2,
+      "e1b_new_records": 108,
+      "e1b_wall_seconds": 2071.5,
+      "wall_seconds": 2814.8
+    }
+  }
+}

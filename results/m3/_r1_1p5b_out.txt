@@ -1,0 +1,19 @@
+[data] DBE-KT22 questions: 212
+[resume] 2081 records already present -> results\m3\local_matrix.jsonl
+[E1-B] 批构成：3 轮 × 6 题 = 108 批（seed=20260912）
+
+=== model=deepseek-r1:1.5b ===
+[E1-A] 25/212 elapsed=110s
+[E1-A] 50/212 elapsed=207s
+[E1-A] 75/212 elapsed=287s
+[E1-A] 100/212 elapsed=375s
+[E1-A] 125/212 elapsed=463s
+[E1-A] 150/212 elapsed=548s
+[E1-A] 175/212 elapsed=610s
+[E1-A] 200/212 elapsed=699s
+[deepseek-r1:1.5b] done in 2814.8s (212 E1-A parsed)
+[retry] 重试轮 1/1：E1-A 0 条, E1-B 19 条
+[retry] 重试轮 1 修复：E1-A 0/0, E1-B 5/19
+
+[done] summary -> results\m3\local_matrix.json
+  deepseek-r1:1.5b: E1A ρ(listwise)=-0.0088 CI=[-0.1569, 0.1418] | E1A ρ(none_as_zero)=-0.0088 CI=[-0.1569, 0.1418] | parsed=212/212 (listwise) | E1B ρ=0.0591 CI=[-0.1338, 0.1584] fail=14/108
