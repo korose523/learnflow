@@ -1,4 +1,4 @@
-﻿item_id,system,coderA_construct_raw,proposed_construct,coderA_direction,proposed_direction,coderA_channel_raw,proposed_channel,confirm_construct,confirm_direction,confirm_channel,note
+item_id,system,coderA_construct_raw,proposed_construct,coderA_direction,proposed_direction,coderA_channel_raw,proposed_channel,confirm_construct,confirm_direction,confirm_channel,note
 LUDI_1,Ludilearn,身份/自主,IDENTITY_AUTONOMY,approach,approach,头像定制,VISUAL_CUSTOMIZATION,,,,
 LUDI_2,Ludilearn,成就/表现,ACHIEVEMENT,approach,approach,徽章图,BADGE,,,,
 LUDI_3,Ludilearn,进度/坚持,ACHIEVEMENT,approach,approach,进度条,PROGRESS_BAR,,,进度归入「自身进展反馈」

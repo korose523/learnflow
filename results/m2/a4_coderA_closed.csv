@@ -1,0 +1,18 @@
+system,item_id,target_construct,direction,channel,coder,source_anchor
+Ludilearn,LUDI_1,IDENTITY_AUTONOMY,approach,VISUAL_CUSTOMIZATION,coderA_analyst,lang/en/format_ludilearn.php:202 settings:avatardescription
+Ludilearn,LUDI_2,ACHIEVEMENT,approach,BADGE,coderA_analyst,lang/en/format_ludilearn.php:194 settings:badgedescription
+Ludilearn,LUDI_3,ACHIEVEMENT,approach,PROGRESS_BAR,coderA_analyst,lang/en/format_ludilearn.php:198 settings:progressiondescription
+Ludilearn,LUDI_4,SOCIAL,approach,LEADERBOARD,coderA_analyst,lang/en/format_ludilearn.php:133 ranking
+Ludilearn,LUDI_5,ACHIEVEMENT,approach,SCORE_PANEL,coderA_analyst,lang/en/format_ludilearn.php:189 settings:scoredescription
+Ludilearn,LUDI_6,TEMPORAL,withdraw,TIMER,coderA_analyst,classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20
+Level Up XP,LUXP_1,ACHIEVEMENT,approach,BADGE,coderA_analyst,classes/local/badge/badge_manager.php
+Level Up XP,LUXP_2,COMPLIANCE,withdraw,CHEATGUARD,coderA_analyst,classes/form/cheatguard.php
+Level Up XP,LUXP_3,SOCIAL,approach,GROUPING,coderA_analyst,classes/local/division/group_division.php
+Level Up XP,LUXP_4,SOCIAL,approach,LEADERBOARD,coderA_analyst,classes/local/leaderboard/course_user_leaderboard.php
+Level Up XP,LUXP_5,ACHIEVEMENT,approach,LEVEL_INFO,coderA_analyst,"classes/local/xp/levels_info.php, level.php"
+Level Up XP,LUXP_6,ENGAGEMENT,approach,NOTIFICATION,coderA_analyst,classes/local/notification/course_level_up_notification_service.php
+Level Up XP,LUXP_7,ENGAGEMENT,approach,NOTIFICATION,coderA_analyst,classes/form/promo.php
+Level Up XP,LUXP_8,SOCIAL,approach,LEADERBOARD,coderA_analyst,"classes/local/xp/rank.php, state_rank.php"
+Level Up XP,LUXP_9,COMPLIANCE,withdraw,RATE_LIMIT,coderA_analyst,classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）
+Level Up XP,LUXP_10,COMPLIANCE,approach,RULE_ENGINE,coderA_analyst,"classes/local/rule/the_dictator.php, ruletype/*.php"
+Level Up XP,LUXP_11,ENGAGEMENT,approach,SCORE_PANEL,coderA_analyst,"classes/local/xp/state.php, user_state.php"

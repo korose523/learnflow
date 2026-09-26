@@ -1,0 +1,18 @@
+﻿system,item_id,target_construct,direction,channel,coder,source_anchor
+Ludilearn,LUDI_1,IDENTITY_AUTONOMY,approach,VISUAL_CUSTOMIZATION,coderB,lang/en/format_ludilearn.php:202 settings:avatardescription
+Ludilearn,LUDI_2,ENGAGEMENT,approach,BADGE,coderB,lang/en/format_ludilearn.php:194 settings:badgedescription
+Ludilearn,LUDI_3,ACHIEVEMENT,approach,PROGRESS_BAR,coderB,lang/en/format_ludilearn.php:198 settings:progressiondescription
+Ludilearn,LUDI_4,SOCIAL,approach,LEADERBOARD,coderB,lang/en/format_ludilearn.php:133 ranking
+Ludilearn,LUDI_5,ENGAGEMENT,approach,SCORE_PANEL,coderB,lang/en/format_ludilearn.php:189 settings:scoredescription
+Ludilearn,LUDI_6,TEMPORAL,approach,TIMER,coderB,classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20
+Level Up XP,LUXP_1,ACHIEVEMENT,approach,BADGE,coderB,classes/local/badge/badge_manager.php
+Level Up XP,LUXP_2,COMPLIANCE,withdraw,CHEATGUARD,coderB,classes/form/cheatguard.php
+Level Up XP,LUXP_3,SOCIAL,neutral,GROUPING,coderB,classes/local/division/group_division.php
+Level Up XP,LUXP_4,SOCIAL,approach,LEADERBOARD,coderB,classes/local/leaderboard/course_user_leaderboard.php
+Level Up XP,LUXP_5,ACHIEVEMENT,approach,LEVEL_INFO,coderB,"classes/local/xp/levels_info.php, level.php"
+Level Up XP,LUXP_6,ENGAGEMENT,approach,NOTIFICATION,coderB,classes/local/notification/course_level_up_notification_service.php
+Level Up XP,LUXP_7,ENGAGEMENT,approach,NOTIFICATION,coderB,classes/form/promo.php
+Level Up XP,LUXP_8,SOCIAL,approach,LEADERBOARD,coderB,"classes/local/xp/rank.php, state_rank.php"
+Level Up XP,LUXP_9,COMPLIANCE,withdraw,RATE_LIMIT,coderB,classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）
+Level Up XP,LUXP_10,COMPLIANCE,neutral,RULE_ENGINE,coderB,"classes/local/rule/the_dictator.php, ruletype/*.php"
+Level Up XP,LUXP_11,ACHIEVEMENT,approach,XP_STATE,coderB,"classes/local/xp/state.php, user_state.php"
