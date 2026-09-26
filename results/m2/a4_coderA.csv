@@ -1,0 +1,18 @@
+﻿system,item_id,target_construct,direction,channel,coder,source_anchor
+Ludilearn,LUDI_1,身份/自主,approach,头像定制,coderA_analyst,lang/en/format_ludilearn.php:202 settings:avatardescription
+Ludilearn,LUDI_2,成就/表现,approach,徽章图,coderA_analyst,lang/en/format_ludilearn.php:194 settings:badgedescription
+Ludilearn,LUDI_3,进度/坚持,approach,进度条,coderA_analyst,lang/en/format_ludilearn.php:198 settings:progressiondescription
+Ludilearn,LUDI_4,社交比较,approach,排行榜,coderA_analyst,lang/en/format_ludilearn.php:133 ranking
+Ludilearn,LUDI_5,参与度/表现,approach,数值面板,coderA_analyst,lang/en/format_ludilearn.php:189 settings:scoredescription
+Ludilearn,LUDI_6,时长/节奏,withdraw,计时器+扣分,coderA_analyst,classes/local/gameelements/timer.php:46 DEFAULT_PENALTIES=20
+Level Up XP,LUXP_1,成就,approach,徽章,coderA_analyst,classes/local/badge/badge_manager.php
+Level Up XP,LUXP_2,合规,withdraw,防作弊拦截,coderA_analyst,classes/form/cheatguard.php
+Level Up XP,LUXP_3,社交分层,approach,分组,coderA_analyst,classes/local/division/group_division.php
+Level Up XP,LUXP_4,社交比较,approach,排行榜,coderA_analyst,classes/local/leaderboard/course_user_leaderboard.php
+Level Up XP,LUXP_5,胜任/进度,approach,进度+等级,coderA_analyst,"classes/local/xp/levels_info.php, level.php"
+Level Up XP,LUXP_6,参与度,approach,弹窗通知,coderA_analyst,classes/local/notification/course_level_up_notification_service.php
+Level Up XP,LUXP_7,参与度,approach,促销横幅,coderA_analyst,classes/form/promo.php
+Level Up XP,LUXP_8,社交比较,approach,名次,coderA_analyst,"classes/local/xp/rank.php, state_rank.php"
+Level Up XP,LUXP_9,行为速率,withdraw,限流窗口,coderA_analyst,classes/local/ruletype/limit_spec.php（H/D/W/M 窗口 + timesallowed）
+Level Up XP,LUXP_10,行为触发,approach,规则引擎,coderA_analyst,"classes/local/rule/the_dictator.php, ruletype/*.php"
+Level Up XP,LUXP_11,参与度,approach,数值,coderA_analyst,"classes/local/xp/state.php, user_state.php"
