@@ -31,10 +31,44 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 M3 = Path("E:/learnflow/results/m3")
-JSONL = M3 / "local_matrix.jsonl"
-SUMMARY = M3 / "local_matrix.json"
+
+#: ④b 矩阵的**全部**实测数据来源（2026-09-28 修订，修复可复现性缺陷）。
+#: 修订前脚本只读 `local_matrix.jsonl`，造成两处与磁盘 CSV 不符：
+#:   ① `deepseek-r1:32b` 在该文件中只有 29/212 的**中断残卷**（旧机 15.8 GB 放弃），
+#:      而完整 320 条（212 E1-A + 108 E1-B）在 `local_matrix_mixtral_r1.jsonl`；
+#:   ② `ministral-3:3b` / `mixtral:8x7b` 两格完全读不到。
+#: 结果是文档给出的复算命令只能复现 8 行，与磁盘上 11 行 CSV 不一致。
+#: 现改为按序读取全部贡献源，**后加载的源覆盖同 (model, cond, key) 记录**，
+#: 使 32b 的完整卷正确覆盖残卷。
+#: `local_matrix_colibri.*` / `local_matrix_dsv4.*` 为跨引擎复现行与 S4 探索点，
+#: 按方案 **不并入** 4×3 矩阵主张，故不在读取列表内。
+JSONL_SOURCES = [
+    M3 / "local_matrix.jsonl",
+    M3 / "local_matrix_ministral.jsonl",
+    M3 / "local_matrix_mixtral_r1.jsonl",
+]
+SUMMARY_SOURCES = [
+    M3 / "local_matrix.json",
+    M3 / "local_matrix_ministral.json",
+    M3 / "local_matrix_mixtral_r1.json",
+]
+JSONL = JSONL_SOURCES[0]      # 兼容旧引用
+SUMMARY = SUMMARY_SOURCES[0]  # 兼容旧引用
 META_SMALL = M3 / "local_matrix_meta_small.json"
 META_ANCHOR = M3 / "local_matrix_meta.json"
+#: ministral-3:3b / mixtral:8x7b / deepseek-r1:32b 三格的元信息（族别 / 参数量 / 架构）
+META_FILL = M3 / "m3_fill_meta.json"
+
+#: 三格的**人工补充注记**（量化错配 / 血统 / 复跑事实）。属散文性诚实声明而非测量结果，
+#: 故不在脚本内计算；由本脚本附在 verdict 末尾，保证 CSV 整体可由脚本复现、不留手写数字。
+EXTRA_NOTES = {
+    "ministral-3:3b": "量化 Q4_K_M（与锚点 qwen36 IQ3_S 错配，方案A §4 已知）",
+    "mixtral:8x7b": ("量化 Q4_0（非 Q4_K_M，与矩阵其余 Q4_K_M / 锚点 IQ3_S 均错配，"
+                     "方案A §4 已知）"),
+    "deepseek-r1:32b": ("⚠ F4_S3 此前因 15.8GB RAM 被判不可行，本机升级 32GB RAM 后复跑成功；"
+                        "量化 Q4_K_M（与锚点 qwen36 IQ3_S 错配，方案A §4 已知）；"
+                        "R1-Distill 基座为 Qwen2.5（lineage 见方案 §2 F4 注，族内归类仍归 F4）"),
+}
 
 FAMILY_MAP = {"Qwen": "F1_Qwen", "Llama": "F2_Llama",
               "Mistral": "F3_Mistral", "DeepSeek": "F4_DeepSeek"}
@@ -75,17 +109,48 @@ def tier_of(params_b):
 
 def load_meta() -> dict:
     meta = {}
-    for p in (META_ANCHOR, META_SMALL):
+    # 载入顺序即优先级：`m3_fill_meta.json` 的条目最稀疏（先载入），`local_matrix_meta_small.json`
+    # / `local_matrix_meta.json` 含实测 quantization 与 identity_caveat，后载入以免被稀疏条目
+    # 覆盖而丢失 R1-Distill-Qwen 的血统警示。
+    for p in (META_FILL, META_SMALL, META_ANCHOR):
         if p.is_file():
             meta.update(json.loads(p.read_text(encoding="utf-8")))
     return meta
 
 
 def load_records() -> list:
-    if not JSONL.is_file():
-        return []
-    return [json.loads(l) for l in JSONL.read_text(encoding="utf-8").splitlines()
-            if l.strip()]
+    """按序读取全部贡献源，每条记录标注 `_src`（来源文件）。
+
+    后加载源的记录会覆盖同 (model, cond, key) 的先前记录，使 `deepseek-r1:32b`
+    的完整 320 条正确覆盖 `local_matrix.jsonl` 中的 29 条中断残卷。
+    """
+    out = []
+    for p in JSONL_SOURCES:
+        if not p.is_file():
+            continue
+        for l in p.read_text(encoding="utf-8").splitlines():
+            if not l.strip():
+                continue
+            try:
+                r = json.loads(l)
+            except Exception:  # noqa: BLE001
+                continue
+            r["_src"] = "results/m3/" + p.name
+            out.append(r)
+    return out
+
+
+def load_summary() -> tuple:
+    """合并全部汇总文件，并记录每个模型的汇总来源文件（供 source_anchor 标注）。"""
+    models, src_of = {}, {}
+    for p in SUMMARY_SOURCES:
+        if not p.is_file():
+            continue
+        d = json.loads(p.read_text(encoding="utf-8"))
+        for k, v in (d.get("models") or {}).items():
+            models[k] = v
+            src_of[k] = "results/m3/" + p.name
+    return {"models": models}, src_of
 
 
 def kappa_simple(a: list, b: list) -> float:
@@ -251,16 +316,48 @@ def fail_mode(raw: str) -> str:
 
 
 def analyze(records: list) -> dict:
-    per = defaultdict(lambda: {"E1A": [], "E1B": {}})
+    """按 (model, cond, key) 去重：后加载源覆盖先前记录；并记下每个单元格**最终胜出**的来源文件。
+
+    `SRC` 只收录胜出记录的来源，因此 `deepseek-r1:32b` 的 anchor 会正确指向
+    `local_matrix_mixtral_r1.jsonl`（完整卷所在），而不会被已作废的 29 条残卷污染。
+    """
+    per = defaultdict(lambda: {"E1A": {}, "E1B": {}})
     for r in records:
         m = r.get("model")
         if not m:
             continue
+        src = r.get("_src", "")
         if r.get("cond") == "E1A":
-            per[m]["E1A"].append(r)
+            per[m]["E1A"][r.get("key")] = (src, r)
         elif r.get("cond") == "E1B":
-            per[m]["E1B"][r.get("key")] = r  # 同批去重，保留最后一次（含重试）
+            per[m]["E1B"][r.get("key")] = (src, r)  # 同批去重，保留最后一次（含重试）
+    for m in list(per):
+        srcs = set()
+        e1a = {}
+        for k, (s, r) in per[m]["E1A"].items():
+            e1a[k] = r
+            srcs.add(s)
+        e1b = {}
+        for k, (s, r) in per[m]["E1B"].items():
+            e1b[k] = r
+            srcs.add(s)
+        per[m]["E1A"] = list(e1a.values())
+        per[m]["E1B"] = e1b
+        per[m]["SRC"] = srcs
     return per
+
+
+def build_anchor(src_set: set, summary_src: str | None) -> str:
+    """source_anchor = 该单元格**胜出**记录的来源文件 + 汇总文件（排序后并列）。
+
+    只列胜出来源，故不会出现「已作废的残卷文件」被误标为出处的情况。
+    """
+    files = set(src_set or set())
+    if summary_src:
+        files.add(summary_src)
+    if not files:
+        return "results/m3/local_matrix.jsonl"
+    return "; ".join(sorted(files))
 
 
 def main() -> int:
@@ -271,7 +368,7 @@ def main() -> int:
     meta = load_meta()
     records = load_records()
     per = analyze(records)
-    summary = json.loads(SUMMARY.read_text(encoding="utf-8")) if SUMMARY.is_file() else {}
+    summary, summary_src = load_summary()
 
     rows = []
     gate_rows = []
@@ -418,6 +515,8 @@ def main() -> int:
             verdict += f"；【协议可用性门禁】{gate_txt}"
             if audit_div:
                 verdict += f"；⚠ {audit_div}"
+            if model in EXTRA_NOTES:
+                verdict += "；" + EXTRA_NOTES[model]
             gate_rows.append({
                 "model_id": model, "family": fam, "scale_tier": tier,
                 "parse_rate": parse_rate, "entropy_norm": ent_norm,
@@ -440,7 +539,8 @@ def main() -> int:
             "accuracy": "" if acc is None else f"{acc:.4f}",
             "cohen_kappa": "" if k_s is None else f"{k_s:.4f}",
             "reliability_verdict": verdict,
-            "source_anchor": ("results/m3/local_matrix.jsonl; results/m3/local_matrix.json"
+            "source_anchor": (build_anchor(per[model].get("SRC", set()),
+                                           summary_src.get(model))
                               + (f" | {audit_div}" if audit_div else "")),
         })
 

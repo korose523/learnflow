@@ -1,7 +1,0 @@
-{"model": "ministral-3:3b", "cond": "E1A", "key": "219", "expert": 3, "llm": null, "raw": ""}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "218", "expert": 3, "llm": null, "raw": ""}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "217", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3 }"}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "216", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3  }"}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "214", "expert": 2, "llm": 3, "raw": "{ \"difficulty\": 3 }"}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "219", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3 }", "retry": 1}
-{"model": "ministral-3:3b", "cond": "E1A", "key": "218", "expert": 3, "llm": 3, "raw": "{ \"difficulty\": 3 }", "retry": 1}

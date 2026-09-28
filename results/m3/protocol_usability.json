@@ -25,6 +25,22 @@
       ]
     },
     {
+      "model_id": "deepseek-r1:32b",
+      "family": "F4_DeepSeek",
+      "scale_tier": "S3_30-70B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.08519835815717175,
+      "modal_share": 0.9811320754716981,
+      "e1b_coverage": 1.0,
+      "e1a_usable": false,
+      "e1a_reasons": [
+        "归一化熵 0.085 < 0.5",
+        "众数占比 98.1% > 80%（等级塌缩）"
+      ],
+      "e1b_usable": true,
+      "e1b_reasons": []
+    },
+    {
       "model_id": "deepseek-v2:16b",
       "family": "F4_DeepSeek",
       "scale_tier": "S2_7-30B",
@@ -70,6 +86,21 @@
       ]
     },
     {
+      "model_id": "ministral-3:3b",
+      "family": "F3_Mistral",
+      "scale_tier": "S1_<7B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.596426428876119,
+      "modal_share": 0.6367924528301887,
+      "e1b_coverage": 0.8518518518518519,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 85% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
       "model_id": "mistral:7b",
       "family": "F3_Mistral",
       "scale_tier": "S2_7-30B",
@@ -82,6 +113,21 @@
       "e1b_usable": false,
       "e1b_reasons": [
         "覆盖率 89% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    },
+    {
+      "model_id": "mixtral:8x7b",
+      "family": "F3_Mistral",
+      "scale_tier": "S3_30-70B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.9897443197092388,
+      "modal_share": 0.37264150943396224,
+      "e1b_coverage": 0.8240740740740741,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 82% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
       ]
     },
     {
