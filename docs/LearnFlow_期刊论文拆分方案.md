@@ -11,7 +11,7 @@
 
 ## 摘要
 
-本文对一个自适应学习系统（LearnFlow，后端 26,107 行 Python、57 个服务模块、90 个源文件、104 个 API 端点、936 项测试（54 个测试文件））的研究资产进行系统审计，提出由七项候选工作构成的期刊投稿组合，并对每一项作五维新颖性评分与抗模式坍缩检查。审计的三项主要结论如下。
+本文对一个自适应学习系统（LearnFlow，后端 26,937 行 Python、59 个服务模块、92 个源文件、105 个 API 端点、972 项测试（56 个测试文件））的研究资产进行系统审计，提出由七项候选工作构成的期刊投稿组合，并对每一项作五维新颖性评分与抗模式坍缩检查。审计的三项主要结论如下。
 
 **第一，组合的实际规模为五项核心工作加一项系统 artifact，一项建议终止。** 六项核心候选的五维新颖性总分区间为 11–22（满分 25）。其中两项（P2、P4）总分 ≥ 20 且依赖度为零，构成组合的锚点；一项（P6，区块链教育数据可信处理）总分 11，命中"技术寻求问题"型抗模式，建议终止，其真实需求（日志防篡改与可审计）由 P4 的可审计干预账本以低两个数量级的成本吸收。
 
@@ -113,9 +113,9 @@
 | 学习方法 | **28**（`method_registry.py`，849 行） | `python scripts/verify_counts.py` |
 | 元学习技能树节点 | **16** | 同上 |
 | PRD 表格逐项求和 | **69**（与 54 的差额须在稿件中说明） | 同上 |
-| 后端源码行数 | **26,107**（`app/` 下 90 个 .py 文件，57 个服务模块） | `learnflow-backend/scripts/verify_asset_numbers.py` |
-| API 端点 | **104** | 同上（`api_routes_reachable`） |
-| 测试 | **936 项通过**，54 个测试文件 | `pytest tests/ -q`；留存日志 `results/code/_final_redline_pytest.txt` |
+| 后端源码行数 | **26,937**（`app/` 下 92 个 .py 文件，59 个服务模块） | `learnflow-backend/scripts/verify_asset_numbers.py` |
+| API 端点 | **105** | 同上（`api_routes_reachable`） |
+| 测试 | **972 项通过**，56 个测试文件 | `pytest tests/ -q`；留存日志 `results/code/_final_redline_pytest.txt` |
 | 成熟度分布 | **complete 9 / partial 37 / placeholder 8** | `scripts/verify_counts.py`（`maturity_*`） |
 | 占位机制 ID | `LF-M19, M28, M29, M32, M45, M49, M50, M53` | 同上 |
 | 运行时效果生产者 | **默认 2**（`LF-M44` / `LF-M52`）；路线 A·A2 开启后 **14 个机制 / 16 个 AST 构造点**（`LEARN2_A2_PRODUCERS=1` 时 opt-in 生效，**默认关闭**，未启用时运行时行为不变） | 同上（`effect_producers`，当前实测 16；机制标签去重 14：`LF-M01/04/05/06/07/08/12/13/15/16/44/51/52/53`） |
@@ -166,7 +166,7 @@
 | 实验设计功效参数 | ✅ 已具备 | `power_table.py` 与 `required_n_per_group`；DEFF = 1 + (m−1)ρ，m=30、ρ=0.05 时 DEFF = 2.45 |
 | 分层门控预注册 | ✅ 已具备 | `scripts/prereg/ablation_design_v1.yaml`：Gate 0 总括检验（α=0.05）→ Gate 1 八类别 Holm 校正（α′=0.00625）→ Gate 2 机制级（α′=0.004167）→ Gate 2.5 交互（α′=0.0167）；IRB 排除未成年与高风险被试 |
 | **大规模人类被试** | ❌ **不具备** | 见 §7.3 与 §7.4 的功效测算 |
-| **真实部署流量** | ❌ **不具备** | 936 项测试全部为单元与契约测试，无任何真实用户数据 |
+| **真实部署流量** | ❌ **不具备** | 972 项测试全部为单元与契约测试，无任何真实用户数据 |
 
 ---
 
@@ -691,7 +691,7 @@ v2 规划中明确写入"LLM 离线标注 + 在线决策"。而依 F5，**这个
 | **技术寻求问题（区块链 + X）** | **致命命中** | 本陷阱的教科书案例。判据：(1) 先有技术（区块链模块已列入 v2 规划），再找问题（教育数据可信）；(2) 领域已有 124 个原型；(3) 无法回答"为什么中心化方案不够"这个必答题。**即便把研究问题反转为"链上锚定何时不必要"，仍建议终止。** |
 | 系统论文陷阱 | **极高危** | "基于区块链的教育大数据可信处理模块"这一表述本身就是系统论文而非研究问题的表述。 |
 | 无数据陷阱 | **致命命中** | 需要真实学习者数据、签发机构、验证方、法律框架，**一项都不具备**。这不是"数据少"，是"命题不成立"。 |
-| 数字膨胀陷阱 | **需警惕** | 若以"26,107 行系统"佐证规模，须注意这不能证明区块链模块的必要性（`crespo2022technicaldebt`）。 |
+| 数字膨胀陷阱 | **需警惕** | 若以"26,937 行系统"佐证规模，须注意这不能证明区块链模块的必要性（`crespo2022technicaldebt`）。 |
 
 **替代方案（强烈推荐）**
 
@@ -903,7 +903,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 |---|---|---|---|
 | ① 公开真实学习者数据 | 有（ASSISTments / EdNet / Junyi / 复习日志） | **完全可以** | "real learner interaction data from publicly available datasets (N = X)" |
 | ② 自有系统的真实部署数据 | **0 行** | **不能** | **绝对禁止**出现 "our deployment data"、"real users of our system"、"in-the-wild evaluation" |
-| ③ 自有系统的静态可分析资产（代码、机制清单、架构） | 有（26,107 行、54 个机制） | 可以，**但只能用于静态分析类研究** | "static analysis of a production-scale gamified learning platform (26,107 LOC, 54 registered mechanisms)" |
+| ③ 自有系统的静态可分析资产（代码、机制清单、架构） | 有（26,937 行、54 个机制） | 可以，**但只能用于静态分析类研究** | "static analysis of a production-scale gamified learning platform (26,937 LOC, 54 registered mechanisms)" |
 
 **措辞纪律**："real learner data"（真实学习者数据）不等于 "our deployment data"（我们的部署数据）。前者有（公开、千万级），后者没有。稿件中只使用前者，且措辞须精确到使审稿人无法误解。
 
@@ -973,8 +973,8 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 | 机制成熟度 | 一律称"已实现" | **complete 9 / partial 37 / placeholder 8**。占位成熟度的机制须在论文中如实标注（ID 见 §2.1） | `verify_counts.py` |
 | 学习方法数 | 21 | **28**（`method_registry.py`，849 行，28 个已注册方法） | `verify_counts.py` |
 | 技能树节点 | — | **16**（属实） | 同上 |
-| 后端规模 | 16,593 行 | **26,107 行**（`app/` 下 90 个 .py 文件，57 个服务模块，104 个 API 端点） | `verify_asset_numbers.py` |
-| 测试 | 394 项 | **936 项通过**，54 个测试文件；**全部为单元与契约测试，无集成测试、无用户研究、无真实数据** | `pytest tests/ -q` |
+| 后端规模 | 16,593 行 | **26,937 行**（`app/` 下 92 个 .py 文件，59 个服务模块，105 个 API 端点） | `verify_asset_numbers.py` |
+| 测试 | 394 项 | **972 项通过**，56 个测试文件；**全部为单元与契约测试，无集成测试、无用户研究、无真实数据** | `pytest tests/ -q` |
 | 统一注册表 | "不存在" | **已存在**（`mechanism_registry.py` 597 行 + `mechanism_arbitrator.py` 215 行三层漏斗） | 源码 |
 | 实验基础设施 | "无法作机制消融" | **机制级开关已具备**（`ab_test_framework.py` 779 行；支持 `mechanism_id` 粒度开关、类别级整类关闭、注册表指纹、设计效应与样本量门槛、分层门控预注册）；**但样本前提不具备**，见 §7.4 | `scripts/prereg/ablation_design_v1.yaml` |
 | 事件流与决策快照 | "无会话标识、无时间戳分离、无跳过标记" | **已具备**：`learning_events` 只追加事件流表含 `session_id` / `presented_at` / `answered_at` / `thinking_ms` / `skipped` / `decision_snapshot`。原 `attempts` 窄表保留为业务投影，未改动 | `app/models/progression.py` |

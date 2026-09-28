@@ -8,7 +8,7 @@
 > **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
 > 声明两个研究主线。
 
-[![tests](https://img.shields.io/badge/tests-966%20passed-brightgreen)](#测试)
+[![tests](https://img.shields.io/badge/tests-972%20passed-brightgreen)](#测试)
 [![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%2016%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -245,7 +245,7 @@ cd learnflow-frontend && cp .env.example .env.local
 # 2) 复算权威计数：机制 54 / 学习方法 28 / 效果生产者 16 / 成熟度 9·37·8
 .venv/Scripts/python scripts/verify_counts.py
 
-# 3) 跑全量测试（当前收集 966 项）
+# 3) 跑全量测试（当前收集 972 项）
 PYTEST_DEBUG_TEMPROOT=<已存在的绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
@@ -259,7 +259,7 @@ PYTEST_DEBUG_TEMPROOT=<已存在的绝对路径>/pytest_tmp .venv/Scripts/python
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前收集 966 项）
+# 全量测试（当前收集 972 项）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
@@ -343,10 +343,10 @@ cd learnflow-backend
 | 机制运行时落地 | **54 / 54**，孤儿 0 | `scan_mechanism_landing.py` |
 | 注册表指纹 | `ee1a49be5732` | `registry_fingerprint()` |
 | 自陈量表目录指纹 | `3531e875d286` | `instrument_catalog.catalog_fingerprint()` |
-| 后端 Python 代码 | **91** 个文件 / **26,628** 行 | `verify_asset_numbers.py` |
-| API 路由 | **13** 个路由文件 / **104** 条可路由（不可达 0） | `verify_asset_numbers.py` |
-| 服务模块 | **58**（不含 `__init__.py` 为 57） | `verify_asset_numbers.py` |
-| pytest 收集 | **966** 项 | `pytest --collect-only -q` |
+| 后端 Python 代码 | **92** 个文件 / **26,937** 行 | `verify_asset_numbers.py` |
+| API 路由 | **13** 个路由文件 / **105** 条可路由（不可达 0） | `verify_asset_numbers.py` |
+| 服务模块 | **59**（不含 `__init__.py` 为 58） | `verify_asset_numbers.py` |
+| pytest 收集 | **972** 项 | `pytest --collect-only -q` |
 
 > **数字纪律**：本项目历史上曾出现「76 个机制」的表述膨胀。四层复核链为
 > **76**（早期标题声称）→ **69**（表格逐项求和）→ **60**（实现单元）→ **54**（语义去重后的唯一机制数）。
