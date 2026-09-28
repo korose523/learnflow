@@ -1,0 +1,2 @@
+model_id,family,scale_tier,params_billions,architecture,eval_status,datasets,protocol,parse_rate,spearman_rho,accuracy,cohen_kappa,reliability_verdict,source_anchor
+qwen3.6-colibri,Qwen,S3_30-70B,35,MoE,EVALUATED,DBE-KT22,E1-A(schema enum+锚定)/E1-B(枚举数组+BT),1.0,0.1897,0.4528,0.0867,E1-A parse_rate=1.0 (212/212); E1-B 1145 约束 / 28 失败; ρ_E1A_listwise=0.1897; ρ_E1A_none_as_zero=0.1897; ρ_E1B=0.2793,results/m3/local_matrix_colibri.json#/models/qwen3.6-colibri

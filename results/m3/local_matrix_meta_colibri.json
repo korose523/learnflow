@@ -1,0 +1,10 @@
+{
+  "qwen3.6-colibri": {
+    "family": "Qwen",
+    "params_b": 35,
+    "architecture": "MoE",
+    "engine": "colibri 1.12.1 (CUDA sm_120)",
+    "quantization": "int4-gs64",
+    "note": "同基座 Qwen3.6-35B-A3B；跨引擎复现行，非新模型"
+  }
+}

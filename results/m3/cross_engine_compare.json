@@ -1,0 +1,93 @@
+{
+  "comparison": "F1_Qwen S3 格跨引擎复现性（ollama qwen36:latest vs colibri qwen3.6-colibri）",
+  "base_model": "Qwen3.6-35B-A3B",
+  "variables": {
+    "engine": "ollama vs colibri 1.12.1",
+    "quantization": "IQ3_S vs int4-gs64",
+    "decoding": "format=schema 约束解码 vs prefill 续写等效约束",
+    "hardware": "旧机器 CPU vs RTX 5080 CUDA",
+    "protocol": "E1-A/E1-B 逐字同一（同种子同批构成）"
+  },
+  "e1a": {
+    "n_old": 212,
+    "n_new": 212,
+    "n_common": 212,
+    "raw_agreement": 0.6509,
+    "cohen_kappa": 0.3772,
+    "spearman_engine_vs_engine": 0.528,
+    "spearman_vs_expert_ollama": 0.1744,
+    "spearman_vs_expert_colibri": 0.1897,
+    "ci_vs_expert_ollama_recomputed": [
+      0.0573,
+      0.2925
+    ],
+    "ci_vs_expert_colibri_recomputed": [
+      0.058,
+      0.3024
+    ],
+    "confusion_ollama_rows_x_colibri_cols": [
+      [
+        97,
+        33,
+        2
+      ],
+      [
+        20,
+        22,
+        1
+      ],
+      [
+        4,
+        14,
+        19
+      ]
+    ],
+    "summary_reference": {
+      "ollama": {
+        "e1a_spearman": null,
+        "e1a_spearman_ci95": null,
+        "e1a_parse_rate": null,
+        "e1a_cohen_kappa": null,
+        "e1a_accuracy": null
+      },
+      "colibri": {
+        "e1a_spearman": 0.1897,
+        "e1a_spearman_ci95": [
+          0.058,
+          0.3024
+        ],
+        "e1a_parse_rate": 1.0,
+        "e1a_cohen_kappa": 0.0867,
+        "e1a_accuracy": 0.4528
+      },
+      "note": "ollama 侧汇总 JSON 已被后续批次覆盖（只剩 deepseek-r1:1.5b），故两侧行引用值以本文件 recomputed 字段为准"
+    }
+  },
+  "e1b": {
+    "n_batches_old": 108,
+    "n_batches_new": 108,
+    "n_pair_constraints_old": 1301,
+    "n_pair_constraints_new": 1145,
+    "n_common_pairs": 795,
+    "direction_agreement_pairs": 791,
+    "direction_contradictions": 4,
+    "bt_score_spearman": 0.7612,
+    "spearman_vs_expert_ollama": 0.266,
+    "spearman_vs_expert_colibri": 0.2793,
+    "summary_reference": {
+      "ollama": {
+        "e1b_spearman": null,
+        "e1b_spearman_ci95": null,
+        "e1b_parse_fail": null
+      },
+      "colibri": {
+        "e1b_spearman": 0.2793,
+        "e1b_spearman_ci95": [
+          0.1071,
+          0.375
+        ],
+        "e1b_parse_fail": 28
+      }
+    }
+  }
+}

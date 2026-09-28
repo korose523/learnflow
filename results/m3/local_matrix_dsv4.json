@@ -1,0 +1,73 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "D:\\learnflow-main\\learnflow-main\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "deepseek-v4-colibri": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": 0.2998,
+      "e1a_spearman_p": 8.91e-06,
+      "e1a_accuracy": 0.4717,
+      "e1a_cohen_kappa": 0.0728,
+      "e1a_llm_dist": {
+        "1": 139,
+        "2": 73
+      },
+      "e1a_spearman_ci95": [
+        0.1604,
+        0.4136
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": 0.2998,
+      "e1a_spearman_none_as_zero_p": 8.91e-06,
+      "e1a_spearman_none_as_zero_ci95": [
+        0.1604,
+        0.4136
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 0,
+      "e1b_parse_fail": 0,
+      "e1b_spearman": null,
+      "e1b_spearman_ci95": null
+    }
+  },
+  "run_cells": {
+    "deepseek-v4-colibri": {
+      "model_id": "deepseek-v4-colibri",
+      "family": "DeepSeek",
+      "architecture": "MoE",
+      "params_billions": 284,
+      "scale_tier": "S4_>70B",
+      "model_digest": {
+        "digest": "deepseek-v4-colibri",
+        "digest_source": "colibri/v1/models",
+        "served_model_ids": [
+          "deepseek-v4-colibri"
+        ],
+        "model_info_subset": {
+          "engine": "colibri 1.12.1",
+          "backend": "CUDA sm_120 (coli_cuda.dll)",
+          "api": "OpenAI-compatible /v1/chat/completions",
+          "constraint": "自由解码（qwen36 引擎无 grammar payload）+ schema 容器归一化 + enable_thinking=False"
+        },
+        "raw_top_keys": [
+          "data",
+          "object"
+        ]
+      },
+      "e1a_new_records": 212,
+      "e1a_wall_seconds": 15822.3,
+      "wall_seconds": 15822.3
+    }
+  }
+}

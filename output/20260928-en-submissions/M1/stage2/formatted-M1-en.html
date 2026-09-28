@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="docx-page-size" content="A4">
+<title>Difficulty Commensurability and the Optimal Error Rate</title>
+<style>
+  @page { margin: 2.5cm; @bottom-center { content: counter(page); } }
+  :root {
+    --typography-fontFamily-heading: "Times New Roman", serif;
+    --typography-fontFamily-body: "Times New Roman", serif;
+    --typography-fontFamily-bodyLatin: "Times New Roman", serif;
+    --typography-fontFamily-caption: "Times New Roman", serif;
+    --typography-fontFamily-code: "Courier New", Consolas, monospace;
+    --typography-fontSize-title: 18pt;
+    --typography-fontSize-h1: 15pt;
+    --typography-fontSize-h2: 14pt;
+    --typography-fontSize-h3: 12pt;
+    --typography-fontSize-body: 11pt;
+    --typography-fontSize-abstract: 10.5pt;
+    --typography-fontSize-caption: 9.5pt;
+    --typography-fontSize-footnote: 9pt;
+    --typography-lineHeight-body: 1.5;
+    --typography-lineHeight-abstract: 1.25;
+    --typography-lineHeight-heading: 1.5;
+    --typography-fontWeight-heading: bold;
+    --typography-fontWeight-body: normal;
+    --color-primary: #000000;
+    --color-text: #000000;
+    --color-heading: #000000;
+    --color-link: #0000EE;
+    --color-tableHeaderBg: #f0f0f0;
+    --color-tableBorder: #000000;
+    --color-background: #ffffff;
+    --color-info: #01579b;
+    --color-muted: #666666;
+    --spacing-paragraph: 0.5em;
+    --spacing-paragraphAfter: 0.5em;
+    --spacing-indent: 1.5em;
+    --spacing-sectionGap: 1.2em;
+    --spacing-abstractIndent: 3em;
+    --sp-toc-indent: 1.5em;
+    --sp-tight: 0.3em;
+    --sp-list-indent: 2em;
+    --layout-marginTop: 2.5cm;
+    --layout-marginBottom: 2.5cm;
+    --layout-marginLeft: 2.5cm;
+    --layout-marginRight: 2.5cm;
+    --layout-pageSize: A4;
+    --page-content-width: 16.0cm;
+    --fs-title: var(--typography-fontSize-title);
+    --fs-h1: var(--typography-fontSize-h1);
+    --fs-h2: var(--typography-fontSize-h2);
+    --fs-h3: var(--typography-fontSize-h3);
+    --fs-body: var(--typography-fontSize-body);
+    --fs-abstract: var(--typography-fontSize-abstract);
+    --fs-caption: var(--typography-fontSize-caption);
+    --fs-footnote: var(--typography-fontSize-footnote);
+    --ff-heading: var(--typography-fontFamily-heading);
+    --ff-body: var(--typography-fontFamily-body);
+    --ff-body-latin: var(--typography-fontFamily-bodyLatin);
+    --ff-caption: var(--typography-fontFamily-caption);
+    --ff-code: var(--typography-fontFamily-code);
+    --lh-body: var(--typography-lineHeight-body);
+    --lh-abstract: var(--typography-lineHeight-abstract);
+    --lh-heading: var(--typography-lineHeight-heading);
+    --fw-bold: var(--typography-fontWeight-heading);
+    --fw-normal: var(--typography-fontWeight-body);
+    --clr-primary: var(--color-primary);
+    --clr-text: var(--color-text);
+    --clr-heading: var(--color-heading);
+    --clr-link: var(--color-link);
+    --clr-tableHeaderBg: var(--color-tableHeaderBg);
+    --clr-tableBorder: var(--color-tableBorder);
+    --clr-bg: var(--color-background);
+    --clr-info: var(--color-info);
+    --clr-muted: var(--color-muted);
+    --sp-paragraph: var(--spacing-paragraph);
+    --sp-paragraphAfter: var(--spacing-paragraphAfter);
+    --sp-indent: var(--spacing-indent);
+    --sp-sectionGap: var(--spacing-sectionGap);
+    --sp-abstractIndent: var(--spacing-abstractIndent);
+    --margin-page-top: var(--layout-marginTop);
+    --margin-page-bottom: var(--layout-marginBottom);
+    --margin-page-left: var(--layout-marginLeft);
+    --margin-page-right: var(--layout-marginRight);
+    --page-size: var(--layout-pageSize);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--ff-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--clr-text);
+    background: var(--clr-bg);
+    padding: var(--margin-page-top) var(--margin-page-right) var(--margin-page-bottom) var(--margin-page-left);
+    max-width: var(--page-content-width);
+    margin-left: auto; margin-right: auto;
+  }
+  h1, h2, h3, h4 { font-family: var(--ff-heading); font-weight: var(--fw-bold); color: var(--clr-heading); }
+  h1 { font-size: var(--fs-h1); margin-top: var(--sp-sectionGap); margin-bottom: var(--sp-paragraph); text-align: center; }
+  h2 { font-size: var(--fs-h2); margin-top: var(--sp-sectionGap); margin-bottom: var(--sp-paragraph); }
+  h3 { font-size: var(--fs-h3); margin-top: var(--sp-paragraph); margin-bottom: var(--sp-paragraph); }
+  h4 { font-size: var(--fs-body); margin-top: var(--sp-paragraph); margin-bottom: var(--sp-paragraph); }
+  p { margin-bottom: var(--sp-paragraph); text-align: justify; text-indent: var(--sp-indent); }
+  .doc-title { font-size: var(--fs-title); text-align: center; margin-top: var(--sp-sectionGap); margin-bottom: var(--sp-paragraph); }
+  .subtitle { text-align: center; font-size: var(--fs-h3); font-style: italic; margin-top: var(--sp-paragraph); margin-bottom: var(--sp-sectionGap); text-indent: 0; }
+  .subtitle-en { text-align: center; font-size: var(--fs-abstract); font-style: italic; color: var(--clr-muted); margin-top: var(--sp-paragraph); margin-bottom: var(--sp-sectionGap); text-indent: 0; }
+  .author-line { text-align: center; text-indent: 0; margin-bottom: 0.2em; font-size: var(--fs-body); }
+  .abstract { margin-top: var(--sp-sectionGap); margin-bottom: var(--sp-sectionGap); padding: var(--sp-paragraph); border-left: 3px solid var(--clr-info); }
+  .abstract-heading { font-weight: var(--fw-bold); font-size: var(--fs-h3); margin-bottom: var(--sp-paragraph); text-indent: 0; }
+  .abstract-text { font-size: var(--fs-abstract); line-height: var(--lh-abstract); text-indent: 0; margin-bottom: var(--sp-paragraph); }
+  .keywords { font-size: var(--fs-abstract); margin-top: var(--sp-paragraph); text-indent: 0; }
+  .frontmatter { border-left: 3px solid var(--clr-info); padding: var(--sp-paragraph); margin-bottom: var(--sp-sectionGap); }
+  .frontmatter p { text-indent: 0; margin-bottom: var(--sp-paragraph); }
+  .doc-toc { margin-top: var(--sp-sectionGap); margin-bottom: var(--sp-sectionGap); }
+  .toc-title { font-weight: var(--fw-bold); text-align: center; font-size: var(--fs-h2); margin-bottom: var(--sp-paragraph); text-indent: 0; }
+  .toc-list, .toc-list ol, .toc-list ul { list-style: none; list-style-type: none; padding-left: var(--sp-toc-indent); }
+  .toc-list li { margin-bottom: var(--sp-tight); text-indent: 0; }
+  .toc-list a { color: var(--clr-link); text-decoration: none; }
+  .three-line-table { border-collapse: collapse; width: 100%; margin-top: var(--sp-paragraph); margin-bottom: var(--sp-paragraph); }
+  .three-line-table caption { font-size: var(--fs-caption); margin-bottom: var(--sp-paragraph); text-align: center; }
+  .three-line-table thead tr:first-child { border-top: 2px solid var(--clr-tableBorder); }
+  .three-line-table thead tr:last-child { border-bottom: 1px solid var(--clr-tableBorder); }
+  .three-line-table tbody tr:last-child { border-bottom: 2px solid var(--clr-tableBorder); }
+  .three-line-table td, .three-line-table th { padding: var(--sp-paragraph) var(--sp-paragraph); text-align: left; font-size: var(--fs-body); }
+  .three-line-table th { font-weight: var(--fw-bold); background: var(--clr-tableHeaderBg); }
+  figure { margin: var(--sp-paragraph) 0; text-align: center; }
+  figcaption { font-size: var(--fs-caption); color: var(--clr-muted); margin-top: var(--sp-paragraph); }
+  blockquote { margin-bottom: var(--sp-paragraph); }
+  .references { margin-top: var(--sp-sectionGap); }
+  .reference-list { padding-left: var(--sp-list-indent); }
+  .reference-item { margin-bottom: var(--sp-paragraph); font-size: var(--fs-caption); }
+  code { font-family: var(--ff-code); font-size: var(--fs-body); }
+  .code-block { font-family: var(--ff-code); font-size: var(--fs-caption); background: var(--clr-tableHeaderBg); padding: var(--sp-paragraph); margin-bottom: var(--sp-paragraph); white-space: pre-wrap; }
+  ul, ol { margin-bottom: var(--sp-paragraph); padding-left: var(--sp-list-indent); }
+  li { margin-bottom: var(--sp-paragraph); text-align: justify; }
+  sup { font-size: var(--fs-footnote); }
+</style>
+</head>
+<body>
+<section role="body" data-page-restart="1">
+<h1 class="doc-title">Difficulty Commensurability and the Optimal Error Rate</h1>
+<p class="author-line">Zexiao Weng¹ and MinPo Jung¹,*</p>
+<p class="author-line">¹ Youngsan University, Busan 48015, Republic of Korea</p>
+<ul>
+<li>Corresponding author. Email: minpo@ysu.ac.kr; ORCID: 0009-0003-3369-757X. Zexiao Weng ORCID: 0009-0009-8600-8954.</li>
+</ul>
+<p class="author-line">AI-Assisted Writing Disclosure. This manuscript was prepared with the assistance of a large language model (LLM) used strictly as a language-polishing and drafting aid. No LLM authored scientific content or made any analytical, statistical, or experimental decision; all results, claims, and numerical values were produced by the authors' own experiments, simulations, and scripts. The LLM was not used to generate data, analyses, or conclusions.</p>
+
+<div class="abstract" aria-label="Abstract">
+<p class="abstract-heading">Abstract</p>
+<p class="abstract-text">(Methodological contributions upfront: the two independently standing methodological conclusions of this paper are the quantile-logit metric invariance identity and the <code>srw7</code> sample-size-adaptive shrinkage weighting; the empirical negative results below are all presented within this framework.) Adaptive learning systems must answer "what difficulty should the next item have?" every day, yet the prior question—whether difficulty is a quantity that can be placed on one common scale—is systematically skipped.We reformulate that question as a falsifiable measurement proposition and report three results.</p>
+<p class="abstract-text"><strong>First, the magnitude of the instability proposition (C1) on real systems is quantified.</strong> The invariance side of the proposition is an identity, not a discovery (Section 3.2: for strictly increasing g, #{g(x_cal) ≤ g(x)} = #{x_cal ≤ x}, so effective weights under the quantile metric are pointwise invariant); this paper's contribution is to quantify how large the discrepancy becomes when that identity is violated.</p>
+<p class="abstract-text">If difficulty sources are each normalised to [0,1] and then linearly combined, the "effective weights" defined by marginal contribution equal neither the nominal weights (π₁ = 0.532 ± 0.026 against nominal w₁ = 0.40 in simulation) nor themselves under a monotone reparameterisation of any single source: drift is exactly zero under affine transforms (absorbed by min-max) but averages L1 = 0.1276 (SD 0.0196) under nonlinear monotone transforms, with rank reversals in 36.4% of (source, transform) cells and complete sign reversal in the strongest counterexample (Spearman −0.20, L1 = 0.6893).An empirical-CDF-to-logit quantile metric gives exactly zero drift under shared calibration, 0.016 linking sampling noise under independent calibration, and zero reversals.</p>
+<p class="abstract-text">On real data (assist09, 994 items), linear min-max fusion drifts by L1 = 0.5357 with substantial reversals, while the quantile metric reduces this to 0.0001 with reversals eliminated.</p>
+<p class="abstract-text"><strong>Second, the gain from multi-signal fusion is a gain in consistency with expert labels, not in predictive power.</strong> On DBE-KT22 (212 items), the rank correlation between expert and empirical difficulty is only 0.2207; a joint IRT-1PL estimator raises it merely to 0.2300, whereas equal-weight fusion of five behavioural signals (quantile metric) rises to 0.2899 and optimised weights under repeated 5-fold ×10 cross-validation reach 0.5240 ± 0.1069, driven by a differential feature "self-reported difficulty high and trust low." On Junyi (1,234 exercises, 16.21 million interactions, no self-report feedback) the same pattern reproduces: 0.2610 → 0.3629, with repeated cross-validation 0.4023 ± 0.0480; the bootstrap paired gain is Junyi Δ = +0.1017 [0.0726, 0.1325] (p = 0.000), DBE Δ = +0.0723 [−0.0195, 0.1649] (one-sided p = 0.059, only marginally significant).</p>
+<p class="abstract-text"><strong>Third, the above gain reverses under a changed criterion.</strong> The rank correlation between expert labels and real-performance difficulty is only 0.4326; once the criterion is switched to "real performance on unseen samples," equal-weight fusion is worse than success rate alone at every sample size on both Junyi and DBE (Junyi −0.0267 → −0.1222, DBE −0.1752 → −0.2113, fusion win rate 0.00).One located cause is a directional error in the fusion configuration (the upgrade rate was assigned a positive weight +0.154); after its removal and the introduction of sample-size-adaptive shrinkage λ*(k) = 1/(1+(k/27.4)^0.902) (R² = 0.9989; the deployed value uses the leave-one-k cross-validation fit 27.3 / 0.895, rounded from k₀ = 27.332), the small-sample bracket first overtakes (k = 10: +3.43 percentage points), but the gain falls below 0.22 pp for k ≥ 100.</p>
+<p class="abstract-text">Further, we optimise the fusion estimator itself—sign-correcting each signal by its in-fit-block rank correlation (retaining the information of inversely signed signals rather than dropping the column) and split-half-reliability weighting per signal—yielding the <code>srw7</code> estimator; under both record-level and student-level double holdout it is non-inferior to the "success-rate-only" baseline at every sample size and exceeds O8's fused6 at all brackets (record-level +3.823 / +2.025 / +0.930 / +0.391 / +0.138 pp; student-level +4.283 / +2.189 / +0.951 / +0.335 / +0.102 pp), eliminating fused6's harmfulness below baseline for k ≥ 25.Finally, we report the sliding-window error-rate distribution on assist09 (n = 286,150 windows; mean 0.3511).</p>
+<p class="abstract-text">At window width W = 20 it has only 21 discrete support points (k/20); recomputed by integer error counts, the single-value mode is an error rate of 0.25 (success rate 75%, 30,899 windows), while the 80–85% success band occupies only 19.64% of windows.The earlier-reported "mode interval 0.15–0.20 (success 80–85%)" was a binning-boundary artifact (floating-point merging from interval edges coinciding with support points) and is voided.This descriptive distribution supports neither the 85% rule nor 80.7%, and it does not constitute a test of the 85% rule.</p>
+<p class="abstract-text">The preregistered doubly robust (AIPW/DR) off-policy evaluation was executed on 2026-09-24 under a frozen identification strategy (LF-CIS-2026-09-22); the result detected no internal optimum and the Junyi time-inverted negative control was significant, so all dose–response readings are downgraded to associational evidence, and this paper makes no point estimate, confidence interval, or test of 15.87%.</p>
+<p class="abstract-text"><strong>Keywords</strong>: difficulty measurement; commensurability; instability proposition; quantile linking; expert labels; criterion dependence; optimal error rate; negative results</p>
+</div>
+<h2 id="section-1">1 Introduction</h2>
+<h3>1.1 A skipped question</h3>
+<p>No adaptive learning system can avoid "what difficulty should the next item have." The standard engineering practice is to normalise several quantities called "difficulty" or "ability"—the mastery probability of knowledge tracing, the memory difficulty of spaced repetition, the ability estimate of competitive rating, the window success rate of recent responses—and then feed them into a weighted sum with hard-coded weights. This practice presupposes that these quantities already live on a comparable scale. As far as the literature we surveyed indicates, this presupposition has never been tested on its own.</p>
+<p>The presupposition is suspicious not because the normalisation is done carelessly, but because it is undefined in a measurement-theoretic sense. The weighted-sum operation requires that the addends belong to the same kind of scale on which linear combination is well defined: there is no well-defined addition between ordinal, interval, and ratio scales. When a system adds "mastery probability" and "memory difficulty," it has effectively made an undeclared metric choice, and the consequence of that choice is absorbed into the weights and then misread as the effect of a "difficulty recipe."</p>
+<p>We name this phenomenon <strong>instability</strong> and write it as a falsifiable proposition: when sources are each normalised to [0,1] and then linearly combined, the effective weights defined by marginal contribution drift with any monotone reparameterisation of a single source; whereas if sources are first linked through the empirical CDF to a logit metric and then fused, the effective weights are strictly invariant under any strictly monotone reparameterisation. This contrast is not engineering common sense of the "we did a normalisation" kind, but a computable claim about why current mainstream implementations are measurement-theoretically invalid.</p>
+<h3>1.2 Why this is not a technical detail</h3>
+<p>One may ask: a few decimal points of weight drift—how much does it matter? It matters because it determines the system's interpretability and tunability. If the weight vector "0.45 / 0.35 / 0.20" becomes a different vector once the knowledge-tracing side is changed from <code>mastery × 9 + 1</code> to <code>mastery</code>, then everything built on this weight vector—every empirical tuning, every A/B conclusion, every claim that "we find mastery should weigh more"—merely describes a particular implementation choice, not difficulty itself. The commensurability problem is therefore not a preparatory technical cleanup but the precondition for whether any subsequent difficulty research can be interpreted.</p>
+<p>The motivation for this paper is precisely this preconditional nature. The original preregistration expressed this relation as "the measurement goal is the precondition of the causal goal: if the dose itself is not a well-defined difficulty measure, its causal effect cannot be interpreted either." That sentence still holds here, but its practical consequence is more direct than expected: <strong>the measurement-side test is complete; the causal side was additionally executed at revision time under a frozen identification strategy (LF-CIS-2026-09-22), yielding a negative result and one significant negative control (see §8.3), rather than causal-grade evidence.</strong> This paper is thus a manuscript that gives complete results on the measurement side and honest negative results on the causal side. This asymmetry is itself information, and we do not hide it.</p>
+<h3>1.3 What this paper does not claim</h3>
+<p>To prevent readers from inferring contributions from the title by habit, we list four "non-claims" up front:</p>
+<p><strong>We do not claim</strong> that multi-signal fusion improves the predictive power of difficulty estimation. §7 gives decisive evidence: under holdout validation, fusion is instead worse than success rate alone. Every gain reported in §6 uses the criterion of <strong>expert difficulty labels</strong>, so the correct phrasing is "gain in consistency with expert labels."</p>
+<p><strong>We do not claim</strong> that the optimal error rate equals or differs from 15.87%. §8 reports a descriptive sliding-window error-rate distribution; the preregistered doubly robust (AIPW/DR) off-policy evaluation was executed on 2026-09-24 under a frozen identification strategy, yielding no detected internal optimum and a significant Junyi time-inverted negative control (dose–response readings downgraded to associational evidence, see §8.3), so this paper still makes no assertion of any point estimate or confidence interval for the optimal error rate.</p>
+<p><strong>We do not claim</strong> that knowledge-tree structure can serve as a difficulty proxy. §5.5 gives a clean small negative result: the knowledge-tree depth vs. empirical difficulty rank correlation is only +0.0785 and non-monotone across strata, and parent–child edge difficulty-gradient consistency is 0.487 (about a coin flip).</p>
+<p><strong>We do not claim</strong> that the studied system is a special case in difficulty handling. On the contrary, the studied system is a real, built, publicly archived K12 adaptive learning platform (54 gamified intervention mechanisms, 28 learning methods, registry fingerprint <code>ee1a49be5732</code>), and its difficulty-fusion code is no different from the common practice of comparable systems. We criticise a class of implementations, not one implementation.</p>
+<h3>1.4 Contributions and main findings</h3>
+<p><strong>Contribution 1: turn "difficulty commensurability" from a design vocabulary into a computable, falsifiable proposition, and quantify how large the violation is.</strong> The side of the proposition stating "effective weights are invariant under the quantile metric" is an <strong>analytic identity</strong> (§3.2); we do not treat it as a discovery.What is testable is the other side—<strong>how far linear min-max fusion violates this identity</strong>.The synthetic experiment (§4) gives the complete numeric picture: under the linear [0,1] metric affine drift is exactly 0, nonlinear monotone drift is L1 = 0.1276, 36.4% of cells show rank reversal, and the strongest counterexample completely reverses sign; under the quantile-logit metric drift is 0 under shared calibration and only 0.016 sampling noise under independent calibration.</p>
+<p>Real data (§5.3) gives the engineering-landing evidence: on assist09 linear fusion drifts L1 = 0.5357, which falls to 0.0001 after switching to the quantile metric, with rank reversals eliminated.</p>
+<p><strong>Contribution 2: give the distance between the "expert-annotation / behavioural-evidence" two systems of difficulty evidence, and re-evaluate the value of multi-signal fusion accordingly.</strong> On DBE-KT22 the rank correlation between expert and empirical difficulty is only 0.2207 (p = 0.0012); switching to a joint IRT-1PL estimator raises it merely to 0.2300—the bottleneck is not the estimator. But equal-weight fusion of five behavioural signals in the quantile metric rises to 0.2899, and optimised weights reach 0.5240 ± 0.1069 under repeated 5-fold ×10 cross-validation. The mechanism is located in a differential feature: self-reported difficulty and trust correlate at +0.94 at the item level (Pearson), while in quantile space "trust reversed" vs. self-reported difficulty correlate at −0.80; subtracting the two cancels the common-mode noise.</p>
+<p><strong>Contribution 3: give a set of negative results via criterion switching, and locate one real directional error.</strong> The rank correlation between expert labels and real-performance difficulty is only 0.4326 (§7.1); after switching the criterion to "real performance on unseen samples," equal-weight fusion is worse than success rate alone at <strong>every</strong> sample-size bracket on both Junyi and DBE, with fusion win rate 0.00 (§7.2).</p>
+<p>We further locate that the upgrade rate correlates −0.1837 with expert labels and −0.756 in-pool, yet the optimiser assigned it a <strong>positive weight</strong> +0.154; after removing this signal and introducing sample-size-adaptive shrinkage, the small-sample bracket first overtakes (k = 10: +3.43 percentage points), but the gain decays below 0.22 pp for k ≥ 100; the correct phrasing for "fusion gain" is gain in consistency with expert labels, not predictive-power improvement (§7.2).The validity gap of record-level holdout is separately closed by student-level holdout validation, with unchanged conclusions (§7.6).On this basis, §7.8 reports two optimisations of the fusion estimator: changing a directionally wrong signal from "drop the whole column" to "sign-correct," and adding per-signal split-half-reliability weighting (<code>srw7</code>).</p>
+<p>Under both record-level and student-level double holdout, <code>srw7</code> is non-inferior to the "success-rate-only" baseline at every sample-size bracket and exceeds fused6 at all brackets; at the student level <code>srw7</code> has paired win rate 0.902–1.000 against fused6, with Wilcoxon signed-rank p ≤ 1.29 × 10⁻⁶⁶.This also shows that O8's "drop the upgrade rate," though directionally correct, discards the signal's effective information and is not the optimal handling.</p>
+<p><strong>Contribution 4: delimit the scope of the above conclusions across systems.</strong> The four datasets cover three different evidence regimes: DBE-KT22 has expert annotation and student self-report; Junyi has expert annotation but no feedback; XES3G5M has full item text and a knowledge tree but no expert difficulty; assist09 has hint use and multi-skill annotation. The fusion gain reproduces at the same order on DBE and Junyi (+31% and +39%), showing it is not a single-system artifact; but the λ-shrinkage gain is verified only on Junyi, with no gain on DBE—we report this non-reproduction honestly.</p>
+<h3>1.5 Structure and reproducibility</h3>
+<p>§2 reviews related work; §3 formalises the typology of difficulty sources and the instability proposition; §4 reports the proposition's validation on synthetic data; §5 reports the metric repair on real data and two negative results; §6 reports the gain of multi-signal fusion under the expert-label criterion; §7 switches the criterion and reports the conclusion reversal, the directional error, the sample-size-adaptive shrinkage, and the leave-one-k cross-validation (in-interval interpolation) test of that shrinkage formula plus student-level holdout validation; §8 reports the descriptive evidence on the optimal error rate and the unfinished causal identification; §9 discusses implications, code landing, and limitations; §10 lists the honest gap inventory; §11 concludes.</p>
+<p><strong>Scope note on the title.</strong> The real-data test of the instability proposition (C1) is in fact carried out at only <strong>one</strong> real system, assist09 (994 items, §5.3); the Junyi, DBE-KT22, and XES3G5M datasets bear the multi-signal-fusion consistency experiment, the expert-annotation experiment, and the knowledge-tree / ordered-transition experiment, and do <strong>not</strong> constitute a test of proposition C1. The title is narrowed to the proposition's test scope; the roles of the other datasets are stated honestly in the Abstract and the §5 data tables.</p>
+<p><strong>Reproducibility note.</strong> Every number in this paper is produced by the scripts under <code>results/code/</code>, deterministically or with fixed seeds: <code>results/code/m1_instability.py</code> (synthetic, seed <code>902000+r</code>), <code>m1_real_data.py</code>, <code>optimized_experiments.py</code>, <code>o4_fusion.py</code>, <code>o4b_fusion.py</code>, <code>o5_junyi_fusion.py</code>, <code>build_difficulty_cache.py</code>, <code>o6_difficulty_stats.py</code>, <code>o7_holdout_validation.py</code>, <code>o8_fusion_variants.py</code>, <code>o9_lambda_generalization.py</code>, <code>o10_user_holdout.py</code>, and the causal-side <code>results/m1/aipw/aipw_run.py</code> (added 2026-09-24; main analysis W=20 and window-width robustness W=10/40, three runs, outputs <code>aipw_results*.json</code> and the trace <code>aipw_audit.log</code>). Raw products are the same-named <code>.json</code>. We do not recompute, re-estimate, or backfill any unexecuted experiment.</p>
+<p><strong>Random-seed table.</strong> The concrete fixed-seed values referenced above (line numbers point to the statement position within each script):</p>
+<table class="three-line-table"><caption>Table 1. Random seeds and the random steps they affect</caption>
+<thead><tr>
+<th>Script</th>
+<th>Random seed</th>
+<th>Affected random step</th>
+</tr></thead>
+<tbody>
+<tr>
+<td><code>results/code/m1_instability.py</code></td>
+<td><code>902000 + r</code> (r = repeat index)</td>
+<td>resampling and repeats of synthetic data</td>
+</tr>
+<tr>
+<td><code>results/code/m1_real_data.py</code></td>
+<td><code>20260922</code> (<code>:72</code>, <code>np.random.default_rng</code>)</td>
+<td>reservoir / reshuffle of real-data experiment</td>
+</tr>
+<tr>
+<td><code>results/code/o9_lambda_generalization.py</code></td>
+<td><code>20260913</code> (<code>:76</code>, <code>:192</code>)</td>
+<td>in-pool sampling of λ*(k) leave-one-k cross-validation</td>
+</tr>
+<tr>
+<td><code>results/code/o11_fusion_optimization.py</code></td>
+<td><code>20260913</code> (<code>:106</code>)</td>
+<td>repeated holdout of fusion variants (REP = 25 × SPLITS = 20)</td>
+</tr>
+<tr>
+<td><code>results/code/o12_student_o11.py</code></td>
+<td><code>20260913</code> (<code>:51</code> <code>random.seed</code>, <code>:128</code> <code>default_rng</code>)</td>
+<td>reshuffle and reservoir of student-level holdout</td>
+</tr>
+<tr>
+<td><code>results/code/build_difficulty_cache.py</code></td>
+<td><code>20260913</code> (<code>:18</code>, <code>random.seed</code>)</td>
+<td>sampling of difficulty-cache construction</td>
+</tr>
+<tr>
+<td><code>results/code/o4_fusion.py</code></td>
+<td><code>42</code> (<code>:126</code>, <code>rngcv = np.random.default_rng(42)</code>)</td>
+<td>fold split of 5-fold cross-validation</td>
+</tr>
+<tr>
+<td><code>results/m1/aipw/aipw_run.py</code></td>
+<td><code>42</code> (<code>:63</code>, <code>SEED = 42</code>; <code>:85</code> <code>RandomState</code>, <code>:542</code>/<code>:551</code> <code>random_state</code>)</td>
+<td>AIPW/DR bootstrap and model randomness</td>
+</tr>
+</tbody></table>
+<p><strong>Results that cannot be reproduced bit-for-bit without the above seeds.</strong> The following three classes of numbers depend on specific seed splits or resampling and <strong>will jitter by an undetermined magnitude under a different seed, being bit-for-bit reproducible only under their stated seeds</strong>: (i) the <strong>0.4778</strong> in §6.2 (single 5-fold CV of O4 optimised weights, seed 42)—one reason we require priority citation of the repeated 5-fold ×10 values (DBE 0.5240 ± 0.1069, Junyi 0.4023 ± 0.0480); (ii) <strong>all AIPW results in §8.3</strong>, including point estimates and bootstrap confidence intervals (seed 42, main analysis W=20 and window-width robustness W=10/40); (iii) <strong>the single-value-mode bootstrap 95% confidence set in §8.1</strong> (200 resamples by student, single-value mode 0.25 occupies 95.5%).</p>
+<p>Deterministic conclusions (e.g., the metric identity in §3.2, the 0.5357 and 0.0001 in §5.3) do not depend on seeds.</p>
+<h2 id="section-2">2 Related Work</h2>
+<h3>2.1 Knowledge tracing and the difficulty–ability confound</h3>
+<p>Deep knowledge tracing is the mainstream paradigm for predicting "the probability that a student answers the next item correctly," but its output is a <strong>probability</strong>, not difficulty.When a system uses this probability as a difficulty signal, the difficulty–ability confound arises: a high correct rate can come from either an easy item or a capable student.One manifestation of this confound in the literature is that different studies compare AUCs on the same incomparable scales.Liu et al.(2025), after standardising 21 deep knowledge-tracing models and 9 datasets, note that the field shows "highly similar methods, minimal divergence in conclusions, and inconsistent AUC reporting"—one source of divergence being precisely that the compared quantity is not on the same metric.</p>
+<p>Our treatment is not to propose yet another predictive model but to single out "whether these quantities are additive" for testing, which is the two sides of the same problem pointed out by that review.</p>
+<h3>2.2 Test equating and IRT linking</h3>
+<p>The equating literature solves "whether different test forms are comparable," sharing the same measurement-theoretic root as our "whether different difficulty-technique routes are comparable." Weber, Becker, Spinath, and Koch (2025) systematically compared five equating methods (MS, MM, MGM, IRF, TRF) under 400 simulation scenarios for parameter recovery under 2PL/3PL, with direct methodological implications for us: <strong>the choice of equating method has little effect; what truly determines recovery quality is the anchor items' high discrimination, low guessing probability, and large sample</strong>; parameter recovery is unacceptable below a sample size of 100.This conclusion supports our approach—invest resources in the metric and signal quality, not in more complex linking methods.</p>
+<p>Deng (2025) examines, on PISA 2018 science-module Arabic- and Chinese-group data, the effect of rapid guessing on multi-group concurrent IRT calibration, finding the procedure robust to anchor identification and ability estimation but reducing the precision of individual ability estimates.Together the two studies delimit the boundary of our calibration design: whether rapid-guess contamination of <strong>difficulty linking</strong> is measurable remains an open question, on which we make no claim.</p>
+<h3>2.3 Multi-signal difficulty estimation and the place of expert labels</h3>
+<p>The "difficulty" that adaptive ranking truly needs has long been assumed estimable from the single signal of correct rate. Ding et al. (2024), with Easy2Hard-Bench, use joint IRT and Glicko-2 calibration to provide difficulty labels for standardised LLM difficulty evaluation, representing the mainstream route of "treating difficulty as a calibratable parameter." Our quantile metric shares IRT's logit intuition with that route but changes the object from "item correct rate" to "the rank of any monotone observation," thereby elevating invariance from an estimation problem to an analytic identity. The division-of-labour difference from that work must be stressed: they pursue more accurate difficulty labels; we ask <strong>under which criterion those labels sit</strong>. §7 will show that this question changes the sign of the conclusion.</p>
+<h3>2.4 The 85% rule, the challenge-point framework, and evidence on real learners</h3>
+<p>Wilson et al.(2019) derive, on a gradient-descent binary-classification learner, an optimal error rate of 15.87%, i.e., the "85% rule." This is a theorem about a specific learning algorithm, whose derivation depends on five premises: a binary-classification task, no hints, no skipping, no forgetting, and no transfer.Real classrooms deviate on all five dimensions simultaneously.</p>
+<p>Notably, this applicability gap was not excavated by later critics from a seam in the literature but was explicitly limited by the original authors in the Discussion: the derivation holds only "in the special case of a binary classification task to which the stochastic gradient descent learning rule applies," and they explicitly state that "it remains to be generalized to broader contexts, such as multiple-choice questions and different learning algorithms," and that "not all models will exhibit a difficulty sweet spot" (the authors use a Bayesian learner with a perfect memory as a counterexample).Therefore the original text contains no direct quotation of the kind "this rule may not apply to students because they are not learning a binary-classification task"—an earlier paraphrase had reshaped it into a direct quotation, which is a misquotation that we correct here.</p>
+<p>The theoretical boundary goes further—when the noise distribution changes from Gaussian to Laplace or Cauchy, the optimal accuracy drifts to about 82% and 75% respectively; for a Bayesian learner with perfect memory, no such sweet spot exists.</p>
+<p>The verbatim English of these three limitations, the PMC paragraph ids (Par26 / Par30 / Par31), and the retrieval basis are in <code>results/ref_verify/wilson2019_quotations.md</code> (Europe PMC PMC6831579 full-text XML, retrieved 2026-09-25). Two points must be noted: first, the word "student" appears <strong>0 times</strong> in the entire original text, so there is no original quotation about "whether this rule applies to students"—only the applicability-boundary limitations above are citable; second, the bioRxiv preprint (10.1101/255182v1) Discussion wording differs substantially from the published version, so <strong>all citations use the Nature Communications published version</strong>.</p>
+<p>Directional evidence on real learners comes from Baillifard, Belardi, and Martarelli (2025): on the logs of 413 learners in a digital-skills course, performance peaked at about 80.7% success rate, and the optimal strategy showed significant heterogeneity among the most persistent, highest-performing learners.<strong>The source grade must be noted</strong>: that 80.7% comes from the EADTU <em>Envisioning Report for Empowering Universities 2025</em>, a <strong>non-peer-reviewed</strong> annual report, not a journal paper.We therefore cite it as a <strong>candidate value to be tested</strong>, not as an opposing claim of equal evidence grade to 15.87%; the distribution evidence in §8 discriminates between neither, and part of the reason for this handling also comes from the source-grade difference.</p>
+<p>Guadagnoli and Lee (2004)'s challenge-point framework (CPF) and its extension (Hodges and Lohse, 2022) provide a mechanistic explanation: CPF reconstructs the optimal difficulty from a "single point" to a dynamic interval of "functional task difficulty = f(nominal difficulty, learner skill, practice condition)," explicitly incorporating motivational cost, so <strong>the true optimum should be below 85%</strong>.The distribution evidence in §8 is compatible with this expectation; the preregistered causal identification was executed on 2026-09-24 under a frozen identification strategy, yielding no detected internal optimum and a significant negative control (§8.3)—that negative result does not conflict with CPF's "dynamic interval" expectation, but we do not claim it causally tests that expectation.</p>
+<p>A positive case for task dependence also exists at the controlled-experiment level: Al-Fawakhiri, Kayani, and McDougle (2023, bioRxiv, doi:10.1101/2023.07.19.549705), in a motor-skill task with dynamically adjusted difficulty by performance (N=192), empirically find an optimal error rate of about 30%, consistent with their theoretical prediction extending Wilson et al. (2019) to the sensorimotor domain. This further supports the proposition itself that "an optimal error rate exists and varies by task"; but the domain is motor-skill learning, and the <strong>value cannot be extrapolated to academic learning</strong>, so we cite it only as a task-dependence case, <strong>not as a coordinate of this study's RQ2 decision table, nor as a new target value</strong>.</p>
+<h3>2.5 Off-policy evaluation: the preregistered toolbox and its execution (2026-09-24 supplement)</h3>
+<p>Adaptive learning systems almost never run online randomised controlled experiments; a student's item choice is jointly determined by the system strategy and self-selection, so "if this student were placed in another difficulty bracket, how would their mastery speed change" is a counterfactual question.Off-policy evaluation provides standard tools: a propensity model characterises selection probability, an outcome model characterises the endpoint, and then inverse-probability weighting or a doubly robust estimator gives the counterfactual mean (Dudík, Langford, and Li, 2011); double/debiased machine learning with cross-fitting further reduces the regularisation bias of the outcome model (Chernozhukov et al., 2018); the E-value quantifies how strong unobserved confounding must be to explain away the estimated effect (VanderWeele and Ding, 2017).</p>
+<p>This toolbox remains scarce in educational data mining and was the core method of the original preregistration.</p>
+<p><strong>Execution note (2026-09-24):</strong> of the methods listed in this section, AIPW/DR and clustered bootstrap were executed under the frozen identification strategy (LF-CIS-2026-09-22); the dose uses the raw integer-error-count caliber solidified by that strategy (not the forward-calibrated version of the original preregistration), and the E-value and the formal ordering test of the five premises were not executed. Results are in §8.3: no internal optimum detected, and the Junyi negative control significant, so all readings are associational evidence. This section is retained so readers can compare the distance between the preregistered design and the actual execution.</p>
+<h2 id="section-3">3 Theory: the Instability Proposition</h2>
+<h3>3.1 Four difficulty sources and their scale types</h3>
+<p>Suppose the system holds four sources: knowledge-tracing mastery m ∈ [0,1], spaced-repetition memory difficulty D, competitive-rating ability θ_EL, and window success rate r ∈ [0,1]. Following the classical scale classification and the three-plane classification of difficulty measurement (construction / scale / dependence), the four belong to different types:</p>
+<table class="three-line-table"><caption>Table 2. Four difficulty sources and their scale types</caption>
+<thead><tr>
+<th>Source</th>
+<th>Scale type</th>
+<th>construction</th>
+<th>scale</th>
+<th>dependence</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>KT mastery m</td>
+<td>bounded latent variable (approx. ordinal after integerisation)</td>
+<td>machine-inferred</td>
+<td>static, continuous</td>
+<td>depends on real responses</td>
+</tr>
+<tr>
+<td>SR memory difficulty D</td>
+<td>ordinal scale</td>
+<td>machine + human</td>
+<td>dynamic, discrete</td>
+<td>model-specific</td>
+</tr>
+<tr>
+<td>EL competitive rating θ_EL</td>
+<td>interval scale (log-odds scale)</td>
+<td>machine</td>
+<td>dynamic, continuous</td>
+<td>not directly dependent on ground truth</td>
+</tr>
+<tr>
+<td>WR window success rate r</td>
+<td>ratio scale</td>
+<td>machine</td>
+<td>static, continuous</td>
+<td>depends on real responses</td>
+</tr>
+</tbody></table>
+<p>Two key judgements follow. First, <strong>window success rate is not difficulty but the joint result of difficulty and ability</strong>: it roughly satisfies r ≈ σ(θ − β), encoding both ability and difficulty, so linearly adding it to a pure difficulty measure is a category error. Second, the four sources have inconsistent scale types—there is no well-defined linear combination between ordinal, ratio, and interval scales. Together these constitute the intuitive source of the instability proposition: it is not that the fusion weights are mistuned, but that the objects being added do not belong to the same additive space.</p>
+<h3>3.2 Two metrics and their invariance</h3>
+<p>Let the fusion rule be S = Σ_k w_k · z_k, where z_k is the value of the k-th source after some mapping and w_k is the nominal weight. Define the <strong>effective weight</strong> by the marginal-contribution method:</p>
+<p><strong>π_k = w_k · Cov(z_k, S) / Var(S)</strong>, and Σ_k π_k = 1.</p>
+<p>When the sources are orthogonal and equal in dispersion, π = w; otherwise π depends on each source's dispersion and correlation structure—which is precisely the source of drift.</p>
+<p><strong>Reading of negative π (must be explicitly defined).</strong> When a source's covariance with S is negative, π_k &lt; 0, and Σ_k π_k = 1 still holds, but <strong>a single π_k can no longer be read as a "weight share"</strong>—a negative value means that source plays a <strong>counteracting</strong> role in the weighted sum: it does not "contribute a negative share" but raises the share of the other positive weights.Counting negative π_k into the L1 drift (the component-wise absolute sum |π − π⁰|) is therefore a <strong>deliberately conservative</strong> choice: it counts both "direction flip" and "share-size change" equally as drift, rather than letting the two errors cancel through positive–negative offset.This situation does not appear in the synthetic experiment (the four sources are correlated monotone observations of one latent ability).</p>
+<p><strong>It must be emphasised that, under this paper's current caliber, there is also no instance of negative π in the real data, so the discussion of negative π here should be regarded as pure theoretical preparation, not an empirical claim about the real data.</strong></p>
+<ul>
+<li><strong>Under the current 0.5357 caliber all three components are positive</strong>: the min-max baseline effective weights on assist09 are π = <code>[0.5219, 0.344, 0.1351]</code> (<code>results/code/optimized_results.json</code>, O1's <code>o1_metric_comparison.A_minmax_linear.pi_baseline</code>), <strong>all three components positive</strong>—despite the three sources being pairwise negatively correlated (−0.25 / −0.13 / −0.30, §5.2). That is, under the current caliber <strong>there is no instance of "negative π appearing in real data."</strong></li>
+<li><strong>The vector containing a negative component comes from the voided old caliber and is not the baseline weight</strong>: <code>[0.9371, 0.0745, −0.0106]</code> is the π <strong>after applying a transform</strong> in the cell <code>irt|probit_std</code> under the <strong>voided</strong> old-sign caliber (L1_mean = 0.7597), located at <code>results/code/deprecated/assist09_drift_v1_sign_mixed.json</code>'s <code>payload.transforms["irt|probit_std"].pi</code> (<code>:28-36</code>), <strong>not</strong> <code>payload.pi_baseline</code>; that file self-marks <code>_reason: "...L1_mean = 0.7597 voided, do not cite"</code>, and its real <code>payload.pi_baseline</code> (<code>:13-17</code>) = <code>[0.5406, 0.3878, 0.0726]</code>, likewise with no negative component.</li>
+</ul>
+<p>Therefore our reading of L1 drift is uniformly limited to "the magnitude of change of the effective-weight vector," and is not read as "redistribution of shares"; the discussion of negative π is used only to fix the reading caliber of L1 drift and must not be cited as evidence that negative weights have appeared in the real data.</p>
+<p>This paper compares two metrics:</p>
+<table class="three-line-table"><caption>Table 3. Two fusion metrics and their invariance to reparameterisation</caption>
+<thead><tr>
+<th>Metric</th>
+<th>Definition</th>
+<th>Invariance to reparameterisation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A: linear [0,1]</td>
+<td>min-max per column then linear weighting</td>
+<td><strong>invariant only to affine y′ = ay + b</strong> (absorbed by min-max); drifts under nonlinear monotone transforms</td>
+</tr>
+<tr>
+<td>B: quantile logit</td>
+<td>per column link via step empirical CDF to logit latent scale ψ = ln(p/(1−p)), p = (#{x_cal ≤ x} + 0.5)/(n + 1)</td>
+<td><strong>strictly invariant to any strictly monotone transform</strong> (rank invariance, analytic identity)</td>
+</tr>
+</tbody></table>
+<p>The invariance of metric B is an identity, not a discovery: for strictly increasing g, #{g(x_cal) ≤ g(x)} = #{x_cal ≤ x}, so ψ is pointwise invariant. This paper treats it as a <strong>verification object</strong>, not a contribution: we recompute with finite samples, confirm the deviation is 0, and additionally report the sampling-noise magnitude under independent calibration.</p>
+<h3>3.3 Proposition C1 and its testable implications</h3>
+<p><strong>Proposition C1 (instability).</strong> If sources are each first normalised to [0,1] and then linearly combined, the effective weight π generally differs from the nominal weight w and drifts with any monotone reparameterisation of a single source; if sources are first linked through the empirical CDF to a logit metric and then fused, π is strictly invariant to any strictly monotone reparameterisation, and under finite calibration samples the deviation comes only from linking sampling error.</p>
+<p>This yields three testable implications, tested respectively in §4 (synthetic) and §5 (real):</p>
+<ul>
+<li><strong>P1</strong>: under metric A, the baseline (untransformed) effective weight already deviates from the nominal weight;</li>
+<li><strong>P2</strong>: under metric A, affine reparameterisation drift is 0, nonlinear monotone reparameterisation drift &gt; 0, and there exists a transform inducing rank reversal;</li>
+<li><strong>P3</strong>: under metric B, shared-calibration drift is 0, independent-calibration drift is only sampling-noise magnitude, and zero rank reversal.</li>
+</ul>
+<h2 id="section-4">4 Method Validation: the Proposition on Synthetic Data</h2>
+<h3>4.1 Generative model and experimental setup</h3>
+<p>The purpose of this section is to test the proposition in an environment with a <strong>known truth structure</strong>, not to estimate any real-system parameter. Common latent ability θ ∼ N(0,1), sample size n = 500, calibration sample independently drawn n_cal = 500; the four sources are monotone functions of θ plus source-specific noise:</p>
+<table class="three-line-table"><caption>Table 4. Synthetic generative model</caption>
+<thead><tr>
+<th>Source</th>
+<th>Generative form</th>
+<th>Scale</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>X₁ mastery</td>
+<td>σ(1.1θ + 0.2 + 0.30ε₁)</td>
+<td>probability [0,1]</td>
+</tr>
+<tr>
+<td>X₂ memory difficulty</td>
+<td>exp(0.7θ + 0.3 + 0.25ε₂)</td>
+<td>positive scale (exponential)</td>
+</tr>
+<tr>
+<td>X₃ competitive rating</td>
+<td>1200 + 250θ + 40ε₃</td>
+<td>wide linear scale</td>
+</tr>
+<tr>
+<td>X₄ window success rate</td>
+<td>σ(0.9θ − 0.1 + 0.30ε₄)</td>
+<td>probability [0,1]</td>
+</tr>
+</tbody></table>
+<p>ε_k ∼ N(0,1) independent. The four sources are correlated monotone observations of one latent ability—the most favourable environment where "a true common metric exists"—but with different dispersions and shapes. The main nominal-weight configuration is w = (0.40, 0.30, 0.20, 0.10), the robust configuration is three sources w = (0.45, 0.35, 0.20). For any single source we apply 9 affine transforms (a ∈ {0.5, 1, 2} × b ∈ {−0.5, 0, 0.5}) and 7 nonlinear monotone transforms (<code>power2</code>, <code>power3</code>, <code>sqrt</code>, <code>log</code>, <code>exp_scaled</code>, <code>probit_std</code>, <code>logit_minmax</code>); transform parameters are fixed on the test sample and then applied with the same parameters to the calibration sample, ensuring it is the same reparameterisation. Each (source, transform) is repeated R = 200 times.</p>
+<h3>4.2 Baseline: effective weights already differ from nominal</h3>
+<table class="three-line-table"><caption>Table 5. Baseline effective weights already deviate from nominal weights</caption>
+<thead><tr>
+<th>Metric</th>
+<th>π₁</th>
+<th>π₂</th>
+<th>π₃</th>
+<th>π₄</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Nominal weight w</td>
+<td>0.400</td>
+<td>0.300</td>
+<td>0.200</td>
+<td>0.100</td>
+</tr>
+<tr>
+<td><strong>Linear [0,1]</strong> (mean ± SD)</td>
+<td><strong>0.532 ± 0.026</strong></td>
+<td>0.171 ± 0.032</td>
+<td>0.179 ± 0.009</td>
+<td>0.119 ± 0.006</td>
+</tr>
+<tr>
+<td><strong>Quantile logit</strong></td>
+<td>0.403 ± 0.006</td>
+<td>0.299 ± 0.006</td>
+<td>0.201 ± 0.003</td>
+<td>0.097 ± 0.003</td>
+</tr>
+</tbody></table>
+<p><strong>Testable implication P1 holds.</strong> Under linear [0,1] fusion, the weight set "0.40 / 0.30 / 0.20 / 0.10" is <strong>misleading</strong>: because the mastery source has the largest relative dispersion, its effective weight is systematically inflated to 0.532, while the memory-difficulty source nominally at 0.30 actually contributes only 0.171. Under the quantile-logit metric the effective weight returns near the nominal value (max deviation 0.003), showing that this system does have a unique commensurable scale in this setting, and min-max normalisation simply does not land on it.</p>
+<h3>4.3 Metric A: affine-invariant, nonlinear-monotone drift</h3>
+<table class="three-line-table"><caption>Table 6. Metric A: affine-invariant, nonlinear-monotone drift</caption>
+<thead><tr>
+<th>Transform family</th>
+<th>L1 mean</th>
+<th>L1 SD</th>
+<th>mean rank reversal</th>
+<th>proportion with reversal</th>
+<th>Spearman vs. baseline weight</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Affine (9)</td>
+<td><strong>0.000000</strong></td>
+<td>0.000000</td>
+<td>0.000</td>
+<td>0.000</td>
+<td>1.0000</td>
+</tr>
+<tr>
+<td>Nonlinear monotone (7)</td>
+<td><strong>0.127620</strong></td>
+<td>0.019553</td>
+<td>0.513</td>
+<td><strong>0.364</strong></td>
+<td>0.8646</td>
+</tr>
+</tbody></table>
+<p><strong>Testable implication P2 holds, and it holds in two halves.</strong> Under affine transforms drift is exactly 0—this is the analytic property of min-max normalisation and the <strong>only</strong> invariance of the linear metric; under nonlinear monotone transforms L1 mean is 0.1276, max single-cell 0.674, and 36.4% of (source, transform) cells show weight-rank reversal. This split has direct engineering meaning: in real systems the mastery, memory difficulty, competitive rating, and success rate come precisely from probability, exponential, wide-linear, and ratio scales, and the transforms among them are <strong>never affine</strong>, so the stability of linear fusion in practice falls exactly in the refuted half.</p>
+<p>The most severe transform per source is as follows (L1 mean / 95% interval / mean reversal count):</p>
+<table class="three-line-table"><caption>Table 7. Most severe transform per source (L1 mean / 95% interval / mean reversal)</caption>
+<thead><tr>
+<th>Source</th>
+<th>Most severe transform</th>
+<th>L1 mean</th>
+<th>95% interval</th>
+<th>mean reversal</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>X₁ mastery</td>
+<td><code>logit_minmax</code></td>
+<td>0.674</td>
+<td>[0.641, 0.709]</td>
+<td>2.835</td>
+</tr>
+<tr>
+<td>X₁ mastery</td>
+<td><code>log</code></td>
+<td>0.193</td>
+<td>[0.116, 0.325]</td>
+<td>0.065</td>
+</tr>
+<tr>
+<td>X₂ memory difficulty</td>
+<td><code>probit_std</code></td>
+<td>0.368</td>
+<td>[0.274, 0.487]</td>
+<td>0.670</td>
+</tr>
+<tr>
+<td>X₂ memory difficulty</td>
+<td><code>exp_scaled</code></td>
+<td>0.286</td>
+<td>[0.163, 0.343]</td>
+<td>1.330</td>
+</tr>
+<tr>
+<td>X₃ competitive rating</td>
+<td><code>logit_minmax</code></td>
+<td>0.274</td>
+<td>[0.248, 0.298]</td>
+<td>1.590</td>
+</tr>
+</tbody></table>
+<p>Notably the two most severe cells both occur on <code>logit_minmax</code>—i.e., "first min-max then take logit" on a source, the most natural-looking modification, causes the largest weight drift instead. This suggests a counterintuitive practical conclusion: before the metric is unified, any local "make some source more like logit" improvement may amplify rather than reduce the system's overall instability.</p>
+<h3>4.4 Metric B: zero drift under shared calibration, sampling noise only under independent calibration</h3>
+<table class="three-line-table"><caption>Table 8. Metric B: zero drift under shared calibration, sampling noise only under independent calibration</caption>
+<thead><tr>
+<th>Variant</th>
+<th>Transform family</th>
+<th>L1 mean</th>
+<th>mean rank reversal</th>
+<th>proportion with reversal</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Shared calibration · same transform</td>
+<td>all</td>
+<td><strong>0.000000</strong></td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>Independent calibration sample</td>
+<td>affine</td>
+<td>0.0160</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+<tr>
+<td>Independent calibration sample</td>
+<td>nonlinear</td>
+<td>0.0159</td>
+<td>0.000</td>
+<td>0.000</td>
+</tr>
+</tbody></table>
+<p><strong>Testable implication P3 holds.</strong> Under shared calibration drift is strictly 0 (numerically the largest |Δπ| in the whole table is 2.7 × 10⁻³, appearing only in one <code>logit_minmax</code> cell, a numeric artifact from domain-boundary clipping creating at most two tied values, not a conceptual drift). Under independent calibration the 0.016-magnitude deviation is identical for affine (0.0160) and nonlinear (0.0159), proving it is unrelated to reparameterisation and is the linking sampling error of finite calibration samples. Zero rank reversal holds under both variants.</p>
+<h3>4.5 Three counterexamples: information unchanged, weight-rank reversed</h3>
+<p><strong>Counterexample 1 (strongest):</strong> applying <code>logit_minmax</code> (strictly monotone) to X₁ mastery, result of repeat 0:</p>
+<table class="three-line-table"><caption>Table 9. Counterexample 1 (strongest): X₁ mastery under logit_minmax</caption>
+<thead><tr>
+<th>Item</th>
+<th>Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Baseline effective weight π⁽⁰⁾</td>
+<td>[0.5429, 0.1514, 0.1831, 0.1226], order [1, 3, 2, 4]</td>
+</tr>
+<tr>
+<td>Transformed π⁽ᵍ⁾</td>
+<td>[0.1983, 0.2840, 0.3110, 0.2068], order [4, 2, 1, 3]</td>
+</tr>
+<tr>
+<td>L1</td>
+<td><strong>0.6893</strong></td>
+</tr>
+<tr>
+<td>Rank-reversal count</td>
+<td><strong>3</strong> (complete reversal)</td>
+</tr>
+<tr>
+<td>Spearman vs. baseline weight</td>
+<td><strong>−0.20</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Δπ</td>
+<td>of quantile-logit metric under same transform</td>
+<td><strong>0.000</strong> (no reversal)</td>
+</tr>
+</tbody></table>
+<p><strong>Counterexample 2:</strong> applying <code>probit_std</code> to X₂ memory difficulty, π changes from [0.543, 0.151, 0.183, 0.123] to [0.415, 0.352, 0.140, 0.094], L1 = 0.400, 1 reversal; quantile metric |Δπ| = 0.</p>
+<p><strong>Counterexample 3:</strong> applying <code>power3</code> to X₂, π → [0.611, 0.047, 0.205, 0.137], L1 = 0.209, 1 reversal; quantile metric |Δπ| = 0.</p>
+<p>All three counterexamples use <strong>strictly monotone</strong> transforms and θ is unchanged—i.e., under "information content completely unchanged, only the scale changed," the weight ranking of linear fusion underwent substantial reversal, and the strongest case completely flips sign. This is our direct response to the objection that "weight drift is just a few decimal points": the drift can be large enough to completely invert the interpretation of the weights.</p>
+<h3>4.6 Boundaries of the synthetic experiment (honest statement)</h3>
+<p><strong>This entire section is synthetic data</strong>, the generation method is fully written out, and no external data is used. Three boundaries must be stated: first, the four sources sharing a single latent variable is the <strong>most favourable</strong> environment for the "commensurability" proposition—even so, linear fusion remains unstable, which strengthens rather than weakens the conclusion; second, affine invariance (= 0) is an analytic conclusion, not an empirical discovery, and we use it as a control, not a contribution; third, the zero drift of the quantile metric is likewise a design goal (rank invariance), and this experiment <strong>verifies</strong> it with finite samples, rather than discovering it. In sum, the role of this section is <strong>method validation</strong>; the test on real systems is borne by §5.</p>
+<h2 id="section-5">5 Real-Data Test I: Metric Repair and Two Negative Results</h2>
+<h3>5.1 Data, licences, and samples</h3>
+<table class="three-line-table"><caption>Table 10. Datasets, scale, use in this paper, and licence/citation obligations</caption>
+<thead><tr>
+<th>Dataset</th>
+<th>Scale</th>
+<th>Use in this paper</th>
+<th>Licence and citation obligation</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>assist09 (revised)</td>
+<td>346,860 rows × 31 cols (64,412,812 B)</td>
+<td>three-source correlation, O1 metric drift, sliding-window error-rate distribution</td>
+<td>cite Feng et al. (2009) and data page (URL verified before submission)</td>
+</tr>
+<tr>
+<td>DBE-KT22</td>
+<td>161,953 valid responses; 212 items; 1,264 students</td>
+<td>O2 difficulty estimator, O4 / O4b multi-signal fusion</td>
+<td>cite arXiv:2208.12651; ADA Dataverse DOI 10.26193/6DZWOH</td>
+</tr>
+<tr>
+<td>XES3G5M</td>
+<td>4,806 items (≥100 responses with KC path); 7,652 items with item text</td>
+<td>O3 knowledge-tree-structure negative result</td>
+<td>cite NeurIPS 2023 Datasets &amp; Benchmarks; MIT licence</td>
+</tr>
+<tr>
+<td>Junyi Academy</td>
+<td>16,217,311 rows; 72,758 users; <strong>1,326 exercises library-wide</strong></td>
+<td>O5 cross-system reproduction, O6 sample efficiency and robustness, O7 / O8 holdout validation</td>
+<td>CC-BY-NC-SA-4.0 (<strong>commercial use prohibited</strong>); cite Chang et al. (2015)</td>
+</tr>
+</tbody></table>
+<p><strong>Three calibers of the Junyi exercise count (defined where first appearing, unified thereafter).</strong> This paper uses three different exercise counts in different experiments; they are not contradictions but different filter conditions:</p>
+<table class="three-line-table"><caption>Table 11. Three calibers of the Junyi exercise count</caption>
+<thead><tr>
+<th>Caliber</th>
+<th>Exercise count</th>
+<th>Definition</th>
+<th>Appears in</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Library-wide</td>
+<td><strong>1,326</strong></td>
+<td>all exercises in the Junyi exercise table with response data</td>
+<td>§5.1 Table 3-1, §5.4</td>
+</tr>
+<tr>
+<td>O5 fusion reproduction caliber</td>
+<td><strong>1,234</strong></td>
+<td>on top of 1,326, add O5 usability filter: exercise must have expert-difficulty annotation and meet O5's minimum-response threshold</td>
+<td>§6.3, §6.4</td>
+</tr>
+<tr>
+<td>O10/O12 criterion-half caliber</td>
+<td><strong>1,238</strong></td>
+<td>on top of 1,326, require the criterion half (B-half students) to have ≥500 responses per exercise</td>
+<td>§7.2 O10, §7.8 O12</td>
+</tr>
+</tbody></table>
+<p>Of the three calibers only 1,326 is "all exercises with data"; 1,234 and 1,238 are experiment-specific inclusion conditions. Earlier versions mixed two of these values in §3.2 and §5.1 without definition; they are now unified per the table above.</p>
+<p>The four datasets cover three different evidence regimes, which itself constitutes the external-validity design of this paper: DBE-KT22 has expert difficulty annotation (1/2/3) and student self-report (difficulty feedback and trust); Junyi has expert difficulty annotation (easy/normal/hard) but <strong>no self-report channel</strong>; XES3G5M has item text and a knowledge tree but no expert difficulty; assist09 has hint use and multi-skill annotation but no expert difficulty. §6 will use this design to report the "with-feedback" and "without-feedback" regimes separately.</p>
+<h3>5.2 Real difficulty sources pairwise weakly negatively correlated: a form impossible in the synthetic experiment</h3>
+<p>On assist09's 994 items (≥50 responses), the Spearman correlations among the three realistically available difficulty sources are:</p>
+<table class="three-line-table"><caption>Table 12. Pairwise Spearman correlations among the three real difficulty sources on assist09</caption>
+<thead><tr>
+<th>Source pair</th>
+<th>Spearman ρ</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>IRT difficulty ~ median first-attempt time</td>
+<td><strong>−0.250</strong></td>
+</tr>
+<tr>
+<td>IRT difficulty ~ mean attempt count</td>
+<td>−0.134</td>
+</tr>
+<tr>
+<td>First-attempt time ~ mean attempt count</td>
+<td><strong>−0.302</strong></td>
+</tr>
+</tbody></table>
+<p>The three sources are <strong>pairwise negatively correlated</strong>: items judged hard by IRT are answered faster and with fewer attempts by students.This is the exact opposite of the synthetic-experiment setting in §4.1 ("the four sources are correlated monotone observations of one latent ability").The explanation is not mysterious—hard items are often abandoned faster by students (fast abandonment means short time and few attempts), while easy but tedious items take long and many attempts.The important consequence: <strong>the real system's difficulty scales are not merely incommensurable, their directions also fight each other</strong>.In the synthetic experiment, min-max fusion drift comes from dispersion differences; in the real data it is overlaid with sign conflict, so it is unsurprising that the observed real drift (0.5357, §5.3) far exceeds the synthetic (0.1276).</p>
+<p>This finding also explains why "make some source more like logit" local fixes fail: when sources are negatively correlated, any linear combination relying on concrete values weights noise as signal.</p>
+<h3>5.3 O1: from 0.5357 to 0.0001</h3>
+<p>On the same batch of 994 items, compare the two metrics' effective-weight drift under arbitrary monotone reparameterisation:</p>
+<table class="three-line-table"><caption>Table 13. O1: effective-weight drift under the two metrics (assist09, 994 items)</caption>
+<thead><tr>
+<th>Fusion metric</th>
+<th>L1 mean</th>
+<th>Rank reversal</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>A: min-max linear (status quo)</td>
+<td><strong>0.5357</strong></td>
+<td>significant</td>
+</tr>
+<tr>
+<td>B: empirical CDF → logit (quantile linking)</td>
+<td><strong>0.0001</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody></table>
+<p><strong>This is the engineering-landing evidence of proposition C1, obtained on real data.</strong> After replacing the difficulty-fusion module from min-max linear fusion to "quantile linking + logit metric," the effective-weight drift under arbitrary monotone reparameterisation drops from 0.5357 to the 1 × 10⁻⁴ order (pure numeric noise), and rank reversals go to zero. Compared with the synthetic experiment (0.1276 → 0), the baseline drift on real data is about 4.2× higher, while the residual drift after repair is likewise zero—i.e., <strong>the gain from the metric repair is larger on real data than in the synthetic environment</strong>.</p>
+<p>Here the caliber-correction note from the front matter must be restated: an earlier batch of experiments had mixed sign conventions across difficulty sources (some sources' positive direction was "easy," some "hard"), systematically inflating the linear-fusion drift. After unifying to "positive = hard" and recomputing, the value is 0.5357. We do not cite the corrected old value. The qualitative conclusion is identical under both calibers (linear fusion drift ≫ quantile metric), but only 0.5357 is the caliber-consistent, comparable number.</p>
+<h3>5.4 O2: changing the estimator is only worth +0.009</h3>
+<p>On DBE-KT22 (1,264 students × 212 items), comparing two difficulty estimators against the expert-difficulty annotation (1 easy / 2 medium / 3 hard):</p>
+<table class="three-line-table"><caption>Table 14. O2: estimator comparison against expert difficulty on DBE-KT22</caption>
+<thead><tr>
+<th>Estimator</th>
+<th>Spearman ρ with expert grade</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Raw correct-rate difficulty (baseline)</td>
+<td>0.2207</td>
+</tr>
+<tr>
+<td><strong>Joint IRT-1PL (EM-style gradient, 300 rounds)</strong></td>
+<td><strong>0.2300</strong></td>
+</tr>
+</tbody></table>
+<p>The IRT stratified means (positive = hard) are level 1 → −1.32, level 2 → −1.19, level 3 → −0.21, <strong>monotone with clear hard-level separation</strong>; correct rate decreases monotonically by expert grade (0.803 / 0.770 / 0.632), consistent with the original dataset paper's conclusion.</p>
+<p><strong>Honest reading: ρ improves by only 0.009.</strong> This is a highly informative negative result: it shows that on the axis "expert annotation vs. behavioural data," the bottleneck is not the complexity of the estimator but the agreement between the expert annotation itself and the response behaviour. This directly negates the implicit expectation in our original preregistration that "a better measurement model would improve commensurability," and prompted the pivot in §6—since the estimator is not the bottleneck, we should test whether the <strong>signal set</strong> is the bottleneck. The sequel will show that this pivot brought both the gain of §6 and the reversal of §7.</p>
+<h3>5.5 O3: knowledge-tree structure is not difficulty order</h3>
+<p>On XES3G5M we test an assumption widely defaulted to in engineering practice but rarely explicitly tested: whether the hierarchical structure of the knowledge-component (KC) tree can serve as a difficulty proxy.</p>
+<ul>
+<li><strong>Depth correlation</strong>: KC-tree depth vs. empirical difficulty has Spearman ρ = <strong>+0.0785</strong> (p = 5.1 × 10⁻⁸, significant but extremely weak); the stratified mean is <strong>non-monotone</strong>—depth 4 correct rate is 0.799 (easiest), depth 3 is 0.746 (hardest).</li>
+<li><strong>Tree-edge gradient</strong>: among 347 parent–child edges, the proportion with "parent difficulty &lt; child difficulty" is <strong>0.487</strong>, about a coin flip.</li>
+</ul>
+<p>The two pieces of evidence jointly refute "tree structure = difficulty order." We report this as a small but clean negative result: it depends on no new algorithm, only one correlation test and one direction-consistency test, yet suffices to block a common engineering shortcut—using knowledge-tree depth, section numbering, or course progress as a difficulty estimate. This negative result has been written into the module documentation of the studied system's difficulty-metric layer (§9.2) as a prohibitive constraint.</p>
+<h2 id="section-6">6 Real-Data Test II: Multi-Signal Fusion and the Gain under the Expert-Label Criterion</h2>
+<h3>6.1 O4: five-signal fusion on DBE-KT22 and a differential feature</h3>
+<p>O2 showed that changing the estimator helps little. O4 tests another hypothesis: <strong>the bottleneck may not be the label but the single behavioural signal (correct rate) itself being information-poor</strong>. Design: on DBE-KT22's 212 items (≥30 transactions per item) take five behavioural signals—success rate (reversed), hint rate, student self-reported difficulty, trust (reversed), mean response time—each transformed by ECDF → logit (i.e., O1's quantile metric, positive = hard) and then linearly fused.</p>
+<table class="three-line-table"><caption>Table 15. O4: five-signal fusion on DBE-KT22 and a differential feature</caption>
+<thead><tr>
+<th>Estimator</th>
+<th>Spearman ρ with expert 1/2/3</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Raw correct rate (O2 baseline)</td>
+<td>0.2207</td>
+</tr>
+<tr>
+<td>Joint IRT-1PL (O2)</td>
+<td>0.2300</td>
+</tr>
+<tr>
+<td><strong>Five-signal equal-weight fusion</strong></td>
+<td><strong>0.2899</strong></td>
+</tr>
+<tr>
+<td>Optimised weights (greedy, in-sample)</td>
+<td>0.5306</td>
+</tr>
+<tr>
+<td><strong>Optimised weights · repeated 5-fold ×10 cross-validation</strong></td>
+<td><strong>0.5240 ± 0.1069</strong> (interval [0.2895, 0.7390])</td>
+</tr>
+</tbody></table>
+<p>Single-signal performance: trust (reversed) 0.261, time 0.240, success rate (reversed) 0.217, hint rate <strong>−0.117</strong> (wrong direction), self-reported difficulty 0.038 (near noise alone).</p>
+<p><strong>The core finding is a differential feature.</strong> Self-reported difficulty and trust are strongly positively correlated at the item level (Pearson +0.94), but in ECDF space "trust reversed" vs. self-reported difficulty correlate at <strong>−0.80</strong>. The 50/50 combination selected by the optimised weights is essentially a differential feature: <strong>"items that are self-reported difficult AND trust-low are the truly hard ones."</strong> Subtracting two weak signals cancels the common-mode noise, isolates the difficulty-specific variance, and lifts ρ from the single-signal ceiling of 0.26 to the 0.53 order (cross-validation 0.52).</p>
+<p>Three citation disciplines must be observed: the in-sample 0.5306 has optimistic bias, so <strong>cite the cross-validation value</strong>; the equal-weight 0.2899 is the tuning-free lower bound, representing "what you get without tuning"; self-reported difficulty and trust come from the same system's student self-reports, independent of expert annotation (no label leakage), but <strong>exist only in systems with a feedback mechanism</strong>—feedback-free systems can only fall back to pure-performance-signal fusion (about 0.29).</p>
+<h3>6.2 O4b: extended features add no gain, the differential feature is the driver</h3>
+<p>To test the mechanistic explanation rather than merely accept its fit, O4b adds three explicit features (explicit difference term, dispersion, response count) and re-estimates by coordinate ascent:</p>
+<table class="three-line-table"><caption>Table 16. O4b: extended features add no gain, the differential feature is the driver</caption>
+<thead><tr>
+<th>Configuration</th>
+<th>cross-validation ρ under repeated caliber</th>
+<th>Note</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>O4 (5-signal full-grid greedy)</td>
+<td><strong>0.4778</strong> (single 5-fold; cite with caliber noted)</td>
+<td>final cited configuration</td>
+</tr>
+<tr>
+<td>O4b (8 features, coordinate ascent)</td>
+<td>0.4608</td>
+<td>does not exceed O4</td>
+</tr>
+</tbody></table>
+<p>Two direct pieces of evidence support "the differential feature is the driver": the explicit difference feature (self-reported difficulty − trust) alone has ρ = <strong>0.389</strong>, the strongest single feature; response count correlates negatively with expert difficulty (ρ = −0.302), indicating popular exercises tend to be core easy items. The added features bring no generalisable gain, so O4 remains the final cited configuration, and O4b serves only as a mechanism-ablation piece of evidence.</p>
+<h3>6.3 O5: cross-system reproduction on Junyi (no-feedback regime)</h3>
+<p>The key difference between Junyi and DBE is: Junyi <strong>has no student self-report feedback field</strong>, a "performance-signal-only" regime. This exactly tests how much of O4's gain survives on a feedback-free system.</p>
+<table class="three-line-table"><caption>Table 17. O5: cross-system reproduction on Junyi (no-feedback regime)</caption>
+<thead><tr>
+<th>Estimator (Junyi, 1,234 exercises)</th>
+<th>Spearman ρ with expert easy/normal/hard</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Success rate only</td>
+<td>0.2610</td>
+</tr>
+<tr>
+<td><strong>Seven-signal equal-weight fusion</strong></td>
+<td><strong>0.3629</strong> (+39% vs. baseline)</td>
+</tr>
+<tr>
+<td>Coordinate-ascent optimised · repeated 5-fold ×10</td>
+<td><strong>0.4023 ± 0.0480</strong> (interval [0.3227, 0.4909])</td>
+</tr>
+</tbody></table>
+<p>Single signals: repeat-session rate 0.294, mean attempt count 0.285, downgrade rate 0.271, success rate (reversed) 0.261, hint rate 0.217, time 0.214, upgrade rate <strong>−0.184</strong> (reversed).</p>
+<p><strong>Conclusion:</strong> the fusion gain <strong>is not DBE-specific</strong>. On 16.21 million interactions, 1,234 items, a completely different subject (Taiwan mathematics) and a different regime (no feedback), the equal-weight fusion improvement over baseline (+39%) is of the same order as DBE's (0.2207 → 0.2899, +31%). This provides cross-system evidence for "difficulty estimation should use multi-signal rank fusion rather than single correct rate," while delimiting the upper bound reachable by feedback-free systems (about 0.36–0.40).</p>
+<p>A pre-emptive warning to readers: every gain in this section uses the criterion of <strong>expert difficulty labels</strong>. §7 will switch the criterion to "real performance on unseen samples," at which point the conclusion reverses. The table numbers here are themselves correct, but the boundary of their interpretive power is redrawn in §7.</p>
+<h3>6.4 O6a: sample efficiency — the gain is complementary information, not denoising</h3>
+<p>If the fusion benefit were merely "multi-signal averaging out noise," the benefit should vanish as sample size grows. O6a uses reservoir sampling to give, for each item, random subsamples of any k ∈ {10, …, 500} responses (30 repeats per bracket) to test this.</p>
+<table class="three-line-table"><caption>Table 18. O6a: sample efficiency — the gain is complementary information, not denoising</caption>
+<thead><tr>
+<th>k</th>
+<th>Junyi success-only</th>
+<th>Junyi fusion</th>
+<th>paired win rate</th>
+<th>DBE success-only</th>
+<th>DBE fusion</th>
+<th>paired win rate</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0.1750</td>
+<td>0.2260</td>
+<td>1.00</td>
+<td>0.2024</td>
+<td>0.2316</td>
+<td>0.87</td>
+</tr>
+<tr>
+<td>25</td>
+<td>0.2116</td>
+<td>0.2640</td>
+<td>1.00</td>
+<td>0.2113</td>
+<td>0.2399</td>
+<td>0.77</td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.2314</td>
+<td>0.2929</td>
+<td>1.00</td>
+<td>0.2224</td>
+<td>0.2493</td>
+<td>0.83</td>
+</tr>
+<tr>
+<td>100</td>
+<td>0.2416</td>
+<td>0.3099</td>
+<td>1.00</td>
+<td>0.2208</td>
+<td>0.2654</td>
+<td>0.97</td>
+</tr>
+<tr>
+<td>250</td>
+<td>0.2496</td>
+<td>0.3269</td>
+<td>1.00</td>
+<td>0.2213</td>
+<td>0.2725</td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>500</td>
+<td>0.2536</td>
+<td>0.3380</td>
+<td>1.00</td>
+<td>0.2209</td>
+<td>0.2779</td>
+<td>1.00</td>
+</tr>
+<tr>
+<td>Full</td>
+<td>0.2610</td>
+<td>0.3629</td>
+<td>—</td>
+<td>0.2170</td>
+<td>0.2899</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>The <strong>relative</strong> gain stays stable at +29% ~ +33% across all sample-size brackets, and the absolute gain even rises monotonically with sample size (Junyi from +0.0509 to +0.0844). Therefore fusion provides <strong>complementary information</strong>, not merely variance reduction—a judgement that §7 will qualify but not overturn: complementarity is real, it is just that what it complements is "the construct contained in expert labels," not necessarily "the construct contained in student performance."</p>
+<p><strong>Correction record (honest archive):</strong> DBE's first-version sample-efficiency result was inflated (k = 500 gave 0.2485, exceeding the full 0.2170). The cause was that among 212 items, 13 had response count n &lt; K = 500, the reservoir tail had zero-padding slots, and global permutation then truncation counted the zero-padding as 0 in the sum. After changing to "sort the invalid slots' keys to +∞ and push them to the queue tail" for fetching, the table above shows the corrected values.</p>
+<h3>6.5 O6b: statistical robustness (bootstrap 2000 and repeated cross-validation)</h3>
+<table class="three-line-table"><caption>Table 19. O6b: statistical robustness (bootstrap 2000 and repeated cross-validation)</caption>
+<thead><tr>
+<th>Quantity</th>
+<th>Junyi</th>
+<th>DBE</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Success-only ρ [95% CI]</td>
+<td>0.2606 [0.2112, 0.3101]</td>
+<td>0.2167 [0.0809, 0.3476]</td>
+</tr>
+<tr>
+<td>Equal-weight fusion ρ [95% CI]</td>
+<td>0.3623 [0.3149, 0.4094]</td>
+<td>0.2890 [0.1563, 0.4127]</td>
+</tr>
+<tr>
+<td>Paired difference Δ [95% CI]</td>
+<td><strong>+0.1017 [0.0726, 0.1325]</strong></td>
+<td><strong>+0.0723 [−0.0195, 0.1649]</strong></td>
+</tr>
+<tr>
+<td>One-sided p(Δ ≤ 0)</td>
+<td><strong>0.000</strong></td>
+<td><strong>0.059</strong></td>
+</tr>
+<tr>
+<td>Three-grade quadratic-weighted Kappa (success-only → fusion)</td>
+<td>0.1815 → 0.2595</td>
+<td>0.1778 → 0.2370</td>
+</tr>
+<tr>
+<td>Repeated 5-fold ×10 (50 folds) optimised-weight ρ</td>
+<td><strong>0.4023 ± 0.0480</strong></td>
+<td><strong>0.5240 ± 0.1069</strong></td>
+</tr>
+</tbody></table>
+<p>Two points must be emphasised. First, <strong>the fusion gain on DBE is only marginally significant even under the expert-label criterion</strong> (one-sided p = 0.059, CI crosses 0); only Junyi's p = 0.000 constitutes strong evidence. Merging the two datasets' gains without distinguishing significance is embellishment of evidence strength. Second, the absolute level of quadratic-weighted Kappa (0.18 → 0.26) is far below the intuitive "usable" threshold, indicating limited improvement at the three-grade classification level; the improvement mainly occurs at the rank level.</p>
+<p><strong>Number update (must be observed):</strong> the 0.3837 reported by O5 and the 0.4778 by O4 are both <strong>single 5-fold</strong> results; the more stable repeated 5-fold ×10 estimates are Junyi 0.4023 ± 0.0480 and DBE 0.5240 ± 0.1069. Both differ from the old values within one standard deviation (not contradictory), but <strong>this paper uniformly prioritises citing the repeated values with standard deviations</strong>; if the old values appear, they must be noted as "single 5-fold."</p>
+<h2 id="section-7">7 Criterion Switch: Holdout Validation, Conclusion Reversal, and a Directional Error</h2>
+<h3>7.1 The distance between expert labels and real-performance difficulty</h3>
+<p>The consistency criterion of O4 and O5 is <strong>expert difficulty labels</strong>. But what adaptive ranking truly needs is "predicting real student performance." These are not the same construct, and their distance is directly measurable:</p>
+<blockquote class="frontmatter">
+<p>&amp;nbsp;&amp;nbsp;<strong>Expert difficulty labels vs. real-performance difficulty (Junyi, ability decile 5, n = 906, ≥500 responses): Spearman ρ = 0.4326 (95% CI [0.38, 0.48], p &lt; 0.001).</strong></p>
+</blockquote>
+<p>That is, expert labels explain only about 19% of the rank variance of real-performance difficulty. This is not a criticism of expert annotation—expert annotation measures "how hard the course designer thinks it is," which is itself a different construct from "how hard it actually is for the student." But it means: <strong>an estimator's progress in "fitting expert labels" need not translate into progress in "predicting student performance."</strong> Reporting a consistency gain without first measuring this distance would let readers assume the two are the same thing—which we explicitly deny here.</p>
+<h3>7.2 O7: conclusion reversal under holdout validation</h3>
+<p>The method splits each item's reservoir slots into mutually exclusive block A (for estimation, k slots) and block B (for criterion, 250 slots), so that estimation error and criterion error no longer share samples. After switching the criterion to "real performance on unseen samples":</p>
+<table class="three-line-table"><caption>Table 20. O7: conclusion reversal under holdout validation</caption>
+<thead><tr>
+<th>Dataset</th>
+<th>k</th>
+<th>Success-only</th>
+<th>Equal-weight fusion</th>
+<th>Difference</th>
+<th>Fusion win rate</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Junyi</td>
+<td>10</td>
+<td>0.6677</td>
+<td>0.6410</td>
+<td>−0.0267</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Junyi</td>
+<td>25</td>
+<td>0.8066</td>
+<td>0.7355</td>
+<td>−0.0711</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Junyi</td>
+<td>50</td>
+<td>0.8814</td>
+<td>0.7850</td>
+<td>−0.0963</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Junyi</td>
+<td>100</td>
+<td>0.9251</td>
+<td>0.8115</td>
+<td>−0.1136</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>Junyi</td>
+<td>200</td>
+<td>0.9509</td>
+<td>0.8287</td>
+<td><strong>−0.1222</strong></td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>DBE</td>
+<td>10</td>
+<td>0.8083</td>
+<td>0.6331</td>
+<td>−0.1752</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>DBE</td>
+<td>25</td>
+<td>0.9036</td>
+<td>0.6982</td>
+<td>−0.2054</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>DBE</td>
+<td>50</td>
+<td>0.9427</td>
+<td>0.7259</td>
+<td>−0.2168</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>DBE</td>
+<td>100</td>
+<td>0.9652</td>
+<td>0.7541</td>
+<td>−0.2112</td>
+<td>0.00</td>
+</tr>
+<tr>
+<td>DBE</td>
+<td>200</td>
+<td>0.9767</td>
+<td>0.7655</td>
+<td><strong>−0.2113</strong></td>
+<td>0.00</td>
+</tr>
+</tbody></table>
+<p><strong>Conclusion: under the criterion "generalise to new samples," equal-weight seven-signal fusion is comprehensively worse than success rate alone</strong>, and the disadvantage grows with more samples (Junyi from −0.0267 to −0.1222, DBE stable around −0.21); the fusion win rate is 0.00 across all 10 configurations.</p>
+<p><strong>But this reversal cannot be read entirely as "fusion has no predictive power"; the part constructed by the criterion structure itself must first be subtracted.</strong> The criterion here is "the real success rate 1 − ok_B/n_B of block B," and the baseline estimator "success rate only" estimates <strong>exactly this statistic</strong> on fit block A—<strong>the baseline is a small-sample estimate of the criterion quantity</strong>, while the fusion estimator mixes in other constructs such as hint dependence, response time, attempt count, and session count.If an item's success probability is stable, the success rate on A converges to that on B, so this design is <strong>asymptotically favourable to the success-rate-only estimator</strong>; the observed "larger k, larger disadvantage" (baseline ρ reaches 0.95–0.96 at k = 200) is consistent with this.</p>
+<p>This does not mean the difference is entirely an artifact of the structure: the objective function is inter-item rank correlation, block B is still finite-sample, and the fusion estimator also contains the success-rate signal, leaving real differences.But <strong>a substantial part of the reversal is built into the criterion choice</strong>.</p>
+<p>Therefore we rewrite the final qualitative statement of O4 / O5 as: <strong>when the criterion quantity is success rate, the success-rate estimator's large-sample dominance is design-expected; fusion's role is rank stabilisation at small samples.</strong> This statement is directly supported by O8–O12 (record-level +3.823 pp and student-level +4.283 pp at k = 10, falling below 0.4 pp for k ≥ 100), and is compatible with the variance-reduction explanation of the "(1−λ)·success-rate + λ·fusion" shrinkage combination—but we <strong>did no bias–variance decomposition and have no prior model, so we have not identified this explanation</strong>; it is merely a compatible reading.</p>
+<p>The sentence "consistency gain is not predictive-power gain" must be given a primary test on an <strong>exogenous criterion</strong>. The hierarchy of criteria is set by construct distance: <strong>the primary decision criterion takes DBE-KT22's teacher difficulty labels</strong> (R7: Abdelrahman et al. 2022; 3-level ordinal 1/2/3, from outside the logs, the <strong>only</strong> exogenous benchmark available to us); the <strong>ability-corrected criterion (IRT-1PL) is demoted to an appendix sensitivity analysis</strong>, for the reason given in the next paragraph.</p>
+<p><strong>Primary decision criterion (A2·DBE-KT22, exogenous):</strong> all 212 items carry teacher difficulty annotation. With teacher labels placed at the criterion position and behavioural signals estimated only on fit block A (equal-weight sign-corrected fusion, no leakage), the result is Spearman(fusion, teacher label) = <strong>0.205</strong>, Spearman(success-only, teacher label) = <strong>0.220</strong>, linear-weighted κ = <strong>0.123</strong>. The two are nearly tied and both only weakly correlated with teacher labels. Under this criterion fusion gains no distinguishable advantage over "success rate only." (Single-model rating vs. teacher-label alignment at richer ordinal metrics is in M3 §5.7.1: τ_b / graded AUC / k-scan panels.)</p>
+<p><strong>Why 1PL cannot serve as an exogenous benchmark (Appendix A.x):</strong> we additionally split students on Junyi by crc32(uuid) parity (O10 student-level holdout), and under the criterion-half per-item ≥500-response caliber actually obtain <strong>1,274 items</strong> (32,563 students, 1,845,035 responses) fitting IRT-1PL item difficulty b_j (ability-corrected, mean|b_j| = 0.80), yielding Spearman(b_j, success-only_B) = <strong>0.963</strong>, Spearman(b_j, fusion_A) = <strong>0.892</strong>.<strong>b_j and success rate are almost perfectly同源</strong> (ρ = 0.963), a value of the same order and same conclusion as Deep-IRT (Yeung 2019) reporting "Pearson r = 0.96 between item analysis and 1PL IRT difficulty" on FSAI data.Therefore <strong>1PL only corrects the ability composition, it is not an exogenous benchmark</strong>: placing 1PL as a third criterion alongside success rate merely re-introduces the tautology "same statistic" under a different name.</p>
+<p>We therefore move it to the appendix as a sensitivity analysis only, and <strong>the main results table has no 1PL column</strong>.Both additional criteria were cross-validated by <code>verify_m1_criteria.py --results m1_criteria_results.json</code> (PASS); all numbers are real computed values.</p>
+<p>An over-interpretation that must also be avoided is "fusion is useless." The fusion gain under the expert-label criterion is real, reproducible, and has a clear mechanism (differential feature); "useless" means it is <strong>not proven useful for the purpose of adaptive ranking</strong>. For tasks aimed at expert judgement, such as "difficulty grading at item intake" and "expert alignment of question-bank quality," fusion remains effective.</p>
+<p>Finally, <strong>the absolute values of ρ in this section and the §7.8 tables must not be bolded and must not be read as "near perfect"</strong>: the criterion-block reliability is limited (record-level block B fixed at 250, student-level requires ≥500), so only <strong>within-k between-group comparisons</strong> are valid.</p>
+<h3>7.3 O8: locating and fixing a directional error</h3>
+<p>Faced with the above reversal, we did not attribute it to "tuning preference" but inspected the fusion configuration itself. The inspection located one real error:</p>
+<blockquote class="frontmatter">
+<p>&amp;nbsp;&amp;nbsp;<strong>The upgrade rate correlates −0.1837 with expert difficulty, and −0.756 in-pool (same knowledge point × same ability decile), yet the optimiser assigned it a positive weight +0.154.</strong></p>
+</blockquote>
+<p>That is, a negatively-directed signal was counted into the fusion with a positive weight. This does not surface in in-sample fitting (the optimiser can compensate with other signals), but in holdout validation it systematically reverses the direction of difficulty. There are two fixes: drop the signal (fused6), and introduce a sample-size-shrinking fusion weight λ (§7.4). Comparing variants under the holdout framework (λ chosen on a random half of items, evaluated on the held-out other half, 20 half-splits × 25 repeats):</p>
+<table class="three-line-table"><caption>Table 21. O8: locating and fixing a directional error</caption>
+<thead><tr>
+<th>Variant</th>
+<th>k</th>
+<th>success ρ / variant ρ</th>
+<th>λ*</th>
+<th>holdout ρ(λ*)</th>
+<th>gain vs. success rate</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>fused7 (O5 original)</td>
+<td>10</td>
+<td>0.6702 / 0.6431</td>
+<td>0.52</td>
+<td>0.6871</td>
+<td>+1.73 pp</td>
+</tr>
+<tr>
+<td><strong>fused6 (drop upgrade rate)</strong></td>
+<td>10</td>
+<td>0.6659 / <strong>0.6880</strong></td>
+<td>0.70</td>
+<td><strong>0.6992</strong></td>
+<td><strong>+3.43 pp</strong></td>
+</tr>
+<tr>
+<td>fused6</td>
+<td>25</td>
+<td>0.8109 / 0.7974</td>
+<td>0.52</td>
+<td>0.8273</td>
+<td>+1.57 pp</td>
+</tr>
+<tr>
+<td>fused6</td>
+<td>50</td>
+<td>0.8810 / 0.8487</td>
+<td>0.39</td>
+<td>0.8878</td>
+<td>+0.73 pp</td>
+</tr>
+<tr>
+<td>fused6</td>
+<td>100</td>
+<td>0.9257 / 0.8748</td>
+<td>0.23</td>
+<td>0.9271</td>
+<td>+0.22 pp</td>
+</tr>
+<tr>
+<td>fused6</td>
+<td>200</td>
+<td>0.9504 / 0.8899</td>
+<td>0.12</td>
+<td>0.9502</td>
+<td>+0.05 pp</td>
+</tr>
+<tr>
+<td>fused3 (success + hint + attempt)</td>
+<td>10–200</td>
+<td>—</td>
+<td>0.04–0.08</td>
+<td>—</td>
+<td>≈ 0 (no gain)</td>
+</tr>
+</tbody></table>
+<p>Three conclusions. First, <strong>after dropping the inversely-directed signal, fusion first overtakes success rate at k = 10</strong> (0.6880 vs. 0.6659, +0.0220), and the lag at each k is also halved (at k = 200 from −0.1206 narrowed to −0.0605). Second, <strong>it is not "fewer signals is better"</strong>—fused3 instead has no gain, because the more similar the variant is to success rate, the smaller the complementary gain available; the real fix point is <strong>direction checking</strong>, not reducing the signal count. Third, the gain is highly sample-size dependent, leading to the next section.</p>
+<h3>7.4 Sample-size-adaptive shrinkage λ*(k)</h3>
+<p>λ* falls monotonically from 0.70 at k = 10 to 0.12 at k = 200, showing that "what fraction fusion should occupy" is a function of sample size. The fitted form is</p>
+<p>**λ*(k) = 1 / (1 + (k / 27.4)^0.902), R² = 0.9989**,</p>
+<p>with observed values 0.701 / 0.524 / 0.387 / 0.234 / 0.125 corresponding to fitted 0.713 / 0.521 / 0.368 / 0.237 / 0.143. Whether this fit can be deployed directly (rather than holding only on the k's that participated in the fit) is answered by the leave-one-k cross-validation (in-interval interpolation) test of §7.5.</p>
+<p>The recommended estimator we thereby give is:</p>
+<pre class="code-block"><code>score(item) = (1 − λ) · z_success(item) + λ · Σ_{s ∈ 7 signals} w_s · sgn_s · z_s(item)
+sgn_s = sign(Spearman(z_s, z_success))      # direction correction; success itself sgn = +1
+w_s   = max(0, split_half_reliability_s) normalized   # split-half reliability estimated within fit block A
+λ = 1 / (1 + (k / 27.3)^0.895)              # deployed uses 27.3 (O9 leave-one-k CV fit value 27.332 rounded); full-fit 27.4 / 0.902
+signal set = all 7 signals (including upgrade rate, corrected to negative contribution)
+z_s = ECDF → logit (O1&#x27;s monotone-reparameterisation-invariant metric)</code></pre>
+<p>Here λ's parameters take the <strong>leave-one-k cross-validation fit value</strong> (k₀ = <strong>27.332</strong>, p = 0.895), and the <strong>deployed value is 27.3</strong> (i.e., the rounded value of the fit 27.332), not the full-fit value above (27.4 / 0.902); the two are nearly identical, showing the curve shape is stable, but the full-fit value both fits and evaluates on the same batch of k, so the cross-validation value is preferred at deployment.</p>
+<p>This closed form is likewise a fit to O8's fused6 per-k empirical λ<em>(k) (λ's method and the fusion kernel are independent; O11 confirms the closed-form λ_cf applies to the <code>srw7</code> kernel too, see §7.8), and the leave-one-k cross-validation confirms the in-interval interpolation generalisation of the empirical λ</em>, not a direct verification of the closed form itself—that direct verification has now been added: fixing λ_cf(k)=1/(1+(k/27.3)^0.895) into the same holdout protocol (not fitting λ on data, evaluating on the held-out half), its holdout Spearman gap vs.the empirical optimal-λ version at k=10/25/50/100/200 is +0.34/−0.55/+0.12/+0.01/+0.07 pp (all ≤0.55 pp), confirming the closed form is deployable without per-k λ fitting.The next section gives the empirical basis for this choice.</p>
+<p>All signs, weights, and λ in the above estimator are estimated <strong>only within fit block A</strong>; criterion block B is entirely uninvolved, so there is no leakage; this is jointly guaranteed by the §7.8 holdout protocol and O11's item-by-item reproduction.</p>
+<h3>7.5 Leave-one-k cross-validation of λ*(k) (O9): in-interval interpolation test, formula directly deployable</h3>
+<p>The λ<em>(k) of §7.4 was both fit and evaluated on the same batch of k, and cannot be taken directly as a deployment rule. The first test of O9 is precisely for this: fit (k₀, p) using only λ</em> from k ∈ {10, 50, 200}, then evaluate at k = 25 and k = 100—which lie <strong>within</strong> the fit interval [10, 200]—by <strong>holding out for validation</strong> (in-interval interpolation, not out-of-interval extrapolation; the true out-of-sample test is the half-split holdout, see §7.6).</p>
+<table class="three-line-table"><caption>Table 22. O9: leave-one-k cross-validation of λ*(k) (in-interval interpolation)</caption>
+<thead><tr>
+<th>Validation k (in-interval)</th>
+<th>λ̂ (formula)</th>
+<th>λ*_emp (half-split picked)</th>
+<th>ρ(λ=0)</th>
+<th>ρ(λ̂)</th>
+<th>formula gain</th>
+<th>empirical gain</th>
+<th>retention ratio</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>25</td>
+<td>0.520</td>
+<td>0.536</td>
+<td>0.8103</td>
+<td><strong>0.8272</strong></td>
+<td><strong>+1.695 pp</strong></td>
+<td>+1.528 pp</td>
+<td><strong>111%</strong></td>
+</tr>
+<tr>
+<td>100</td>
+<td>0.239</td>
+<td>0.230</td>
+<td>0.9262</td>
+<td><strong>0.9286</strong></td>
+<td><strong>+0.237 pp</strong></td>
+<td>+0.186 pp</td>
+<td><strong>128%</strong></td>
+</tr>
+</tbody></table>
+<p>The fit parameters (leave-one-k cross-validation) are k₀ = 27.332, p = 0.895, nearly identical to the full-fit 27.4 / 0.902, showing the curve shape is stable. <strong>The formula's in-interval λ̂ is slightly better than the half-split-picked empirical λ</strong><em> (retention ratios 111% and 128%), because the empirical λ</em> carries its own selection noise. **Conclusion: λ*(k) can be used directly without re-tuning at deployment.**</p>
+<h3>7.6 Student-level holdout validation (O10): empirical test of the record-level concern</h3>
+<p>The holdout validation in §7.2 split <strong>records</strong>, not <strong>students</strong>: the same student's multiple responses could fall into both blocks A and B, so the two errors are not independent, making "optimistic generalisation estimate" a reasonable attack. O10 directly addresses this gap: split the 72,758 students into mutually exclusive halves by <strong>crc32(uuid) parity</strong>, estimate using only half A students' first k responses on the exercise (in-half reservoir 250), and compute the true difficulty 1 − ok_B/n_B using <strong>all</strong> of half B students' responses (≥500); include <strong>1,238 exercises</strong> (criterion half requires ≥500 responses, different from the 1,234 caliber in §6.3), 25 repeats × 20 half-splits.</p>
+<blockquote class="frontmatter">
+<p>&amp;nbsp;&amp;nbsp;<strong>Implementation note (part of reproducibility):</strong> student half-splitting <strong>must not</strong> use Python's built-in <code>hash()</code>—it salts strings randomly per process (PYTHONHASHSEED), making the split non-reproducible; this script instead uses crc32 and caches by uuid. Ignoring this, the same code yields different splits in different processes and the conclusion becomes irreproducible.</p>
+</blockquote>
+<table class="three-line-table"><caption>Table 23. O10: student-level holdout validation</caption>
+<thead><tr>
+<th>k</th>
+<th>Success-only</th>
+<th>fused7 (O5 config)</th>
+<th>fused6</th>
+<th>mix6 (λ̂ formula, <strong>untuned</strong>)</th>
+<th>λ̂</th>
+<th>λ*_emp</th>
+<th>λ̂ gain</th>
+<th>fused6 raw gain</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0.6631</td>
+<td>0.6442</td>
+<td>0.6870</td>
+<td><strong>0.6995</strong></td>
+<td>0.711</td>
+<td>0.716</td>
+<td><strong>+3.64 pp</strong></td>
+<td>+2.39 pp</td>
+</tr>
+<tr>
+<td>25</td>
+<td>0.8133</td>
+<td>0.7418</td>
+<td>0.7993</td>
+<td><strong>0.8297</strong></td>
+<td>0.520</td>
+<td>0.521</td>
+<td>+1.64 pp</td>
+<td>−1.40 pp</td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.8881</td>
+<td>0.7838</td>
+<td>0.8491</td>
+<td>0.8944</td>
+<td>0.368</td>
+<td>0.355</td>
+<td>+0.63 pp</td>
+<td>−3.90 pp</td>
+</tr>
+<tr>
+<td>100</td>
+<td>0.9356</td>
+<td>0.8101</td>
+<td>0.8783</td>
+<td>0.9372</td>
+<td>0.239</td>
+<td>0.200</td>
+<td>+0.16 pp</td>
+<td>−5.73 pp</td>
+</tr>
+<tr>
+<td>200</td>
+<td>0.9603</td>
+<td>0.8234</td>
+<td>0.8922</td>
+<td>0.9605</td>
+<td>0.144</td>
+<td>0.093</td>
+<td>+0.02 pp</td>
+<td>−6.81 pp</td>
+</tr>
+</tbody></table>
+<p>Three conclusions.<strong>First, O7's conclusion is fully reproduced at the student-level holdout</strong>: fused7 still lags across the board, and the disadvantage grows with more samples (at k = 200, 0.8234 vs.0.9603, difference <strong>−0.137</strong>); the λ-shrinkage gain is nearly identical to the record-level (at k = 10 <strong>+3.64 pp</strong>, record-level +3.43 pp).Thus the concern "record-level rather than student-level" is tested to have <strong>little effect</strong> and does not constitute a substantive threat to our conclusion.**Second, λ̂ and empirical λ* agree closely<strong> (0.711 / 0.716, 0.520 / 0.521, 0.368 / 0.355), capturing nearly all the gain with </strong>zero tuning**, further supporting that the λ*(k) formula is directly deployable.</p>
+<p><strong>Third, "dropping the directionally wrong signal alone is still insufficient" is also reproduced</strong>: fused6 remains negative gain after k ≥ 25 (−1.40 to −6.81 pp); only mix6 with λ-shrinkage added is non-inferior to success-rate-only at all k—i.e., direction checking and sample-size shrinkage are two inseparable requirements.§7.8 further shows a better variant, <code>srw7</code>: it is also non-inferior to baseline at all k and exceeds the fused6 kernel used by mix6 at all k (student-level k = 10/25/50/100/200: +4.283 / +2.189 / +0.951 / +0.335 / +0.102 pp), showing "dropping" is not the optimal handling of a directional error.</p>
+<h3>7.7 Three boundaries (must be reported together with the conclusions)</h3>
+<p><strong>First, the gain vanishes rapidly with sample size.</strong> Under this paper's final recommended <code>srw7</code> estimator, the holdout gain is student-level +0.335 pp at k = 100 and +0.102 pp at k = 200 (record-level +0.391 / +0.138 pp, §7.8 Tables 7-1, 7-2). For a mature question bank (hundreds of observations per item) <strong>no significant gain should be expected</strong>—at that point success rate is close to a sufficient statistic and the complementary space is small.</p>
+<p><strong>Second, λ-shrinkage has no gain on DBE.</strong> DBE's λ* is only in 0.05–0.17, and the holdout ρ is on par with or slightly below λ = 0 (0.9001 vs. 0.9006 at k = 25). This improvement <strong>is verified only on Junyi, not cross-system reproduced</strong>. We do not write it as a general rule. (In correspondence, DBE's repeated-cross-validation CI [0.2895, 0.7390] spans about 0.45, and with n = 212 items the information is extremely low, further indicating DBE's estimate should not be merged with Junyi's.)</p>
+<p><strong>Third, the validity gap of "record-level holdout" has been handled by the student-level holdout test, and the conclusion holds.</strong> O10 in §7.6 re-ran all tests by student split, O7's conclusion is fully reproduced, and the λ-shrinkage gain is nearly identical to the record-level (at k = 10, +3.64 pp vs.+3.43 pp), so this concern is tested to have <strong>little effect</strong>.The remaining boundaries are threefold: <strong>one</strong>, gain decay—under the student-level caliber <code>srw7</code>'s gain is +0.335 percentage points at k = 100 and +0.102 pp at k = 200 (record-level +0.391 / +0.138 pp); <strong>two</strong>, cross-system extrapolation—λ-shrinkage is verified only on Junyi, with no gain on DBE; <strong>three</strong>, O10 still rearranges student–item pairs within historical data and does not cover the cold-start cross-generalisation of "new student + new item"—whether fusion still gains in that scenario remains an open question.</p>
+<p>In addition, the criterion block is fixed at 250 (O7) and the criterion half fixed at a response count (O10), meaning the criterion itself has a reliability ceiling, so the absolute ρ values in both places (e.g., 0.9603) <strong>cannot be read as "near perfect"</strong>, and only <strong>within-k between-group comparisons</strong> are valid.</p>
+<h3>7.8 O11/O12: optimising the fusion estimator — sign correction and split-half-reliability weighting</h3>
+<p>§7.3 attributed the reversal to one directional error and fixed it by "dropping the upgrade rate" (fused6).O11 and O12 test a further hypothesis: <strong>a directionally wrong signal should be sign-corrected, not deleted column-wise</strong>; on top of that, <strong>weighting per signal by its reliability within the fit block</strong> should further reduce small-sample fusion variance.Both are evaluated under the same holdout protocol as §7.2 (O7/O8): fit block A is k reservoir slots per item, criterion block B is 250 mutually exclusive slots; REP = 25, SPLITS = 20; O12 follows the O10 protocol (split students by <code>crc32(uuid)</code> parity, 1,238 items, reservoir/half = 250, REP = 25 × SPLITS = 20).</p>
+<p><strong>All signs, weights, and λ are estimated only within fit block A; criterion block B is entirely uninvolved, no leakage</strong>; λ defaults to the closed form λ_cf(k) = 1 / (1 + (k / 27.3)^0.895) (deployed 27.3, the rounded value of O9's leave-one-k CV fit <strong>27.332</strong>).</p>
+<p>The variants are defined as follows: <code>fused6</code> is O8's "drop upgrade rate, 6-signal equal weight"; <code>fused7</code> is O5's 7-signal equal weight; <code>signed7</code> is 7-signal equal weight but with <strong>per-signal sign correction</strong> by in-fit-block rank correlation (success's own sign fixed at +1); <code>rw6</code> is 6-signal split-half-reliability weighting; <code>srw7</code> is 7-signal with both sign correction and split-half-reliability weighting, i.e.,</p>
+<pre class="code-block"><code>score(item) = (1 − λ) · z_success(item) + λ · Σ_{s ∈ 7 signals} w_s · sgn_s · z_s(item)
+sgn_s = sign(Spearman(z_s, z_success))      # direction correction; success itself sgn = +1
+w_s   = max(0, split_half_reliability_s) normalized   # split-half reliability estimated within fit block A
+λ = 1 / (1 + (k / 27.3)^0.895)              # deployed 27.3 (O9 leave-one-k CV fit 27.332 rounded); full-fit 27.4 / 0.902</code></pre>
+<p>Table 7-1 gives the record-level holdout gain, Table 7-2 the student-level holdout gain.</p>
+<table class="three-line-table"><caption>Table 7-1. Record-level holdout gain (O11, relative to "success-rate-only" baseline, unit pp, λ = λ_cf)</caption>
+<thead><tr>
+<th>k</th>
+<th>Success-only (held-out)</th>
+<th>fused6</th>
+<th>fused7</th>
+<th>signed7</th>
+<th>rw6</th>
+<th><strong>srw7</strong></th>
+<th>λ_cf</th>
+<th>λ_rel</th>
+<th>λ*_emp</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0.6698</td>
+<td>+3.278</td>
+<td>+1.498</td>
+<td>+3.594</td>
+<td>+3.616</td>
+<td><strong>+3.823</strong></td>
+<td>0.7107</td>
+<td>0.7010</td>
+<td>0.7000</td>
+</tr>
+<tr>
+<td>25</td>
+<td>0.8060</td>
+<td>+1.586</td>
+<td>+0.523</td>
+<td>+1.930</td>
+<td>+1.829</td>
+<td><strong>+2.025</strong></td>
+<td>0.5197</td>
+<td>0.4902</td>
+<td>0.5270</td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.8824</td>
+<td>+0.659</td>
+<td>+0.181</td>
+<td>+0.850</td>
+<td>+0.806</td>
+<td><strong>+0.930</strong></td>
+<td>0.3678</td>
+<td>0.3136</td>
+<td>0.3723</td>
+</tr>
+<tr>
+<td>100</td>
+<td>0.9248</td>
+<td>+0.243</td>
+<td>+0.073</td>
+<td>+0.327</td>
+<td>+0.335</td>
+<td><strong>+0.391</strong></td>
+<td>0.2383</td>
+<td>0.1881</td>
+<td>0.2370</td>
+</tr>
+<tr>
+<td>200</td>
+<td>0.9502</td>
+<td>+0.071</td>
+<td>+0.013</td>
+<td>+0.111</td>
+<td>+0.108</td>
+<td><strong>+0.138</strong></td>
+<td>0.1440</td>
+<td>0.1041</td>
+<td>0.1333</td>
+</tr>
+</tbody></table>
+<blockquote class="frontmatter">
+<p>&amp;nbsp;&amp;nbsp;Recompute command: <code>python results/code/o11_fusion_optimization.py</code> (output: <code>results/code/o11_fusion_optimization.json</code>). The script depends on numpy and must be run with an interpreter that has numpy installed (the project venv lacks numpy; this round was run with Python 3.13 + numpy 2.5.3 and passed).</p>
+</blockquote>
+<table class="three-line-table"><caption>Table 7-2. Student-level holdout gain (O12, unit pp)</caption>
+<thead><tr>
+<th>k</th>
+<th>Success-only</th>
+<th>fused6</th>
+<th><strong>srw7 (λ_cf)</strong></th>
+<th>srw7 − fused6</th>
+<th>win rate</th>
+<th>Wilcoxon p</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>0.6631</td>
+<td>+2.390</td>
+<td><strong>+4.283</strong></td>
+<td>+0.662</td>
+<td>0.902</td>
+<td>1.15e-66</td>
+</tr>
+<tr>
+<td>25</td>
+<td>0.8133</td>
+<td>−1.402</td>
+<td><strong>+2.189</strong></td>
+<td>+0.557</td>
+<td>1.000</td>
+<td>1.26e-83</td>
+</tr>
+<tr>
+<td>50</td>
+<td>0.8881</td>
+<td>−3.905</td>
+<td><strong>+0.951</strong></td>
+<td>+0.317</td>
+<td>1.000</td>
+<td>1.26e-83</td>
+</tr>
+<tr>
+<td>100</td>
+<td>0.9356</td>
+<td>−5.728</td>
+<td><strong>+0.335</strong></td>
+<td>+0.169</td>
+<td>0.998</td>
+<td>1.27e-83</td>
+</tr>
+<tr>
+<td>200</td>
+<td>0.9603</td>
+<td>−6.804</td>
+<td><strong>+0.102</strong></td>
+<td>+0.081</td>
+<td>0.996</td>
+<td>1.29e-83</td>
+</tr>
+</tbody></table>
+<blockquote class="frontmatter">
+<p>&amp;nbsp;&amp;nbsp;Recompute command: <code>python results/code/o12_student_o11.py</code> (output: <code>results/code/o12_student_o11.json</code>). The script depends on numpy and must be run with an interpreter that has numpy installed (the project venv lacks numpy).</p>
+<p>&amp;nbsp;&amp;nbsp;Caliber note: column 2 <code>fused6</code> is the holdout ρ minus baseline <strong>without</strong> λ stacked; column 3 <code>srw7 (λ_cf)</code> is the holdout ρ minus baseline <strong>with</strong> λ_cf stacked; while <code>srw7 − fused6</code>, win rate, and Wilcoxon p are <strong>paired-caliber</strong>—for each half-split B, compute the holdout ρ of <code>srw7</code> and <code>fused6</code> respectively and take the difference, then average and signed-rank test across the 25 × 20 = 500 pairs. Therefore the <code>srw7 − fused6</code> column <strong>cannot</strong> be obtained by subtracting columns 2 and 3 (subtraction gives 1.893 pp, paired value is 0.662 pp at k = 10); this is a two-caliber difference, not a numerical contradiction.</p>
+</blockquote>
+<p><strong>Conclusion 1: sign correction beats direct deletion, and holds at all k.</strong> <code>signed7 &gt; fused6</code> holds bracket by bracket at k = 10/25/50/100/200 (k = 10: +3.594 vs. +3.278 pp; k = 200: +0.111 vs. +0.071 pp). This shows O8's "drop the upgrade rate," though it corrected the direction, also <strong>discarded the signal's information</strong>—its error is in direction, not in information content; correcting the direction and counting it as negative evidence is instead superior to deleting the whole column.</p>
+<p><strong>Conclusion 2: reliability weighting adds further, <code>srw7</code> is optimal at all k.</strong> On top of sign correction, split-half-reliability weighting (weight = rank correlation between the two half estimates after splitting each signal in the fit block A, taken positive and normalised) makes <code>srw7</code> achieve the highest gain at all k: +3.823 / +2.025 / +0.930 / +0.391 / +0.138 pp (record-level, Table 7-1). Low-reliability signals are automatically down-weighted, thereby suppressing small-sample fusion variance.</p>
+<p><strong>Conclusion 3: the λ strategies are nearly equivalent; the closed form is directly deployable.</strong> The closed-form λ_cf and the empirical optimal λ*_emp differ by ≤ 0.011 at all k (k = 10: 0.7107 vs. 0.7000); the reliability-driven λ_rel = 1 − ρ_success(A) differs from the two by at most <strong>0.059</strong> (k = 50: 0.3136 vs. 0.3723). Despite this order of difference in λ values, the three's <strong>holdout gains</strong> differ by ≤ 0.087 pp at all k (<code>srw7</code> caliber, largest at k = 10), so the fusion-weight choice is insensitive to how λ is taken; substituting the closed form directly by sample size suffices, with no per-k tuning needed.</p>
+<p><strong>Conclusion 4: O12 student-level reuses the same optimisation; <code>srw7</code> eliminates the O8 estimator's harmfulness.</strong> Under student-level holdout, <code>fused6</code> falls <strong>below the "success-rate-only" baseline</strong> for k ≥ 25 (−1.402 / −3.905 / −5.728 / −6.804 pp), i.e., this simplified estimator becomes harmful as sample size grows; <code>srw7</code> is the <strong>only variant non-inferior to baseline at all k</strong> under the same protocol (+4.283 / +2.189 / +0.951 / +0.335 / +0.102 pp). <code>srw7</code>'s paired win rate against <code>fused6</code> is 0.902 / 1.000 / 1.000 / 0.998 / 0.996, with Wilcoxon signed-rank test p ≤ 1.29 × 10⁻⁶⁶.</p>
+<p><strong>Limitations that must be listed separately.</strong> First, O11/O12 run <strong>only on Junyi</strong>, not cross-system reproduced (no corresponding validation on DBE); second, at k = 200 the gain is already small (record-level +0.138 pp, student-level +0.102 pp), and no significant gain should be expected for a mature question bank; third, the criterion block's own reliability ceiling (O7 block B fixed 250, O12 criterion half fixed response count) limits the absolute level of ρ, so in Tables 7-1 and 7-2 only <strong>within-k between-group comparisons</strong> are valid, and the absolute ρ values <strong>cannot be read as "near perfect."</strong></p>
+<p>The <code>srw7</code> estimator above has been landed to the studied system's difficulty-metric layer as an incremental function; the landing method, cost, and verification are in §9.2.</p>
+<h2 id="section-8">8 Optimal Error Rate: Descriptive Evidence and the Unfinished Causal Identification</h2>
+<h3>8.1 The sliding-window error-rate distribution on assist09</h3>
+<p>On assist09 (sorted by student, by order_id, taking those with ≥20 items), a sliding window of width W = 20 computes each window's error rate.</p>
+<p><strong>First, the correct representation of the distribution.</strong> Window width W = 20 makes the error rate take only the <strong>21 discrete support points</strong> k/W (k = number of errors in window) (interval 0.05).An earlier version of this paper summarised with an equal-width histogram <code>np.histogram(win_err, bins=np.arange(0, 1.0001, 0.05))</code>, whose interval edges coincide exactly with these 21 support points; floating-point error (e.g., at k = 4, 1 − 16/20 = 0.19999999999999996) merges 0.15 and 0.20 into the same interval and pushes 0.10 into the next interval.The consequence was that the "mode interval" equalled <strong>the sum of two discrete values</strong>, while the single-value frequency was never reported—and the resulting "mode interval 0.15–0.20 (success 80–85%)" is a <strong>binning-boundary artifact, not a distribution fact</strong>.</p>
+<p>This section instead counts directly by integer error count k (integer arithmetic, no floating point), so the support points k/W are exact.</p>
+<p><strong>Table 8-1. assist09 sliding-window error-rate 21 discrete support-point frequencies</strong> (n = 286,150 windows; students actually contributing sliding windows = 2,314; students appearing in the input = 4,217)</p>
+<table class="three-line-table">
+<thead><tr>
+<th>k (error count)</th>
+<th>error rate</th>
+<th>success rate</th>
+<th>windows</th>
+<th>share</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0.00</td>
+<td>1.00</td>
+<td>3,794</td>
+<td>1.33%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0.05</td>
+<td>0.95</td>
+<td>10,982</td>
+<td>3.84%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0.10</td>
+<td>0.90</td>
+<td>19,345</td>
+<td>6.76%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0.15</td>
+<td>0.85</td>
+<td>26,151</td>
+<td>9.14%</td>
+</tr>
+<tr>
+<td>4</td>
+<td>0.20</td>
+<td>0.80</td>
+<td>30,061</td>
+<td>10.51%</td>
+</tr>
+<tr>
+<td>5</td>
+<td>0.25</td>
+<td>0.75</td>
+<td>30,899</td>
+<td>10.80% ← global mode</td>
+</tr>
+<tr>
+<td>6</td>
+<td>0.30</td>
+<td>0.70</td>
+<td>28,518</td>
+<td>9.97%</td>
+</tr>
+<tr>
+<td>7</td>
+<td>0.35</td>
+<td>0.65</td>
+<td>25,435</td>
+<td>8.89%</td>
+</tr>
+<tr>
+<td>8</td>
+<td>0.40</td>
+<td>0.60</td>
+<td>22,360</td>
+<td>7.81%</td>
+</tr>
+<tr>
+<td>9</td>
+<td>0.45</td>
+<td>0.55</td>
+<td>18,892</td>
+<td>6.60%</td>
+</tr>
+<tr>
+<td>10</td>
+<td>0.50</td>
+<td>0.50</td>
+<td>15,590</td>
+<td>5.45%</td>
+</tr>
+<tr>
+<td>11</td>
+<td>0.55</td>
+<td>0.45</td>
+<td>12,477</td>
+<td>4.36%</td>
+</tr>
+<tr>
+<td>12</td>
+<td>0.60</td>
+<td>0.40</td>
+<td>9,914</td>
+<td>3.46%</td>
+</tr>
+<tr>
+<td>13</td>
+<td>0.65</td>
+<td>0.35</td>
+<td>7,714</td>
+<td>2.70%</td>
+</tr>
+<tr>
+<td>14</td>
+<td>0.70</td>
+<td>0.30</td>
+<td>5,696</td>
+<td>1.99%</td>
+</tr>
+<tr>
+<td>15</td>
+<td>0.75</td>
+<td>0.25</td>
+<td>4,356</td>
+<td>1.52%</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0.80</td>
+<td>0.20</td>
+<td>3,377</td>
+<td>1.18%</td>
+</tr>
+<tr>
+<td>17</td>
+<td>0.85</td>
+<td>0.15</td>
+<td>2,734</td>
+<td>0.96%</td>
+</tr>
+<tr>
+<td>18</td>
+<td>0.90</td>
+<td>0.10</td>
+<td>2,270</td>
+<td>0.79%</td>
+</tr>
+<tr>
+<td>19</td>
+<td>0.95</td>
+<td>0.05</td>
+<td>2,066</td>
+<td>0.72%</td>
+</tr>
+<tr>
+<td>20</td>
+<td>1.00</td>
+<td>0.00</td>
+<td>3,519</td>
+<td>1.23%</td>
+</tr>
+</tbody></table>
+<p>Summary statistics (computed exactly from support-point frequencies, not a floating-point mean):</p>
+<table class="three-line-table"><caption>Table 24. Summary statistics of the assist09 sliding-window error-rate distribution (computed exactly from support-point frequencies)</caption>
+<thead><tr>
+<th>Statistic</th>
+<th>Value</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Mean error rate</td>
+<td><strong>0.3511</strong></td>
+</tr>
+<tr>
+<td>Median error rate</td>
+<td><strong>0.30</strong> (success rate 70%)</td>
+</tr>
+<tr>
+<td><strong>Mode (single value)</strong></td>
+<td><strong>error rate 0.25, i.e., success rate 75%</strong> (k = 5, 30,899 windows)</td>
+</tr>
+<tr>
+<td>Mode's bootstrap 95% set (200 resamples by student)</td>
+<td><strong>{0.25}</strong> (occupies 95.5% of all resamples)</td>
+</tr>
+<tr>
+<td>Window share with success rate 77–83%</td>
+<td>10.51% (only k = 4 falls in this interval)</td>
+</tr>
+<tr>
+<td>Window share with success rate 80–90%</td>
+<td><strong>26.40%</strong> (k = 2, 3, 4)</td>
+</tr>
+<tr>
+<td>Window share with success rate 80–85%</td>
+<td>19.64% (k = 3, 4)</td>
+</tr>
+</tbody></table>
+<p>Therefore, taking the single value, <strong>the statement "80–85% success rate is the mode" does not match the stored result</strong>: the global mode is 75% success rate (both 0.20 and 0.15 have fewer windows than its 30,899). Under a discrete distribution the mode has no stability problem in the point-estimate sense—bootstrap shows the single-value mode k = 5 is the unique mode in 95.5% of resamples.</p>
+<p><strong>The claim "the three filter calibers share the same mode" does not hold.</strong> After recomputing each caliber by integer error count, the mode support points are <strong>mutually different</strong>:</p>
+<table class="three-line-table"><caption>Table 25. Robustness of the mode across three filter calibers (recomputed by integer error count)</caption>
+<thead><tr>
+<th>Filter caliber</th>
+<th>windows (students)</th>
+<th>mean error rate</th>
+<th>mode support point</th>
+<th>success rate</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Full</td>
+<td>286,150 (2,314 / 4,217)</td>
+<td>0.3511</td>
+<td>k = 5</td>
+<td>75%</td>
+</tr>
+<tr>
+<td>Topic items only (<code>original = 1</code>)</td>
+<td>216,993 (2,112 / 4,217)</td>
+<td>0.3334</td>
+<td>k = 4</td>
+<td>80%</td>
+</tr>
+<tr>
+<td>No-help items (<code>hint_count = 0</code>)</td>
+<td>231,125 (2,021 / 4,106)</td>
+<td>0.2183</td>
+<td>k = 3</td>
+<td>85%</td>
+</tr>
+<tr>
+<td><code>tutor_mode = test</code> (not valid)</td>
+<td>0 (0 / 30)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<p>An earlier version claimed "all three calibers have mode interval 0.15–0.20," which was the result of reusing the same binning function, not independent evidence; and the <code>tutor_mode</code> caliber has 0 windows, so it does not constitute a caliber at all. After recomputing by integer error count, the mode position <strong>does move with item type</strong> (help items push the distribution toward lower error rates), which is itself a reportable phenomenon, but it cannot be written as "robust."</p>
+<h3>8.2 What this distribution shows and does not show</h3>
+<p>Two things it shows are conservative. First, <strong>a large number of learning windows sit in the "overly difficult" interval</strong>—the mean error rate 0.3511 is far above any version of the optimal value, and the median 0.30 (success 70%) is likewise; only 26.40% of windows fall in success 80–90%, 19.64% in 80–85%, and 10.51% in 77–83%. In other words, the difficulty the real system allocates has its distribution centre not near the theoretical optimum, consistent with the intuition that "systems are generally too hard."</p>
+<p>Second, <strong>the single-value mode of the distribution is 75% success rate (error rate 0.25, 30,899 windows)</strong>. This position is <strong>below</strong> Wilson et al.'s 84.13% and Baillifard et al.'s 80.7%, while the 80–85% success band occupies only 19.64% of all windows. Therefore, <strong>this distribution does not support the statement "the measured mode falls in the 80–85% band"</strong>; if one says it is compatible with some candidate optimum, the only thing that can be said is that this band's window share (19.64%) is higher than any other 5-percentage-point-wide band, but that is a band-width effect, not evidence about the mode position.</p>
+<p>What it does not show is more important: under a discrete distribution the "mode" has no comparable interval width, and the gap between 84.13% and 80.7% is only about 3.4 percentage points—smaller than the support-point interval (5 percentage points) times one, so this evidence <strong>cannot discriminate between these two candidate optima</strong>. Any statement "this paper supports the 85% rule" or "this paper supports 80.7%" exceeds the information this distribution can bear. Moreover, the sliding-window error rate is the joint product of system allocation and student response, not an intervention on the dose, so it is not even a "descriptive dose–response," merely a "descriptive exposure distribution."</p>
+<p><strong>On the testability of the RQ2 decision rule.</strong> An earlier version wrote RQ2's falsification condition as "if the sliding-window error-rate mode significantly deviates from [0.15, 0.20], then falsify." Under the discrete-support-point caliber this condition <strong>cannot be tested as is</strong>: the single-value mode is 0.25, already outside the interval, but "significant deviation" requires a distributional quantity (confidence interval).This paper's approach is to <strong>bootstrap the discrete distribution by student resampling and define the uncertainty by the resample distribution of the mode support point</strong> (the 95% set is given in Table 8-1 above).With current evidence, the mode support point is stably k = 5 in 95.5% of resamples, so the description "mode = 0.25" is stable, while the statement "the mode falls in the 80–85% band" <strong>is falsified</strong>.</p>
+<p>The causal-side proposition of RQ2 (whether the optimal error rate on real learners equals 15.87%) was executed on 2026-09-24 under a frozen identification strategy: no internal optimum detected, and the Junyi time-inverted negative control significant, downgrading to associational evidence (see §8.3), so that proposition still receives no causal-grade answer.</p>
+<h3>8.3 Execution of the causal side: preregistered AIPW/DR executed under a frozen identification strategy (2026-09-24 supplement)</h3>
+<p>The causal-side design of the original preregistration (dose construction, endpoint definition, AIPW/DR estimation, non-monotonicity test, supporting robustness procedures) was executed on three public logs under the identification strategy of "freeze first, then touch the endpoint" (LF-CIS-2026-09-22, frozen 2026-09-22, prior to any endpoint-variable contact; the freeze-document hash, input-file hashes, script hash, and run log are in <code>results/m1/aipw/aipw_audit.log</code>).</p>
+<p>The dose uses the raw-integer-error-count caliber solidified by that strategy, d = k/20 (W=20 window; not the forward-calibrated version of the original preregistration—that substitution is solidified by freeze-document §3.1, to avoid floating-point merging); endpoint = number of steps needed for the first three consecutive correct items within the outcome window (within-item rank-transformed to the main); estimator = cross-fitted AIPW/DR (random-forest outcome regression + 21-bracket multiclass generalised propensity, 5-fold split by learner), with IPW / regression / same-bracket nearest-neighbour matching as three parallel controls, learner-clustered bootstrap (500 times) and BH-FDR (q=0.05).</p>
+<p>Samples: assist09 n=1,019, Junyi n=24,079 (qualified units, criterion that the learner has ≥41 cumulative responses on that knowledge point), DBE n=35 (does not meet the main-test scale, archived only, not entering the main test).</p>
+<p>The result is <strong>negative, and the negative control is significant on Junyi</strong>.First, <strong>no internal optimum in the preregistered sense was detected</strong>: on the two detectable datasets μ(d) did not fall below both endpoints in ≥95% of bootstrap replications (assist09 d<em>=2, low-end exceedance probability 0.94; Junyi d</em>=3, low-end exceedance probability 0.40).</p>
+<p>Second, μ(d) <strong>rises overall with dose</strong>—the more prior errors, the slower the mastery—with naïve means in the same direction (assist09 mean steps 3.0→9.2→18.9; Junyi 4.42→8.62→15.48), opposite to the U-shape prediction of "moderate error is beneficial." Third, <strong>Junyi's time-inverted negative control is significant</strong> (the inverted window also shows d*=3 "internal optimum," endpoints exceedance 1.000/0.998); per the handling convention of identification-strategy §6.2: do not explain it away, report it honestly, and all dose–response conclusions in this section are <strong>downgraded to associational evidence</strong>, constituting no causal identification of the optimal error rate.</p>
+<p>Window-width robustness (required by identification-strategy §11.2, W=10/40) shows the same pattern: W=10 (Junyi n=49,075) reproduces "no detection + significant negative control"; W=40 (Junyi n=8,056) does detect an internal optimum on both datasets (assist09 d<em>=9, Junyi d</em>=4), but <strong>precisely at this window width the negative controls on both datasets are also significant</strong> (low-end exceedance 0.998/1.000 and 1.000/1.000)—i.e., the "internal optimum" appears only at the window width confounded by the time trend, and at no window width is there a defensible causal-grade internal-optimum claim.</p>
+<p>Therefore this paper <strong>still reports no point estimate, confidence interval, or test against 0.1587 for any ê\</strong>* (that test presupposes the existence of an internal optimum, a premise not supported), and makes no directional assertion about whether "the optimal error rate on real learners equals 15.87%." Compared with the earlier state of "causal side not executed," the change is substantive: the preregistered estimator has produced and traced its output, with the conclusion "not detected"; the estimator itself has detection capability (in the positive-control P-pos-1, Junyi k=0 vs.k=W dose difference vs.the middle is detected with bootstrap probability p=0.002 and p=1.000 respectively)—it is just that the detected shape is monotone (or confounded), not U-shaped.</p>
+<p>Unexecuted items are honestly retained: E-value, the formal ordering test of the five premises, P-pos-2 (randomised-simulation arm, unconditionally executable), P-neg-1 (no mechanism-independent contemporaneous endpoint exists in the public logs).The H-c3 exploratory stratification (hint rate × item type) is entirely unestimable because each stratum has n&lt;3000, reported honestly.</p>
+<h3>8.4 Status of preregistered hypotheses</h3>
+<p>To help readers judge the relationship between this paper and the original design, the following table gives the fulfilment status of the seven hypotheses item by item:</p>
+<table class="three-line-table"><caption>Table 26. Status of preregistered hypotheses</caption>
+<thead><tr>
+<th>Hypothesis</th>
+<th>Content</th>
+<th>Status</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>H1</td>
+<td>Linear fusion is unstable under monotone reparameterisation</td>
+<td><strong>Tested and holds</strong> (§4 synthetic, §5.3 real)</td>
+</tr>
+<tr>
+<td>H2</td>
+<td>Unified scale improves calibration quality and target-hit rate</td>
+<td><strong>Partially tested</strong>: ECE / Brier / reliability diagram / 85% target-hit rate not computed; switched to comparing fusion schemes by expert-label consistency (§6), criterion changed</td>
+</tr>
+<tr>
+<td>H3</td>
+<td>Four-source calibration error has a stable ordering</td>
+<td><strong>Not executed</strong>: the real-data source set differs from the preregistered four sources, ECE not computed</td>
+</tr>
+<tr>
+<td>H4</td>
+<td>Optimal error rate significantly above 15.87%</td>
+<td><strong>Executed (2026-09-24), premise not supported</strong>: preregistered AIPW/DR detected no internal optimum (§8.3), the "optimal-position" test's premise fails, so no point test against 15.87% is reported</td>
+</tr>
+<tr>
+<td>H5</td>
+<td>Dose–response curve is non-monotone</td>
+<td><strong>Executed (2026-09-24), U-shape not supported</strong>: μ(d) rises overall with dose (more prior errors, slower mastery); Junyi time-inverted negative control significant, all readings downgraded to associational evidence (§8.3)</td>
+</tr>
+<tr>
+<td>H6</td>
+<td>Effect-decay ordering of the five premises</td>
+<td><strong>Partial</strong>: exploratory stratification by hint rate × item type is unestimable (each stratum n&lt;3000); the five-premise decomposition retains qualitative discussion (§2.4), formal ordering test not executed</td>
+</tr>
+<tr>
+<td>H7</td>
+<td>Optimal-interval heterogeneity under ability stratification</td>
+<td><strong>Not executed</strong></td>
+</tr>
+<tr>
+<td>—</td>
+<td>Additional finding: knowledge-tree structure is not difficulty order</td>
+<td><strong>Completed</strong> (§5.5, negative result)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>Additional finding: criterion dependence of the fusion gain</td>
+<td><strong>Completed</strong> (§7, negative result)</td>
+</tr>
+</tbody></table>
+<h2 id="section-9">9 Discussion</h2>
+<h3>9.1 Three conclusions</h3>
+<p><strong>First, commensurability is an engineering property that can be repaired, not a philosophical stance.</strong> The synthetic experiment (L1 0.1276 → 0, 36.4% reversal → 0%) and the real data (0.5357 → 0.0001) give the same conclusion along two independent paths: changing the sources from "linearly add after normalisation" to "link to a logit metric after quantile linking then add" makes the effective weights no longer drift under any monotone reparameterisation. This change needs no new estimator, no new data, and no tuning; its only cost is abandoning the habit of min-max. We argue it should be regarded as the default baseline for difficulty fusion.</p>
+<p><strong>Second, any report of "how much difficulty estimation improved" must simultaneously report the criterion of improvement, and must admit that the criterion itself constructs part of the conclusion.</strong> On the same data and the same fusion configuration, this paper successively obtained two opposite conclusions: +0.1017 (expert-label criterion, p = 0.000) and −0.1222 (holdout-performance criterion, win rate 0.00). They are not contradictory, because the rank correlation between expert labels and real-performance difficulty is only 0.4326.</p>
+<p>But this reversal <strong>cannot be read entirely as "fusion has no predictive power."</strong> The holdout-validation criterion is "the true success rate 1 − ok_B/n_B of block B," and the baseline estimator "success rate only" estimates <strong>exactly this statistic</strong> on fit block A.That is, <strong>the baseline is a small-sample estimate of the criterion quantity, while the fusion estimator mixes in other constructs such as hints, time, attempt count, and session count.</strong> If an item's success probability is stable, the success rate on A converges to that on B, so this design is <strong>asymptotically favourable to the success-rate-only estimator</strong>; the observed pattern (larger k, larger fusion disadvantage; Junyi −0.0267 → −0.1222, ρ reaches 0.95–0.96 at k = 200) is consistent with this structure.</p>
+<p>This is only a partial explanation—the objective function is inter-item rank correlation, block B is also finite-sample, and the fusion estimator also contains the success-rate signal—but <strong>a substantial part of the reversal is built into the criterion choice</strong>, which must be stated clearly in the conclusion.</p>
+<p>Therefore what this paper can safely claim under this structure is: <strong>when the criterion quantity is success rate, the success-rate estimator's large-sample dominance is design-expected; fusion's role is rank stabilisation at small samples.</strong> This is exactly what <code>srw7</code> and λ_cf show (at k = 10, +3.8 ~ +4.3 pp; gone by k ≥ 100), and is consistent with the variance-reduction explanation of the "(1−λ)·success-rate + λ·fusion" shrinkage combination—but we did no bias–variance decomposition and have no prior model, so we have not identified this explanation; it is merely a compatible reading.</p>
+<p><strong>To make the sentence "consistency gain is not predictive-power gain" hold, two classes of criteria were added and recomputed (real-dataset fit, cross-validated PASS by <code>verify_m1_criteria.py --results</code>):</strong> First, <strong>ability-corrected criterion (A1·Junyi, B-half ≥500 responses, actually 1,274 items)</strong>—fit IRT-1PL item difficulty b_j (ability-corrected) on the criterion half; Spearman(b_j, success-only_B) = 0.963, Spearman(b_j, fusion_A) = 0.892.Second, <strong>exogenous criterion (A2·DBE-KT22, 212 items)</strong>—teacher labels placed at the criterion position, behavioural signals estimated only on block A; Spearman(fusion, teacher) = 0.205, Spearman(success-only, teacher) = 0.220, teacher-vs-behaviour three-grade weighted κ = 0.123.</p>
+<p>Both criteria consistently show: <strong>under both the ability-corrected and exogenous-expert constructs, fusion gains no distinguishable advantage over "success rate only" (under A1 success rate is instead closer to b_j; under A2 the two are tied and both only weakly correlated with teacher labels).</strong> Therefore the claim must be narrowed to "the conclusion depends on the definition of the criterion quantity"—this paper adopts this narrowed phrasing based on the real recomputation of the two criteria.</p>
+<p>In addition, the criterion block has limited reliability (record-level block B fixed at 250, student-level requires ≥500), so <strong>only within-k between-group comparisons are valid</strong>; the absolute ρ values in the tables (max 0.96) <strong>must not be read as "near perfect,"</strong> nor bolded in the tables.</p>
+<p><strong>Third, completing the measurement side does not automatically buy the causal side.</strong> The original logic of this paper was "first argue whether the measure is well defined, then argue the causal effect on that measure." The first half is complete; the second is not. This asymmetry should not be masked by narrative skill: what this paper can now say is "difficulty can be well-definedly fused," not "placing a student in a certain difficulty bracket changes their mastery speed." (Supplement 2026-09-24: the causal side was executed under a frozen identification strategy, yielding no detected internal optimum and a significant Junyi negative control—the scope of "cannot say" is thereby narrowed to "cannot make a causal-grade assertion," not "did not attempt"; see §8.3.)</p>
+<h3>9.2 Implications for the system and three landed code changes</h3>
+<p>Part of the above conclusions has landed in the studied system's code layer, in three places (the first two covered by regression tests, the third by an external verification script):</p>
+<ol>
+<li><strong>New difficulty-metric layer</strong> <code>learnflow-backend/app/services/difficulty_fusion.py</code>, providing three functions: <code>ecdf_logit()</code> (empirical CDF → logit quantile linking, invariant to any monotone reparameterisation, corresponding to O1's 1 × 10⁻⁴ property), <code>fuse_signals()</code> (multi-behavioural-signal rank fusion, corresponding to O4 / O5 conclusions), <code>logit_to_fsrs()</code> (in-batch mapping to FSRS's [1, 10] interval). The module docstring writes in O1 / O3 / O4 / O5 numbers, and writes in <strong>O3's negative-result warning: prohibit using knowledge-tree depth as a difficulty proxy</strong>.</li>
+</ol>
+<ol>
+<li><strong>Modified</strong> <code>learnflow-backend/app/services/optimal_difficulty.py</code>'s <code>update_task_difficulty</code>: replaced the time-consuming <code>&gt;180s</code> hard-threshold bracketing with a log-time continuous monotonic soft term s = σ(ln(t/60)/0.8), and added a hint penalty (O5 shows hint rate is an effective difficulty signal); the old behaviour contract "lower difficulty after fast correct" is preserved.</li>
+</ol>
+<ol>
+<li><strong>New</strong> <code>estimate_optimized_difficulty()</code> in <code>learnflow-backend/app/services/difficulty_fusion.py</code> (along with <code>split_half_reliability()</code> and <code>OPT_SIGNAL_NAMES</code>, defined at <code>:278</code>; the file is 338 lines in total): implements the §7.8 <code>srw7</code> estimator—per-signal sign correction (sign fixed by in-fit-block rank correlation with success-rate direction; inversely signed signals taken negative, not dropped), split-half-reliability weighting (<code>split_half_reliability()</code> estimates each signal's reliability, taken positive and normalised), and λ-shrinkage (defaults to the closed form <code>lambda_closed_form(k)</code>). The recommended estimator of §7.4 is this function.</li>
+</ol>
+<p>The accompanying new <code>learnflow-backend/tests/test_difficulty_fusion.py</code> (14 regression tests) covers quantile-metric monotone-transform invariance, zero fusion-weight drift, fusion better than single signal, no time jump (difference between 179 s and 181 s &lt; 0.02), and evidence-score boundary [1, 4]; <strong>the above regression tests cover only the first two changes.</strong> The full test count <strong>rose from 920 before the changes to 934 (intermediate) after the difficulty-metric layer added 14 regression tests, then to 936 after this review's remediation added 2 mechanism-count gate tests; measured <code>pytest</code> is now 936 passed</strong>. All citations in this paper uniformly use 936.</p>
+<p><strong>Landing method and cost of the third change (stated honestly):</strong> <code>estimate_optimized_difficulty()</code> landed as an <strong>incremental function</strong>, <strong>added no new pytest cases</strong>, so <strong>this estimator does not change the test count</strong> (still 936 full)—the earlier notice "this estimator's landing will change the test count" no longer holds, corrected here honestly.</p>
+<p>The function's correctness is instead guaranteed by the <strong>external verification script</strong> <code>results/code/o11_land_verify.py</code>: all 15 checks pass (15/15 PASS), covering module export <code>estimate_optimized_difficulty</code> / <code>split_half_reliability</code>, <code>ValueError</code> on k ≤ 0, <code>ValueError</code> on missing signal, λ default equals <code>lambda_closed_form(k)</code>, <code>signed7</code> and <code>srw7</code> holdout gains at k = 10/25/50/100/200 reproduced item-by-item with O11 (e.g., k = 10: +3.594 / +3.823 pp; k = 200: +0.111 / +0.138 pp), and the sign-correction behaviour (after correction fusion positively correlates with difficulty direction, Spearman +0.951).</p>
+<p><strong>One defect found and fixed by the verifier (stated honestly):</strong> <code>ecdf_logit()</code> originally used <code>if not values:</code> to check emptiness, which raises <code>ValueError: The truth value of an array with more than one element is ambiguous</code> for numpy array input; now changed to first take <code>n = len(values)</code> then <code>if n == 0: return []</code>, behaviour-identical for list input, changing no tested behaviour (<code>app/services/difficulty_fusion.py:63</code>).</p>
+<h3>9.3 Limitations</h3>
+<p><strong>First, the causal side is executed but the result is negative.</strong> §8.3 lists it: the preregistered AIPW/DR was executed under a frozen identification strategy (2026-09-24), detected no internal optimum, μ(d) rises overall with dose, and the Junyi time-inverted negative control is significant—so this paper still contains no causal conclusion about the optimal error rate; all dose–response readings remain at the associational level.</p>
+<p><strong>Second, the criterion limitation of the fusion gain.</strong> All conclusions in §7 condition on the two specific criteria "expert difficulty labels" and "holdout performance." The validity gap "O7 splits records not students" was handled by O10's student-level holdout (§7.6)—the conclusion fully reproduces, so it is not a substantive threat. The remaining boundary is the criterion's own reliability ceiling (O7 block B fixed 250, O10 criterion half fixed response count), which limits the absolute level of all ρ; only <strong>within-k between-group comparisons</strong> are valid.</p>
+<p><strong>Third, neither λ-shrinkage nor fusion optimisation is cross-system reproduced.</strong> λ-shrinkage is verified only on Junyi (which has downgrade-rate, repeat-session-rate signals), with no gain on DBE; the O11/O12 optimisation of §7.8 (sign correction + split-half-reliability weighting) is likewise <strong>verified only on Junyi</strong>, not cross-system reproduced. It must be re-verified before writing it into other systems.</p>
+<p><strong>Fourth, the suspect status of expert annotation itself.</strong> This paper uses expert labels as an acceptable criterion, but §7.1 measured their correlation with real-performance difficulty at only 0.4326. This means all comparisons anchored on expert labels (including O2, O4, O5, O6) inherit this limitation. We do not believe a better alternative criterion exists, but we also do not treat expert labels as "truth."</p>
+<p><strong>Fifth, data-licence constraints.</strong> Junyi is CC-BY-NC-SA-4.0, <strong>commercial use prohibited</strong>; all our analyses are offline, non-commercial, read-only research use. Before submission, the citation obligations of all four datasets must be verified item by item (assist09's Feng et al. 2009 and data page, DBE-KT22's arXiv:2208.12651 and ADA DOI, XES3G5M's NeurIPS 2023 and MIT licence, Junyi's Chang et al. 2015 and CC licence).</p>
+<p><strong>Sixth, the studied system's real deployment data is missing.</strong> Although the studied system is built and publicly archived, it has no logs produced by real users, so all our measurements rest on the four public datasets; the studied system's role in this paper is a concrete instance of "a class of implementations being criticised" and the carrier of code landing, not an empirical object.</p>
+<p><strong>Seventh, the learning-addiction-inclination measurement is unvalidated (mandatory disclosure).</strong> The Learning Addiction Index (LAI) built into the studied system is self-constructed by this project, with five-dimensional weights time 30% / motivation 25% / control 25% / cognitive 10% / function 10%, of which "control + function" totalling 35% is supplied by the self-report measurement layer (instrument catalogue <code>instrument_catalog.py</code>'s SRL-STOP / SLEEP-IMPACT / SOCIAL-IMPACT / TIME-BIAS); dimensions not measured are not counted into the weighting and output <code>coverage</code> for disclosure, never silently scoring "healthy." <strong>It must be emphasised</strong> that this scale's items are self-authored by this project, not yet validated for reliability and validity, with no norm and no clinical cutoff, a work-in-progress instrument.</p>
+<p><strong>This paper did NOT use LAI for any analysis</strong>—all our data come from the four public datasets and contain no self-report scale data; this disclosure only explains the tool's status to prevent readers from assuming the system already has a validated problematic-use measurement capability.The mitigation path is three-pronged and <strong>none completed</strong>: ① use public validated scales as convergent-validity anchors (BStAS 5 items, Atroszko et al., 2025; SI-10, Loscalzo et al., 2024; Chinese Adolescent Learning Burnout Scale, Wu et al., 2010); ② complete a minimal reliability/validity set (α/ω + EFA→CFA + 2-week retest ICC + correlation with burnout/anxiety); ③ convergent validity between self-report scores and behavioural logs.</p>
+<p><strong>Eighth (honest negative results as a methodological contribution).</strong> Reporting "unmet expectations / unexecuted" honestly rather than dressing them up as successes is itself a demonstration of the "preregister–executable–testable" research paradigm, with independent methodological value.</p>
+<p>Specifically: (a) the causal side executed under a frozen identification strategy yielded a <strong>negative result</strong>—no detected internal optimum in the preregistered sense, and a significant Junyi time-inverted negative control, all dose–response readings downgraded to associational evidence (§8.3), which instead strengthens the separation of "difficulty can be well-definedly fused" from "causal identification of the optimal error rate is not yet supported"; (b) of the seven preregistered hypotheses, <strong>H2 is only partially tested, H3 and H7 unexecuted</strong> (§8.4), and we do not recast them as supportive conclusions; (c) the <code>srw7</code> fusion optimisation and direction correction (O8/O11/O12) are <strong>verified only on Junyi, not cross-system reproduced</strong> (§7.7, 7.8, and 9.3).</p>
+<p>These boundaries do not negate this paper's engineering-methodological contributions: the quantile-logit metric's invariant and the criterion dependence of the fusion gain are reproduced on more than two systems; while the above negative results, preregistration gaps, and single-system verification jointly demarcate the method's applicability boundary, which readers should use to calibrate expectations of extrapolation.Accordingly, this paper submits "honest negative results" as one of its contributions, consistent with the reception orientation of the target journals (IEEE TLT / IJAIED / JEDM) toward methodological and reproducibility research.</p>
+<p><strong>Ninth (scope of the methodological contribution: cross-system gain pending).</strong> The engineering-methodological contribution must be clearly separated from "cross-system gain." §7 already shows: on DBE-KT22 the fusion gain is only marginally significant (one-sided p = 0.059) and negative after criterion switch, and Junyi is the only system so far that reproduces and verifies the fusion gain; <code>srw7</code> (sign correction + split-half-reliability weighting) and the §7.3 direction-error correction are <strong>verified methods</strong>, but their <strong>cross-system gain remains to be proven (cross-system gain pending)</strong>. Therefore this paper's contribution positioning is "method + single-system (Junyi) verification + honest boundary on cross-system extrapolation," not an already-proven cross-system improvement; readers must re-verify on their own system's data before writing <code>srw7</code> into other systems.</p>
+<h3>9.4 One practical recommendation</h3>
+<p>Synthesising §5.3, §7.3, §7.7, and §7.8, this paper's practical recommendation for the difficulty-fusion module is one sentence: <strong>first switch the metric to quantile logit (unconditional), then decide whether to enable multi-signal fusion by sample size (conditional), and before enabling, do direction correction per signal rather than simple deletion (mandatory).</strong> The first item's gain is largest and depends on no tuning; the second item's gain approaches zero when observations per item ≥100; the third is a <strong>directional-configuration error</strong>—§7.8 shows that deleting a directionally wrong signal column-wise (O8's fused6) discards its effective information, while correcting its direction (counting it as negative evidence) is instead superior, i.e., <strong>correction beats deletion</strong>.</p>
+<h2 id="section-10">10 Honest Gap Inventory</h2>
+<ol>
+<li><strong>Causal side executed, result negative (2026-09-24):</strong> the preregistered AIPW/DR, dose–response estimation, and negative control were executed under a frozen identification strategy (§8.3); result is no detected internal optimum, significant Junyi negative control (downgraded to associational evidence). Still unexecuted: E-value, the formal ordering test of the five premises, the P-pos-2 simulation-arm control.</li>
+<li><strong>H2 / H3 not executed per original caliber:</strong> ECE, Brier, reliability diagram, and 85% target-hit rate not computed; four-source calibration-error ordering not tested (§8.4).</li>
+<li><strong>The record-level-holdout validity gap was handled by O10's student-level holdout</strong> (§7.6): conclusion fully reproduces, the "record-level rather than student-level" concern is tested to have little effect. Remaining boundary: gain decays to ≤0.34 pp for k ≥ 100 (student-level <code>srw7</code> caliber: k = 100 is +0.335 pp, k = 200 is +0.102 pp; record-level +0.391 / +0.138 pp) and λ-shrinkage not reproduced on DBE (§7.7).</li>
+<li><strong>λ-shrinkage not reproduced on DBE</strong> (§7.5).</li>
+<li><strong>O11/O12 optimisation not cross-system reproduced:</strong> the recommended estimator <code>estimate_optimized_difficulty</code> (sign correction + split-half-reliability weighting + λ-shrinkage) has been <strong>incrementally landed</strong> to the repo code (this landing does not change the test count, currently 936 full), its correctness guaranteed by the external verification script <code>results/code/o11_land_verify.py</code> (15/15 PASS) (§9.2); but this optimisation is verified only on Junyi, not cross-system reproduced (§9.3).</li>
+<li><strong>Expert-label-criterion reliability not independently estimated:</strong> this paper obtained no inter-rater reliability of the expert annotation; all uncertainty of the 0.4326 distance is attributed to the single realisation of the expert labels.</li>
+<li><strong>assist09 sliding-window analysis uses the "one row per student-problem" revised version;</strong> help-recording semantics (tutor semantics) handled per the official caliber, possibly differing from some secondary literature.</li>
+<li><strong>The synthetic experiment's most-favourable environment:</strong> the four sources sharing one latent variable is the most favourable setting for the proposition to hold (§4.6).</li>
+<li><strong>Data licences not legally verified item by item:</strong> the citation obligations and commercial restrictions of the four datasets follow official pages and must be closed before submission.</li>
+<li><strong>LAI unvalidated and not used in this paper</strong> (§9.3 seventh point); all three mitigation paths unfinished.</li>
+</ol>
+<h2 id="section-11">11 Conclusions</h2>
+<p>This paper rewrote the question "can difficulty be measured on one common scale," which engineering practice had skipped, into a falsifiable measurement proposition, and gave results on synthetic data and four public learning-log corpora.<strong>The caliber must be stated first:</strong> the <strong>real-data test of proposition C1 was completed at only one real system, assist09</strong> (994 items); the Junyi, DBE-KT22, and XES3G5M datasets bear the multi-signal-fusion consistency experiment, the expert-annotation experiment, and the knowledge-tree / ordered-transition experiment, and <strong>do not constitute a test of C1</strong> (see the title-caliber note at the front).The instability proposition holds: linear [0,1] fusion's effective weights equal neither the nominal weights (π₁ = 0.532 vs.</p>
+<p>w₁ = 0.40) nor themselves under monotone reparameterisation (nonlinear monotone L1 = 0.1276, 36.4% cell rank reversal, strongest counterexample complete sign reversal), while the quantile-logit metric is strictly invariant to it (0 under shared calibration, 0.016 sampling noise under independent calibration); on assist09's 994 items, the real drift falls from 0.5357 to 0.0001.</p>
+<p>Multi-signal fusion does raise consistency with expert difficulty labels (DBE 0.2207 → 0.2899, repeated-cross-validation optimised weights 0.5240 ± 0.1069; Junyi 0.2610 → 0.3629, repeated cross-validation 0.4023 ± 0.0480), driven by a "self-reported difficulty high and trust low" differential feature; but the rank correlation between expert labels and real-performance difficulty is only 0.4326, and after switching the criterion to holdout performance, fusion is worse than success rate alone at every sample size on both datasets, with win rate 0.00—these gains are consistency gains, not predictive-power improvement.We further located a directional error in the fusion configuration and proposed sample-size-adaptive shrinkage, whose gain reaches +3.43 percentage points at k = 10 (O8 caliber) and decays below 0.22 percentage points for k ≥ 100, and is not reproduced on DBE.</p>
+<p>Further optimisation of the fusion estimator itself (sign correction + split-half-reliability weighting, <code>srw7</code>) was doubly validated at record-level and student-level holdout: non-inferior to success-rate-only at every sample size, and consistently better than fused6 which only deletes.</p>
+<p>Finally, this paper reports that the single-value mode of the assist09 sliding-window error-rate distribution is <strong>error rate 0.25 (success rate 75%)</strong> (n = 286,150 windows; 21 discrete support points; the 80–85% success band occupies only 19.64%), and explicitly states that this descriptive evidence <strong>supports neither the 85% rule nor 80.7%, and the earlier-reported "mode interval 0.15–0.20" was verified to be a binning-boundary artifact of equal-width binning and is voided</strong>; <strong>the preregistered dose–response identification was fully executed on 2026-09-24 under a frozen identification strategy (LF-CIS-2026-09-22), yielding "no internal optimum in the preregistered sense detected," and Junyi's time-inverted negative control is significant</strong> (low-end exceedance 1.000/0.998), so per that strategy's §6.2 handling convention all dose–response conclusions are downgraded to associational evi</p>
+<p>dence; therefore this paper <strong>still makes no point estimate, confidence interval, or test against 15.87% for the optimal error rate</strong> (that test presupposes the existence of an internal optimum, a premise not supported), and makes no directional assertion about whether that value holds for real learners (full execution record in §8.3; the conclusion section's earlier wording "causal side not executed" was legacy from an old version and was corrected on 2026-09-25).</p>
+<p>The three conclusions have partially landed in the studied system's difficulty-metric layer (full test 936 passed); the <code>srw7</code> estimator has also landed as the incremental function <code>estimate_optimized_difficulty()</code> in <code>difficulty_fusion.py</code>, its correctness guaranteed by an external verification script (§9.2).<strong>It must be emphasised:</strong> while presenting the methodological contributions, this paper also honestly reports the causal-side negative result (no detected internal optimum, significant Junyi negative control), the preregistration gaps of H2 partially tested and H3/H7 unexecuted, and the cross-system boundary that <code>srw7</code> / direction correction is verified only on Junyi; these <strong>honest negative results and boundaries themselves are this paper's methodological contribution to the "preregister–executable–testable" norm, and do not negate the engineering conclusions.</strong></p>
+<p><strong>Educational stake.</strong> The purity of difficulty-signal fusion matters not merely as measurement tidiness, because an adaptive system's next-item selection is directly driven by the difficulty metric: if multiple difficulty sources are mis-weighted, the next-item difficulty routed to the learner will systematically shift, and this shift accumulates question by question along the adaptive sequence, misaligning the learning path near the "challenge point" and amplifying subsequent item-selection error.This paper's quantile-logit invariance contribution has a concrete educational payoff—it guarantees that the routing precondition "effective weight = nominal weight" is not broken under monotone reparameterisation, thereby suppressing the magnitude of the above cumulative shift.</p>
+<p>To be clear: this is a mechanistic inference from a measurement property to a routing mechanism; this paper did not test its corresponding learning outcome on real learners, and claims no causal effect.</p>
+<div class="references" aria-label="References">
+<h2>References</h2>
+<ol class="reference-list">
+<li>[1] Wilson, R. C., Shenhav, A., Straccia, M., &amp; Cohen, J. D. (2019). The Eighty Five Percent Rule for optimal learning. <em>Nature Communications</em>, 10(1), 4646. DOI: 10.1038/s41467-019-12552-4.</li>
+<li>[2] Baillifard, A., Belardi, A., &amp; Martarelli, C. S. (2025). Engagement beyond success rate: Evidence from an adaptive learning system. In <em>The Envisioning Report for Empowering Universities</em>, nr. 9 (9th edition, 2025), 56–59. European Association of Distance Teaching Universities (EADTU), Parkweg 27, 6212 XN Maastricht, the Netherlands. DOI: 10.5281/zenodo.15908735. (Non-peer-reviewed annual report, not a journal paper; source grade must be noted at the citation in the text.) n = 413; optimal success rate ≈ 80.7%. Bibliographic limits: this DOI is a report-level DOI, not a chapter-level DOI (the chapter has no independent DOI); no ISBN (Zenodo official API metadata <code>isbn</code> field empty, PDF copyright page also none)—must not be filled; no volume / issue (annual report only has nr. 9)—must not be fabricated. Page numbers per PDF footer print page 56–59; the report TOC marks 57, which has a systematic off-by-one error from page 43 onward. (Verified 2026-09-23.)</li>
+<li>[3] Guadagnoli, M. A., &amp; Lee, T. D. (2004). Challenge point: A framework for conceptualizing the effects of various practice conditions in motor learning. <em>Journal of Motor Behavior</em>, 36(2), 212–224. DOI: 10.3200/JMBR.36.2.212-224.</li>
+<li>[4] Hodges, N. J., &amp; Lohse, K. R. (2022). An extended challenge-based framework for practice design in sports coaching. <em>Journal of Sports Sciences</em>, 40(7), 754–768. DOI: 10.1080/02640414.2021.2015917. (Correction 2026-09-23: originally mis-entered as <em>International Review of Sport and Exercise Psychology</em>; verified via publisher page to be <em>Journal of Sports Sciences</em>.)</li>
+<li>[5] Weber, D., Becker, N., Spinath, F. M., &amp; Koch, M. (2025). The stability of IRT parameters under several test equating conditions. <em>Frontiers in Psychology</em>, 16, 1652341. DOI: 10.3389/fpsyg.2025.1652341.</li>
+<li>[6] Deng, J. (2025). Linking errors introduced by rapid guessing responses when employing multigroup concurrent IRT scaling. <em>Large-scale Assessments in Education</em>, 13, 28. DOI: 10.1186/s40536-025-00265-8.</li>
+<li>[7] Liu, Z., Guo, T., Liang, Q., Hou, M., Zhan, B., Tang, J., Luo, W., &amp; Weng, J. (2025). Deep learning based knowledge tracing: A review, a tool and empirical studies. <em>IEEE Transactions on Knowledge and Data Engineering</em>, 37(8), 4512–4536. DOI: 10.1109/TKDE.2025.3552759.</li>
+<li>[8] Ding, M., Agrawal, A., Choo, J., Deng, C., et al. (2024). Easy2Hard-Bench: Standardized difficulty labels for profiling LLM performance and generalization. <em>Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track</em>. arXiv:2409.18433.</li>
+<li>[9] Dudík, M., Langford, J., &amp; Li, L. (2011). Doubly robust policy evaluation and learning. <em>Proceedings of the 28th International Conference on Machine Learning (ICML)</em>.</li>
+<li>[10] Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., Newey, W., &amp; Robins, J. (2018). Double/debiased machine learning for treatment and structural parameters. <em>The Econometrics Journal</em>, 21(1), C1–C68. DOI: 10.1111/ectj.12097.</li>
+<li>[11] VanderWeele, T. J., &amp; Ding, P. (2017). Sensitivity analysis in observational research: Introducing the E-value. <em>Annals of Internal Medicine</em>, 167(4), 268–274. DOI: 10.7326/M16-2607.</li>
+<li>[12] Feng, M., Heffernan, N. T., &amp; Koedinger, K. R. (2009). Addressing the assessment challenge with an online system that tutors as it assesses. <em>User Modeling and User-Adapted Interaction</em>, 19(3), 243–266. DOI: 10.1007/s11257-009-9063-7. ASSISTments 2009–2010 skill-builder data page URL: https://sites.google.com/site/assistmentsdata/home/2009-2010-assistment-data/skill-builder-data-2009-2010 (HTTP 200 verified). Warning: the widely circulated old URL variant is now 404, disabled. Note: the data page self-citation titles the paper "...in an Intelligent Tutoring System that tutors as it assesses," inconsistent with the published title—use the published title.</li>
+<li>[13] Abdelrahman, G., Wang, Q., et al. (2022). Knowledge tracing for complex skill training data. arXiv:2208.12651. (DBE-KT22; ADA Dataverse DOI: 10.26193/6DZWOH)</li>
+<li>[14] Liu, Z., Liu, Q., Guo, T., Chen, J., Huang, S., Zhao, X., Tang, J., Luo, W., &amp; Weng, J. (2023). XES3G5M: A knowledge tracing benchmark dataset with auxiliary information. In <em>Advances in Neural Information Processing Systems 36 (NeurIPS 2023), Datasets and Benchmarks Track</em>, 32958–32970. DOI: 10.52202/075280-1429. (MIT licence.) Bibliographic limits: pages 32958–32970 from OpenAlex; NeurIPS official page shows no pages; if the target journal does not require conference pages, DOI alone suffices. arXiv number left blank—the paper has no arXiv preprint (arXiv API returns 0); must not fabricate. Disambiguation: Liu, Z., Chen, J., &amp; Luo, W. (2023) "Recent Advances on Deep Learning based Knowledge Tracing" (WSDM 2023, 1295–1296) is a same-first-author, same-field, same-year two-page short paper, not this entry—do not miscite.</li>
+<li>[15] Chang, H.-S., Hsu, H.-J., &amp; Chen, K.-T. (2015). Modeling exercise relationships in e-learning: A unified approach. In <em>Proceedings of the 8th International Conference on Educational Data Mining (EDM 2015)</em>, 532–535. International Educational Data Mining Society. ISBN: 978-8-4606-9425-0. URL: https://www.educationaldatamining.org/EDM2015/proceedings/short532-535.pdf (HTTP 200 verified). Junyi Academy dataset, CC-BY-NC-SA-4.0, commercial use prohibited. (Correction 2026-09-23: entire original entry was wrong, replaced. Originally entered as <em>Educational Technology &amp; Society</em>, 18(2), 128–141. Counter-evidence: ET&amp;S official Volume 18, Number 2 (2015) TOC PDF contains no such paper; the "128–141" spans three unrelated papers. No DOI found (EDM 2015 proceedings assigned no Crossref DOI), left blank, must not fabricate, use the URL above. This paper remains the source of the Junyi Academy dataset.)</li>
+<li>[16] Kolen, M. J., &amp; Brennan, R. L. (2014). <em>Test Equating, Scaling, and Linking: Methods and Practices</em> (3rd ed.). Springer.</li>
+<li>[17] Platt, J. (1999). Probabilistic outputs for support vector machines and comparisons to regularized likelihood methods. In <em>Advances in Large Margin Classifiers</em>. MIT Press.</li>
+<li>[18] Guo, C., Pleiss, G., Sun, Y., &amp; Weinberger, K. Q. (2017). On calibration of modern neural networks. <em>Proceedings of the 34th International Conference on Machine Learning (ICML)</em>.</li>
+<li>[19] Efron, B., &amp; Tibshirani, R. J. (1993). <em>An Introduction to the Bootstrap</em>. Chapman &amp; Hall.</li>
+<li>[20] Cohen, J. (1968). Weighted kappa: Nominal scale agreement with provision for scaled disagreement or partial credit. <em>Psychological Bulletin</em>, 70(4), 213–220.</li>
+<li>[21] Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society: Series B</em>, 57(1), 289–300.</li>
+<li>[22] Atroszko, P. A., Charzyńska, E., Buźniak, A., Czerwiński, S. K., Griffiths, M. D., et al. (2025). Validity, reliability, and cross-cultural comparability of a problematic overstudying scale. <em>International Journal of Mental Health and Addiction</em>. DOI: 10.1007/s11469-023-01128-5.</li>
+<li>[23] Loscalzo, Y., Wetstone, H., Schuldberg, D., Giannini, M., &amp; Rice, K. G. (2024). Studyholism in the United States and Italy. <em>Current Psychology</em>, 43(29), 24608–24621. DOI: 10.1007/s12144-024-06163-6.</li>
+<li>[24] Wu, Y., Dai, X., Wen, Z., &amp; Cui, H. (2010). Compilation of an adolescent learning burnout scale. <em>Chinese Journal of Clinical Psychology</em>, 18(2), 152–154.</li>
+<li>[25] Al-Fawakhiri, N., Kayani, S., &amp; McDougle, S. D. (2023). Evidence of an optimal error rate for motor skill learning. <em>bioRxiv</em>. DOI: 10.1101/2023.07.19.549705. (Supplemented 2026-09-27: previously a dangling reference; now added. Evidence grade must be stated with citation: as of this verification still a bioRxiv preprint (latest v5, not peer-reviewed), v3 revision note self-states "rearranged methods section for submission," no formal publication record found, so it must not be described as published. Content consistent with text: N=192, empirical optimal error rate ≈ 30%, domain motor-skill learning. Placement limit unchanged: value not extrapolable to academic learning, cited only as a task-dependence case, not in the RQ2 decision table, not as a new target value.)</li>
+<li>[26] Yeung, C.-K. (2019). Deep-IRT: Make deep learning based knowledge tracing explainable using item response theory. In <em>Proceedings of the 12th International Conference on Educational Data Mining (EDM 2019)</em> (pp. 683–686). arXiv:1904.11738. (Supplemented 2026-09-27: previously a dangling reference; now added. Verified that beyond arXiv:1904.11738 there is also a formal EDM 2019 conference version (pp. 683–686, per the author's own code-repo citation example), so cited by formal version, arXiv as auxiliary. This paper's citation point is only one reported number: item analysis (first-attempt error proportion) vs. 1PL IRT difficulty Pearson r = 0.96; the same paper also reports publisher-labelled 3-level difficulty correlates only 0.40 with item analysis, 0.39 with IRT, 0.08 with Deep-IRT, so its network-output difficulty must not be used as a decision benchmark.)</li>
+</ol></div>
+</section>
+</body>
+</html>

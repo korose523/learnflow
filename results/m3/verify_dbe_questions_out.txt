@@ -1,0 +1,20 @@
+[csv] Questions.csv: 212 行可解析（id, difficulty）
+[csv] 表头字段: id/question_rich_text/question_title/explanation/hint_text/question_text/difficulty
+[csv] question_text/question_rich_text 皆空的行数: 0
+[npz] D_keep: 212 个 ID；D_y 分布: {1: 95, 2: 84, 3: 33}
+[1] ID 集合与 D_keep 完全一致: PASS
+[2] difficulty 列与 D_y 逐 ID 一致: PASS
+[jsl] local_matrix.jsonl 内带 expert 的模型: ['deepseek-r1:1.5b', 'deepseek-r1:32b', 'deepseek-v2:16b', 'llama3.1:8b', 'llama3.2:1b', 'mistral:7b', 'qwen36:latest', 'qwen3:1.7b', 'qwen3:8b']
+[3] 以 deepseek-r1:1.5b 的 expert（212 条）为参照
+    deepseek-r1:32b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    deepseek-v2:16b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    llama3.1:8b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    llama3.2:1b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    mistral:7b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    qwen36:latest 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    qwen3:1.7b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    qwen3:8b 与参照不一致 0 条 —— 各模型 expert 标签互相一致
+    与 csv 共同 ID 212 个，其中 difficulty 不一致 0 个
+[3] difficulty 列与 local_matrix.jsonl expert 逐 ID 一致: PASS
+------------------------------------------------------------
+VERIFY PASS: Questions.csv 可作为 DBE-KT22 212 题的 E1 标注输入

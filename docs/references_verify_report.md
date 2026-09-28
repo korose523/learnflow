@@ -57,7 +57,7 @@
 | kone2025constrainedpareto | 预印本，未正式发表 | arXiv:2506.08127v1 (2025-06-09) | Cyrille Kone, Emilie Kaufmann, Laura Richert |
 | kim2025morlportfolios | 预印本，未正式发表 | arXiv:2502.09724v2 (更新 2025-07-16) | Cheol Woo Kim, Jai Moondra, Shresth Verma, Madeleine Pollack, Lingkai Kong, Milind Tambe, Swati Gupta |
 | ballon2025estimating | 预印本，未正式发表 | arXiv:2512.14220v1 (2025-12-16) | Marthe Ballon, Andres Algaba, Brecht Verbeken, Vincent Ginis |
-| li2025canllms | 预印本，未正式发表 | arXiv:2512.18880v2 (更新 2026-05-10) | Ming Li, Han Chen, Yunze Xiao, Jian Chen, Hong Jiao, Tianyi Zhou |
+| ~~li2025canllms~~ → `li2026canllms` | **已正式发表**（2026-09-27 复核推翻首轮判断） | **Findings of ACL 2026**, pp. 25414–25441, DOI 10.18653/v1/2026.findings-acl.1270（权威源 = ACL Anthology 2026.findings-acl.1270）；预印本 arXiv:2512.18880v2 仅作辅助 | Ming Li, Han Chen, Yunze Xiao, Jian Chen, Hong Jiao, Tianyi Zhou（**注：`author` 字段原写 Xiao, Yan / Chen, Jia / Jiao, Hao / Zhou, Tian 四位名字全错，已更正**） |
 | parfenova2025textannotation | **已正式发表** NAACL 2025 Findings | arXiv:2512.00046v1；DOI 10.18653/v1/2025.findings-naacl.361 | Angelina Parfenova, Andreas Marfurt, Alexander Denzler, Juergen Pfeffer |
 
 ### 1.4 WebSearch 补无标识符条目（7 条，全部 `[已核验]`）
@@ -111,7 +111,7 @@
 | kone2025constrainedpareto | arXiv 预印本 | 否 |
 | kim2025morlportfolios | arXiv 预印本 | 否 |
 | ballon2025estimating | arXiv 预印本 | 否 |
-| li2025canllms | arXiv 预印本 | 否 |
+| ~~li2025canllms~~ `li2026canllms` | ~~arXiv 预印本~~ **Findings of ACL 2026（会议版）** | ~~否~~ **是**（同行评议，2026-07 出版，DOI 10.18653/v1/2026.findings-acl.1270） |
 | preprints2025dlktreview | Preprints.org 预印本 | 否（明确非同行评议） |
 | baillifard2025engagement | EADTU 技术报告 | 否（非同行评议机构报告） |
 | kone2024banditpareto | AISTATS 2024（journal_ref 已记录，PMLR 卷页以正式 Proceedings 为准） | 会议收录 |

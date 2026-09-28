@@ -1,0 +1,112 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "D:\\learnflow-main\\learnflow-main\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "ministral-3:3b": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": 0.2033,
+      "e1a_spearman_p": 0.00293981,
+      "e1a_accuracy": 0.3066,
+      "e1a_cohen_kappa": 0.084,
+      "e1a_llm_dist": {
+        "2": 77,
+        "3": 135
+      },
+      "e1a_spearman_ci95": [
+        0.0849,
+        0.3268
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": 0.2033,
+      "e1a_spearman_none_as_zero_p": 0.00293981,
+      "e1a_spearman_none_as_zero_ci95": [
+        0.0849,
+        0.3268
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 108,
+      "e1b_parse_fail": 16,
+      "e1b_n_pair_constraints": 1331,
+      "e1b_n_total_comparisons": 1352,
+      "e1b_spearman": 0.0811,
+      "e1b_spearman_p": 0.23940674,
+      "paired_bootstrap": {
+        "reps_used": 200,
+        "rho_absolute_mean": 0.2082,
+        "rho_absolute_ci95": [
+          0.0849,
+          0.3268
+        ],
+        "rho_bt_mean": 0.0727,
+        "rho_bt_ci95": [
+          -0.0506,
+          0.2142
+        ],
+        "delta_abs_minus_bt_mean": 0.1355,
+        "delta_abs_minus_bt_ci95": [
+          -0.054,
+          0.3099
+        ],
+        "delta_p_two_sided": 0.12,
+        "significant_at_0.05": false
+      },
+      "e1b_spearman_ci95": [
+        -0.0506,
+        0.2142
+      ]
+    }
+  },
+  "run_cells": {
+    "ministral-3:3b": {
+      "model_id": "ministral-3:3b",
+      "family": "Mistral",
+      "architecture": "dense",
+      "params_billions": 3,
+      "scale_tier": "S1_<7B",
+      "model_digest": {
+        "digest": "f04aa1c738f64e13c625b82ae92504fc0260fa6723b509ed1ece0fa188179b1d",
+        "digest_source": "api/tags",
+        "size_bytes": 2953840808,
+        "modified_at": "2026-09-28T06:49:31.5801881+08:00",
+        "family": "mistral3",
+        "parameter_size": "3.8B",
+        "quantization_level": "Q4_K_M",
+        "format": "gguf",
+        "model_info_subset": {
+          "general.architecture": "mistral3",
+          "general.parameter_count": 3849090048,
+          "mistral3.block_count": 26,
+          "mistral3.context_length": 262144,
+          "mistral3.rope.scaling.original_context_length": 16384,
+          "mistral3.vision.block_count": 24
+        },
+        "raw_top_keys": [
+          "capabilities",
+          "details",
+          "license",
+          "model_info",
+          "modelfile",
+          "modified_at",
+          "parameters",
+          "template"
+        ]
+      },
+      "e1a_new_records": 212,
+      "e1a_wall_seconds": 88.3,
+      "e1b_new_records": 108,
+      "e1b_wall_seconds": 105.9,
+      "wall_seconds": 194.2
+    }
+  }
+}

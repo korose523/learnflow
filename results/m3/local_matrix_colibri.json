@@ -1,0 +1,102 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 212,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "D:\\learnflow-main\\learnflow-main\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "qwen3.6-colibri": {
+      "n_items": 212,
+      "e1a_n_records": 212,
+      "e1a_n_total": 212,
+      "e1a_n_parsed": 212,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": 0.1897,
+      "e1a_spearman_p": 0.00558488,
+      "e1a_accuracy": 0.4528,
+      "e1a_cohen_kappa": 0.0867,
+      "e1a_llm_dist": {
+        "1": 121,
+        "2": 69,
+        "3": 22
+      },
+      "e1a_spearman_ci95": [
+        0.058,
+        0.3024
+      ],
+      "e1a_bootstrap_reps_used": 200,
+      "e1a_spearman_none_as_zero": 0.1897,
+      "e1a_spearman_none_as_zero_p": 0.00558488,
+      "e1a_spearman_none_as_zero_ci95": [
+        0.058,
+        0.3024
+      ],
+      "e1a_spearman_none_as_zero_reps_used": 200,
+      "e1b_n_batches": 108,
+      "e1b_parse_fail": 27,
+      "e1b_n_pair_constraints": 1160,
+      "e1b_n_total_comparisons": 1173,
+      "e1b_spearman": 0.2816,
+      "e1b_spearman_p": 3.172e-05,
+      "paired_bootstrap": {
+        "reps_used": 200,
+        "rho_absolute_mean": 0.19,
+        "rho_absolute_ci95": [
+          0.058,
+          0.3024
+        ],
+        "rho_bt_mean": 0.2586,
+        "rho_bt_ci95": [
+          0.1145,
+          0.3727
+        ],
+        "delta_abs_minus_bt_mean": -0.0686,
+        "delta_abs_minus_bt_ci95": [
+          -0.1703,
+          0.0365
+        ],
+        "delta_p_two_sided": 0.25,
+        "significant_at_0.05": false
+      },
+      "e1b_spearman_ci95": [
+        0.1145,
+        0.3727
+      ]
+    }
+  },
+  "run_cells": {
+    "qwen3.6-colibri": {
+      "model_id": "qwen3.6-colibri",
+      "family": "Qwen",
+      "architecture": "MoE",
+      "params_billions": 35,
+      "scale_tier": "S3_30-70B",
+      "model_digest": {
+        "digest": "qwen3.6-colibri",
+        "digest_source": "colibri/v1/models",
+        "served_model_ids": [
+          "qwen3.6-colibri"
+        ],
+        "model_info_subset": {
+          "engine": "colibri 1.12.1",
+          "backend": "CUDA sm_120 (coli_cuda.dll)",
+          "api": "OpenAI-compatible /v1/chat/completions",
+          "constraint": "自由解码（qwen36 引擎无 grammar payload）+ schema 容器归一化 + enable_thinking=False"
+        },
+        "raw_top_keys": [
+          "data",
+          "object"
+        ]
+      },
+      "e1a_new_records": 0,
+      "e1a_wall_seconds": null,
+      "e1b_new_records": 28,
+      "e1b_wall_seconds": 178.2,
+      "wall_seconds": 178.2
+    }
+  }
+}

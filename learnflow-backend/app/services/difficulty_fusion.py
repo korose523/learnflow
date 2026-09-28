@@ -18,6 +18,36 @@
 
 本模块只做一件事：把任意数量、任意量纲的"越大越难"信号，变换到**秩（分位）公制**
 后线性融合。因为 ECDF-logit 对单调变换不变，融合结果不受各信号单位/量表影响。
+
+────────────────────────────────────────────────────────────────────────
+性能优化（2026-09-27）：**结果位等价（bit-exact）的行为保持型重构**
+────────────────────────────────────────────────────────────────────────
+本次重构只删冗余计算与冗余内存，**不改对外接口、不改任何浮点运算的顺序与形式**，
+因此输出必须与优化前逐位相同（由 `scripts/verify_difficulty_fusion_equivalence.py`
+以「冻结的旧实现」做随机压力对照校验）。具体四点：
+
+1. **消除重复的秩计算**：`estimate_optimized_difficulty` 原实现对每个 signals 都调用
+   `_spearman(z_i, z_0)`，其中 `_rank_average(z_0)` 被重复计算 len(signals)-1 次
+   （每次一趟 O(n log n) 排序）。现改为**预先算一次**参考列的秩与二阶统计量
+   （均值、中心平方和），其余信号只算自己的秩。
+2. **消除 O(n·m) 次生成器帧**：原 `sum(z[c][idx] for c in COLS)` 与
+   `sum(w[i]*s[i]*z[i][idx] for i in ...)` 为每个题目新建 generator + 生成器帧，
+   并用 `z[c][idx]` 跨行二级索引；改为**先按列缩放成普通列表、再 `map(sum, zip(*rows))`**
+   做一次 C 层转置 + C 层求和。
+   ⚠️ 这一步**不能**再简化为"朴素就地累加"：CPython ≥3.12 的内置 `sum()` 对浮点走
+   **Neumaier 补偿求和**，朴素 `acc = acc + x` 会在末位 ulp 发散（实测 Δ≈4.4e-16，
+   在 2802 项随机断言里造成 615 处不相等）。因此宁可保留 NumPy 之外的行缓冲
+   （峰值内存 O(m·n) 个**指针**，float 对象本身是复用的，n=3000 时约 170 KB），
+   也要保住"文档里的每个数字都能被机器复算"这条红线。
+3. **行缓冲带来的缓存收益**：行列表逐行追加、行内连续访问，替代原来的
+   `transformed[c][idx]` 随机跨行访问；并按 `FUSED6_COLUMNS` 的 frozenset 做 O(1) 判定
+   （不再对 tuple 做线性查找）。
+4. **微优化**：`ecdf_logit` 里被 `max(min(...))` 重复算两次的裁剪值改为算一次；
+   排序键由 Python 层 lambda 换成 C 层 `list.__getitem__`（语义与 NaN/稳定性不变）。
+
+**刻意未做的改动**（一旦做了会破坏数值一致性，也违背本项目"数字必须可复算"的红线）：
+不把 `(r-0.5)/n` 换成乘倒数、不把 `(x-m)**2` 换成 `x*x`、不合并/重排任何求和顺序、
+不引入 numpy（保持零依赖以适配受限环境）。
 """
 import math
 from typing import Dict, List, Mapping, Optional, Sequence
@@ -34,12 +64,15 @@ EPS = 1e-4  # 分位裁剪，避免 logit(0)/logit(1) 发散
 def _rank_average(values: Sequence[float]) -> List[float]:
     """并列取平均秩（average rank，1..n）"""
     n = len(values)
-    order = sorted(range(n), key=lambda i: values[i])
+    # key 用 list.__getitem__（C 层）替代等价的 lambda，避免每元素一次 Python 帧；
+    # 仍是 key 排序 → 稳定性与 NaN 行为与原实现完全一致。
+    order = sorted(range(n), key=values.__getitem__)
     ranks = [0.0] * n
     i = 0
     while i < n:
         j = i
-        while j + 1 < n and values[order[j + 1]] == values[order[i]]:
+        pivot = values[order[i]]  # 提外循环不变量，省掉 O(并列数) 次重复索引
+        while j + 1 < n and values[order[j + 1]] == pivot:
             j += 1
         avg = (i + j) / 2.0 + 1.0  # 1-based average rank
         for k in range(i, j + 1):
@@ -64,9 +97,15 @@ def ecdf_logit(values: Sequence[float]) -> List[float]:
     if n == 0:
         return []
     ranks = _rank_average(values)
-    return [math.log(max(min((r - 0.5) / n, 1 - EPS), EPS) /
-                     (1 - max(min((r - 0.5) / n, 1 - EPS), EPS)))
-            for r in ranks]
+    out: List[float] = []
+    append = out.append
+    for r in ranks:
+        q = (r - 0.5) / n
+        # 等价于原实现的 max(min(q, 1-EPS), EPS)，但只裁剪一次：
+        # 原写法里同一个裁剪值被算了两次（-inf/+inf/NaN 分支语义均一致）。
+        p = EPS if q < EPS else (1.0 - EPS if q > 1.0 - EPS else q)
+        append(math.log(p / (1.0 - p)))
+    return out
 
 
 def fuse_signals(
@@ -110,7 +149,10 @@ def fuse_signals(
     for k in names:
         z = ecdf_logit(signals[k])
         wk = w[k]
-        out = [o + wk * v for o, v in zip(out, z)]
+        # 就地累加，替代每信号一次的全列表重建（原 `out = [o + wk*v ...]`）；
+        # 逐元素的加法顺序不变 → 结果位等价。
+        for i in range(n):
+            out[i] = out[i] + wk * z[i]
     return out
 
 
@@ -161,6 +203,8 @@ FUSED6_COLUMNS = tuple(
     i for i, name in enumerate(O8_SIGNAL_NAMES) if name not in _O8_DROP_SIGNALS
 )
 _UPGRADE_RATE_INDEX = O8_SIGNAL_NAMES.index("upgrade_rate")
+# 行流式累加时用于判定"本信号是否计入 fused6"的集合（O(1) 查表，替代 tuple 线性查找）
+_FUSED6_INDEX_SET = frozenset(FUSED6_COLUMNS)
 
 
 def lambda_closed_form(k: float) -> float:
@@ -214,20 +258,28 @@ def estimate_o8_difficulty(
     if any(len(signals[name]) != n for name in names):
         raise ValueError("所有信号长度必须一致")
 
-    transformed: List[List[float]] = []
+    lam = lambda_closed_form(k)
+    col_n = len(FUSED6_COLUMNS)
+
+    success: List[float] = []
+    rows: List[List[float]] = []   # 只保留参与 fused6 的列（upgrade_rate 不落盘）
     for i, name in enumerate(names):
         z = ecdf_logit(signals[name])
-        if i == 0:  # success_rate：越大越易 → 取负统一为越大越难
+        if i == 0:
+            # success_rate：越大越易 → 取负统一为越大越难。
+            # 注意 FUSED6_COLUMNS **包含索引 0**，故 fused6 加的是取负后的这一列
+            # （即"方向已统一"的 success 分量），这里必须持有取负后的同一个对象，
+            # 否则会退回未取负的原始值——本次重构唯一一处真实数值陷阱，已由
+            # `scripts/verify_difficulty_fusion_equivalence.py` 的位等价门禁捕获。
             z = [-x for x in z]
-        transformed.append(z)
-
-    lam = lambda_closed_form(k)
-    success = transformed[0]
-    col_n = len(FUSED6_COLUMNS)
-    fused = [
-        sum(transformed[c][idx] for c in FUSED6_COLUMNS) / col_n
-        for idx in range(n)
-    ]
+            success = z
+        if i in _FUSED6_INDEX_SET:
+            rows.append(z)
+    # 逐题求和仍走内置 sum()：CPython ≥3.12 对浮点用 Neumaier 补偿求和，
+    # 任何"朴素就地累加"的改写都会在末位 ulp 上发散（本项目红线：数字必须可复算）。
+    # 这里用 `map(sum, zip(*rows))` 把 O(n·m) 次 Python 帧与跨行二级索引 `z[c][idx]`
+    # 换成一次 C 层转置 + C 层求和，**值序列与旧实现逐项相同** → 位等价且更快。
+    fused = [s / col_n for s in map(sum, zip(*rows))]
     return [(1.0 - lam) * success[idx] + lam * fused[idx] for idx in range(n)]
 
 # ---------------------------------------------------------------------------
@@ -256,6 +308,26 @@ def _pearson(a: Sequence[float], b: Sequence[float]) -> float:
     mb = sum(b) / n
     va = sum((x - ma) ** 2 for x in a)
     vb = sum((y - mb) ** 2 for y in b)
+    if va <= 0.0 or vb <= 0.0:
+        return 0.0
+    return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / math.sqrt(va * vb)
+
+
+def _pearson_vs_fixed(a: Sequence[float], b: Sequence[float],
+                      mb: float, vb: float) -> float:
+    """``_pearson(a, b)`` 的等价形式，但 b 的一阶/二阶统计量已由调用方预算好。
+
+    用于 `estimate_optimized_difficulty` 的符号校正：``b`` 恒为参考列 ``z_0`` 的秩，
+    其均值 ``mb`` 与中心平方和 ``vb`` 在原实现里被重复算了 len(signals)-1 次。
+
+    算术表达式与累加顺序均与 `_pearson` 逐字一致（`(x-m)**2`、`(x-ma)*(y-mb)`、
+    同一 kahan-free 顺序），故返回值与 `_pearson(a, b)` 位等价。
+    """
+    n = len(a)
+    if n < 2:
+        return 0.0
+    ma = sum(a) / n
+    va = sum((x - ma) ** 2 for x in a)
     if va <= 0.0 or vb <= 0.0:
         return 0.0
     return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / math.sqrt(va * vb)
@@ -316,23 +388,33 @@ def estimate_optimized_difficulty(
     if any(len(signals[name]) != n for name in names):
         raise ValueError("所有信号长度必须一致")
 
-    z: List[List[float]] = []
-    for i, name in enumerate(names):
-        col = ecdf_logit(signals[name])
-        z.append([-x for x in col] if i == 0 else col)
-
-    d0 = z[0]
-    signs = [1.0 if (i == 0 or _spearman(z[i], d0) >= 0.0) else -1.0
-             for i in range(len(names))]
-
+    m = len(names)
     if reliability is None:
-        w = [1.0 / len(names)] * len(names)
+        w = [1.0 / m] * m
     else:
         raw = [max(0.0, float(reliability.get(nm, 0.0))) for nm in names]
         s = sum(raw)
-        w = [x / s for x in raw] if s > 0.0 else [1.0 / len(names)] * len(names)
+        w = [x / s for x in raw] if s > 0.0 else [1.0 / m] * m
 
-    fused = [sum(w[i] * signs[i] * z[i][idx] for i in range(len(names)))
-             for idx in range(n)]
+    # --- 参考列 z_0（用于符号校正的基准方向）与其秩统计量（只算一次） ---
+    z0 = [-x for x in ecdf_logit(signals[names[0]])]
+    r0 = _rank_average(z0)          # 原实现：每个信号的 _spearman 都重算一次 → 冗余 m-1 次
+    mb = sum(r0) / n
+    vb = sum((y - mb) ** 2 for y in r0)
+
+    # --- 逐题融合项：必须与旧实现 `sum(w[i]*signs[i]*z[i][idx] for i in ...)` 位等价 ---
+    # 关键点同 `estimate_o8_difficulty`：CPython ≥3.12 的内置 sum() 对浮点采用 Neumaier
+    # 补偿求和，任何"朴素就地累加"改写都会在末位 ulp 上发散（实测 4.4e-16），
+    # 因此这里保持"每列缩放后按同一顺序求和"，只把逐元素的 generator 帧换成
+    # `map(sum, zip(*rows))`（C 层转置 + C 层求和）。值序列与旧实现逐项相同 → 位等价。
+    rows: List[List[float]] = [ [w[0] * x for x in z0] ]
+    for i in range(1, m):
+        z = ecdf_logit(signals[names[i]])
+        # 符号校正用预算好的 r0/mb/vb（旧实现对每个信号重算一次 _rank_average(z_0)）
+        sgn = 1.0 if _pearson_vs_fixed(_rank_average(z), r0, mb, vb) >= 0.0 else -1.0
+        wi = w[i] * sgn
+        rows.append([wi * x for x in z])
+    fused = list(map(sum, zip(*rows)))
+
     lam_used = lambda_closed_form(k) if lam is None else float(lam)
-    return [(1.0 - lam_used) * d0[idx] + lam_used * fused[idx] for idx in range(n)]
+    return [(1.0 - lam_used) * z0[idx] + lam_used * fused[idx] for idx in range(n)]

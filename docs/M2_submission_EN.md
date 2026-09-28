@@ -1,0 +1,633 @@
+# Conflict-Structure Audit of Multi-Intervention Coexisting Learning Systems
+
+Zexiao Weng¹ and MinPo Jung¹,*
+
+¹ Youngsan University, Busan 48015, Republic of Korea
+
+* Corresponding author. Email: minpo@ysu.ac.kr; ORCID: 0009-0003-3369-757X. Zexiao Weng ORCID: 0009-0009-8600-8954.
+
+AI-Assisted Writing Disclosure. This manuscript was prepared with the assistance of a large language model (LLM) used strictly as a language-polishing and drafting aid. No LLM authored scientific content or made any analytical, statistical, or experimental decision; all results, claims, and numerical values were produced by the authors' own experiments, simulations, and scripts. The LLM was not used to generate data, analyses, or conclusions.
+
+## Abstract
+
+When a learning system registers dozens of behavioural intervention mechanisms at once, the intuitive expectation is that they will collide at run time, cancel each other out, and therefore require arbitration and budget governance. This paper tests that intuition head-on, and the results run against it — but the accounting must come first: the platform audited here has **54 registered** semantically de-duplicated gamified intervention mechanisms (LF-M01…LF-M54, registry fingerprint `ee1a49be5732`), of which **only 2 construct an intervention effect** (LF-M44 / LF-M52; sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default), with maturity **complete 9 · partial 37 · placeholder 8**. These three figures must always be reported together, because "on the register" and "able to produce a run-time effect" are not the same thing, and every conclusion below is governed by the latter two. We report four measured findings. First, when mechanisms are mapped onto the intervention seven-tuple defined here, **42 of 54 (77.8%) cannot be assigned a direction field**, and four fields (`target_construct`, `channel`, `side_effect`, `precedence`) **do not exist anywhere in our own code**; this triggers the falsification threshold we set in advance (> 20%), and the conclusion is that the schema's granularity does not match the implementation's. **We explicitly classify this as a diagnosis of implementation completeness, not as a "discovery triggered by a falsification condition"**: designer and audited party are the same party, so the figure measures how much of the schema we wrote down has been implemented, not a general property of the world. Second, of the three conflict types, type I has 27 static latent pairs (all from the 9 × 3 direction table) and 2 document-anchored same-construct pairs, yet only **one pair is detectable at run time** (LF-M44 vs LF-M52), and it is dissolved at the "health override" layer rather than at the "direction cancellation" layer we designed — the latter is **dead code** under the current set of intervention-effect producers. Third, type II (renamed **budget contention**) has **0 run-time contention pairs**, its structural cause being that the secondary mechanisms write only evaluation records, construct no intervention effect, never enter the arbitrator, and consume no budget. For the second and third findings, the material **cannot distinguish "conflicts are rare" from "there simply is no run time in which conflicts could occur"** (real user logs are 0), so we assert only one independently provable engineering proposition: **the existence of an arbitration layer does not entail the reachability of an arbitration path**. Fourth, cross-system replication (Ludilearn with 6 mechanisms, Level Up XP with 11) shows that, under the strict accounting, **the 2 external systems coded in this paper both exhibit 0 type-I conflicts**; they avoid conflict *by construction* — through mutually exclusive activation and rate windows — rather than resolving it. The main-line conclusion is therefore a negative result: conflict is exposed only by the multi-intervention-coexistence architecture, and the external systems we examined evade conflict through structural design; consequently the "54-mechanism coexistence" architecture is a scarce sample in our study, not a universal predicament — yet our cross-system sample is n = 2, single-coded, and reports no inter-rater reliability, so this sentence **must not** be generalized to "most similar systems." We also faithfully report the failures of the audit method itself (insufficient schema coverage, a ledger not yet implemented, external coding without inter-rater reliability, audit-time asset metrics not reproducible from a commit and therefore sealed by tag) and the limits that the material imposes on the strength of conclusions, and we derive design requirements from the audit. (This paper proceeds along Route A: A1 / A2 / A3 are implemented; A4 remains to be completed.)
+
+**Keywords**: gamified intervention; conflict audit; empirical software audit; intervention registry; budget contention; negative results
+
+## Author's Declarations
+
+**First, this paper is "an internal static audit and its limits," not a general finding about similar systems.** The strongest claim this paper can make is the following: on the one code snapshot of the one system audited here, the static structure of its intervention conflicts is as reported, while the visibility of run-time conflicts is decisively constrained by the implementation fact that "only 2 mechanisms produce effects." The following three inferences **exceed the material of this paper and must not be written**:
+
+1. **Do not** call the 77.8% unclassifiable proportion a "discovery triggered by a falsification condition." Its cause is that four fields of the seven-tuple we ourselves designed (`target_construct`, `channel`, `side_effect`, `precedence`) **do not exist anywhere in our own code** — this is a diagnosis of implementation completeness (a mismatch between schema granularity and implementation granularity), not a finding about the external world. Setting a > 20% threshold in advance and thereby judging that "the schema must be redesigned" is a valid self-discipline, but it constrains **this paper's method**, not a general property of the audited system.
+2. **Do not** infer "multi-intervention systems rarely conflict" from "1 run-time conflict pair, 0 budget-contention pairs." The secondary mechanisms write only evaluation records and construct no intervention effect (only 2 effect producers exist), and this paper has **no real user logs** (limitation ⑧). The material therefore **cannot distinguish** "conflicts are rare" from "there is simply no run time in which conflicts could occur." §3.4 phrases this as "the existence of an arbitration layer does not entail the reachability of an arbitration path" — the only engineering proposition in this paper that can be independently proved, and it does not depend on conflict frequency.
+3. **Do not** infer "most similar systems avoid conflict through structural design" from 2 external systems (both Moodle/PHP plug-ins, single coder, no inter-rater reliability). This is an n = 2 description, not a distribution; this paper always writes "**the 2 external systems coded in this paper**," never "most similar systems."
+
+**Second, wherever a mechanism scale appears, the three figures must always be stated together.** The counting calibre is fixed as:
+
+> **Registered 54** (semantically de-duplicated unique mechanisms, LF-M01…LF-M54, registry fingerprint `ee1a49be5732`)
+> **/ Effect-producing 2** (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default; under that baseline the whole repository constructs `Effect` only at LF-M44 @ `deep_addiction_engine.py:296` and LF-M52 @ `learning_orchestrator.py:986`)
+> **/ Maturity complete 9 · partial 37 · placeholder 8** (measured distribution of the `maturity` field in `mechanism_registry.py`)
+
+Writing "54" alone would read a **registration scale** as a **capability scale** — §4 exposes the inflation from 76 → 54, and a bare "54" would in turn be read as a second layer of inflation. The three figures together are this paper's self-defence against an "inflated narrative," and are enforced throughout, including the abstract, introduction, conclusion, and table captions.
+
+**Third, all numbers in this paper are taken only from the script products under `results/m2/`, and all code anchors are taken from the sealed tree `audit-m2-20260911`.** After the audit the audited repository moved on (the current HEAD is far past `8a328430`), so asset-line-count metrics (`python_loc`, `test_files`, etc.) have drifted relative to the audit time; this drift affects no audit conclusion. Code-anchor evidence (the mechanism registry, the direction table, the effect-producer locations) is sealed by tag and verified item by item, and is unaffected by the onward movement.
+
+**Fourth, this paper does not claim a verified method.** The original design prepared three conditions for the verdict "this is merely a taxonomy" (the machine-checkability of S1, the applicability precondition of the allocation model, and the cross-project replication E2). The measured results were: S1 is implied by the implementation but not expressed by the system itself; the allocation model has no realcarrier because the run-time contention count is 0; and E2 was completed but reversed in direction. The contribution of this paper is therefore **the audit itself**, not a method (see §8.1).
+
+## 1 Introduction
+
+**Chapter summary.** This chapter explains the origin of the problem. Research on adaptive gamification has long used "packaged gamification vs. no gamification" as its comparison unit and has failed to answer what happens when multiple intervention mechanisms are simultaneously present. This chapter identifies three internal contradictions in the audited object — taxonomy dual-track, the gap between semantic opposition and run-time behaviour, and the multi-calibre counting of mechanisms — and sets out the paper's four contributions and overall structure.
+
+This paper follows Route A (empirical strengthening), as required by review, for journal-paper establishment: ledger landing (A1), extension of effect producers to ≥ 14 (A2), and synthetic-session run-time distribution (A3) are all implemented; only the cross-system double-coding reliability (A4) remains to be executed externally / manually — see §8.2 and limitation ③.
+
+### 1.1 An engineering fact and an unnamed problem
+
+Gamified learning systems have evolved over the past fifteen years from the "badge–points–leaderboard" trio to "adaptive gamification." The core claim of the latter is that different users prefer different game elements, so the system should dynamically select elements based on the user profile. Echoing this, a large body of research has revolved around user typologies (e.g., HEXAD) and element preferences; a recent meta-analysis confirms that a gamification effect does exist on average — Dai, Xu, and Xing (2025), over 182 effect sizes and 37 randomized controlled trials, report a pooled effect size of d = 0.566, with the combination "rules/goals + challenge + mystery" the strongest.
+
+Yet all these effect sizes rest on the same comparison: **packaged gamification vs. no gamification**. They cannot answer a problem that has long appeared in engineering but has never been named in research: when dozens of intervention mechanisms are simultaneously registered and scheduled within a system, what happens **among** them? The intuitive answer is that they will conflict — some prolong online time, some limit it; some contend for the same hint channel, some compete for the same intervention budget. If this intuition holds, a multi-mechanism system necessarily needs conflict detection, arbitration, and budget governance — capabilities absent from both the literature and industrial systems.
+
+What this paper does is to treat this intuition as a **falsifiable empirical proposition** to be tested, rather than as a premise of argument. The conclusion of the test runs against the intuition, and this divergence itself constitutes the main content of the paper.
+
+### 1.2 The audited object's pre-existing contradictions
+
+The object of this audit is a real, deployed, and publicly released K12 adaptive learning platform. Its salient feature is scale, but it must be given under the **three-part accounting**: a unified mechanism registry **registers 54** semantically de-duplicated gamified intervention mechanisms (numbered LF-M01…LF-M54, contiguous with no gaps), registry fingerprint `ee1a49be5732`; of these, **only 2 mechanisms construct an intervention effect anywhere in the repository** (LF-M44 @ `deep_addiction_engine.py:296`, LF-M52 @ `learning_orchestrator.py:986`; sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default); and the measured distribution of the `maturity` field is **complete 9 / partial 37 / placeholder 8**. **The gap among these three figures is itself the first finding of this chapter**: the registration scale turns "multi-intervention coexistence" from a design slogan into an engineering fact that can be checked line by line, while the effect-producer count and the maturity distribution decide **how far this engineering fact can travel at run time** — the latter two figures recur in §3.4 and §4.3 and directly bound the strength of every conclusion in this paper.
+
+For this reason the object offers three **exploitable internal contradictions**, which are both the entry points of the audit and the source of its value.
+
+The first is the **taxonomy dual-track**. The governance document organizes these 54 mechanisms into eight categories A–H (A 8 / B 8 / C 6 / D 10 / E 10 / F 4 / G 4 / H 4), whereas the code-side `CATEGORIES` constant has only **five** values (retention 19 / motivation 18 / selfreg 9 / cognition 4 / health 4). The two taxonomies are not refinements of one another; this is quantified letter by letter in §4.
+
+The second is the **gap between semantic opposition and run-time behaviour**. The system does contain semantically opposed mechanisms: the fear-of-missing-out (FOMO) prompt, aimed at prolonging online time, with direction "promote"; the minor's time protection, aimed at limiting time, with direction "suppress" and compliance compulsion; and the rest reminder, likewise aimed at shortening continuous use. Reading the document alone, this is a design contradiction of "the system simultaneously encourages and discourages the same behaviour"; but the document alone cannot answer whether it actually occurs at run time — and the latter is what software auditing must answer.
+
+The third is the **multi-calibre number**. Within the same product-requirements document (PRD), the item-by-item sum of the §2.3 table is 69, while the document's title and overview state 76; the two are inconsistent (internally flagged as `internally_inconsistent = true`). A document that cannot even keep its own count self-consistent precisely shows that "in the absence of a registry and fingerprint mechanism, the mechanism count cannot be stably reproduced."
+
+### 1.3 Contributions and main findings
+
+This paper is a **static audit + cross-system replication**; it proposes no new detection algorithm and claims no mechanism is effective for learning. The contributions fall into four items, each supported by measured numbers.
+
+**Contribution 1: turn "intervention conflict" from a design vocabulary into an audit criterion checkable line by line, and honestly report that criterion's coverage failure on the current system; at the same time make clear that this failure is a diagnosis of implementation, not a discovery.** This paper formalizes intervention as a seven-tuple ⟨trigger, target_construct, direction, channel, cost, side_effect, precedence⟩ and checks field-by-field availability. The measured result: only `trigger` (i.e., `stage`, available 54/54) and `direction` (available 12/54) exist; the other four fields do not exist in code; the **unclassifiable proportion reaches 42/54 = 77.8%**. This figure triggers the falsification threshold set before the audit (> 20%), so the paper's self-judgement is "schema granularity does not match implementation granularity," not "mapping succeeded." **The qualitative classification must be stated simultaneously (required by reviewer §6.1)**: the cause of this 77.8% is that **four fields of the schema we ourselves designed are not implemented in our own code** — designer and audited party are the same party, so the proportion measures "how much of the written schema has landed," and **it is a diagnosis of implementation completeness, not a general finding about the external world**. Fixing the threshold in advance and thereby self-vetoing constrains this paper's methodological discipline; reading it as "an audit of the system discovered some universal fact" would exceed the material.
+
+**Contribution 2: give the actual detection of three conflict types within this system's registry, distinguishing "static latent" from "run-time actual."** Type I has 27 static latent pairs (9 approaches × 3 withdraws) and 2 document-anchored same-construct pairs, yet **only 1 pair is actually detectable at run time**. Type II (budget contention) has **0** run-time contention pairs. Type III (schema classification conflict) manifests as 7 of the governance document's 8 letters spanning ≥ 2 registry categories, showing the two taxonomies are not refinements of each other.
+
+**Contribution 3: locate a directly provable software-engineering finding — the layer-2 direction cancellation is dead code under the current set of intervention-effect producers.** Under the sealed baseline tag `audit-m2-20260911`, the whole repository constructs an `Effect` in only two places (the current HEAD, under A2, carries **16** AST sites / **14** mechanism opt-ins, off by default): LF-M44 at `deep_addiction_engine.py:296` (`user_visible=True, health_critical=False`) and LF-M52 at `learning_orchestrator.py:986` (`user_visible=False, health_critical=True`). Direction cancellation only compares directions among `user_visible` effects, so LF-M52 never enters the direction comparison; the semantic opposition is actually dissolved by the **layer-1 health override**. In other words, what this system implements is the semantics of "health veto," not "direction cancellation."
+
+**Contribution 4: upgrade a single-point observation into a cross-system comparison and obtain a conclusion dominated by a negative result.** Replication of two external gamified systems (Ludilearn, Level Up XP) shows that, under the strict accounting, type-I conflicts are both 0. Ludilearn makes conflict non-existent by construction through mutually exclusive activation ("only one game element per section at a time"); Level Up XP achieves independent governance of the "intervention budget" through H/D/W/M four-tier rate windows. **Conflict in these two systems is not resolved but structurally avoided.** This inversely supports the paper's problem framing: the multi-mechanism-coexistence architecture is the scarce condition that exposes conflict.
+
+### 1.4 Structure and reproducibility
+
+§2 reviews related work; §3 gives the intervention formalization criteria and the measured detection of three conflict types, and reports the dead-code finding and the audit conclusion on the compliance-preemption property S1; §4 reports the mechanism census, the relationship between the two taxonomies, and numeric drift; §5 downgrades the ledger from an "evaluated contribution" to a "design requirement derived from the audit"; §6 reports cross-system replication (E2); §7 presents the prediction-versus-measurement comparison in parallel; §8 discusses; §9 lists honest gaps; §10 concludes.
+
+**Reproducibility note.** All numbers in this paper are produced by read-only execution of audit scripts: because `learnflow-backend/artifacts/` is a git-tracked directory, running the repository scripts directly would overwrite tracked files, so the audit uses a read-only runner (`results/m2/harness.py`) that loads script modules via importlib, redirects their module-level output-path constants to `results/m2/`, and then calls their `main()` — running the scripts' own logic without writing to the repository. The `git status --short` output before and after execution is line-for-line identical. To keep the "prediction–measurement" comparison free from post-hoc adjustment, this paper's analysis plan was fixed and archived separately before the audit was executed.
+
+### 1.5 Chapter summary
+
+1. Research problem: the interaction among mechanisms in a multi-intervention-coexistence system had not been named head-on, nor formalized as an auditable criterion.
+2. Audited object: a K12 adaptive learning platform, **registering 54** semantically de-duplicated gamified intervention mechanisms (LF-M01…LF-M54, contiguous, fingerprint `ee1a49be5732`), **effect-producing 2** (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default), maturity **complete 9 / partial 37 / placeholder 8**.
+3. The object offers three exploitable internal contradictions (taxonomy dual-track, semantic opposition vs. run-time gap, multi-calibre PRD counting), which are both the audit's entry points and the source of its value.
+4. This paper is a static audit + cross-system replication; it proposes no new detection algorithm and claims no mechanism is effective for learning.
+5. Reproducibility: all numbers are produced by a read-only runner (`results/m2/harness.py`), and `git status --short` is line-for-line identical before and after the audit.
+
+## 2 Related Work
+
+**Chapter summary.** This chapter reviews four related-work threads: adaptive gamification and user typologies, behavioural-change science and JITAIs, multi-objective identification and budget-constrained online learning, and gamification effect baselines and dark-side evidence. The focus is not the review itself but the structural gap common to all four — they treat intervention as a static option or as mutually independent components, and never treat "multiple interventions simultaneously present" as an auditable object. That gap is precisely the starting point of this paper's audit criterion.
+
+### 2.1 Adaptive gamification and user typologies
+
+The dominant paradigm of adaptive gamification is built on user typologies. Sailer et al. (2017) propose the HEXAD typology, dividing users into achievers, free spirits, socializers, philanthropists, players, and disruptors; a later meta-analysis (Sailer et al., 2020) tests the correspondence between type and element preference. Tondello and Nacke validate, with 252 participants, that Hexad-driven personalized gamification can improve task performance, but simultaneously find that user-type scores and post-interaction element preference are **uncorrelated** — suggesting the limited predictive power of static profiles. Colomer (2025) [21], in a real-time adaptation-layer experiment, further finds that a "profile-opposed" configuration raises perceived difficulty and lowers adaptation sense. **This item is a non-peer-reviewed source** (recorded as a conference report whoseoriginating work is an undergraduate final project, TFG); this paper uses it only as corroborating evidence, disclosing its source grade in three places — here in the body, in reference [21], and in the statistics-calibre paragraph of the verification checklist — and this paper's conclusion does not depend on it; its available peer-reviewed substitute corroboration is [12] on the non-correlation between user-type scores and element preference.
+
+The common limitation of this thread is that it treats intervention as a **static option**, answering "who gets what," not "what happens when multiple interventions are simultaneously present."
+
+### 2.2 Behavioural-change science and JITAI
+
+The JITAI literature offers another thread: interventions should be delivered just in time at "vulnerable moments." Hsu et al. (2024), in a 62-study scoping review, note that most JITAIs rely on self-report adaptation, with insufficient transparency and heterogeneous validity. The theoretical integration of behaviour change in the digital age (Zhang et al., 2021) warns more explicitly: **when multiple intervention techniques target the same process or construct, their combination is not necessarily better than the sum of the parts.** This provides independent corroboration from behavioural-change science for the type-I conflict examined here: the literature has long acknowledged the phenomenon yet never formalized it as an automatically detectable, code-level-checkable conflict type.
+
+### 2.3 Multi-objective identification and budget-constrained online learning
+
+Pareto-set identification for multi-objective bandits (Kone et al., 2024; 2025) gives algorithms and information-theoretic lower bounds under fixed budget / fixed confidence, the latter further handling linear feasibility constraints; MORL policy composition (Kim et al., 2025) covers generalized p-mean preferences with α-approximation, and C-MORL (Liu et al., 2025) discovers the complete Pareto front via constrained optimization sequences with complexity linear in the number of objectives; budget-constrained MAB (Burnetas et al., 2025) gives an asymptotically optimal strategy for side-constraint cases; Reymond et al. (2024, AAMAS) separate "arm-pull budget" from "query budget," highly isomorphic to this paper's tension between "intervention budget" and "user-disturbance cost"; lexicographic Lipschitz bandits (Xue et al., 2025, JMLR) give a regret bound stratified by importance, exactly the mathematization of the compliance-preemption semantics examined here.
+
+A note on how the role of these tools changed in this paper. At the original design stage they were treated as the skeleton of an allocation model to be implemented; under this paper's audit conclusion they recede to **background** — because the measured result shows type II has 0 run-time contention pairs in the current system, the allocation problem has no realcarrier. The tools remain, but the problem is temporarily absent; this gap itself is part of this paper's negative result.
+
+### 2.4 Gamification effect baselines and the dark side
+
+The meta-analysis of Dai et al. (2025) (182 effect sizes / 37 RCTs, d = 0.566) and Slamet and Meng (2025) on collaborative learning (d ≈ 0.875) establish the average gamification effect, but their comparison unit is "packaged vs. no gamification," exactly exposing the gap in single-mechanism identification and inter-mechanism interaction. Dark-side evidence comes from Nafchi (2025) on digital fatigue and habituation, Xu (2025) observing on 189 users that "only about 25% use anti-addiction features, 75% choose to ignore or bypass them," and self-determination theory's account of over-justification. On this basis this paper insists on "claiming no mechanism is effective for learning" and locks its research goal on the audit of conflict structure.
+
+### 2.5 Chapter summary
+
+1. The user-typology thread answers "who gets what element," not the interaction when multiple interventions are simultaneously present.
+2. The JITAI literature and the theoretical-integration work on behaviour change have acknowledged that, when multiple intervention techniques target the same construct, their combination is not necessarily better than the sum of the parts; yet this phenomenon has never been formalized as an automatically detectable, code-level-checkable conflict type.
+3. The multi-objective-identification and budget-constrained-online-learning tools recede to **background** after this round of audit: type II has 0 run-time contention pairs in the current system, so the allocation problem has no realcarrier.
+4. Gamification-effect meta-analyses establish the average effect, but their comparison unit is "packaged vs. no gamification," exactly exposing the gap in single-mechanism identification and inter-mechanism interaction.
+
+## 3 Audit Object and Method: Formalization of Intervention and Conflict Detection
+
+**Chapter summary.** This chapter gives the paper's two core tools — the intervention seven-tuple ⟨trigger, target_construct, direction, channel, cost, side_effect, precedence⟩ and the type-I criterion based on directional opposition — and reports the measured detection of three conflict types: the unclassifiable proportion is 42/54 = 77.8%, triggering the > 20% threshold set before the audit (**qualitatively a diagnosis of implementation completeness, not a discovery**); type I converges from 27 static latent pairs to 1 run-time pair; type II has 0 run-time contention pairs (**and the material cannot distinguish "conflicts are rare" from "no run time in which conflict can occur"**). The chapter also locates that the layer-2 direction cancellation is dead code under the current set of effect producers.
+
+### 3.1 The intervention seven-tuple and this paper's audit criterion
+
+This paper defines the intervention unit as a seven-tuple
+
+  **I = ⟨tr, c, δ, ch, b, se, pr⟩**,
+
+where tr is the trigger condition (a predicate acting on a decision snapshot); c ∈ C is the acted-upon construct, C being the construct set (engagement, persistence, self-efficacy, social connection, online time, health compliance); δ ∈ {+1, −1} is the action direction (promote / suppress); ch is the presentation channel; b is the intervention-budget consumption; se is the set of known side effects; pr is the compliance priority (integer, larger = higher priority). The construct set C is derived from three theories — the gamification-mechanism taxonomy (MDA and game-element classification), self-determination theory (the three basic psychological needs autonomy / competence / relatedness), and the behaviour-change-technique taxonomy (Fogg behaviour model and COM-B's capability / opportunity / motivation decomposition); the direction field δ inherits the "promote / suppress" semantics of behaviour-change techniques; the priority field pr is set by compliance requirements (minor protection), not engineering preference.
+
+**Pre-fixing the criterion.** To avoid the self-exemption of "being unclassifiable is itself a discovery," this paper wrote its conclusion criterion in stone before executing the audit: if the unclassifiable proportion is below 5%, the schema's construct set already covers enough, so the finding "schema granularity is inappropriate" does not hold; if it is above 20%, the schema's granularity itself needs re-design. §3.2 shows the measured result falls in the latter.
+
+### 3.2 Mapping coverage and the unclassifiable proportion: measured 77.8%, triggering the self-set threshold (**a diagnosis of implementation completeness**)
+
+The audit maps the 54 mechanisms field by field onto the seven-tuple; the measured results are as follows.
+
+**Field availability**: of the seven fields, only `trigger` (implemented as `stage`) is fully available across all 54 mechanisms (54/54), and `direction` is available on 12 mechanisms (12/54, see the direction table in §3.3.1). The other four fields — `target_construct`, `channel`, `side_effect`, `precedence` — **do not exist in the code**: neither the registry nor the orchestrator defines these fields, so any value can only be reverse-inferred by the analyst from document semantics, not read from the implementation.
+
+**Unclassifiable proportion**: by the caliber of "whether a `direction` field can be assigned" (a key schema field), the mechanisms that cannot be classified number **42/54 = 77.78%**. The list of the 42 mechanism IDs without a direction label is in the `4_unclassifiable.no_direction_ids` field of `results/m2/m2_conflict_analysis.json`.
+
+**This figure triggers the threshold set by this paper itself (> 20%), but its qualitative classification must be stated clearly: this is a diagnosis of implementation completeness, not a discovery.** As stated in §3.1, the criterion set before the audit was "an unclassifiable proportion above 20% indicates the schema granularity itself needs re-design." The measured 77.8% far exceeds this threshold, so this paper's conclusion is **not** "the experimental schema's coverage is acceptable," but: **the granularity of this seven-tuple does not match the implementation's** — a formalization that lists "acted-upon construct," "presentation channel," "side effect," and "compliance priority" as required fields, when four of them do not exist at all in the implementation, describes a design intention, not an auditable system. This conclusion is self-negating for this paper, and we do not soften it.
+
+**But self-negation is not a discovery.** Three limits must be stated: first, the cause of this proportion is that **four fields of the schema we ourselves designed are not implemented in our own code** — **designer and audited party are the same party**, so the number measures "how much of the written schema has landed," and is a **diagnosis of implementation completeness**; second, fixing the threshold in advance and thereby self-vetoing constrains **this paper's methodological discipline**, and reading it as "an audit of the system discovered some universal fact" is a **category error**; third, this paper therefore **withdraws** the early-draft phrasing "triggers this paper's self-set falsification condition" — a "falsification condition" presupposes a falsifiable proposition about the external world, whereas what is falsified here is only the **internal-consistency hypothesis** that "the schema I wrote and the implementation I wrote match each other." **The reviewer's judgement (§6.1: "more like a diagnosis of incomplete implementation than a discovery triggered by a falsification condition") is accepted by this paper and landed here as phrasing and qualitative classification.**
+
+**A contrasting caliber that must also be stated together**: if one instead asks for the proportion of mechanisms that "cannot be placed into the governance document's A–H eight categories," the measured value is **0%** (all 54 entries in the governance document carry an A–H classification). The two numbers are not contradictory; they measure two different things: the governance document's classification is "has an affiliation," whereas the seven-tuple examined here is "field-level availability." A mechanism being classified as A does not mean its `channel` or `side_effect` is implemented. This paper adopts the latter caliber, because only it answers the question "can the system be automatically audited."
+
+### 3.3 Detection of three conflict types
+
+#### 3.3.1 Type I · effect-direction conflict
+
+The conflict condition of type I is: c_i = c_j and δ_i = −δ_j and the trigger windows tr_i ∧ tr_j can be simultaneously true. The audit cross-checks three data sources: the direction table of `mechanism_arbitrator.py`, the budget policy, and the real intervention-effect producers in `learning_orchestrator.py`.
+
+**Direction-table coverage**: `_DIRECTION` registers only **12/54** mechanisms (`mechanism_arbitrator.py:102-107`). Of these, approach (promote direction) has 9: `LF-M07, M08, M10, M13, M25, M26, M33, M35, M44`; withdraw (suppress direction) has 3: `LF-M51, M52, M53`. The **static latent pairs (upper bound)** are therefore 9 × 3 = **27 pairs**.
+
+**Document-anchored same-construct pairs**: by the construct semantics of the governance document, the substantive pairs on the same acted-upon construct (online time) are **2 pairs** — LF-M44 fear-of-missing-out (approach) ↔ LF-M51 forced rest (withdraw), and LF-M44 fear-of-missing-out (approach) ↔ LF-M52 minor protection (withdraw).
+
+**Actually detectable at run time**: **1 pair** (LF-M44 vs LF-M52). The whole repository constructs an intervention effect in only two places:
+
+**Table 1. The two run-time intervention-effect producers**
+
+| Mechanism | Construction site | Run-time attributes |
+|---|---|---|
+| LF-M44 | `deep_addiction_engine.py:296` | `user_visible=True, health_critical=False, cost=1.5, priority=50` |
+| LF-M52 | `learning_orchestrator.py:986` | `user_visible=False, health_critical=True, cost=0.0, priority=100` |
+
+**The gap between the static 27 pairs and the run-time 1 pair** is the most important measured fact of this type: registering opposed directions in the direction table does not mean they will meet at run time. The source of the gap is developed in the next subsection.
+
+#### 3.3.2 Type II · budget contention
+
+The original design called the second conflict type "channel contention," on the grounds that "the same presentation channel is contended by multiple interventions within the same time window." The audit shows this naming does not match the implementation: there is no measure of channel load in the code; what exists is the **budget policy** `BudgetPolicy` (`mechanism_arbitrator.py:44-53`), with parameters: `max_per_session = 3`, `max_per_day = 6`, `max_cost_per_session = 4.0`, `min_interval_sec = 300`. This paper therefore **renames type II as "budget contention"**; "channel load" is demoted to a remark under this type, not an independent judgement dimension.
+
+**Measured result: run-time contention pairs = 0.** The only non-health candidate visible at run time is LF-M44 alone, insufficient for a pair; LF-M52 bypasses the budget directly because `health_critical=True` (`mechanism_arbitrator.py:380-382`) and does not participate in contention.
+
+**The structural cause of zero contention** (the most worth-recording part of this section): the 28 secondary mechanisms at "step 13" produce only **evaluation records** (written to `decision_snapshot["mechanism_evaluations"]`, see `learning_orchestrator.py:1105`); they **construct no intervention effect, enter no arbitrator, and consume no budget**. In other words, far more mechanisms are "on the register" than truly "participate in arbitration," and this gap leaves budget contention without a realcarrier.
+
+**A judgement thereby obtained: non-zero ≠ detectable.** Even if the direction table registers 3 suppress-direction mechanisms and the budget policy prescribes session and daily caps, as long as the producer set keeps them out of the arbitrator, budget contention is a problem **with no detectablecarrier in the current system**. This paper holds that this distinction (conflict in design vs. conflict detectable) should become a routine reporting item for similar audit work, because treating the former as the latter systematically overestimates a system's governance needs.
+
+#### 3.3.3 Type III · schema-classification conflict
+
+Type III examines the information-modelling-level conflict of "the same mechanism is inconsistently affiliated under two classification systems." The audit object is the mapping between the governance document's eight letters (A–H) and the registry `CATEGORIES`'s five categories (retention / motivation / selfreg / cognition / health).
+
+Measured result: **7 of the 8 governance letters span ≥ 2 code-side categories**, with only H (health guardrail and ethics) a single mapping.
+
+**Table 2. Governance letters and the code-side categories they fall into**
+
+| Governance letter | Code-side categories fallen into |
+|---|---|
+| A | motivation, retention |
+| B | motivation, retention |
+| C | cognition, motivation, selfreg |
+| D | motivation, retention, selfreg |
+| E | cognition, motivation, retention, selfreg |
+| F | motivation, retention |
+| G | cognition, motivation |
+| H | health (the only single mapping) |
+
+The meaning is: **the two taxonomies are not refinements of one another**. A mechanism being A in the governance document and `retention` in the code registry is not a naming difference but a real manifestation of "classification conflict" at the information-modelling level — any scheme attempting to serve both the governance document and run-time scheduling with one encoding must first resolve the alignment of these two systems.
+
+### 3.4 A directly provable finding: the layer-2 direction cancellation is dead code under the current set of intervention-effect producers
+
+Combining the results of type I and type II yields a software-engineering fact, previously unrecorded and directly provable.
+
+The system designs two layers of conflict dissolution: **layer 1** is the health override (`mechanism_arbitrator.py:157-170`), and **layer 2** is direction cancellation. The direction-cancellation implementation only compares directions among interventions with `user_visible = True` (`mechanism_arbitrator.py:344-349`). Of the only two effect producers in the whole repository, LF-M44 is `user_visible=True, health_critical=False` and LF-M52 is `user_visible=False, health_critical=True`. Therefore:
+
+- LF-M52 **never enters the direction comparison**, and the layer-2 direction cancellation **is not triggered**;
+- their semantic opposition is actually dissolved by the **layer-1 health override** — LF-M52 discards all approach-direction interventions.
+
+**Conclusion: the structural opposition implemented by this system is the semantics of "health veto," not "direction cancellation"; the layer-2 direction cancellation is dead code under the current set of intervention-effect producers.** This judgement depends on no subjective coding, only on the attributes of two `Effect` construction points and one comparison scope, and any reader can re-check it with two `grep`s. This paper regards it as the "hardest" engineering finding of this audit: it shows that one layer of an apparently complete two-layer arbitration architecture has never been reached.
+
+It must be emphasized that this finding is **not** an accusation that "the system is defective," but a general reminder about multi-intervention architectures: **the existence of an arbitration layer does not entail the reachability of an arbitration path**. Before writing "multi-intervention governance" into a design document, the more basic step is to confirm whether a second intervention-effect producer competes at the same decision point.
+
+### 3.5 Audit conclusion on the compliance-preemption property S1
+
+The original design formalized "compliance priority" as a machine-checkable system property S1:
+
+> **Property S1 (compliance preemption).** If at state s there is an active compliance constraint k, then any intervention i with pr_i < pr_k must be silent at s, i.e., its execution indicator variable x_i(s) = 0; conversely, x_k(s) is unaffected by any lower-priority intervention.
+
+The audit's verdict on this property is "**satisfied at the implementation level, but implemented in a way stronger and cruder than the statement**." The reason: LF-M52 is registered with `health_critical=True` and `priority=100`; the health-veto layer unconditionally passes it and discards all approach-direction interventions (`mechanism_arbitrator.py:157-170`, `380-382`), which is effectively equivalent to "when a high-priority compliance constraint is active, lower-priority interventions must be silent." But the system does not express this constraint as machine-checkable temporal logic, nor does it leave a checkable arbitration trace (see §5), so S1's current status is **a system contract implied by the implementation but neither expressed nor verified by the system itself**.
+
+This conclusion is a downgrade for the original design: the value of S1 should have been "model-checkable and refutable by counter-example," but the audit finds that, because the layer-2 direction cancellation is dead code and the arbitration trace is not persisted, S1 in the current implementation **can neither be effectively refuted nor has independent verification evidence**. This paper therefore downgrades S1 from an "evaluated methodological contribution" to a "design requirement derived from the audit."
+
+### 3.6 Chapter summary
+
+1. Of the seven-tuple, only `trigger` (implemented as `stage`, 54/54 available) and `direction` (12/54 available) exist in the implementation; the four fields `target_construct`, `channel`, `side_effect`, `precedence` do not exist in code; the unclassifiable proportion is **42/54 = 77.8%**, triggering this paper's self-set > 20% threshold, with the conclusion that schema granularity does not match implementation granularity — **the qualitative classification of this result is a diagnosis of implementation completeness (designer's self-audit), not a discovery about the external world**.
+2. Type I: 27 static latent pairs, 2 document-anchored same-construct pairs, **1 actually detectable at run time** (LF-M44 vs LF-M52).
+3. Type II renamed "budget contention," run-time contention pairs = **0**; the structural cause is that the 28 step-13 secondary mechanisms write only evaluation records, constructing no intervention effect, entering no arbitrator, consuming no budget.
+4. Type III: 7 of the governance document's 8 letters span ≥ 2 code-side registry categories, so the two taxonomies are not refinements of each other.
+5. Two engineering findings: the layer-2 direction cancellation is **dead code** under the current set of effect producers; property S1 is implied by the implementation but not expressed by the system itself, and is therefore downgraded from "evaluated methodological contribution" to "design requirement derived from the audit."
+
+## 4 Mechanism Census, Taxonomy Conflict, and Numeric Drift
+
+**Chapter summary.** This chapter reports the mechanism census and the counting caliber. The governance document organizes 54 mechanisms into A–H eight categories, while the code-side registry `CATEGORIES` has only five values; both distributions sum to 54 but cannot corroborate each other. The chapter also gives the landing-strength stratification, the four-dimension mechanism-census distribution, the drift of asset and counting metrics relative to the registration baseline, and discloses that the PRD's title claims 76 while its §2.3 table sums to 69, self-contradicting.
+
+### 4.1 Two taxonomies: the governance document's 8 categories and the code-side's 5 categories
+
+**A fact extremely easy to miswrite must first be clarified**: the governance document organizes mechanisms into A–H **eight categories**. The code-side registry's `CATEGORIES` constant has only **five** values. The audit found no place that classifies mechanisms by A–H; the eight categories can only be parsed from the Markdown governance document. Therefore any statement attributing the A–H category system to the implementation code is false.
+
+The governance document's eight categories and their mechanism counts are:
+
+**Table 3. Governance document's eight categories and mechanism counts**
+
+| Category | Title | Mechanism count |
+|---|---|---:|
+| A | Behaviourism · reinforcement and reward | 8 |
+| B | Commitment, loss, and goal gradient | 8 |
+| C | Self-determination theory: autonomy · competence · relatedness | 6 |
+| D | Social influence and social learning | 10 |
+| E | Habit formation and self-regulation | 10 |
+| F | Emotion and motivation triggers | 4 |
+| G | UX micro-interaction and cognitive load | 4 |
+| H | Health guardrail and ethics | 4 |
+| | **Total** | **54** |
+
+The code-side registry's five categories and their mechanism counts are: retention 19 / motivation 18 / selfreg 9 / cognition 4 / health 4, total 54. Both distributions sum to 54, but **cannot corroborate each other** — they are two independent taxonomies' two classifications of the same batch of mechanisms, whose relationship was quantified in §3.3.3 as "7/8 governance letters span ≥ 2 code-side categories."
+
+In this paper's body, whenever "8 categories" is mentioned, it always refers to the governance document's taxonomy, which belongs to a different system from the code-side category system.
+
+### 4.2 Landing-strength stratification
+
+The audit stratifies the 54 mechanisms by landing strength, with the results below (caliber per `scan_mechanism_landing.py:177` and `learning_orchestrator.PIPELINE_MECHANISM_MAP`):
+
+**Table 4. Landing-strength stratification of 54 mechanisms**
+
+| Stratum | Measured | Caliber basis |
+|---|---:|---|
+| `landed` (implementation reference reachable, or wired/gated via orchestrator) | **54** | `scan_mechanism_landing.py:177` |
+| `orphan` | **0** | — |
+| Entered `PIPELINE_MECHANISM_MAP` step mapping | **34** | step 6(1)+8(2)+9(2)+12(1)+13(28) |
+| Source-code-text reference only (not in step mapping) | **20** | 54 − 34 |
+| Of which `is_enabled("<key>")` independently gated and truly called | **31** | 31 literals in `learning_orchestrator.py` |
+| 3 health guardrails exempt from gating by design | 3 | `lai_downgrade` / `forced_rest` / `minor_protection` |
+
+The 20 mechanisms not in the step mapping are: `LF-M02, M03, M07, M09, M10, M11, M17, M23, M25, M26, M27, M28, M30, M31, M36, M40, M42, M45, M47, M54`.
+
+**Caliber note on "19 or 20" (the denominator must be written)**: the governance document states "of LF-M01–LF-M53, 34 are gated and 19 are source-text-reference only; LF-M54 (`class_pet`) is an independent API module not entering the gating mapping," i.e., 34 + 19 + 1 = 54, and this statement holds on measurement; if the **whole 54 mechanisms** are taken as denominator, then those not in the step mapping are **20** (34 + 20 = 54). Both numbers are reproducible; the difference is only whether LF-M54 is counted in the denominator. **This paper fixes "the whole 54 mechanisms" as the denominator throughout, i.e., 20**, and notes it here.
+
+### 4.3 Mechanism census (Table 5 material)
+
+The audit performs an item-by-item census of the 54 mechanisms; the four-dimension distribution is as follows.
+
+**Table 5. Four-dimension mechanism census**
+
+| Dimension | Distribution |
+|---|---|
+| stage (trigger stage) | during 20 / pre 14 / ambient 13 / post 7 |
+| maturity | complete 9 / partial 37 / placeholder 8 |
+| disposition | R 32 / K 15 / M 6 / D 1 |
+| direction | unassigned 42 / approach 9 / withdraw 3 |
+
+This table itself is corroborating evidence for the §3.2 conclusion: on the `direction` dimension 42 mechanisms are unassigned, from the same source as the 77.8% unclassifiable proportion; on the `maturity` dimension only 9 mechanisms are complete, showing a systematic gap between "on the register" and "implementation complete."
+
+### 4.4 Numeric drift and the PRD self-contradiction
+
+The audit recomputed asset and counting metrics; the results show reproducible drift relative to the registration baseline.
+
+**Table 6. Asset and counting metrics: registration baseline vs. measured**
+
+| Metric | Registration baseline | Measured | Verdict |
+|---|---:|---:|---|
+| `python_loc` | 25,389 | **26,107** | drift +718 |
+| `source_files` | 87 | **90** | drift +3 |
+| `service_modules` | 54 | **57** | drift +3 |
+| `api_files` | 13 | 13 | consistent |
+| `api_routes_defined` | — | 104 | — |
+| `api_routes_reachable` | 104 | 104 | consistent (unreachable = 0) |
+| `test_files` | 53 | **54** | drift +1 |
+| `test_functions` | 826 | **842** | drift +16 |
+| `tests_collected` (pytest actual) | 920 | **936** | drift +16 |
+
+> **Two independent recomputations on 2026-09-25 and 2026-09-26 agree (asset metrics keep drifting after the audit).** Both recomputations yield: `python_loc` = **26,107**, `source_files` = **90**, `service_modules` = **57**, `test_files` = **54**, `tests_collected` = **936** (recompute command `learnflow-backend/scripts/verify_asset_numbers.py --with-pytest`). The values in this table are the **2026-09-26** recomputation snapshot; subsequent drift comes from Route A (A2 effect producers, etc.) and refactoring commits. **All audit conclusions in this section depend only on the code anchors sealed by tag `audit-m2-20260911` (mechanism registry, direction table, effect-producer locations), not on any asset-line-count metric**, so this drift affects none of the above judgements. Caliber-stability corroboration: the two independent recomputations on 2026-09-25 and 2026-09-26 agree digit for digit, showing the current table values are not a one-off chance value. (History chain: `python_loc` 25,389 (tag `audit-m2-20260911`) → 25,581 (2026-09-13) → **26,107** (identical on both 2026-09-25 and 2026-09-26 recomputations); `tests_collected` 920 → 934 (2026-09-13 intermediate) → **936** (current).)
+
+> **Recompute caliber and transparency note**: the "measured" column of this table is obtained by running `scripts/verify_asset_numbers.py --with-pytest` on the current working tree (zero-dependency: AST static parsing + `pytest --collect-only`, no app import), and shows onward drift from the "registration baseline" (`tests_collected` 920→936, `python_loc` 25,389→**26,107**, etc.) from normal development. Clarification: `artifacts/count_verification.json` is not an audit-time sealed artifact, generated in the same batch (13:40) as `asset_numbers.json`; and `git` HEAD records only commit 8a328430, not capturing the 13 uncommitted changes at that time, so "checkout 8a328430 reproduces the old table values" does not hold. The table values take this recomputation as authoritative, reproducible with one command (`python learnflow-backend/scripts/verify_asset_numbers.py --with-pytest`). It must also be honestly stated that part of the `python_loc` increment comes from the difficulty-fusion estimator landed thereafter (`app/services/difficulty_fusion.py::estimate_optimized_difficulty`, with commit sequence `4073bb0` and later changes), so this table's drift exceeds the audit-time snapshot; that algorithmic change alters none of this paper's audit conclusions.
+
+**The audit time is sealed (added 2026-09-22).** The candour of the previous paragraph cannot replace remediation: for an **audit-type** paper, "the audit time is not reproducible" is itself nearly fatal. This revision does two things, splitting reproducibility into **two classes of evidence handled separately**:
+
+1. **Code-anchor evidence — sealed and verifiable item by item.** An annotated git tag `audit-m2-20260911` (pointing to `8a328430d36860043f3bf80e8e0bf2a82edd2ecd`, 2026-09-11) was created for the audit baseline tree. All `file:line` anchors in this paper can be read from the **sealed tree** via `git show audit-m2-20260911:<path>`, independent of whether the current working tree has moved on. The verification script `results/m2/verify_m2_anchors.py` asserts this paper's key propositions item by item and persists `results/m2/m2_anchor_verification.json`; the current result is **7/7 PASS**: the whole repository has exactly **2** `Effect(` construction points (`deep_addiction_engine.py:296`'s LF-M44, `user_visible=True / health_critical=False`; `learning_orchestrator.py:986`'s LF-M52, `user_visible=False / health_critical=True`); the `_DIRECTION` table of `mechanism_arbitrator.py` registers **12** mechanisms (9 approach + 3 withdraw, hence the static latent pairs 9 × 3 = **27**); the direction-cancellation comparison scope is filtered by `user_visible` (so LF-M52 never enters the direction comparison); the layer-1 health-override branch exists. **These seven items constitute the complete evidence chain for this paper's two conclusions "dead code" and "effect-producing 2," now re-checkable with one command from the sealed tree.**
+2. **Asset-metric values — not reproduced by commit, but by recomputation.** The `python_loc` / `test_files` / `tests_collected` etc. in the above table are "current working-tree measurements," whose values change as development moves on, and **no tag can return them to the audit time** (because the audit-time values themselves came from a working tree with uncommitted changes). This paper's handling is: **explicitly declare that this table is not part of the audit conclusions**; it serves only to illustrate the qualitative fact that "drift exists between the registration baseline and the implementation status," and gives the recomputation command; the mechanism counts (54 / 2 / 9·37·8) and conflict detections (27 → 1, 0) on which the audit conclusions depend **do not depend on any number in this table**.
+
+If later review still requires "asset metrics reproducible at the audit time," the only honest remedy is to **re-run the audit once and commit the products on the same commit** ("audit and products on the same commit"); this paper recommends writing that norm into the next round of process, and does not retrospectively fabricate an audit-time snapshot.
+
+The measured results of the counting layer (six-layer caliber recomputation) are: `engine_classes` (L0) **86**, `mechanism_units` (L1) **60**, `mechanism_unique` (L2) **54**, `learning_methods` **28**, `skill_tree_nodes` **16**, `prd_claimed` **69**. Among these, L2's 54, the 28 learning methods, and the 16 skill-tree nodes are strict-caliber (`strict`) verified.
+
+**Another documentation drift in the maturity caliber**: the governance document states "9 complete / 41 partial / 4 placeholder," whereas the measured values are **9 / 37 / 8**. This paper adopts the measured values.
+
+**The PRD self-contradiction as evidence of "unconstrained multi-caliber"**: the item-by-item sum of the product-requirements document §2.3 table is **69**, while the same document's title and overview state **76**, the two inconsistent (`internally_inconsistent = true`). It must be stated that this paper makes no validity claim for the number 76: it is neither a script output nor a caliber at any level, but a manually filled claim conflicting with the same document's table. This paper strictly adopts **54** as the mechanism caliber throughout (L2, semantically de-duplicated unique mechanisms); 76 appears only in the above "actively disclose the document's self-contradiction" context, together with 69. This disclosure is deliberate: relying on the system's public repository makes the cost of passive exposure extremely high, and the audit process itself shows that it is precisely the registry and fingerprint mechanism that enables the automatic localization of multi-level caliber differences.
+
+**Disclosure of the repository's onward movement.** After the audit, the audited repository moved on: the audit baseline is `8a328430` (sealed as tag `audit-m2-20260911`), and the current HEAD is far past that commit, with the difficulty-fusion estimator's incremental landing stacked on that commit sequence. The asset metrics in the table above therefore have additional new drift relative to the audit time. **The handling that distinguishes the two classes of impact was written in the previous section**: code-anchor evidence always takes the sealed tree as authoritative (`verify_m2_anchors.py`, 7/7 PASS), and asset-metric values always take this recomputation as authoritative and are declared not to be part of the audit conclusions. All numbers in this paper have been updated to the 2026-09-26 recomputation values, with the recomputation commands unchanged (`python learnflow-backend/scripts/verify_asset_numbers.py --with-pytest`, `python learnflow-backend/scripts/verify_counts.py`, `python results/m2/verify_m2_anchors.py`). It must be emphasized: this onward movement is normal development increment and **affects none of this paper's audit conclusions** — this paper's mechanism counts, conflict detections, and cross-system-replication conclusions are all produced by read-only audit scripts, and the anchors are sealed, independent of asset line counts.
+
+### 4.5 Chapter summary
+
+1. The A–H eight categories are the **governance-document taxonomy** and must not be attributed to the code-side registry; the code-side `CATEGORIES` has only the five values retention / motivation / selfreg / cognition / health, both distributions sum to 54 but cannot corroborate each other.
+2. Landing-strength stratification: `landed` **54**, `orphan` **0**; entered the `PIPELINE_MECHANISM_MAP` step mapping **34**, not entered **20** (this paper uniformly takes the whole 54 mechanisms as denominator).
+3. Four-dimension mechanism census: `stage` during 20 / pre 14 / ambient 13 / post 7; `maturity` complete 9 / partial 37 / placeholder 8; `disposition` R 32 / K 15 / M 6 / D 1; `direction` unassigned 42 / approach 9 / withdraw 3.
+4. Six counting-layer items: `engine_classes` **86**, `mechanism_units` **60**, `mechanism_unique` **54**, `learning_methods` **28**, `skill_tree_nodes` **16**, `prd_claimed` **69**.
+5. Asset drift takes the **2026-09-26** recomputation as authoritative (`python_loc` 25,389→**26,107**, `tests_collected` 920→**936**; the 2026-09-13 intermediate snapshot is 25,581 / 934, and the two recomputations on 2026-09-25 and 2026-09-26 agree, asset metrics keep drifting, see the table supplement); the PRD title claims **76** while the same document's §2.3 table sums to **69**, self-contradicting, and this paper strictly adopts **54** as the mechanism caliber throughout.
+
+## 5 Design Requirements Derived from the Audit: An Auditable Intervention Ledger
+
+**Chapter summary.** This chapter downgrades the auditable intervention ledger from an "evaluated contribution" to a "design requirement derived from the audit." The audit confirms the repository has no ledger implementation: no `budget_consumed` field, no `preempted_by` field, no ledger module, and `ArbitrationTrace` is not persisted. Therefore the three classes of consistency checks cannot produce numbers before A3's synthetic sessions; A3 has produced a counterfactual distribution (§5.2), and this chapter can only give the ledger schema, the check definitions for the three violation types, and a design argument for replacing a distributed ledger with Merkle anchoring.
+
+### 5.1 Ledger schema and current implementation status
+
+At the original design stage, the auditable intervention ledger was listed as an "evaluated contribution"; after the audit this paper **downgrades it to a design requirement derived from the audit**, because it is not currently implemented. The reason is as follows.
+
+> **Route A progress (2026-09-22): ledger A1 landed.** After the student chose Route A (empirical strengthening) to go first, the chapter-5 ledger schema was upgraded from "design specification" to "partially implemented": `ArbitrationTrace` gained three fields `budget_consumed` / `preempted_by` / `arbitration_decision`, filled by `MechanismArbitrator.arbitrate` at each arbitration; a new `app/services/arbitration_ledger.py` provides `LedgerTraceSink` (synchronous SQLite append-only persistence, opt-in, injected into the orchestrator by the environment variable `LEARN2_LEDGER_ENABLED=1`). **Important boundary**: A1 only adds observability and **does not change the number of effect producers** (still 2; A2 not yet implemented), so run-time conflicts still cannot occur; the ledger has no run-time logs yet (A3 pending), and the three classes of consistency checks **are executable but yield 0 rows**.
+
+The repository has no intervention-ledger implementation (state before Route A, retained as the audit-time reference):
+
+```
+grep -rln "budget_consumed\|preempted_by\|ledger" app/    # → before Route A: no matches
+```
+
+Specifically (before Route A): no `budget_consumed` field, no `preempted_by` field, no ledger module; `ArbitrationTrace` exists only in memory or within a single call (`mechanism_arbitrator.py:57-69`), **not persisted as an append-only ledger**. This is consistent with the project's own "journal-paper split plan" line 463 self-statement ("`budget_consumed` and `preempted_by` fields are not yet implemented and must be marked as to-be-completed in the implementation chapter") — that self-statement was rewritten by A1 after Route A launched as "implemented (opt-in persistence)."
+
+Therefore, the ledger schema proposed in this paper — each record containing `mechanism_id`, `intervention_instance_id`, `session_id`, `decision_snapshot` (ability estimate, each source difficulty, fusion weights, flow zone, mechanism switches, experiment group), `budget_consumed`, `arbitration_decision`, `preempted_by`, `timestamp` — can currently be given only as a **to-be-implemented design specification**. The system's existing `learning_events` event-stream table implements the freezing of `decision_snapshot` and the `record_learning_event` instrumentation, and can serve as the ledger-persistence access point, but the ledger itself does not yet exist.
+
+### 5.2 Three classes of consistency checks: the algorithm is executable and A3 synthetic sessions have produced a distribution
+
+The original design defined three ledger violation types and their check algorithms:
+
+**Table 7. Three ledger violation types and checks**
+
+| Violation type | Definition | Planned check | This-round status |
+|---|---|---|---|
+| Budget overspend | Σ `budget_consumed` within a session > B | aggregate and compare by session | **Implemented and runnable; A3 synthetic sessions have produced a distribution** |
+| Executed although preempted | `preempted_by` non-empty but `arbitration_decision = executed` | record-level assertion | **Implemented and runnable; measured violation rate = 0 (safety invariant holds)** |
+| Decision with no record | intervention effect appears but no corresponding ledger record | reconcile event stream with ledger | **Implemented and runnable; the ledger is the record source, always 0** |
+
+**Ledger persistence (A1, 2026-09-22) is implemented**, the three consistency-check algorithms **are executable**; and in Route A's A3 (2026-09-22) synthetic sessions **first produced a real distribution**. A3 drives the real `MechanismArbitrator` (with `MemoryBudgetStore` + in-memory trace sink), runs 10,000 sessions × 40 steps (400,000 steps) with the Route A ≥14-producer set, and uses "only the 2 existing producers" as the reference baseline; the results are as follows (see `results/m2/a3_synthetic_sessions.json`):
+
+**Table 8. Run-time conflict distribution: before vs. after Route A producer expansion**
+
+| Metric | Before (2-producer baseline) | After (≥14 producers, opt-in) |
+|---|---:|---:|
+| Run-time conflict frequency (Layer-2 direction-opposition discard ratio) | 0.000 | 0.633 |
+| Contention rate (step ratio discarded by either health-veto or conflict-resolution layer) | 0.299 | 0.971 |
+| Budget-exhaustion rate (session ratio with at least one step discarded by budget) | 0.433 | 1.000 |
+| Preemption-violation rate (step ratio with `preempted_by ∩ delivered ≠ ∅`) | 0.000 | 0.000 |
+
+**Key interpretation**: before the change the conflict frequency = 0 (LF-M52 is on the health-veto side, triggering Layer-1 not Layer-2 conflict, so type-II run-time contention is always 0, consistent with the chapter-3 audit conclusion on the natural 2-producer system); after the change the conflict frequency = 0.633, directly proving that the previously-audit-indistinguishable dichotomy "conflicts are rare vs. cannot occur" **becomes quantifiably distinguishable after enabling ≥14 producers** (Δ = 0.633). The preemption-violation rate = 0 under both modes validates the safety invariant "a preempted mechanism never enters the delivery set" (A1's persisted field `preempted_by` is precisely the measurement basis of this assertion). The above are **counterfactual (opt-in, not deployed)** distributions: they characterize "how the same arbitrator would behave if the Route A producer set were enabled," and **do not alter the chapter-3 audit conclusion on the natural 2-producer system** (whose measuredcarrier remains the 2 producers at the sealed time `audit-m2-20260911`).
+
+The only runnable substitutes are the asset recomputation in §4.4 and the portability and persistence checks for the table-creation script: under SQLite, 13/13 table-creation statements succeed and 6/6 tables are built (`user_xp_state, skill_defs, user_skill_tree, experiments, experiment_assignments, experiment_results`) as PASS; the persistence check passes 9/9 items (including "after simulating a process restart `total_xp` is still 150" and "`members` elements restored as `TeamMember` instances"); `impl_ref` reference integrity 54/54 OK; the new `verify_m2_ledger.py` structurally validates A1 persistence (ArbitrationTrace fields + LedgerTraceSink access) as PASS. These are unrelated to the ledger (except `verify_m2_ledger.py`); they are listed here only to delimit "which conclusions have runnable support."
+
+### 5.3 Replacing a distributed ledger with Merkle anchoring (design argument)
+
+As a design argument rather than a measured conclusion: the ledger's tamper-resistance requirement can be met by a Merkle tree plus periodic public anchoring, whose cost and complexity are about two orders of magnitude lower than a distributed ledger, and which requires no institutional authorization or legal recognition. This paper therefore recommends absorbing the reasonable kernel of "trustworthy handling of educational data" into the ledger design, without introducing blockchain technology itself. It must be re-emphasized that Merkle anchoring remains a **not-yet-implemented design argument**; but Route A's A1 has already implemented append-only persistence of the arbitration trace (synchronous SQLite, `LedgerTraceSink`, opt-in), so the premise "ledger persistence" is already in place, and Merkle anchoring can be viewed as an optional enhancement on top of persistence, whose feasibility awaits later implementation verification.
+
+### 5.4 Chapter summary
+
+1. The repository has no intervention-ledger implementation, so all content in this chapter is a **design specification**, not a measured result.
+2. The three consistency checks (budget overspend, executed although preempted, decision with no record) **are executable, and A3 synthetic sessions (10,000 sessions × 40 steps) first produced a run-time distribution**: after the change conflict frequency 0.633 vs. before 0.000, contention rate 0.971 vs. 0.299, budget-exhaustion rate 1.000 vs. 0.433, preemption-violation rate always 0 (see §5.2 table and `results/m2/a3_synthetic_sessions.json`); real deployment-traffic run-time logs are still lacking.
+3. The only runnable substitutes are table-creation-script portability (under SQLite 13/13 statements succeed, 6/6 tables built) and state persistence (9/9 PASS), both unrelated to the ledger; they are listed only to delimit "which conclusions have runnable support."
+4. A Merkle tree plus periodic public anchoring is a **not-yet-implemented** design argument; ledger append-only persistence (A1) is implemented, and Merkle anchoring as an optional enhancement on top of persistence awaits later implementation verification.
+
+## 6 Cross-System Replication (E2)
+
+**Chapter summary.** This chapter reports cross-system replication (E2). File-by-file coding of Ludilearn (6 mechanisms) and Level Up XP (11 mechanisms) shows: under the strict caliber, both external systems have 0 type-I conflicts. Ludilearn makes conflict non-existent by construction through mutually exclusive activation; Level Up XP caps intervention intensity in advance through H/D/W/M four-tier rate windows, with type III = 1. The external-system coding is a single analyst's coding without inter-rater reliability, so this paper always states the relaxed upper bound alongside the strict caliber.
+
+The purpose of cross-system replication is to answer a question the original design could not: is "multi-intervention conflict" a single-system defect of this system, or a general property of this class of systems? The audit performed a shallow clone and file-by-file coding of two public gamified systems.
+
+### 6.1 Audit objects and coding method
+
+- **System A · Ludilearn**: `https://github.com/DigiDago/moodle-format_ludilearn`, commit `eb69582fb4def6e4cbb26c2146ceb90435951c53`, GPL-3.0, PHP. This system is also part of the LudiMoodle+ project (French ANR e-FRAN / France 2030) and **explicitly sells itself on "adaptive gamification,"** with a Hexad-profile adaptation algorithm (`classes/local/adaptation/hexad_scores.php`). The mechanism list, after removing abstract base classes and the `nogamified` enum from `classes/local/gameelements/*.php`, totals **6**: `avatar, badge, progress, ranking, score, timer`.
+- **System B · Level Up XP**: `https://github.com/FMCorz/moodle-block_xp`, commit `65541fdc9c77511a906353f6660e195eeaa51893`, GPL-3.0, PHP. The mechanism list, enumerated from `classes/local/{xp,leaderboard,badge,rule,division,notification,check}` and `classes/form/{cheatguard,promo}`, totals **11**.
+
+**Coding method and its limits (must be stated together)**: `target_construct`, `direction`, `channel` are semantic annotations obtained by **a single analyst's coding** — the external systems **do not carry** `direction` metadata themselves, and each coding attaches a `file:line` anchor (see the `schema` field of `results/m2/m2_e2_external.json`). This paper **does not compute inter-rater reliability (IRR)**, and therefore does not claim double coding. To expose the sensitivity of the coding criterion, below we report the "strict type I" (requiring same target and opposite direction) while always giving the **relaxed upper bound** (ignoring target matching, requiring only directional opposition).
+
+### 6.2 Ludilearn: type I and type III both 0, conflict non-existent by construction
+
+**Table 9. Ludilearn conflict detection**
+
+| Conflict type | Detected | Note |
+|---|---:|---|
+| Type I (strict: same target and opposite direction) | **0** | `score` etc. are approach; `timer` is withdraw (timeout penalty, `timer.php:46`'s `DEFAULT_PENALTIES=20`), but targets differ (engagement/performance vs. time/rhythm) |
+| Type I (relaxed upper bound: any approach × withdraw) | 5 | holds only when target matching is ignored |
+| Type II (budget contention) | no budget concept | 4 mechanisms (badge/progress/ranking/score) write the same user state, but the system has no rate cap |
+| Type III (objective conflict) | **0** | no compliance/health-guardrail mechanism |
+
+**Key structural finding**: Ludilearn's 6 elements are **mutually exclusively activated** — `classes/local/gamification/manager.php:126-146`'s `attribution_game_element()` first `DELETE`s the other elements' attributions under that section (SQL condition `sectionid=... AND type != ...`) before assigning a game element to a section. Therefore even relaxing to any directional opposition, type-I conflict cannot be activated: only one game element is effective in the same section at the same time.
+
+**Replication conclusion**: the multi-intervention conflict problem examined in this paper **does not exist by construction** in Ludilearn — it avoids conflict through "mutually exclusive assignment," not resolves it through arbitration.
+
+### 6.3 Level Up XP: type III = 1, rate windows isomorphic to budget governance
+
+**Table 10. Level Up XP conflict detection**
+
+| Conflict type | Detected | Note |
+|---|---:|---|
+| Type I (strict) | **0** | no same-target opposite-direction pair |
+| Type I (relaxed upper bound) | 18 | 2 withdraw (`rule_limits`, `cheatguard`) × 9 approach |
+| Type II (budget contention) | **exists, with explicit cap** | 5 mechanisms (xp_points/levels/leaderboard/rank/badge) write the same user state; `classes/local/ruletype/limit_spec.php` provides **H/D/W/M four-tier rate windows** plus a `timesallowed` cap |
+| Type III (objective conflict) | **1** | `cheatguard` (compliance, anti-cheat interception) against all approach mechanisms |
+
+**Replication conclusion**: Level Up XP is a **pure-engagement system** (no health/wellbeing guardrail), so this system's layer-1 "health veto" semantics has **no counterpart** in it. Its budget governance lies in the **rate window** (`limit_spec`), isomorphic but different in granularity from this system's layer-3 "session/day/cost" budget. This provides a cross-system comparison for the concept of "intervention budget": it is not invented by this paper — it does independently appear in industrial systems and needs governance.
+
+### 6.4 Cross-system conclusion: conflict is structurally avoided, not resolved
+
+Placing the two systems side by side with this system yields this paper's most important comparative conclusion:
+
+**Table 11. Cross-system comparison of conflict structure**
+
+| | This system | Ludilearn | Level Up XP |
+|---|---|---|---|
+| Mechanism count | **Registered 54 / effect-producing 2** (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default) **/ maturity 9·37·8** | 6 | 11 |
+| Type I (strict) | 1 (and dissolved by health veto) | 0 | 0 |
+| Type I (relaxed upper bound) | 27 (static latent pairs) | 5 | 18 |
+| Type II | 0 (nocarrier) | no budget concept | explicit rate cap exists |
+| Type III | 7/8 letters span categories | 0 | 1 |
+| Conflict-handling method | layered arbitration (layer 1 reached, layer 2 dead code) | mutually exclusive activation, impossible by construction | rate windows, capped in advance |
+
+> **Table note (caliber must be read)**: this row's "54 / 2 / 9·37·8" three figures must always be stated together. The two external systems' mechanism counts (6 / 11) are **registration counts**, with 0 effect producers (neither has the construct "intervention effect"). **Therefore this table cannot be compared horizontally on mechanism scale**: this system's 54 is a registration scale, but only 2 truly participate at run time (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default); placing 54 next to 6 and 11 without explanation would manufacture the very inflated scale this paper is criticizing.
+
+**Conclusion sentence (narrowed per reviewer §6.1)**: in **the 2 external systems coded in this paper**, conflict is not resolved but **structurally avoided** — Ludilearn makes opposed elements impossible to coexist through mutually exclusive activation, and Level Up XP caps intervention intensity in advance through four-tier rate windows. Conversely, **it is precisely the architecture of "54 mechanisms registered simultaneously" that makes conflict an observable object** (but note: 54 are registered, only 2 can produce effects, so "observable" is observable at the **registration level**, not at the run-time level). Therefore this paper's problem framing should converge to a narrower and more honest formulation: the multi-intervention-coexistence architecture is the **scarce condition** that exposes intervention conflict, not a universal predicament of this class of systems.
+
+**Three strength limits on this conclusion (must be on the same page as the conclusion)**: first, the external-system sample is **n = 2**, both Moodle/PHP plug-ins, homologous in language and architecture, so we can only write "**the 2 external systems coded in this paper**," never "most similar systems." Second, the external systems' `target_construct` / `direction` / `channel` are coded by a **single coder**, with **no inter-rater reliability (IRR)** computed, so the detected 0 depends heavily on the coding criterion; this paper therefore always gives the relaxed upper bound alongside (Ludilearn 5, Level Up XP 18) to expose criterion sensitivity. Third, **the reading "avoids conflict" itself depends on this paper's type-I criterion** — with a looser criterion, the external systems could also be read as "potential conflict exists but is not triggered," and the two are indistinguishable under this paper's material.
+
+This conclusion is a **counter-example** to the original design's expectation that "cross-system replication would upgrade a single-point observation into a class finding": the replication was indeed completed, but it supports "conflicts are rare" rather than "conflicts are universal," and, as stated in Author's Declarations item 1, this paper's material **cannot distinguish "conflicts are rare" from "there is simply no run time in which conflicts could occur."** This paper faithfully reports this directional reversal and this indistinguishability.
+
+> **A4 gap (must be closed before submission, currently PENDING).** The E2 cross-system coding in this section is currently **n = 2 systems, single coder, no inter-rater reliability (IRR) computed**, so the §6.4 conclusion can only be a descriptive finding for n = 2 and must not be generalized into a general proposition about similar systems. Under Route A's establishment conditions, **A4 (cross-system ≥ 4 systems + two independent coders + reported Cohen's κ inter-rater reliability) is a hard to-do that must be completed before submission, currently PENDING** — its plan and CODEBOOK are ready (`docs/M2_A4_external-system-double-coding-plan.md` + `results/m2/a4_coding_template.csv`), and the real coding and κ recomputation must be executed by ≥ 2 human coders. **Before A4 is completed, this paper reports no κ value or inter-rater-reliability number, nor any suggestive phrasing implying "high reliability."**
+
+### 6.5 Chapter summary
+
+1. Under the strict caliber, both external systems have **0** type-I conflicts (Ludilearn 0, Level Up XP 0).
+2. Ludilearn's conflict is **non-existent by construction**: `attribution_game_element()` first deletes other elements' attributions under the same section before assignment (`classes/local/gamification/manager.php:126-146`).
+3. Level Up XP is a pure-engagement system with no health guardrail, and its type III is **1** (`cheatguard` against all approach mechanisms); budget governance lies in `limit_spec`'s H/D/W/M four-tier rate windows, isomorphic but different in granularity from this system's session/day/cost budget.
+4. Conflict in the two external systems is **structurally avoided**, not resolved; this inversely supports the conclusion that "the multi-intervention-coexistence architecture is the scarce condition that exposes conflict."
+5. Methodological limit: `target_construct` / `direction` / `channel` are single-coded, with no IRR computed, so the strict judgement depends heavily on the coding criterion; this paper always gives the relaxed upper bound alongside (Ludilearn 5, Level Up XP 18).
+
+## 7 Prediction-versus-Measurement Comparison
+
+**Chapter summary.** This chapter presents side by side the five predictions fixed before the audit and the measured results. P1 (expected unclassifiable proportion 10–20%) is overturned by the measured 77.8% and triggers the falsification condition; P2 (three conflict types universal) is overturned; P3 (cross-system replication would upgrade to a class finding) reverses in direction and is likewise overturned; P4 (S1 model-checkable) and P5 (ledger three violations reliably detectable) could not be tested because of the audited system's implementation gaps. Wherever a prediction is overturned, the original predicted direction is retained without post-hoc embellishment.
+
+This section presents side by side the predictions fixed before the audit and the measured results. Wherever a prediction is overturned, the original predicted direction is retained without post-hoc embellishment.
+
+**Table 12. Predictions fixed before the audit versus measured results**
+
+| No. | Prediction before audit | Measured | Verdict |
+|---|---|---|---|
+| P1 | After mapping 54 mechanisms to the seven-tuple, **10–20% were expected to be unclassifiable due to semantic ambiguity**; criterion: > 20% means schema granularity must be re-designed | **77.8% (42/54)**, four fields **do not exist in our own code** | **Prediction overturned → triggered self-set threshold**; conclusion: schema granularity does not match implementation granularity. **Qualitative correction (reviewer §6.1)**: this is a **diagnosis of implementation completeness** (designer and audited party are the same), **not** a general discovery about the external world; the original "falsification-condition triggered" phrasing is withdrawn to "self-set threshold triggered" |
+| P2 | Three conflict types universal in this system; type I contains at least the structural case "FOMO × minor protection × rest reminder" | Type I run-time **only 1 pair** (M44–M52); type II **0 pairs**; type III is 7/8 letters spanning categories | **Prediction overturned** (conflicts not universal) |
+| P3 | Cross-system replication would upgrade the single-point observation into a class finding: the two external systems would also detect non-zero conflict | Ludilearn type I/III both **0**; Level Up XP type I **0**, type III **1** | **Prediction overturned** (direction reversed: conflicts rare) |
+| P4 | Compliance-preemption property S1 expressible in temporal logic and **model-checkable** on the orchestrator state machine | S1 satisfied at the implementation level but **not expressed by the system itself**, no arbitration trace persisted, so neither effectively refutable nor with independent verification evidence | **Not tested** (downgraded to design requirement) |
+| P5 | Ledger three violations reliably detectable (expected detection rate > 0.95, false-positive rate < 0.05) | **Cannot execute**: `budget_consumed`/`preempted_by`/ledger have zero matches in the repository | **Not tested** (original hypothesis deleted) |
+
+The three overturned predictions (P1–P3) are not "the experiment was done badly," but the pre-audit judgement of the system was itself over-optimistic; the two not-tested (P4–P5) expose the audited system's implementation gaps. This paper holds that reporting these five rows in full is more valuable than reporting only supportive results — it genuinely fulfills the constraint "prediction before data" into a checkable form.
+
+### 7.1 Chapter summary
+
+1. Three predictions (P1–P3) were overturned, all in directions opposite to the pre-audit expectation; among them P1 directly triggered this paper's self-set > 20% threshold, but the qualitative classification of that result is a **diagnosis of implementation completeness** (designer and audited party are the same), so its "overturning" significance is limited to this paper's methodological discipline and does not constitute a general discovery about the external world.
+2. Two predictions (P4, P5) could not be tested, exposing the audited system's implementation gaps: S1 is not expressed by the system itself, and the ledger and `budget_consumed` / `preempted_by` fields do not exist.
+3. The three overturned predictions are not "the experiment was done badly," but the pre-audit judgement of the system was itself over-optimistic; this paper does not soften them nor embellish the predicted direction post hoc.
+4. Reporting overturned and untested predictions in full is the checkable form of the constraint "prediction before data."
+
+## 8 Discussion
+
+**Chapter summary.** This chapter discusses this paper's positioning and practical implications. The audit conclusion forces this paper to downgrade its own positioning once: S1 is implied by the implementation but not expressed by the system itself, the allocation model has no realcarrier because the run-time contention count is 0, and the cross-system replication is completed but reversed in direction. Therefore this paper does not claim to have proposed a verified method; its contribution is the audit itself. This chapter gives three directly actionable implications for system designers.
+
+### 8.1 Self-assessment: "taxonomy or method"?
+
+The audit conclusion forces this paper to honestly downgrade its own positioning once. The original design prepared three conditions to cross the verdict "this is merely a taxonomy": the machine-checkability of S1, the applicability precondition of the allocation model's regret analysis, and the cross-project replication E2. The measured results: S1 is implied by the implementation but not expressed (§3.5), the allocation model's applicability precondition has no realcarrier because the **run-time contention count is 0** (§3.3.2), and E2's replication is completed but reversed in direction (§6.4). Therefore, **this paper does not claim to have proposed a verified method**; this paper's contribution is the audit itself — it clarifies a problem previously assumed to exist but never checked (multi-intervention run-time conflict) into "in this system and two external systems it almost never occurs, and the reason it does not occur is structural avoidance."
+
+In the context of empirical software engineering, this conclusion is of no small value: it replaces a widely circulating design intuition ("the more mechanisms, the more conflict, the more need for arbitration and budget") with an empirical fact anchored in code, and points out the condition under which that intuition holds (two or more intervention-effect producers compete at the same decision point).
+
+### 8.2 This paper's current form and the choice between Route A / Route B
+
+The reviewer's judgement is clear: **this paper's existing material is sufficient to support a limited internal static audit, but insufficient to support an empirical-software-engineering journal paper**; the question "what can other system designers learn from this audit" currently has a weak answer ("register mechanisms but produce no effect, and there will be no conflict"). Therefore the reviewer required choosing one of two routes to redo, rather than patching on the existing form. The two routes are listed below, with **costs and benefits itemized**; **the route was chosen by the student on 2026-09-22: Route A (empirical strengthening) goes first** (corresponding to the "October 6 interview" decision item in the reviewer's §8 schedule; the memo is updated to read "decided — Route A"), and this paper's body is changed from "pending" to "Route A in progress" accordingly, without writing any item as an unresolved fact.
+
+**Route A (empirical strengthening, can stand as a journal paper).** Three engineering increments, none dispensable:
+
+1. **Land the ledger from design specification to implementation (A1, implemented 2026-09-22)**: land `budget_consumed`, `preempted_by`, and `ArbitrationTrace` persistence (chapter-5 schema implemented as-is, opt-in `LEARN2_LEDGER_ENABLED=1` append-only persistence via `arbitration_ledger.LedgerTraceSink`); the three consistency checks in §5.2 first become runnable (0 run-time rows pending A3 data).
+2. **Raise effect producers from 2 to ≥ 14 (A2, implemented 2026-09-22)**: add `route_a_producers.py`, one literal `Effect(` construction point each for 12 new mechanisms, and explicitly list the existing LF-M44/LF-M52 into the A3 candidate set to keep the simulation self-contained; `verify_counts`'s AST sites rise from 2 to **16** (different mechanisms actively produced at run time, de-duplicated by mechanism = 14). Off by default (merged into the FOMO arbitrator only when `LEARN2_A2_PRODUCERS=1`), not affecting the 936 existing tests; the sealed baseline of 2 is at tag `audit-m2-20260911`.
+3. **Drive synthetic sessions through the real orchestrator to produce a run-time distribution (A3, implemented 2026-09-22)**: `results/m2/a3_synthetic_sessions.py` drives the real `MechanismArbitrator` for 10,000 sessions × 40 steps, producing conflict frequency / contention rate / budget-exhaustion rate / preemption-violation rate (see §5.2 and `a3_synthetic_sessions.json`); **A4 (cross-system side expanded to ≥ 4 systems + two coders + reported Cohen's κ) remains to be executed externally / manually**; the plan and CODEBOOK are ready (`docs/M2_A4_external-system-double-coding-plan.md` + `results/m2/a4_coding_template.csv`), and the real coding and κ recomputation require ≥ 2 human coders (see §6).
+
+*Benefit*: this paper is upgraded from "diagnosis of incomplete implementation" to "empirical audit with run-time distribution and reliability report," and the three conclusions of §3.3–3.4 (27 → 1, 0, dead code) all change from static inference to measured; the reviewer's §6.1 three criticisms (conclusion exceeds material, cannot distinguish rare from impossible, n = 2 without reliability) are **resolved item by item**. *Cost*: the largest workload, and the second item (raising mechanisms to effect producers) will **change the audited system itself** — bringing a methodological cost: the audit object is no longer "the system in its natural state" but "the system modified to pass the audit." This paper holds this cost is manageable (reporting the 2 pre-modification producers and the ≥14 post-modification producers **side by side** as the "registration scale / effective scale" comparison), but it must be written explicitly in the paper, not concealed.
+
+**Route B (reduce, not established as a journal paper).** Split the existing content into the **thesis chapter 4 (governance chain)** + **a short experience report** (workshop or short paper, 8–10 pages). *Benefit*: no extra engineering investment, and the existing material is **valid** under the genre "internal audit + negative results + self-criticism" — the short experience report is exactly the suitable vehicle for "we audited our own system by our own schema and found three fields unimplemented and one arbitration layer never reached"; it is also precisely the honest answer the reviewer calls "what other designers can learn" (**first count the `Effect` construction points, then talk about arbitration**). *Cost*: abandon the journal paper, and the five planned-level questions in chapter 2 still need resolution (this paper is not one of those five).
+
+**This paper's decision (2026-09-22, student chose Route A first).** Route A's three engineering increments (A1 ledger landing / A2 effect producers ≥14 / A3 synthetic-session run-time distribution + A4 external ≥4 systems double-coding κ) are launched in parallel as the establishment condition for the journal paper from this decision; among them A1 (ledger landing) was implemented on the decision day (see chapter 5 and `verify_m2_ledger.py`). Route B's form (short experience report / thesis chapter 4) is no longer the "submit-first" priority but a **milestone output** before Route A is completed — its core value ("first count the `Effect` construction points, then talk about arbitration") has been directly absorbed into Route A's second item (raising producers from 2 to ≥14) as experimental design. The costs and benefits of both routes remain itemized above for reviewer traceability.
+
+**The common precondition of both routes**: regardless of which is chosen, the three-part caliber "**registered 54 / effect-producing 2 / maturity 9·37·8**" must always appear together (Author's Declarations item 2) — Route A has rewritten the second number as "2 before modification / 16 after modification (AST sites, opt-in; 14 different mechanisms at run time)," which must be reported side by side, not directly replaced (the sealed baseline of 2 is at tag `audit-m2-20260911`).
+
+### 8.3 Teaching and practical implications
+
+For designers of adaptive learning systems, this paper's implications are three, all directly actionable. First, **count the producers first, then talk about arbitration**: before claiming a system has conflict governance, first `grep` the number of intervention-effect construction points; if there is only one producer at the same decision point, the "conflict" retrieved exists only in document semantics. Second, **include taxonomy alignment in design review**: if the governance document's classification and the run-time registry's classification are not a refinement relationship (this paper measured 7/8 governance letters spanning ≥ 2 registry categories), any statistic relying on a single encoding will be distorted. Third, **make constraints expressible by the system itself**: the health veto is currently a contract implied by the implementation but uncheckable by the system itself; writing it as a machine-checkable assertion and persisting the arbitration trace is a necessary step from "design convention" to "verifiable system property."
+
+### 8.4 Chapter summary
+
+1. This paper **does not claim** to have proposed a verified method; the contribution is the audit itself, i.e., clarifying a problem assumed to exist but never checked into "in the system audited here and 2 external systems it almost never occurs."
+2. The design intuition ("more mechanisms, more conflict, more need for arbitration and budget") is replaced by an empirical fact anchored in code, with the condition for that intuition to hold given: two or more intervention-effect producers competing at the same decision point.
+3. Three practical implications: count intervention-effect producers before talking about arbitration; include the alignment of the two taxonomies in design review; make compliance constraints assertions checkable by the system itself and persist the arbitration trace.
+4. The three bases for the above downgrade are respectively the self-assessment in §8.1, the zero-contention measurement in §3.3.2, and the directional reversal in §6.4.
+5. This paper's current form is **insufficient to support a journal paper**: Route A's A1 (ledger implementation) / A2 (effect producers ≥ 14) / A3 (synthetic-session run-time distribution) were implemented on 2026-09-22 (see §5.2 and `a3_synthetic_sessions.json`), with **A4 (≥ 4 systems + two-person coding Cohen's κ) still to be executed externally / manually**; Route B (split into thesis chapter 4 + short experience report) is a milestone output before A2/A3 are completed.
+
+## 9 Honest Gap List (Limitations)
+
+**Chapter summary.** This chapter lists this paper's limitations and honest gaps item by item, without merging or weakening. The **twelve** gaps come from four aspects: environment and sample (MySQL not measured, cross-system sample only 2 and homologous, external coding no reliability, no real-person experiment), the audited system's implementation status (ledger not implemented, no real run-time logs), **the hard limits the material imposes on conclusion strength (items ⑩⑪, added 2026-09-22)**, and this paper's own positioning and unfinished work (no claim that mechanisms are effective, LAI scale unvalidated, taxonomy completeness unproven, **Route A decided (2026-09-22); A1/A2/A3 implemented, A4 to be executed externally / manually**).
+
+**① MySQL table creation not measured.** The audit environment has no `sqlglot` and no MySQL server, so the MySQL scripts are **not measured**, and this paper must not claim MySQL is verified. Only the SQLite results can be written: 13/13 statements succeed, 6/6 tables built (PASS).
+
+**② Cross-system sample small and homologous.** E2 covers only 2 external systems, both in the Moodle/PHP ecosystem, homologous in language and architecture, with limited generalizability. The original design wrote 2–3 systems; 2 were actually completed.
+
+**③ External-system coding is single coding, no reliability computed.** `target_construct` / `direction` / `channel` are a single analyst's coding, each coding with a `file:line` anchor, but **no inter-rater reliability (IRR) is computed**, and this paper does not claim double coding. And neither external system has a `target_construct` dictionary, so the "strict type I" detection depends heavily on the coding criterion; this paper therefore always gives the relaxed upper bound alongside (Ludilearn 5, Level Up XP 18) to expose criterion sensitivity. **This single-coding gap is the corresponding item of A4: A4 (cross-system ≥4 systems + two independent coders + reported Cohen's κ) is a to-do that must be closed before submission, currently PENDING; before A4 is completed, this paper reports no inter-rater-reliability number.**
+
+> **A4 scaffold prepared (added 2026-09-26; real κ still PENDING, this item does not constitute A4 completion).** To lower the access cost for later independent coders, two double-coding scaffolds were generated from the real `file:line` anchors and recorded `target_construct` / `direction` / `channel` codings of §6 (E2): ① `results/m2/a4_coderA.csv` — the analyst (coder=`coderA_analyst`) fills in row by row, for the **Ludilearn (6 mechanisms: LUDI_1…LUDI_6) + Level Up XP (11 mechanisms: LUXP_1…LUXP_11)** 17 mechanism instances coded in §6, the real anchors and codings cited in `results/m2/m2_e2_external.json`, adding no anchor or coding beyond §6; ② `results/m2/a4_coderB_template.csv` — same item_id and column structure, but `target_construct` / `direction` / `channel` / `source_anchor` are **left blank**, awaiting an **independent human coder B** to actually clone the two repositories and fill in independently after counting file:line by file:line. A pipeline sanity self-check was run once (loading coderA as both A and B into `external_coding_kappa.py`), and the three fields' Cohen's κ are all 1.000 — **this result only proves the computation pipeline is usable, not the real inter-rater reliability**. The real Cohen's κ can be computed **only after receiving coder B's independent filling**; the current real κ status remains **PENDING**, A4 remains in the "to be executed externally / manually" PENDING framework, and this paper continues to **report no inter-rater-reliability number**. (Candidate systems Habitica / Khan codings were not clone-verified, are not within coderA, and remain TODO to be filled.)
+
+**④ No experiment requiring human subjects was done.** This paper contains no real-person experiment, involving no recruitment or ethics review; correspondingly, this paper reports no intervention-load perception, harassment, or usability-scale results.
+
+**⑤ No claim that any mechanism is effective for learning.** This paper does not evaluate the learning effect of gamified mechanisms, nor does single-mechanism ablation. All statements about mechanisms are limited to "implementation-level wiring, direction, and budget attributes."
+
+**⑥ Ledger schema and three consistency checks are implemented, A3 synthetic sessions have produced a distribution; real run-time data still lacking.** Route A's A1 (2026-09-22) has landed `budget_consumed` / `preempted_by` / `ArbitrationTrace` persistence (synchronous SQLite, opt-in); A3 (2026-09-22) has driven the real `MechanismArbitrator` (with `MemoryBudgetStore` + in-memory trace sink) for 10,000 synthetic sessions × 40 steps (400,000 steps), and first produced the distribution of the three consistency checks (budget-overspend distribution, executed-although-preempted violation rate = 0, decision-with-no-record always 0, see `results/m2/a3_synthetic_sessions.json`; alongside the "only 2 existing producers" reference baseline). **What remains lacking is real run-time logs** (A2 belongs to the run-time data channel, pending real deployment traffic), so statistics based on run-time logs are still 0 rows this round; Merkle anchoring remains an unimplemented design argument.
+
+**⑦ Learning-addiction measurement not validated (only when cited as a governance variable).** This paper treats "health compliance" as a governed objective within the construct set, one measurable facet of which is learning-addiction tendency. If a self-report scale is introduced, this paper adopts the Learning Addiction Index (LAI): five-dimension weights time 30% / motivation 25% / control 25% / cognitive 10% / function 10%, where "control + function" totaling 35% is supplied by the self-report measurement layer (`instrument_catalog.py`'s SRL-STOP / SLEEP-IMPACT / SOCIAL-IMPACT / TIME-BIAS); unmeasured dimensions are not counted into the weighting and output coverage for disclosure, and never silently padded as "health." The scale items are **self-authored by this project, with no reliability/validity validation, no norms, no clinical cut-off**, and are a work-in-progress instrument; no clinical or diagnostic inference may be drawn from it. The mitigation path is three-pronged: ① use public validated scales (BStAS 5 items, Atroszko et al., 2025; SI-10, Loscalzo et al., 2024; Chinese adolescent learning-burnout scale ASBI, Wu et al., 2010) as convergent-validity anchors; ② complete a minimal reliability/validity set (α/ω + EFA→CFA + 2-week retest ICC + correlation with burnout/anxiety); ③ use self-report scores and behavioural logs (night-answering ratio, consecutive-use days, dropout rate) for convergent validity. None of the above is completed.
+
+**⑧ Static audit cannot replace run-time observation.** This paper's conclusions come from code static audit and cross-system coding; the studied system **has no logs generated by real users**, so it cannot show the conflict frequency and budget-consumption distribution under real intervention flows. How common violations like "budget exhaustion" and "executed although preempted" actually are at run time is entirely unanswerable by this paper.
+
+**⑨ Taxonomy completeness not proven.** This paper argues that every field of the seven-tuple has a theoretical origin, but does not prove the completeness of the field set — a common limitation of any formalization work; and as shown in §3.2, the availability of this schema on the current implementation is itself insufficient.
+
+**⑩ Hard limit the material imposes on conclusion strength: this paper cannot distinguish "conflicts are rare" from "no run time in which conflict can occur." (Added 2026-09-22)** This is the topmost limitation of this paper, simultaneously bounding the conclusions of §3.3.2, §3.3.3, §3.4, and §6.4. Reason: the secondary mechanisms write only evaluation records and construct no intervention effect (the whole repository has only **2** effect producers, sealed baseline tag `audit-m2-20260911`), and this paper has **no real user logs**. Therefore the measured "type-II run-time contention count = 0" and the alternative explanation "the system simply has no run time in which conflicts could occur" are **indistinguishable under this paper's material**. Similarly, the 77.8% unclassifiable proportion is a **designer's self-audit** (the designed schema and the implemented code are the same party), a **diagnosis of implementation completeness**, not a general discovery about the external world. **On this basis this paper withdraws all generalized formulations of the form "multi-intervention systems rarely conflict," and narrows the conclusion to a descriptive one**; the only proposition that does not depend on run-time frequency and is therefore independently provable is the §3.4 "**the existence of an arbitration layer does not entail the reachability of an arbitration path**."
+
+**⑪ Audit-time asset metrics not reproducible by commit (partially remedied). (Added 2026-09-22)** §4.4 has honestly stated that `checkout 8a328430` cannot reproduce the audit-time asset metrics (the working tree then contained uncommitted changes). This revision's remedy is **classified handling**: **code-anchor evidence** is sealed by tag `audit-m2-20260911` and verified item by item by `results/m2/verify_m2_anchors.py` (**7/7 PASS**), forming the complete re-checkable evidence chain for the two conclusions "dead code" and "effect-producing 2"; **asset-metric values** (`python_loc` etc.) remain qualitatively unrecoverable, and this paper explicitly declares they **are not part of the audit conclusions**, serving only to illustrate the qualitative fact that "drift exists between the registration baseline and the implementation status." **The residual risk must still be stated**: if review requires asset metrics also reproducible at the audit time, the only honest remedy is to re-run with "audit and products on the same commit," and this paper does not retrospectively fabricate a snapshot.
+
+**⑫ Route A selected (2026-09-22); this paper's current form proceeds along Route A for journal-paper establishment. (Added 2026-09-22)** The reviewer's judgement: the existing material is valid as an **internal static audit** but cannot support a general conclusion about the system, so one must choose between Route A (ledger implementation + effect producers ≥ 14 + synthetic-session run-time distribution + ≥ 4 systems double-coder reliability) and Route B (split into thesis chapter 4 + short experience report). This paper's body has itemized the costs and benefits of both routes (§8.2); **on 2026-09-22 the student chose Route A first**, where A1 (ledger landing) is implemented, A2/A3 are implemented, and A4 remains to be executed externally / manually. Before the choice, this paper's submission positioning was undetermined (this sentence is retained as an audit-time record; it is now resolved as Route A).
+
+### 9.1 Chapter summary
+
+1. Of the twelve limitations ①–⑫, ②③ come from sample and method, ①⑥⑧ from implementation and environment gaps, **⑩⑪ from the hard limits of material and reproducibility (topmost)**, and ④⑤⑦⑨⑫ from this paper's self-limitations and unfinished work.
+2. The three most affecting generalizability: cross-system sample small and homologous, external-system coding no inter-rater reliability computed, **material cannot distinguish "conflicts rare" from "no run time in which conflict can occur."**
+3. The three most affecting conclusion strength: static audit lacks real run-time-log support, ledger not implemented makes the three consistency checks unexecutable, **77.8% is a designer's-self-audit implementation diagnosis, not a discovery.**
+4. Reproducibility: code anchors are sealed by tag `audit-m2-20260911` and verified 7/7; asset-metric values are not part of the audit conclusions and cannot be rolled back to the audit time.
+5. LAI is a self-authored, reliability/validity-unvalidated work-in-progress instrument; no clinical or diagnostic inference may be drawn from it.
+6. Submission positioning decided: Route A (empirical strengthening, journal paper); A1/A2/A3 implemented (A3 has produced the synthetic-session conflict distribution), A4 to be executed externally / manually (§8.2).
+
+## 10 Conclusion
+
+**Chapter summary.** This chapter summarizes the whole paper. The headline caliber is the three-part "registered 54 / effect-producing 2 / maturity 9·37·8." The three core numbers of the audit are: unclassifiable proportion 77.8% (**qualitatively a diagnosis of implementation completeness**, not a discovery); type-I conflict converges from 27 static latent pairs to 1 run-time pair, and that pair is handled by the health-veto layer not the direction-cancellation layer; type-II run-time contention count is 0. Cross-system replication further shows that the 2 external systems coded in this paper both have 0 type-I conflicts under the strict caliber. The resulting main-line conclusion is a **descriptive** negative result, and this paper's material cannot distinguish "conflicts are rare" from "no run time in which conflict can occur." This chapter also gives three design requirements, the two-tier follow-up work of Route A / Route B, and the single independently provable engineering proposition.
+
+This paper rewrites a widely assumed design intuition — "a system running dozens of intervention mechanisms simultaneously must inevitably experience intervention conflict and therefore needs arbitration and budget governance" — into a checkable empirical proposition, and gives measured evidence contrary to the intuition. **The headline caliber is three-part, none dispensable: registered 54 / effect-producing 2** (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default) **/ maturity complete 9 · partial 37 · placeholder 8.** Under this caliber, the three core numbers of the audit are: unclassifiable proportion **77.8% (42/54)** — but it must be stated that it **is a diagnosis of implementation completeness** (four fields not implemented in our own code, designer and audited party the same), **not** a general discovery about the external world; type-I conflict converges from 27 static latent pairs to **1** run-time pair, and that pair is handled by the layer-1 health veto not the layer-2 direction cancellation, the latter being **dead code** under the current set of effect producers; type-II budget contention's run-time contention count is **0**, because the secondary mechanisms write only evaluation records and enter no arbitrator. Cross-system replication further shows that **the 2** external gamified systems coded in this paper both have 0 type-I conflicts under the strict caliber — they avoid conflict **by construction** through mutually exclusive activation and rate windows.
+
+The resulting main-line conclusion is a negative result: **the multi-intervention-coexistence architecture is the scarce condition that exposes intervention conflict, not a universal predicament of this class of systems** — but this paper's material **cannot distinguish** "conflicts are rare" from "there is simply no run time in which conflicts could occur" (real user logs are 0, effect producers are only 2, sealed baseline tag `audit-m2-20260911`), so this paper writes this only as a **descriptive** conclusion, and holds the single independently provable engineering proposition: **the existence of an arbitration layer does not entail the reachability of an arbitration path**. This paper also reports the failures of its own method (insufficient schema coverage, ledger not implemented, external coding no reliability, taxonomy dual-track, audit-time asset metrics not reproducible by commit) and the limits the material imposes on conclusion strength, and turns these failures into three actionable design requirements: count intervention-effect producers before talking about arbitration; include the alignment of the two taxonomies in design review; make compliance constraints assertions checkable by the system itself and persist the arbitration trace. Follow-up work proceeds along **Route A**: **A1 ledger implemented** (chapter 5 `budget_consumed` / `preempted_by` / `ArbitrationTrace` persistence, verified by `verify_m2_ledger.py`); **A2 implemented** (effect producers raised from 2 to 16 AST construction points / 14 different mechanisms, opt-in, see §8.2 and `verify_counts`); **A3 implemented** (synthetic sessions drive the real `MechanismArbitrator` for 10,000 sessions × 40 steps, conflict frequency 0.633 after vs. 0.000 before, see §5.2 and `results/m2/a3_synthetic_sessions.json`); **A4** expands external systems to ≥ 4 and introduces two independent coders with Cohen's κ, **still to be executed externally / manually** (see §8.2 and the "M2 Route A/B Decision Memo"). Route B's form (short experience report / thesis chapter 4) is a milestone output before A2/A3 are completed.
+
+### 10.1 Chapter summary
+
+1. **Headline caliber (three-part, none dispensable)**: registered **54** / effect-producing **2** (sealed baseline tag `audit-m2-20260911`; under A2 the current HEAD carries **16** AST sites / **14** mechanism opt-ins, off by default) / maturity **complete 9 · partial 37 · placeholder 8**.
+2. The main-line conclusion is a negative result and is **descriptive**: **the multi-intervention-coexistence architecture is the scarce condition that exposes intervention conflict, not a universal predicament of this class of systems**; but the material cannot distinguish "conflicts are rare" from "no run time in which conflict can occur."
+3. The three core numbers correspond to three judgements respectively: 77.8% (**diagnosis of implementation completeness**, not a discovery), 27 → 1 (type I's static vs. run-time gap), 0 (type II has no realcarrier, and is also the entry to the alternative explanation "no run time in which conflict can occur").
+4. **The single independently provable engineering proposition**: the existence of an arbitration layer does not entail the reachability of an arbitration path (§3.4; evidence chain verified 7/7 by `results/m2/verify_m2_anchors.py`, anchors sealed at tag `audit-m2-20260911`).
+5. Three actionable design requirements: count intervention-effect producers before talking about arbitration; include the alignment of the two taxonomies in design review; make compliance constraints assertions checkable by the system itself and persist the arbitration trace.
+6. Route A: A1/A2/A3 implemented (ledger persistence / effect producers 2→16 construction points / synthetic-session conflict frequency 0.633 vs. 0.000); A4 (≥ 4 systems + two-person coding Cohen's κ) to be executed externally / manually (§8.2).
+
+## References
+
+[1] Hsu, T.-C. C., Whelan, P., Gandrup, J., Armitage, C. J., Cordingley, L., & McBeth, J. (2024). Personalized interventions for behaviour change: A scoping review of just-in-time adaptive interventions. *British Journal of Health Psychology*, 30, e12766. DOI: 10.1111/bjhp.12766.
+
+[2] Kone, C., Kaufmann, E., & Richert, L. (2024). Bandit Pareto set identification: The fixed budget setting. *Proceedings of the 27th International Conference on Artificial Intelligence and Statistics (AISTATS)* (PMLR 238), 2548–2556. arXiv:2311.03992.
+
+[3] Kone, C., Kaufmann, E., & Richert, L. (2025). Constrained Pareto set identification with bandit feedback. *Proceedings of the 42nd International Conference on Machine Learning (ICML)* (PMLR 267), 31342–31378. arXiv:2506.08127.
+
+[4] Kim, C. W., Moondra, J., Verma, S., Pollack, M., Kong, L., Tambe, M., & Gupta, S. (2025). Navigating the social welfare frontier: Portfolios for multi-objective reinforcement learning. *Proceedings of the 42nd International Conference on Machine Learning (ICML)* (PMLR 267), 30631–30653. arXiv:2502.09724.
+
+[5] Liu, R., Pan, Y., Xu, L., Song, L., You, P., Chen, Y., & Bian, J. (2025). Efficient discovery of Pareto front for multi-objective reinforcement learning. *International Conference on Learning Representations (ICLR 2025, Poster)*. https://openreview.net/forum?id=fDGPIuCdGi. arXiv:2410.02236.
+
+[6] Burnetas, A. N., Kanavetas, O., & Katehakis, M. N. (2025). Optimal data driven resource allocation under multi-armed bandit observations. *Annals of Operations Research*. DOI: 10.1007/s10479-025-06554-3. (Online-first; no formal volume/pages yet — the Springer temporary pagination 1–28 is not cited.)
+
+[7] Reymond, M., Bargiacchi, E., Roijers, D. M., & Nowé, A. (2024). Interactively learning the user's utility for best-arm identification in multi-objective multi-armed bandits. *Proceedings of the 23rd International Conference on Autonomous Agents and Multiagent Systems (AAMAS)*, 1611–1620. DOI: 10.5555/3635637.3663022.
+
+[8] Xue, B., Cheng, J., Liu, F., Wang, Y., Zhang, L., & Zhang, Q. (2025). Lexicographic Lipschitz bandits: New algorithms and a lower bound. *Journal of Machine Learning Research*, 26(223), 1–56.
+
+[9] Dai, W.-A., Xu, W., & Xing, Q.-W. (2025). Gamified learning impact: A meta-analysis of game element combinations on students' learning outcomes. *Educational Technology Research and Development*, 73(4), 2617–2643. DOI: 10.1007/s11423-025-10493-y.
+
+[10] Slamet, T. I., & Meng, C. (2025). Gamification in collaborative learning: Synthesizing evidence through meta-analysis. *Journal of Computers in Education*, 12(4), 1367–1403. DOI: 10.1007/s40692-024-00349-4.
+
+[11] Nafchi, M. Z. (2025). Digital fatigue and gamification: A systematic literature review. *ACC Journal*, 31(2), 59–69. DOI: 10.2478/acc-2025-0010.
+
+[12] Tondello, G. F., Wehbe, R. R., Diamond, L., Busch, M., Marczewski, A., & Nacke, L. E. (2016). The Gamification User Types Hexad Scale. *CHI PLAY '16: Proceedings of the 2016 Annual Symposium on Computer-Human Interaction in Play* (2016), 229–243. DOI: 10.1145/2967934.2968082. (Peer-reviewed conference paper.)
+
+[13] Xu, J. (2025). Digital health tools and habit formation: Investigating the role of anti-addiction systems in mitigating social media dependency. *International Journal of Innovative Research and Scientific Studies*, 8(2), 3332–3339. DOI: 10.53894/ijirss.v8i2.6007.
+
+[14] Zhang, C., Lakens, D., & IJsselsteijn, W. A. (2021). Theory integration for lifestyle behavior change in the digital age: An adaptive decision-making framework. *Journal of Medical Internet Research*, 23(4), e17127. DOI: 10.2196/17127. PMID: 33835036; PMCID: PMC8065564.
+
+[15] Atroszko, P. A., Charzyńska, E., Buźniak, A., Czerwiński, S. K., Griffiths, M. D., Jankowska, A., Kamble, S., Mizik, Z., Pontes, H. M., Shane, J., Sussman, S., Woropay-Hordziejewicz, N. A., & Pallesen, S. (2025). Validity, reliability, and cross-cultural comparability of a problematic overstudying scale across European, North American, and Asian countries. *International Journal of Mental Health and Addiction*, 23(1), 580–602. DOI: 10.1007/s11469-023-01128-5.
+
+[16] Loscalzo, Y., Wetstone, H., Schuldberg, D., Giannini, M., & Rice, K. G. (2024). Studyholism in the United States and Italy. *Current Psychology*, 43(29), 24608–24621. DOI: 10.1007/s12144-024-06163-6.
+
+[17] Wu, Y., Dai, X., Wen, Z., & Cui, H. (2010). Development of an adolescent learning burnout scale. *Chinese Journal of Clinical Psychology*, 18(2), 152–154. (Indexed only by Chinese databases, no DOI.)
+
+[18] Sailer, M., Hense, J. U., Mayr, S. K., & Mandl, H. (2017). How gamification motivates: An experimental study of the effects of specific game design elements on psychological need satisfaction. *Computers in Human Behavior*, 69, 371–380.
+
+[19] DigiDago. (2025). *moodle-format_ludilearn* [Computer software]. GitHub. commit eb69582fb4def6e4cbb26c2146ceb90435951c53. https://github.com/DigiDago/moodle-format_ludilearn (GPL-3.0).
+
+[20] Frédéric Massart (FMCorz). (2025). *moodle-block_xp* [Computer software]. GitHub. commit 65541fdc9c77511a906353f6660e195eeaa51893. https://github.com/FMCorz/moodle-block_xp (GPL-3.0).
+
+[21] Colomer Ferrer, S. (2025). Adapting games to player taxonomy. In *2n Simposi sobre Investigació a la Indústria Indie del Videojoc (I3V 2025)*, Terrassa, Spain, 12 December 2025. Universitat Politècnica de Catalunya. Handle: https://hdl.handle.net/2117/451926. **[Source-grade declaration: non-peer-reviewed]** UPCommons/Recercat records it as a conference report (Comunicació de congrés), whoseoriginating work is an undergraduate final project (Treball de Fi de Grau, TFG), **not peer-reviewed**; no DOI, ISBN, or ISSN; CC BY-NC-SA 4.0 open access, published 2025-12-12. This paper uses it only in §2.1 as corroborating evidence for the observation that "a profile-opposed configuration raises perceived difficulty and lowers adaptation sense," explicitly disclosing its source grade in three places (§2.1 body, reference [21] here, and the statistics-calibre paragraph); **this paper's conclusion does not depend on this item.**

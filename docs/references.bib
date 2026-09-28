@@ -319,7 +319,6 @@
   year      = {2023},
   doi       = {10.1080/10447318.2022.2041909},
   note      = {[已核验] Int. J. Hum.-Comput. Interact. 39(3):612-627, 2023. DOI: 10.1080/10447318.2022.2041909. 作者：Mazarakis Athanasios, Brauer Paula. Kiel University. N=505，最多 190 道多选题. 核心发现：单个机制各有显著动机增益，但组合效应不等于各机制效应之和. 注：bib 原记 year=2024，实为期刊 2023 卷（online 2022）；已更正为 2023}
-}190 道多选题. 核心发现：单个机制各有显著动机增益，但组合效应不等于各机制效应之和. 注：bib 原记 year=2024，实为期刊 2023 卷（online 2022）；已更正为 2023}
 }
 
 
@@ -1203,7 +1202,23 @@
   pages     = {229--243},
   doi       = {10.1145/2967934.2968082},
   publisher = {ACM},
-  note      = {[已核验] ACM CHI PLAY 2016（同行评审会议论文）；DOI 10.1145/2967934.2968082 经 ACM DL 直核；支撑「自适应游戏化与用户类型学」论点。2026-09-23 用户决定替换原 [12] Colomer Ferrer (2025，非同行评审 I3V 研讨会/本科毕设 TFG)}
+  note      = {[已核验] ACM CHI PLAY 2016（同行评审会议论文）；DOI 10.1145/2967934.2968082 经 ACM DL 直核；支撑「自适应游戏化与用户类型学」论点。2026-09-23 用户决定替换原 [12] Colomer Ferrer (2025，非同行评审 I3V 研讨会/本科毕设 TFG)；2026-09-27 用户决策 A 改为**保留原论断并补回为 M2 [21]**、显式标注来源等级，与本条并存，本条仍为该位置上唯一的同行评审来源}
+}
+
+% M2 [21] 玩家画像驱动的游戏适配（2026-09-27 作者决策 A：保留并显式标注来源等级，替代"删除论断"方案）。
+% 证据等级：**非同行评审**。UPCommons / Recercat 著录为会议报告（Comunicació de congrés），
+% 母体为 Universitat Politècnica de Catalunya 的本科毕业设计（Treball de Fi de Grau, TFG）。
+% 无 DOI / ISBN / ISSN；开放获取，许可证 CC BY-NC-SA 4.0；出版日 2025-12-12。
+@inproceedings{colomer2025adapting,
+  author    = {Colomer Ferrer, Sergi},
+  title     = {Adapting games to player taxonomy},
+  booktitle = {2n Simposi sobre Investigaci{\'o} a la Ind{\'u}stria Indie del Videojoc (I3V 2025)},
+  address   = {Terrassa, Spain},
+  month     = dec,
+  year      = {2025},
+  publisher = {Universitat Polit{\`e}cnica de Catalunya},
+  url       = {https://hdl.handle.net/2117/451926},
+  note      = {[2026-09-27 补录并核实，源 = UPC 机构库 UPCommons 记录页，DOI/ISBN/ISSN 均无]**来源等级：非同行评审**——UPCommons/Recercat 著录类型为「Comunicació de congrés」（会议报告），母体为本科毕业设计（Treball de Fi de Grau, TFG），未经同行评审；handle https://hdl.handle.net/2117/451926，出版日 2025-12-12，开放获取，许可证 CC BY-NC-SA 4.0。无 DOI、无 ISBN、无 ISSN，按本项目铁律（无标识符且无法证实者不强行填充）留空。内容核实：Unity 插件形式的实时适配层，以 HEXAD 玩家类型为轴做 action--reaction 闭环（敌人密度／奖励／商店行为系数），在改良的开源 2D roguelike shooter 上跑两轮 A/B，三组条件（无适配 / placebo / 画像适配）；结果——画像对齐的适配提高感知适配性、维持或略提升享受度，**画像相反（profile-opposed）设置抬高感知难度、降低适配感**。与 M2 正文 2.1 节所述结论一致。**引用边界（作者决策 A，2026-09-27）**：本条仅用作旁证，已在正文 2.1 节、M2 参考文献 [21] 条、核验清单统计口径段三处显式披露来源等级；M2 结论不依赖本条，其同行评审替代佐证为 tondello2016hexad}
 }
 
 % M2 [13] 数字健康工具与习惯形成。
@@ -1355,14 +1370,23 @@
   note         = {[已核验] 预印本 arXiv:2512.14220v1 (2025-12-16). 作者：Marthe Ballon, Andres Algaba, Brecht Verbeken, Vincent Ginis. 尚未正式发表}
 }
 
-% M3 [12] LLM 与人类难度对齐。
-@misc{li2025canllms,
-  author       = {Li, Ming and Chen, Han and Xiao, Yan and Chen, Jia and Jiao, Hao and Zhou, Tian},
-  title        = {Can {LLMs} estimate student struggles? {Human-AI} difficulty alignment with proficiency simulation for item difficulty prediction},
-  year         = {2025},
+% M3 [12] LLM 与人类难度对齐。（**2026-09-27 更正**：已由 arXiv 预印本正式发表于
+% Findings of ACL 2026，见下 note；早期著录为 @misc arXiv preprint 属过期判断。）
+@inproceedings{li2026canllms,
+  author       = {Li, Ming and Chen, Han and Xiao, Yunze and Chen, Jian and Jiao, Hong and Zhou, Tianyi},
+  title        = {Can {LLMs} Estimate Student Struggles? {Human-AI} Difficulty Alignment with Proficiency Simulation for Item Difficulty Prediction},
+  booktitle    = {Findings of the Association for Computational Linguistics: {ACL} 2026},
+  pages        = {25414--25441},
+  address      = {San Diego, California, USA},
+  month        = jul,
+  year         = {2026},
+  publisher    = {Association for Computational Linguistics},
+  isbn         = {979-8-89176-395-1},
+  doi          = {10.18653/v1/2026.findings-acl.1270},
+  url          = {https://aclanthology.org/2026.findings-acl.1270/},
   eprint       = {2512.18880},
   archivePrefix= {arXiv},
-  note         = {[已核验] 预印本 arXiv:2512.18880v2 (更新 2026-05-10). 作者：Ming Li, Han Chen, Yunze Xiao, Jian Chen, Hong Jiao, Tianyi Zhou. 尚未正式发表}
+  note         = {[2026-09-27 复核，权威源 = ACL Anthology 条目 2026.findings-acl.1270] **已正式发表**，著录改为会议版：Findings of ACL 2026, pp. 25414--25441, San Diego, 2026-07, DOI 10.18653/v1/2026.findings-acl.1270。**两处硬错误已更正**：① 早期著录为 arXiv 预印本（`@misc`，"尚未正式发表"）属**过期判断**，第二轮核验（M3 稿 2026-09-23）已推翻，本条与之对齐；② `author` 字段原写 Li, Ming / Chen, Han / **Xiao, Yan / Chen, Jia / Jiao, Hao / Zhou, Tian**，其中后四位的名字全错且与同一条目 `note` 自相矛盾；经 ACL Anthology 作者页逐人核对（Ming Li, Han Chen, **Yunze Xiao, Jian Chen, Hong Jiao, Tianyi Zhou**），已更正。预印本 arXiv:2512.18880v2 仅作辅助。贡献 encode-name 标识符保留 `li-etal-2026-llms`。教训：仅凭 arXiv 的 `journal_ref`/`doi` 字段判「未发表」会漏判，须回查 ACL Anthology / PMLR 等出版方 proceedings}
 }
 
 % M3 [13] LLM 受访者用于题目评估。
@@ -1422,6 +1446,64 @@
   pages        = {3894--3912},
   doi          = {10.1007/s10489-020-01756-7},
   note         = {[已核验] Applied Intelligence 50(11):3894--3912, 2020。DOI: 10.1007/s10489-020-01756-7。作者 Wenbin Gan, Yuan Sun, Xian Peng, Yi Sun（National Institute of Informatics / SOKENDAI 等）。方法 KTM-DLF（Knowledge Tracing Machine by modeling cognitive item Difficulty and Learning and Forgetting）：以因式分解机嵌入高维特征并建模两两交互，联合建模「认知题目难度」与「学习曲线 + 艾宾浩斯遗忘曲线」两类动态过程，预测学习者表现，在三个公开数据集上优于同期 SOTA KT 模型。推荐报告（추천보고서_옹택소_20260922）将其列为 R12，关系=背景（仅标题核验），非直接竞争。M3 §2.1 将其作为「知识追踪侧学习/遗忘动态建模」的背景参照：本文难度决策把奖励固定在即时成功率、不建模学习/遗忘动态，故该路线与本文互补而非同台。}
+}
+
+% =====================================================================
+% 2026-09-27 补录：推荐报告（추천보고서_옹택소_20260922）R2 / R4 / R5 / R11
+% 这 4 条此前在 M1 / M3 **正文已带完整书目信息引用**（"作者（年份，载体，DOI）"
+% 裸引用形式），但 `references.bib` 无对应条目 —— 即"正文献读得出、机器引不了"。
+% 本次按项目铁律（新增条目前必须检索核实）逐条回查出版方页面后补录，
+% 凡推荐报告给的是 arXiv 而实际已有正式会议/期刊版的，一律著录正式版。
+% =====================================================================
+
+% M1 §2 相关研究（任务依赖性案例）；推荐报告 R2。
+% ⚠️ 证据等级：bioRxiv 预印本，**未经同行评审**；引用处必须注明状态。
+@article{alfawakhiri2023optimalerror,
+  author       = {Al-Fawakhiri, Naser and Kayani, Sarosh and McDougle, Samuel D.},
+  title        = {Evidence of an optimal error rate for motor skill learning},
+  journal      = {bioRxiv},
+  year         = {2023},
+  doi          = {10.1101/2023.07.19.549705},
+  note         = {[2026-09-27 补录并核实，源 = bioRxiv 页面 10.1101/2023.07.19.549705v3 + Altmetric 记录] **预印本，未经同行评审**（最新为 v5；v3 的 revision summary 自述 "Edited and re-ordered methods section in preparation for submission"，即截至本次核验仍未正式发表），引用时必须注明 preprint 身份。机构：Johns Hopkins（Neuroscience）/ Yale（Neuroscience、Psychology、Wu Tsai Institute）。N=192，实得最优错误率约 30%，与其对 Wilson 等（2019）框架的运动领域推广理论预测一致。推荐报告列为 R2，属 has-30% 与 doi 均已二次确认。**放置限定（推荐报告 K4 明示）**：领域为运动技能学习，数值**不可外推到学业学习**，故 M1 仅作任务依赖性的案例引用，不进 RQ2 判定表、不作新目标值}
+}
+
+% M1 附录 A.x（1PL 不可充外生基准的旁证）；推荐报告 R4。
+% 推荐报告给的是 arXiv，实际已有 EDM 2019 正式会议版，此处著录正式版。
+@inproceedings{yeung2019deepirt,
+  author       = {Yeung, Chun-Kit},
+  title        = {{Deep-IRT}: Make Deep Learning Based Knowledge Tracing Explainable Using Item Response Theory},
+  booktitle    = {Proceedings of the 12th International Conference on Educational Data Mining ({EDM} 2019)},
+  pages        = {683--686},
+  year         = {2019},
+  eprint       = {1904.11738},
+  archivePrefix= {arXiv},
+  note         = {[2026-09-27 补录并核实] **正式版为 EDM 2019**（Proceedings of the 12th International Conference on Educational Data Mining, pp. 683--686；据作者本人代码仓 ckyeungac/DeepIRT 的引用样例，且与 arXiv:1904.11738 为同一工作）；预印本 arXiv:1904.11738（2019-04-26 投稿，04-29 上线）。推荐报告列为 R4 且只给了 arXiv，本次按出版方/作者页面升级为会议版著录。方法：DKVMN 估学生能力与题目难度 + IRT 估答对概率，使深度 KT 可解释。**M1 的引用点仅为一项数值旁证**：该文报告"项目分析（首次作答错误比例）与 1PL IRT 难度的 Pearson r = 0.96"，与本文 Junyi 上实测的 Spearman(b_j, 仅成功率_B)=0.963 同量级、同结论，用于论证"1PL 与成功率几乎完全同源，故不能充当外生基准"。另行注明（推荐报告 K4 的限定）：不得把其网络输出的难度用作判定基准（与出版商标签仅相关 0.08）}
+}
+
+% M3 §5 协议可靠性边界（解析成功率为必报项）；推荐报告 R5。
+% 证据等级：arXiv 预印本，未经同行评审。
+@misc{kolesnikova2026itemdifficulty,
+  author       = {Kolesnikova, Diana and Fedyanin, Kirill and Hofman, Abe D. and Brinkhuis, Matthieu J. S. and Bolsinova, Maria},
+  title        = {Estimating Item Difficulty with Large Language Models as Experts},
+  year         = {2026},
+  eprint       = {2605.18562},
+  archivePrefix= {arXiv},
+  primaryClass = {stat.ME},
+  note         = {[2026-09-27 补录并核实，源 = arXiv 摘要页 2605.18562] **预印本**（2026-05-18 投稿），尚未见正式发表记录，引用须注明 preprint。作者机构：Tilburg University（Methodology and Statistics）、Smart Business Technologies、University of Amsterdam（Psychological Methods）、Prowise Learn、Utrecht University（Information and Computing Sciences）。方法：以 3 个 off-the-shelf LLM 作难度评判者，**全因子设计**——判断形式（绝对 vs 两两）× 决策类型（硬决策 vs token 概率）× 提示策略（zero-shot vs few-shot），域为小学 6 个数学领域，以经验难度为实证参照，用 Spearman 秩相关评价。推荐报告列为 R5，关系=方法借鉴；M3 已采纳其规约——**解析成功率作为协议结果表必报项**（§5 第 380 行："解析失败率不从结果中剔除，而是作为该协议可靠性边界的组成部分报告"）}
+}
+
+% M3 §2.1 / §5.4（增益路径，树特征提取路线的目标文献）；推荐报告 R11。
+@article{razavi2026itemdifficulty,
+  author       = {Razavi, Pooya and Powers, Sonya J.},
+  title        = {Estimating item difficulty using large language models and tree-based machine learning algorithms},
+  journal      = {International Journal of Artificial Intelligence in Education},
+  volume       = {36},
+  number       = {3},
+  pages        = {Article 100015},
+  month        = sep,
+  year         = {2026},
+  doi          = {10.1016/j.ijaied.2026.100015},
+  note         = {[2026-09-27 补录并核实，源 = ScienceDirect S156042922601317X] **已正式发表**：IJAIED 36(3), Article 100015, September 2026, DOI 10.1016/j.ijaied.2026.100015，Elsevier。另有预印本 arXiv:2504.08804 与 NCME 2025（Denver）会议报告，引用时以期刊版为准。数据 Edmentum 专有题库 K-5 数学与阅读 N=5170（Rasch 校准；因知识产权不公开数据，LLM 派生数据与 R 代码见 https://osf.io/2yf7d）。结论：零样本直接评级整体 ρ 尚可但不稳（数学 0.83 / 阅读 0.81，K 与 1 年级不优于年级均值哑回归）；**LLM 抽取认知·语言特征 + 树集成（RF / GBM）达 r = 0.87 且 RMSE/MAE 更低**。推荐报告列为 R11，关系=增益路径。**M3 的诚实引用边界（§5.4，第 386 行）**：本文在 DBE-KT22 / XES3G5M 上的同类实验**不声称复现该 0.87**（数据/特征/协议均不同），只证明"结构化特征能否把 ρ 提升到高于直接评级基线"这一更窄命题，故列为未来工作而非替换现有基线}
 }
 
 % =====================================================================

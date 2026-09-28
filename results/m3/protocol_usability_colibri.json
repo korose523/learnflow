@@ -1,0 +1,26 @@
+{
+  "gate": {
+    "parse_min": 0.9,
+    "entropy_min": 0.5,
+    "modal_max": 0.8,
+    "coverage_min": 0.9
+  },
+  "note": "协议可用性三重判据：解析完整性 / 输出非退化 / 覆盖充分；三条同时满足才 usable",
+  "cells": [
+    {
+      "model_id": "qwen3.6-colibri",
+      "family": "F1_Qwen",
+      "scale_tier": "S3_30-70B",
+      "parse_rate": 1.0,
+      "entropy_norm": 0.8378895977134072,
+      "modal_share": 0.5707547169811321,
+      "e1b_coverage": 0.7407407407407407,
+      "e1a_usable": true,
+      "e1a_reasons": [],
+      "e1b_usable": false,
+      "e1b_reasons": [
+        "覆盖率 74% < 90%，ρ(E1-B) 不得与满批单元格并列比较"
+      ]
+    }
+  ]
+}

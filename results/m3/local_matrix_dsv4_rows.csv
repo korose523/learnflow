@@ -1,0 +1,2 @@
+model_id,family,scale_tier,params_billions,architecture,eval_status,datasets,protocol,parse_rate,spearman_rho,accuracy,cohen_kappa,reliability_verdict,source_anchor
+deepseek-v4-colibri,DeepSeek,S4_>70B,284,MoE,EVALUATED,DBE-KT22,E1-A(schema enum+锚定),1.0,0.2998,0.4717,0.0728,E1-A parse_rate=1.0 (212/212); ρ_E1A_listwise=0.2998; ρ_E1A_none_as_zero=0.2998,results/m3/local_matrix_dsv4.json#/models/deepseek-v4-colibri

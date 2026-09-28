@@ -1,0 +1,148 @@
+schema_version: 1
+request_id: 20260928-en-submissions
+created_at: "2026-09-28T11:39:00Z"
+updated_at: "2026-09-28T12:45:00Z"
+
+entry_type: beautify_only
+stage_chain: [2, 3]
+scope: "M1/M2/M4 English translation + M1c/M2c/M3c 5-7k compressed submission cuts; author block + AI disclosure merged"
+
+toolchain:
+  s2_converter: "working/md2academic_en_gen.py (parametrized: --src --out --title --lang)"
+  s2_converter_location: "D:/learnflow-main/learnflow-main/output/20260928-m3-final-docx/working/md2academic_en_gen.py"
+  s3_converter: "html_to_docx (plugin cache) via PYTHONPATH"
+  s3_package_dir: "C:/Users/Administrator/.workbuddy/plugins/cache/workbuddy-builtin/tencent-docx/5.6.2-wb.39298511.g37a65c0b.he233403f909a/skills/html-to-docx/scripts"
+  converter_runner: "$HOME/.venv-html-to-docx2 (Python 3.13.12)"
+  page_size: A4
+  fonts: "Times New Roman / Courier New (code)"
+
+front_matter_convention:
+  author_block: |
+    Zexiao Weng¹ and MinPo Jung¹,*
+    ¹ Youngsan University, Busan 48015, Republic of Korea
+    * Corresponding author. Email: minpo@ysu.ac.kr; ORCID: 0009-0003-3369-757X. Zexiao Weng ORCID: 0009-0009-8600-8954.
+  ai_disclosure_generic: "AI-Assisted Writing Disclosure. ... (used by M1/M2/M4)"
+  ai_disclosure_m3: "AI-Assisted Writing and LLM Annotation Disclosure. ... (M3-specific: qwen36 as audited object, Ollama manifest SHA-256 5f2d8551...)"
+  note: "Each author-block line is separated by a BLANK line in the markdown so the converter emits three separate centered author-line paragraphs."
+
+papers:
+  M1:
+    source_zh: "docs/M1_难度可公度性与最优错误率_完整稿.md"
+    source_en: "docs/M1_submission_EN.md"
+    title_en: "Difficulty Commensurability and the Optimal Error Rate"
+    stage2_html: "M1/stage2/formatted-M1-en.html"
+    stage3_docx: "M1/stage3/M1_难度可公度性与最优错误率_EN_终稿.docx"
+    docx_bytes: 104300
+    paragraphs: 318
+    approx_words: 17309
+    toc_items: 11
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    word_limit_status: "FULL translation; exceeds typical 5-7k journal limit (see notes)"
+  M1c:
+    kind: "compressed submission cut"
+    source_en_full: "docs/M1_submission_EN.md"
+    source_en_compressed: "docs/M1_submission_EN_compressed.md"
+    source_body: "docs/M1_compressed_body.md"
+    title_en: "Difficulty Commensurability and the Optimal Error Rate"
+    stage2_html: "M1c/stage2/formatted-M1c-en.html"
+    stage3_docx: "M1c/stage3/M1_难度可公度性与最优错误率_压缩投稿版_EN_终稿.docx"
+    docx_bytes: 57018
+    stage2_html_bytes: 50699
+    paragraphs: 103
+    approx_body_words: 5067
+    word_limit_target: "5000-7000"
+    word_limit_status: "IN RANGE"
+    toc_items: 11
+    tables: 11
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    assembly_method: "front matter + References copied VERBATIM from M1_submission_EN.md programmatically; only Abstract..§11 condensed"
+  M2:
+    source_zh: "docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md"
+    source_en: "docs/M2_submission_EN.md"
+    title_en: "Conflict-Structure Audit of Multi-Intervention Coexisting Learning Systems"
+    stage2_html: "M2/stage2/formatted-M2-en.html"
+    stage3_docx: "M2/stage3/M2_多干预并存学习系统的冲突结构审计_EN_终稿.docx"
+    docx_bytes: 88729
+    paragraphs: 318
+    approx_words: 15880
+    toc_items: 11
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    word_limit_status: "FULL translation; exceeds typical 5-7k journal limit"
+  M2c:
+    kind: "compressed submission cut"
+    source_en_full: "docs/M2_submission_EN.md"
+    source_en_compressed: "docs/M2_submission_EN_compressed.md"
+    source_body: "docs/M2_compressed_body.md"
+    title_en: "Conflict-Structure Audit of Multi-Intervention Coexisting Learning Systems"
+    stage2_html: "M2c/stage2/formatted-M2c-en.html"
+    stage3_docx: "M2c/stage3/M2_多干预并存学习系统的冲突结构审计_压缩投稿版_EN_终稿.docx"
+    docx_bytes: 63085
+    stage2_html_bytes: 67319
+    paragraphs: 124
+    approx_body_words: 5636
+    approx_full_words_incl_references: 6499
+    word_limit_target: "5000-7000"
+    word_limit_status: "IN RANGE"
+    toc_items: 11
+    tables: 12
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    assembly_method: "front matter + References copied VERBATIM from M2_submission_EN.md programmatically; only Abstract..§10 condensed"
+  M3c:
+    kind: "compressed submission cut"
+    source_en_full: "docs/M3_submission_EN.md"
+    source_en_compressed: "docs/M3_submission_EN_compressed.md"
+    title_en: "Ordinal Difficulty Decisions and the Reliability Boundary of a Single-Model LLM Difficulty Prior"
+    stage2_html: "M3c/stage2/formatted-M3c-en.html"
+    stage3_docx: "M3c/stage3/M3_有序难度决策与大模型先验边界_压缩投稿版_EN_终稿.docx"
+    docx_bytes: 54726
+    paragraphs: 101
+    approx_words: 5007
+    word_limit_target: "IJAIED / IEEE TLT 5000-7000"
+    word_limit_status: "IN RANGE"
+    toc_items: 9
+    tables: 7
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    assembly_method: "front matter + References copied VERBATIM from M3_submission_EN.md programmatically; only Abstract..§9 condensed"
+  M4:
+    source_zh: "docs/M4_信度结构化组合难度估计_完整稿.md"
+    source_en: "docs/M4_submission_EN.md"
+    title_en: "Reliability-Structured Composite Difficulty Estimation"
+    stage2_html: "M4/stage2/formatted-M4-en.html"
+    stage3_docx: "M4/stage3/M4_信度结构化组合难度估计_EN_终稿.docx"
+    docx_bytes: 62901
+    paragraphs: 150
+    approx_words: 6986
+    toc_items: 9
+    author_block_rendered: true
+    ai_disclosure_rendered: true
+    word_limit_status: "FULL translation; near/within typical 5-7k range"
+
+notes:
+  - "M3 has TWO English versions: (a) FULL ~20,400 words -> output/20260928-m3-final-docx/stage3/M3_有序难度决策与大模型先验边界_EN_终稿.docx (exported earlier); (b) COMPRESSED 5,007 words -> M3c/stage3/...压缩投稿版_EN_终稿.docx (this run). Use (b) for submission."
+  - "M1/M2/M4 are FULL English translations (parity with M3's initial treatment). Like M3-full they exceed typical 5-7k journal limits; compress on request."
+  - "M3-compressed preserves all key values: 0.7355/0.6328/0.6160, 12.3pp friction, 0.7119 flow_zone, 0.7023/0.6714, DBE rho 0.2195/0.1808, XES -0.038, lambda*(k)=1/(1+(k/27.3)^0.895), +6.447pp, -0.0267..-0.1222, -0.1752..-0.2113, all_hard 0.6421, 936 tests, o11 15/15, 16,217,311 interactions."
+  - "Central conclusion retained: consistency gain != predictive-power gain."
+  - "Known issue: an M3 compression subagent attempt failed with HTTP 429 rate limit; compression was completed by the main agent instead."
+  - "M1c (5,067 body words) and M2c (5,636 body words) are compressed submission cuts produced WITHOUT subagents, per user instruction. Both are IN RANGE for 5000-7000."
+  - "M2c preserves all key values: registered 54 / effect-producing 2 / maturity 9-37-8, fingerprint ee1a49be5732, tag audit-m2-20260911, A2 16 AST sites/14 opt-ins, 42/54=77.8%, 27 static -> 1 run-time, type II 0, type III 7/8 letters, A-H counts 8/8/6/10/10/4/4/4 vs code 5 categories, landing 54/0/34/20/31/3, drift python_loc 25389->26107, source_files 87->90, service_modules 54->57, test_files 53->54, test_functions 826->842, A3 10000x40 conflict 0.000->0.633, contention 0.299->0.971, budget exhaustion 0.433->1.000, preemption violation 0.000, Ludilearn 6 mech type I/III 0 (commit eb69582fb4def6e4cbb26c2146ceb90435951c53), Level Up XP 11 mech type I 0 / type III 1 / H-D-W-M rate windows, P1-P5 verdicts, 12 limitations."
+  - "M2c retains the qualitative guardrail: 77.8% is a DIAGNOSIS OF IMPLEMENTATION COMPLETENESS (designer = audited party), NOT a falsification-triggered discovery; 'conflicts are rare' vs 'no run time in which conflict can occur' remains indistinguishable; n=2 external systems must never be generalized."
+
+consistency_check:
+  output_files_exist: true
+  stage_chain_complete: true
+  last_checked_at: "2026-09-28T12:15:00Z"
+  verification:
+    all_docx_have_author_block: true
+    all_docx_have_ai_disclosure: true
+    page_size: A4
+    present_files_opened: true
+  compressed_cuts:
+    M1c: "5067 words / 57018 bytes / 103 paras / 11 tables / IN RANGE"
+    M2c: "5636 words / 63085 bytes / 124 paras / 12 tables / IN RANGE"
+    M3c: "5007 words / 54726 bytes / 101 paras / 7 tables / IN RANGE"
+  errors: []

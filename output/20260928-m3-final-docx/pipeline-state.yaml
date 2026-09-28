@@ -1,0 +1,90 @@
+schema_version: 1
+request_id: 20260928-m3-final-docx
+created_at: "2026-09-28T05:59:05Z"
+updated_at: "2026-09-28T11:29:00Z"
+
+entry_type: beautify_only
+stage_chain: [2, 3]
+
+output_docx_path: "D:\\learnflow-main\\learnflow-main\\output\\20260928-m3-final-docx\\stage3\\M3_有序难度决策与大模型先验边界_终稿.docx"
+output_docx_user_specified: false
+output_docx_en_path: "D:\\learnflow-main\\learnflow-main\\output\\20260928-m3-final-docx\\stage3\\M3_有序难度决策与大模型先验边界_EN_终稿.docx"
+
+current_stage: 3
+
+stages:
+  stage_0:
+    status: completed
+    completed_at: "2026-09-28T05:59:05Z"
+    decision: beautify_only
+  stage_1:
+    status: skipped
+    started_at: null
+    completed_at: null
+    output_path: null
+    genre: null
+    expert_used: null
+    route_tag: null
+    critic_decision: null
+  stage_2:
+    status: completed
+    started_at: "2026-09-28T06:20:00Z"
+    completed_at: "2026-09-28T06:29:07Z"
+    route: html
+    html_sub: template
+    output_path: "stage2/formatted-m3.html"
+    output_format: html
+    skills_invoked: [design-token, doc-typeset, html-review]
+    design_tokens_path: "stage2/design_tokens.json"
+    fallback: false
+    fallback_reason: null
+  stage_3:
+    status: completed
+    started_at: "2026-09-28T06:42:30Z"
+    completed_at: "2026-09-28T06:42:42Z"
+    executor: doc-converter
+    input_format: html
+    output_path: "stage3/M3_有序难度决策与大模型先验边界_终稿.docx"
+    output_format: docx
+    skill_used: [html-to-docx]
+    converter_runner: "$HOME/.venv-html-to-docx2 (Python 3.13.12, --only-binary wheels; Pillow 11.3.0)"
+    html_input: "stage2/formatted-m3.html"
+    convert_exit_code: 0
+    convert_result: {success: true, warnings: [], fields: []}
+    docx_bytes: 182631
+    present_files_opened: true
+    fallback: false
+    fallback_reason: null
+
+en_export:
+  status: completed
+  completed_at: "2026-09-28T11:29:00Z"
+  source_markdown: "D:\\learnflow-main\\learnflow-main\\docs\\M3_submission_EN.md"
+  s2_script: "working/md2academic_en.py"
+  stage2_html: "stage2/formatted-m3-en.html"
+  stage3_docx: "stage3/M3_有序难度决策与大模型先验边界_EN_终稿.docx"
+  converter_runner: "$HOME/.venv-html-to-docx2 (Python 3.13.12)"
+  docx_bytes: 121141
+  paragraphs: 354
+  present_files_opened: true
+  author_block_rendered: true
+  ai_disclosure_rendered: true
+  approx_body_words: 20422
+  word_limit_target: "IJAIED/IEEE-TLT 5000-7000"
+  word_limit_status: "EXCEEDED (~2.9x); this is the full/long EN version, not the compressed submission cut"
+  compression_decision: "pending user confirmation"
+
+consistency_check:
+  output_files_exist: true
+  stage_chain_complete: true
+  last_checked_at: "2026-09-28T06:43:00Z"
+  verification:
+    paragraphs: 395
+    non_empty_paragraphs: 395
+    tables: 19
+    headings_h1: 1
+    headings_h2: 12
+    headings_h3: 36
+    page_size: A4
+    total_text_chars: 90016
+  errors: []

@@ -1,0 +1,5 @@
+{
+  "ministral-3:3b": {"family": "Mistral", "params_b": 3, "architecture": "dense"},
+  "mixtral:8x7b": {"family": "Mistral", "params_b": 46.7, "architecture": "MoE"},
+  "deepseek-r1:32b": {"family": "DeepSeek", "params_b": 32.8, "architecture": "dense"}
+}
