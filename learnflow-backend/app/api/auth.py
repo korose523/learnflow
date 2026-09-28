@@ -145,7 +145,7 @@ class OAuthLoginRequest(BaseModel):
     oauth_uid: str
     name: str
     avatar: str | None = None
-    role: str = "student"  # 用字符串，内部转枚举
+    role: str = "student"  # OAuth 入参为字符串，经 UserRole(req.role) 归一为枚举（与 RegisterRequest 一致）
 
 
 @router.post("/login/oauth", response_model=TokenResponse)
@@ -162,6 +162,7 @@ async def login_oauth(req: OAuthLoginRequest, db: AsyncSession = Depends(get_db)
             email=lookup_email,
             hashed_password=hash_password(f"oauth_{req.provider}_{req.oauth_uid}"),
             name=req.name,
+            # 角色值集合枚举自 UserRole（str 入参仅出现在 OAuth 适配层，主体逻辑一律用枚举）
             role=UserRole(req.role) if req.role in ("student","teacher","parent","admin") else UserRole.STUDENT,
             is_active=True,
         )

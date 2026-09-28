@@ -645,7 +645,7 @@ async def lai_dashboard(
     当 LAI 风险等级 ≥ L2 时，系统自动：
     1. 降低游戏化强度（变比率奖励频率↓）
     2. 增强自主性支持引擎（选择透明度↑）
-    3. L3+ 级别通知家长
+    3. L3+ 级别置 `should_notify_guardian=True`（由调用方/通知服务决定后续动作，本接口不主动推送）
     """
     target = user
     if student_id and student_id != str(user.id):
@@ -850,6 +850,12 @@ async def explain_algorithm(
     - risk: 风险评分计算方法
     - lai: 学习成瘾化指数构成
     """
+    # @todo（K1 · Thompson Sampling 接入）：下方 "difficulty" 算法声明使用 Thompson
+    # Sampling（多臂老虎机），现已有真实实现 `app.services.thompson_sampling`
+    # （thompson_sample / beta_sample / update_posterior，纯 Python 零依赖）。
+    # 待难度推荐器（optimal_difficulty.py / difficulty_fusion.py 选题入口）维护每个难度
+    # 臂的 Beta(α, β) 后验，并在每题推荐时调用 `thompson_sample(arms)` 选臂，
+    # 使该声明从「注释」变为「运行时代码」。当前仅声明 + 提供原语，未改动既有推荐路径。
     explanations = {
         "difficulty": {
             "algorithm": "Thompson Sampling (多臂老虎机)",
@@ -876,8 +882,8 @@ async def explain_algorithm(
             "description": "系统从时间、认知、行为、社交四维度评估成瘾风险。",
             "key_parameters": {
                 "thresholds": "动态阈值，根据年龄和学科压力周期调整",
-                "update_frequency": "每24小时更新一次",
-                "human_review": "L3+级别需人工审核确认",
+                "update_frequency": "按需实时计算（无定时刷新）",
+                "human_review": "无强制人工审核环节（仅输出风险等级）",
             },
             "user_controls": "您可对风险评级提出申诉",
         },

@@ -44,6 +44,14 @@ Spearman–Brown 的一般形式 ρ(n)=n·ρ₁/(1+(n−1)ρ₁) 给每题一份
    数字都能被机器复算"，故不做这种改写，也不引入 numpy（保持零第三方依赖）。
 
 实验出处：``results/code/run_m4.py``（产出 ``results/code/m4_results.json``）。
+
+@todo（K8 · 缺失产物）：上述 ``results/code/m4_results.json`` 当前**不存在**（``results/``
+目录尚未生成）。本模块不负责产出它——它是 ``results/code/run_m4.py``（P1 复算协议）的产物，
+需要外部日志/数据集运行该脚本才能生成真实结果。已在 ``results/code/m4_results.json``
+放置**占位骨架**（含 ``todo`` 字段说明生成方式），避免「注释引用了不存在的产物」。
+真实生成方式：``python -m app.services.difficulty_m4`` 不产出该文件；应运行
+``results/code/run_m4.py``（传入对应数据集），其会把 M4 组合权重 β、诊断量 λ、各题难度
+估计写入 ``results/code/m4_results.json``。
 """
 import math
 from typing import Dict, List, Mapping, Optional, Sequence

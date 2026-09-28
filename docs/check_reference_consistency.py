@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""三份完整稿的**双向**参考文献一致性门禁。
+"""四份完整稿的**双向**参考文献一致性门禁。
 
 为什么需要（2026-09-27 的教训）
 ------------------------------
@@ -200,13 +200,13 @@ def check_paper(path: Path):
 
 
 def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description="三稿双向参考文献一致性门禁")
+    ap = argparse.ArgumentParser(description="四稿双向参考文献一致性门禁")
     ap.add_argument("--strict", action="store_true",
                     help="门禁模式：出现任何 FAIL/WARN 均以 exit 1 退出")
     args = ap.parse_args(argv)
 
     print("=" * 78)
-    print("LearnFlow · 三稿双向参考文献一致性门禁")
+    print("LearnFlow · 四稿双向参考文献一致性门禁")
     print("  A 结构编号连续 | B 表→正文 | C 正文→表（反向，2026-09-27 新增）")
     print("=" * 78)
 

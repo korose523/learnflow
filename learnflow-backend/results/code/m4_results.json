@@ -1,0 +1,12 @@
+{
+  "_status": "PLACEHOLDER",
+  "_todo": "本文件为 K8 占位产物。真实 results/code/m4_results.json 由 results/code/run_m4.py（P1 复算协议）在给定外部日志/数据集上运行后生成，app/services/difficulty_m4.py 本身不产出本文件。生成方式：运行 `python results/code/run_m4.py`（需传入对应数据集），脚本会把 M4 组合权重 beta、诊断量 lambda、逐题难度估计写入本文件。占位骨架仅用于消除「注释引用了不存在的产物」的冲突，不含任何伪造的复算数值。",
+  "generated_by": null,
+  "schema": {
+    "beta": "List[float] — 各信号组合权重 β=V^{-1}q（M4-B）",
+    "lambda": "float in [0,1] — 辅助信号占比诊断量（M4-C）",
+    "item_difficulty": "List[float] — 每题难度估计（仅保证排序有意义）",
+    "coverage": "Optional — 逐题有效观测数（M4-D 部分可观测）"
+  },
+  "data": null
+}

@@ -38,7 +38,7 @@ authors:
     alias: "korose523"
     orcid: "https://orcid.org/0009-0009-8600-8954"
     website: "https://github.com/korose523"
-version: 0.1.0
+version: 0.2.0
 date-released: "2026-09-11"
 license: MIT
 doi: "10.5281/zenodo.22719229"
