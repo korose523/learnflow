@@ -1,4 +1,4 @@
-"""机制目录种子脚本 —— 从 mechanism_registry 导出 53 机制台账 (§2.4)
+"""机制目录种子脚本 —— 从 mechanism_registry 导出 54 机制台账 (§2.4)
 
 用途:
     1. 生成 artifacts/mechanism_catalog.json，作为论文附录「机制台账」的可复算源；

@@ -4,12 +4,12 @@
 喂养；**班级宠物园**是聚合视图，由老师（或班干部）统一加减分、查看排行榜与
 每周「喂养时间」仪式。本模块据此设计：
 
-- ``GET /{class_id}/garden``      班级宠物园视图（学生/老师可见）：排行榜、形态
-                                  分布、凝聚力、连接质量。
-- ``GET /{class_id}/my-pet``     当前学生的专属宠物 + 形态阶段 + 是否「饿肚子」。
-- ``POST /{class_id}/award``     老师给某学生加减分（行为积分 → 喂养其宠物）。
-- ``POST /{class_id}/ritual``    老师触发/开关每周「喂养时间」仪式。
-- ``GET /{class_id}/teacher``    老师视图：完整班级宠物园 + 逐生明细。
+- ``GET /api/v1/class-pet/{class_id}/garden``      班级宠物园视图（学生/老师可见）：排行榜、形态
+                                                   分布、凝聚力、连接质量。
+- ``GET /api/v1/class-pet/{class_id}/my-pet``     当前学生的专属宠物 + 形态阶段 + 是否「饿肚子」。
+- ``POST /api/v1/class-pet/{class_id}/award``     老师给某学生加减分（行为积分 → 喂养其宠物）。
+- ``POST /api/v1/class-pet/{class_id}/ritual``    老师触发/开关每周「喂养时间」仪式。
+- ``GET /api/v1/class-pet/{class_id}/teacher``    老师视图：完整班级宠物园 + 逐生明细。
 
 机制标识与路由挂载由 lead 在 main.py / mechanism_registry.py 统一接线。
 """

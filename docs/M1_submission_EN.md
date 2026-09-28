@@ -406,6 +406,8 @@ The **relative** gain stays stable at +29% ~ +33% across all sample-size bracket
 
 ### 6.5 O6b: statistical robustness (bootstrap 2000 and repeated cross-validation)
 
+Uncertainty in this section is uniformly characterised by a **paired bootstrap** (B = 2000, resampling items with replacement; Efron and Tibshirani, 1993): within each resample the ρ of both the "success-rate-only" and the "fusion" estimator is recomputed on the same batch of resampled items, and the resampling distribution of their difference Δ gives the confidence interval (2.5/97.5 percentiles) and the one-sided p (taken as P(Δ ≤ 0)).
+
 **Table 19. O6b: statistical robustness (bootstrap 2000 and repeated cross-validation)**
 
 | Quantity | Junyi | DBE |

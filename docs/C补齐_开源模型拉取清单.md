@@ -1,6 +1,7 @@
 # C 补齐 · 本地 Ollama 开源权重模型拉取清单
 
-> 目的：为 M3 稿 §8 ④b（审阅 §5.1）「投稿前须补齐 ≥3 模型族 × ≥3 规模标注矩阵」提供**可在本机 `ollama pull` 拿到**的开放权重模型清单，作为 `results/m3/m3_model_scale_matrix.csv` 其余 15 个 `NOT_EVALUATED` 单元格的候选来源。
+> 目的：为 M3 稿 §8 ④b（审阅 §5.1）「投稿前须补齐 ≥3 模型族 × ≥3 规模标注矩阵」提供**可在本机 `ollama pull` 拿到**的开放权重模型清单，作为 `results/m3/m3_model_scale_matrix.csv` 中待补单元格（`NOT_EVALUATED`）的候选来源。
+> **执行回填（2026-09-29 复核）**：本清单撰写时的等待补状态已改变——`results/m3/m3_model_scale_matrix.csv` **现有 11 行，`eval_status` 全部为 `EVALUATED`，无 `NOT_EVALUATED` 残留**。实际落表的模型与本清单 §3 的三套候选方案**不完全一致**（见新增的 **§0.1 实际执行回填**）。本清单仍保留其原始价值：它记录了模型可得性论证、体积测算与量化取舍。
 > 关联只读文件：`docs/M3_模型族规模标注矩阵方案.md`（§2 族分类法 / §3 规模分层法）、`results/m3/verify_m3_matrix.py`、`results/m3/m3_model_scale_matrix.csv`、`results/m3/cloud_model_catalog.json`。
 > 本文档**只新建、不改动任何既有文件**。
 >
@@ -16,6 +17,30 @@
 - **规模分层（§3，4 档）**：S1 `<7B`｜S2 `7–30B`｜S3 `30–70B`｜S4 `>70B`（MoE 按**总参数**归档）。
 - **关键可行性确认**：④b 的审计锚点模型 `qwen36`（Qwen3.6-35B-A3B）对应 Ollama 官方库页 **`qwen3.6:35b`（23 GB，S3）**——该页确实存在（见 §6 缺口：A3B/IQ3_S 细节未核实）。
 - **关键风险**：审计锚点用 **IQ3_S** 量化，而 Ollama 官方库对上述模型**只提供 `q4_K_M`（默认）/`q8_0`/`fp16` 等 K-quant**，**不含 IQ3_S**；IQ3_S 仅见于**第三方社区命名空间**（见 §4）。
+
+### §0.1 实际执行回填（2026-09-29 按产物核对）
+
+数据来源：`results/m3/m3_model_scale_matrix.csv`（11 行）与各 `local_matrix*.json` 产物。
+
+**已评估的 11 个模型**（`eval_status = EVALUATED`）：
+
+| 族 | S1 `<7B` | S2 `7–30B` | S3 `30–70B` |
+|---|---|---|---|
+| F1 Qwen | `qwen3:1.7b`（2.0B） | `qwen3:8b`（8.2B） | `qwen36:latest`（34.7B） |
+| F2 Llama | `llama3.2:1b`（1.2B） | `llama3.1:8b`（8.0B） | ——（未补） |
+| F3 Mistral | `ministral-3:3b`（3.8B） | `mistral:7b`（7.2B） | `mixtral:8x7b`（46.7B） |
+| F4 DeepSeek | `deepseek-r1:1.5b`（1.8B） | `deepseek-v2:16b`（15.7B） | `deepseek-r1:32b`（32.8B） |
+
+**与本清单三套方案的三处偏离**：
+
+1. **F1×S3 用 `qwen36:latest` 而非本清单建议的 `qwen3:32b`**——`qwen36` 是 ④b 的审计锚点，沿用更稳妥；本清单 §2 已把它列在 S3（`qwen3.6:35b`，23 GB）。
+2. **F4×S2 用 `deepseek-v2:16b` 而非方案 A 建议的 `deepseek-r1:8b`**——本清单 §2 F4 表已收录该 tag 并注明其为「DeepSeek 原生 MoE（S2 更纯的替代）」，§7 也曾建议 F4 改用原生 MoE 以保证族 lineage 纯度。执行采纳了该建议。
+3. **F2×S3 仍缺**——本清单 §2 F2 节已预判这是不可替代的最大单体（`llama3.1:70b`，43 GB），至今未拉取评估。故当前为「4 族中 3 族齐 3 档 + F2 缺 S3」= 11 个单元，已满足 ④b 的「≥3 族 × ≥3 档」。
+
+**另有两行不计入 4×3 矩阵**（跨引擎 / 探索性，产物独立）：
+
+- `qwen3.6-colibri`：跨引擎（colibri）复现行，产物 `local_matrix_colibri.json` / `local_matrix_colibri_rows.csv`；
+- `deepseek-v4-colibri`：S4 探索点，产物 `local_matrix_dsv4.json` / `local_matrix_dsv4_rows.csv`，**仅 E1a 有读数，E1b 为空**（不可与矩阵内的 E1a/E1b 双读数并列比较）。
 
 ---
 
@@ -150,7 +175,7 @@
 ## §4 量化一致性取舍（**不替作者决定**，仅列清权衡）
 
 **事实基础**：
-- 现有唯一 `EVALUATED` 单元格（F1×S3，`qwen36`）的量化是 **IQ3_S**（见 `M3_模型族规模标注矩阵方案.md` §1/§5）。
+- **截至 2026-09-29 已有 11 个 `EVALUATED` 单元格**（见 §0.1），不再只有审计锚点一处；本节的量化错配议题因而不再针对锚点与空单元格，而是**矩阵内部各族单元格之间的量化是否统一**。审计锚点 `qwen36` 的量化为 **IQ3_S**（见 `M3_模型族规模标注矩阵方案.md` §1/§5）。
 - 本清单所涉模型的 **Ollama 官方库页 `/tags`** 提供的量化档为：**`q4_K_M`（默认）/ `q8_0` / `fp16`**，部分（如 `llama3.2`）还提供 `q2_K…q6_K` 系列 K-quant；**均未见 IQ3_S**（逐页核实：`qwen3`、`llama3.2`、`mixtral` 等）。
 - IQ3_S 在 Ollama 上**仅见于第三方社区命名空间**（如 `krith/qwen2.5-7b-instruct:IQ3_S`、`krith/llama-3.3-70b-instruct:IQ3_S`、`mannix/smallthinker:iq3_s`），**非官方库**，且**不保证每个模型都有对应 GGUF**。
 
@@ -201,23 +226,27 @@ ollama pull deepseek-r1:32b
 ### 5.2 校验与评估（命令占位）
 
 ```bash
-# 1) 确认已拉取模型
+# 1) 确认已拉取模型（本机 ollama 客户端实测版本 0.30.4）
 ollama list
 
 # 2) 矩阵结构门禁（骨架校验，纯标准库）
 python results/m3/verify_m3_matrix.py
 
-# 3) 本机多模型标注评估（local driver；脚本由本地驱动任务产出，路径为约定占位）
+# 3) 本机多模型标注评估（脚本已存在；参数名按脚本 argparse 实校）
 python results/m3/local_matrix_e1ab.py \
-  --models qwen3:1.7b,qwen3:8b,qwen3:32b,llama3.2:1b,llama3.1:8b,llama3.1:70b,ministral-3:3b,mistral:7b,mixtral:8x7b,deepseek-r1:1.5b,deepseek-r1:8b,deepseek-r1:32b \
-  --datasets DBE-KT22,XES3G5M \
-  --protocol E1-A,E1-B
+  --models qwen3:1.7b,qwen3:8b,qwen36:latest,llama3.2:1b,llama3.1:8b,ministral-3:3b,mistral:7b,mixtral:8x7b,deepseek-r1:1.5b,deepseek-v2:16b,deepseek-r1:32b \
+  --conditions E1A,E1B \
+  --reps 200
 
 # 4) 补全 m3_model_scale_matrix.csv 后再次门禁
 python results/m3/verify_m3_matrix.py --matrix results/m3/m3_model_scale_matrix.csv
 ```
 
-> ⚠ `results/m3/local_matrix_e1ab.py` 在本文档撰写时**尚不存在**（属本地驱动任务交付物），此处仅为**约定路径占位**，不得据此认为脚本已就绪。
+> **脚本状态更正（2026-09-29）**：`results/m3/local_matrix_e1ab.py` **现已存在**（本文档撰写时尚未产出，当时的占位说明已失效）。其 argparse 实际参数为：
+> `--models`、`--meta`、`--meta-file`、`--conditions`（默认 `E1A,E1B`）、`--limit`、`--reps`（默认 200）、`--timeout`（默认 600）、`--api-base`、`--out`、`--csv-out`、`--retry-rounds`、`--dump-matrix`、`--selftest`。
+> **据此更正两处旧命令写法**：① 原写 `--protocol E1-A,E1-B` —— 脚本**没有** `--protocol`，且条件取值不带连字符，应为 **`--conditions E1A,E1B`**；② 原写 `--datasets DBE-KT22,XES3G5M` —— 脚本**没有** `--datasets` 参数，数据集不由命令行指定。
+> **不联网自测**（校验脚本能否在本机跑通）：`python results/m3/local_matrix_e1ab.py --selftest`。
+> 跨引擎对照脚本 `results/m3/local_matrix_colibri.py` 的参数集与上面一致（仅 `--api-base` 默认值不同，指向 colibri 端点）。
 
 ---
 
@@ -234,7 +263,7 @@ python results/m3/verify_m3_matrix.py --matrix results/m3/m3_model_scale_matrix.
 | `mixtral:8x7b` 默认量化 | 惯例判为 **Q4_K_M**（体积 26 GB 与参数 46.7B 吻合，另见某 tag 记 28 GB），**库页 /tags 未完整渲染确认** |
 | `mixtral:8x7b` 激活参数「约 13B」 | **近似值**，取自二手来源，非官方库页 |
 | 多个模型的默认量化（标「未逐页确认」者） | 按 Ollama 惯例 **Q4_K_M**，未逐页从 `/tags` 证实 |
-| `ministral-3` 可用性 | 需 **Ollama ≥ 0.13.1（pre-release）**，本机版本未在本任务核实 |
+| `ministral-3` 可用性 | 需 **Ollama ≥ 0.13.1（pre-release）**；**2026-09-29 已核实**：本机 `ollama` 客户端版本 **0.30.4**（满足要求）。注意当日 `ollama list` 返回 `could not connect to a running Ollama instance`，即**服务进程未运行**——可用性受安装版本满足，但拉取前有服务运行这一前置条件 |
 
 ### 6.2 已用检索式（WebSearch / WebFetch）
 
@@ -279,14 +308,14 @@ python results/m3/verify_m3_matrix.py --matrix results/m3/m3_model_scale_matrix.
 | **≥3 模型族** | ✅ 满足（提供 **4 族**：F1 Qwen / F2 Llama / F3 Mistral / F4 DeepSeek） | 族按基座实验室/lineage 划分，与 §2 分类法一致 |
 | **≥3 参数规模档** | ✅ 满足（提供 S1/S2/S3，且给出 S4 可选） | 每族给出 ≥3 个不同档的可拉取模型 |
 | **参数量公开可查** | ✅ 满足 | 各 tag 参数量取自库页/模型卡 |
-| **同一批题目（DBE-212/XES-120）** | ⛔ **本清单不补齐** | 需本地驱动脚本按同批题目跑；清单只保证模型可得 |
-| **同一套已通过审计的协议（E1-A/E1-B）** | ⛔ **本清单不补齐** | 需 `local_matrix_e1ab.py`（占位）复现协议；Ollama 支持 `format` 语法约束解码是本地路线的可行性前提 |
-| **EVALUATED 单元格带 `spearman_rho` + bootstrap 95% CI** | ⛔ **本清单不补齐** | 需真实评估后回填；清单不产生任何 ρ/CI |
-| **量化与审计锚点（IQ3_S）一致** | ⚠ **部分** | 官方库无 IQ3_S（§4）；须作者决断统一量化路线 |
+| **同一批题目（DBE-212/XES-120）** | ✅ **已补齐（部分）** | 截至 2026-09-29，矩阵 11 行已在同一批题目上落表（见 §0.1）；XES-120 一侧未见独立产物，回填时须核实 |
+| **同一套已通过审计的协议（E1-A/E1-B）** | ✅ **已补齐（部分）** | 多数行同时有 E1a 与 E1b 读数；`deepseek-v4-colibri` 行只有 E1a（`local_matrix_dsv4.json` 的 `e1b_spearman` 为 `null`） |
+| **EVALUATED 单元格带 `spearman_rho` + bootstrap 95% CI** | ✅ **已补齐** | CSV 的 `spearman_rho`/`cohen_kappa` 已填，`local_matrix*.json` 内含 `e1a_spearman_ci95`、`e1b_spearman_ci95` 与 `paired_bootstrap` |
+| **量化与审计锚点（IQ3_S）一致** | ⚠ **仍未决** | 官方库无 IQ3_S（§4）；实际执行的 11 个模型各自量化未在计算机取证层面逐一确认，仍须作者决断统一量化路线 |
 | **F4 lineage 纯度** | ⚠ **风险** | R1-Distill 小档实为 Qwen/Llama 系（§2 F4 注）；若要求「族间差异=架构侧」，F4 建议改用 `deepseek-v2:16b`/`deepseek-v3:671b` 原生 MoE |
 | **不修改既有文件** | ✅ 满足 | 本文档为唯一新建文件；方案稿 / 稿件 / CSV 均只读 |
 
-> **净结论**：本清单**解决了 ④b 的「模型可得性」前置**（开放权重、参数量公开、可由 `ollama pull` 获取、支持约束解码），但**不构成 ④b 的完成**——同批题目重跑、同协议复现、ρ+CI 实算，仍须本地驱动任务在本文档列出的模型上执行。在矩阵补全前，M3 稿 §8 ④b / ⑥「不宣称跨模型 LLM 边界」硬约束**仍然成立**。
+> **净结论（2026-09-29 更新）**：本清单解决了 ④b 的「模型可得性」前置，后续本地驱动任务已在其中 11 个模型上完成评估并回填矩阵（§0.1），故「不宣称跨模型 LLM 边界」的旧硬约束已可解除到已回填单元格的范围内。**但在下列各点闭环之前，仍应保留克制表述**：① F2×S3 仍缺 Llama 的 30–70B 档（本清单预判的最大单体 `llama3.1:70b`，43 GB）；② 各单元格的量化是否统一（尤其审计锚点 `qwen36` 的 IQ3_S 与其余 K-quant 之间）尚未确认；③ `qwen3.6-colibri` / `deepseek-v4-colibri` 两行不计入 4×3 矩阵，其中后者缺 E1b。跨模型比较的一切主张须限定在这 11 个单元格的实际读数上。
 
 ---
 

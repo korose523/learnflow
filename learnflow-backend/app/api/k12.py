@@ -1,8 +1,8 @@
 """K12 课标 API：学科/年级枚举、课标知识点树
 
-按 Spec §4 实现：
-- GET /k12/subjects
-- GET /k12/curriculum?subject=&grade=
+按 Spec §4 实现（router 前缀为 ``/api/v1/k12``，见本模块 ``router`` 定义）：
+- GET /api/v1/k12/subjects
+- GET /api/v1/k12/curriculum?subject=&grade=
 所有难度/奖励/风险决策写 AuditLog（此处为只读查询，不写审计）。
 """
 from fastapi import APIRouter, Depends, HTTPException, Query

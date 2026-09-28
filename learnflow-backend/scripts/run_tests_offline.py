@@ -5,8 +5,9 @@
 为什么需要它
 ------------
 `pytest.ini` 里 `testpaths = tests`、`python_files = test_*.py`，因此本文件放在
-`scripts/` 下**不会被 pytest 收集**，不会改变全量 pytest 计数（现行 936 条口径，
-见 `docs/` 各处与 `verify_counts.py`）。它的用途是：
+`scripts/` 下**不会被 pytest 收集**，不会改变全量 pytest 计数（现行 966 条口径，
+由 `pytest --collect-only -q` 实测；`docs/` 与 `verify_counts.py` 中残留的 936 为历史值）。
+它的用途是：
 
 * 在**没有 pytest / SQLAlchemy / FastAPI / numpy** 的受限环境（如离线审稿机、
   只装了标准库 Python 的机器）里，仍然能对**不依赖框架的部分**（本研究中特指

@@ -17,8 +17,8 @@ abstract: >-
   audit schema for the dozens of gamification mechanisms that coexist in one system.
   Every headline count in the documentation is recomputed from source by scripts under
   learnflow-backend/scripts/, and the consistency check fails loudly when a documented number
-  diverges from the code. The headline mechanism count is always reported as a triple —
-  registered 54 / runtime effect producers 2 / maturity complete 9, partial 37, placeholder 8 —
+  diverges from the code.   The headline mechanism count is always reported as a triple —
+  registered 54 / runtime effect producers 16 / maturity complete 9, partial 37, placeholder 8 —
   so the registered figure is never read as "54 mechanisms are running".
   The repository also contains a behavioural-log plus self-report measurement layer (a
   five-dimension learning-addiction index, LAI). It is an AUXILIARY, UNVALIDATED module: it has

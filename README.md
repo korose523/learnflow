@@ -8,8 +8,8 @@
 > **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
 > 声明两个研究主线。
 
-[![tests](https://img.shields.io/badge/tests-936%20passed-brightgreen)](#测试)
-[![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%202%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
+[![tests](https://img.shields.io/badge/tests-966%20passed-brightgreen)](#测试)
+[![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%2016%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
@@ -29,10 +29,15 @@ Its research contribution supports four connected lines of work:
 | **Decision** | How does difficulty enter ordered sequencing under a cold start, and where does an LLM difficulty prior stop being reliable? |
 | **Governance** | Do the dozens of coexisting gamification mechanisms actually collide at runtime? |
 
+Four manuscripts report these lines: `docs/M1_难度可公度性与最优错误率_完整稿.md`,
+`docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md`,
+`docs/M3_有序难度决策与大模型先验边界_完整稿.md`,
+`docs/M4_信度结构化组合难度估计_完整稿.md`.
+
 Three properties are load-bearing for reviewers:
 
 - **Mechanism accounting is a triple, never a single number.** The registered mechanism count
-  (54) is always reported together with the **runtime effect-producer count (2)** and the
+  (54) is always reported together with the **runtime effect-producer count (16)** and the
   **maturity breakdown (complete 9 / partial 37 / placeholder 8)**. A registered count alone
   would be read as "54 mechanisms are running", which is not what the code does.
 - **Machine-verifiable numbers.** Every headline count in the documentation is recomputed
@@ -76,7 +81,13 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 | **3 决策** | 难度如何进入带记忆的序贯决策？LLM 难度先验可信到哪里？ | 已执行（Junyi 真实臂 + LLM 标注协议审计） |
 | **4 治理** | 数十个干预机制并存时，冲突是否真的发生？ | **内部静态审计**（无真实用户日志，运行时冲突频率未测） |
 
-> 🔬 计划书与进展报告见 `docs/研究计划与报告/`；三篇支撑稿见 `docs/M1_*.md`、`docs/M2_*.md`、`docs/M3_*.md`。
+> 🔬 计划书与进展报告见 `docs/研究计划与报告/`；四篇支撑稿为
+> `docs/M1_难度可公度性与最优错误率_完整稿.md`、`docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md`、
+> `docs/M3_有序难度决策与大模型先验边界_完整稿.md`、`docs/M4_信度结构化组合难度估计_完整稿.md`。
+>
+> ⚠️ M4 的估计器 `learnflow-backend/app/services/difficulty_m4.py` **已实现并有 30 项测试覆盖，
+> 但尚未接入任何运行时路由**（仅有 `tests/test_difficulty_m4.py` 引用）——属「已实现、未集成」，
+> 不得声称其已在运行时生效。
 
 ---
 
@@ -138,10 +149,19 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 
 | 组件 | 版本 | 说明 |
 |---|---|---|
-| Python | **3.11+** | 后端。仓库锁定于 3.11 开发与测试 |
+| Python | **3.11+** | 后端。仓库锁定于 3.11 开发与测试（自带 venv 实测 3.11.9） |
 | Node.js | **18+** | 前端构建 |
 | SQLite | 内置 | 本地开发默认；无需额外安装 |
 | Redis | 可选 | 不可用时自动退化为内存缓存 |
+| 四个公开数据集 | **自备** | `data/`（ASSIST09 / DBE-KT22 / XES3G5M / Junyi）被 `.gitignore` 排除、**不随克隆分发**，但 `results/` 下的脚本依赖它 |
+| Ollama | 可选 | 仅 M3 本地多模型矩阵实验需要。环境变量 `OLLAMA_MODELS=<模型缓存目录>`；服务需后台启动，用 `curl --noproxy '*' http://localhost:11434/api/tags` 验证 |
+
+**两个 Python 解释器**（别混用）：
+
+| 用途 | 解释器 |
+|---|---|
+| 后端运行 / 测试 / `scripts/` 复算脚本 | `learnflow-backend/.venv/Scripts/python.exe`（**无 numpy**） |
+| `results/` 下需要 numpy / scipy 的研究脚本 | 系统 Python，如 `C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe` |
 
 ---
 
@@ -169,6 +189,13 @@ cp .env.example .env
 
 - API 文档：<http://localhost:8000/docs>
 - 健康检查：<http://localhost:8000/health>
+
+> ⚠️ **克隆不等于即用**：`data/` 存放四个公开数据集的原始数据，已被 `.gitignore` 排除。
+> 要跑 `results/` 下的研究脚本，须自行下载并按脚本预期路径放入 `data/`。
+
+> ⚠️ **localhost 的两个坑**：本机有 HTTP 代理时会拦截 localhost 流量，健康检查请用
+> `curl --noproxy '*' http://localhost:8000/health`；Vite dev server 只监听 IPv6 localhost，
+> 请用 `localhost` 而非 `127.0.0.1` 访问 <http://localhost:5173>。
 
 ### 前端
 
@@ -207,6 +234,24 @@ cd learnflow-frontend && cp .env.example .env.local
 
 生产构建（`vite build`）下快捷登录整体不生效。
 
+### 最小验证示例
+
+三条命令即可确认本地环境可用（均在 `learnflow-backend/` 下执行）：
+
+```bash
+# 1) 启动后端，浏览器打开 http://localhost:8000/docs
+.venv/Scripts/python -m uvicorn app.main:app --reload
+
+# 2) 复算权威计数：机制 54 / 学习方法 28 / 效果生产者 16 / 成熟度 9·37·8
+.venv/Scripts/python scripts/verify_counts.py
+
+# 3) 跑全量测试（当前收集 966 项）
+PYTEST_DEBUG_TEMPROOT=<已存在的绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
+```
+
+> **数据集相关脚本不在最小示例内**：`results/` 下的实验脚本需要自备 `data/`，
+> 且部分脚本依赖 numpy / scipy，请用上表中的系统 Python 运行。
+
 ---
 
 ## 测试
@@ -214,12 +259,16 @@ cd learnflow-frontend && cp .env.example .env.local
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前 936 passed）
+# 全量测试（当前收集 966 项）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
 > **注意**：`PYTEST_DEBUG_TEMPROOT` 必须指向一个**已存在的**目录，且必须是绝对路径。
 > 否则依赖 `tmp_path` 夹具的用例会抛出 `FileNotFoundError`，表现为大批量失败，实为环境问题而非代码回归。
+
+> **注意**：部分环境下 pytest 的**退出码恒为 1**，但摘要行显示 `0 failed / 0 error / 0 skipped`
+> （本机 safe-delete 包装层会在打印完整摘要前中断进程）。这是**环境现象，不是测试失败**——
+> 请以摘要行的失败/错误计数为准，不要以退出码判定。
 
 前端质量门：
 
@@ -240,7 +289,7 @@ npm run build     # 构建
 cd learnflow-backend
 
 # 机制数 / 学习方法数 / 技能树节点数 —— 权威计数与交叉校验
-# 静默模式同时输出机制头条三元组：登记 54 / 效果生产 2 / 成熟度 9·37·8
+# 静默模式同时输出机制头条三元组：登记 54 / 效果生产 16 / 成熟度 9·37·8
 .venv/Scripts/python scripts/verify_counts.py
 
 # 代码资产数字（Python 行数、服务模块数、源文件数、API 端点、测试数）
@@ -248,24 +297,31 @@ cd learnflow-backend
 .venv/Scripts/python scripts/verify_asset_numbers.py --doc-check --with-pytest
 
 # 滑窗错误率的离散支撑点口径（M1 8.1 / 报告 3.7 / 计划书 RQ2 依赖的数字）
-python ../results/code/verify_window_support.py
+.venv/Scripts/python ../results/code/verify_window_support.py
+
+# 四篇完整稿（M1–M4）的参考文献双向一致性门禁（报告模式；加 --strict 为门禁模式）
+.venv/Scripts/python ../docs/check_reference_consistency.py
 ```
 
-> ⚠️ **机制数字必须三个并列**：`登记 54 / 运行时效果生产者 2 / 成熟度 complete 9 · partial 37 · placeholder 8`。
-> 只写「54 机制」会被读成「54 个都在运行」——运行时真正构造干预效果的只有 2 处
-> （`deep_addiction_engine.py:296` LF-M44、`learning_orchestrator.py:986` LF-M52），
-> 其余机制只写评估记录或不构造效果。三元组由 `verify_counts.py` 复算，`tests/test_count_verification.py` 钉死。
+> ⚠️ **机制数字必须三个并列**：`登记 54 / 运行时效果生产者 16 / 成熟度 complete 9 · partial 37 · placeholder 8`。
+> 只写「54 机制」会被读成「54 个都在运行」。运行时真正构造 `Effect(...)` 的位置共 **16** 处：
+> `deep_addiction_engine.py:296`（LF-M44）、`learning_orchestrator.py:995`（LF-M52），
+> 以及路线 A 改造后的 `route_a_producers.py`（14 处）。
+> 三元组由 `verify_counts.py` 复算；`tests/test_count_verification.py` 以「≥14 处 + 生产者可关联到机制」钉死，
+> 因此数字随源码增长是**预期行为**，不是漂移。
 
 主要统计脚本：
 
 | 脚本 | 产出 |
 |---|---|
-| `scripts/verify_counts.py` | 机制唯一数（54）、学习方法数（28）、技能树节点数（16）、**成熟度三元组（9/37/8）**、**效果生产者数（2）**、注册表指纹 |
+| `scripts/verify_counts.py` | 机制唯一数（54）、学习方法数（28）、技能树节点数（16）、**成熟度三元组（9/37/8）**、**效果生产者数（16）**、注册表指纹 |
 | `scripts/verify_asset_numbers.py` | 代码资产数字 + 文档一致性门禁（`--doc-check`） |
 | `scripts/scan_mechanism_landing.py` | 机制运行时可达性扫描（落地 / 孤儿 / 编排器接线） |
 | `scripts/power_table.py` | 实验功效与样本量测算表（离线分析工具） |
 | `../results/code/verify_window_support.py` | assist09 滑窗错误率的 21 个离散支撑点口径（反分箱伪影） |
-| `../results/code/record_llm_model.py` | LLM 标注模型的 manifest / digest / 量化 / 基座元数据 |
+| `../results/code/record_llm_model.py` | LLM 标注模型的 manifest / digest / 量化 / 基座元数据（读取 `OLLAMA_MODELS`） |
+| `../docs/check_reference_consistency.py` | M1–M4 完整稿参考文献的**双向**一致性（表→正文 + 正文→表） |
+| `../results/m3/verify_m3_matrix.py` | M3 模型族 × 规模标注矩阵的 ≥3×≥3 覆盖与字段门禁 |
 
 机读产物落在 `learnflow-backend/artifacts/`：
 
@@ -279,13 +335,18 @@ python ../results/code/verify_window_support.py
 | 指标 | 值 | 复算来源 |
 |---|---|---|
 | 游戏化机制（登记） | **54**（`LF-M01`…`LF-M54`） | `verify_counts.py` |
-| 运行时干预效果生产者 | **2** | `verify_counts.py` / `effect_producers` |
+| 运行时干预效果生产者 | **16** | `verify_counts.py` / `effect_producers` |
 | 机制成熟度 | **complete 9 / partial 37 / placeholder 8** | `verify_counts.py` / `maturity_*` |
 | 占位机制 ID | `LF-M19, M28, M29, M32, M45, M49, M50, M53` | `verify_counts.py` / `maturity_placeholder.ids` |
 | 学习方法 | **28**（`LF-L01`…`LF-L28`） | `verify_counts.py` |
 | 元学习技能树节点 | **16** | `verify_counts.py` |
 | 机制运行时落地 | **54 / 54**，孤儿 0 | `scan_mechanism_landing.py` |
 | 注册表指纹 | `ee1a49be5732` | `registry_fingerprint()` |
+| 自陈量表目录指纹 | `3531e875d286` | `instrument_catalog.catalog_fingerprint()` |
+| 后端 Python 代码 | **91** 个文件 / **26,628** 行 | `verify_asset_numbers.py` |
+| API 路由 | **13** 个路由文件 / **104** 条可路由（不可达 0） | `verify_asset_numbers.py` |
+| 服务模块 | **58**（不含 `__init__.py` 为 57） | `verify_asset_numbers.py` |
+| pytest 收集 | **966** 项 | `pytest --collect-only -q` |
 
 > **数字纪律**：本项目历史上曾出现「76 个机制」的表述膨胀。四层复核链为
 > **76**（早期标题声称）→ **69**（表格逐项求和）→ **60**（实现单元）→ **54**（语义去重后的唯一机制数）。
@@ -301,6 +362,8 @@ learnflow/
 ├── README.md                   # 本文件
 ├── CONTRIBUTING.md             # 贡献与支持指南
 ├── CITATION.cff                # 引用元数据
+├── CHANGELOG.md                # 变更日志
+├── data/                       # 四个公开数据集（自备；被 .gitignore 排除）
 ├── docs/                       # 最终论文稿 + 权威治理文档（写作过程产物已归档）
 ├── artifacts/                  # E2E 验证截图等证据
 ├── learnflow-backend/          # FastAPI 后端
@@ -336,6 +399,8 @@ learnflow/
 | `docs/M1_难度可公度性与最优错误率_完整稿.md` | 论文 M1 完整稿（难度可公度性、合并增益的判据依赖性、冷启动估计器） |
 | `docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md` | 论文 M2 完整稿（游戏化干预冲突结构审计） |
 | `docs/M3_有序难度决策与大模型先验边界_完整稿.md` | 论文 M3 完整稿（有序动作空间、LLM 难度先验边界） |
+| `docs/M4_信度结构化组合难度估计_完整稿.md` | 论文 M4 完整稿（冷启动多信号组合、可加分离恒等式、外生判据下的负结果与残差化修正） |
+| `docs/check_reference_consistency.py` | 四篇完整稿参考文献双向一致性门禁 |
 | `docs/LearnFlow_期刊论文拆分方案.md` | 论文组合规划、五维新颖性审计、数字诚信红线 |
 | `docs/LearnFlow_机制治理与落实方案.md` | 54 个机制的去重口径与落地状态 |
 | `docs/_重写规范_事实基线与学术体例.md` | 事实基线、禁用数字清单与学术体例规范 |

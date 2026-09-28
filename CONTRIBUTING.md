@@ -27,11 +27,16 @@
 4. **完整错误栈**（不要只截一行）
 5. **相关日志**：后端 `uvicorn` 输出、浏览器控制台输出
 
-> **重要**：请先确认问题不是已知环境陷阱。两个最常见的误报来源：
+> **重要**：请先确认问题不是已知环境陷阱。最常见的误报来源：
 > - `PYTEST_DEBUG_TEMPROOT` 指向的目录**不存在** → 依赖 `tmp_path` 的用例批量抛 `FileNotFoundError`，
 >   看起来像大规模回归，实为环境问题。请先创建该目录并重新运行。
 > - 本机存在 HTTP 代理时会拦截 `localhost` 流量 → 健康检查失败。请对 localhost 绕过代理
 >   （`curl --noproxy '*'`，或设置 `no_proxy=localhost,127.0.0.1`）。
+> - 前端 dev server **只监听 IPv6 localhost** → 用 `127.0.0.1:5173` 访问会失败，请用
+>   `http://localhost:5173`。
+> - pytest **退出码恒为 1** 但摘要为 `0 failed`（本机 safe-delete 包装层在打印摘要前中断）→
+>   这是环境现象，**不是测试失败**。请以摘要行的失败/错误计数为准。
+> - `data/` 为空 → `results/` 下的研究脚本会失败。该目录被 `.gitignore` 排除，需自备数据集。
 
 ---
 
@@ -47,6 +52,7 @@ git checkout -b fix/parent-daily-limit-persistence
 #   feat/*  新功能    fix/* 缺陷    docs/* 文档    test/* 测试
 
 # 3. 搭建环境（见 README「快速开始」）
+#    注意：data/ 被 .gitignore 排除，研究脚本需自备四个公开数据集
 ```
 
 ### 提交前必须通过
@@ -57,10 +63,32 @@ git checkout -b fix/parent-daily-limit-persistence
 # 全量测试必须零失败
 PYTEST_DEBUG_TEMPROOT=<已存在的绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 
-# 数字一致性门禁必须通过（exit 0）
-.venv/Scripts/python scripts/verify_asset_numbers.py --doc-check --with-pytest
+# 权威计数：机制 54 / 学习方法 28 / 效果生产者 16 / 成熟度 9·37·8 —— 须输出 VERIFIED
 .venv/Scripts/python scripts/verify_counts.py
+
+# 代码资产数字 + 文档一致性门禁
+.venv/Scripts/python scripts/verify_asset_numbers.py --doc-check --with-pytest
+
+# 机制运行时可达性扫描（落地 / 孤儿 / 编排器接线）
+.venv/Scripts/python scripts/scan_mechanism_landing.py
 ```
+
+**仓库根**（三个脚本均为纯标准库，后端 venv 的 Python 即可运行）：
+
+```bash
+# 四篇完整稿的参考文献双向一致性（默认报告模式；--strict 为门禁模式，任何 FAIL → exit 1）
+learnflow-backend/.venv/Scripts/python docs/check_reference_consistency.py --strict
+
+# M3 模型族 × 规模标注矩阵门禁
+learnflow-backend/.venv/Scripts/python results/m3/verify_m3_matrix.py
+
+# assist09 滑窗错误率的 21 个离散支撑点口径
+learnflow-backend/.venv/Scripts/python results/code/verify_window_support.py
+```
+
+> ⚠️ `verify_asset_numbers.py --doc-check` 只核对 `docs/LearnFlow_期刊论文拆分方案.md` §1
+> 的资产句子，**不扫描 README.md**。若它报 `DRIFT`，请同步该文档 §1 的基线值（属 `docs/`，
+> 改动需单独说明）。
 
 **前端**（在 `learnflow-frontend/`）：
 
@@ -69,6 +97,11 @@ npm run lint
 npx tsc --noEmit
 npm run build
 ```
+
+### 变更日志
+
+对外可感知的改动请在 [`CHANGELOG.md`](CHANGELOG.md) 对应日期下补一条，标注
+`Added` / `Changed` / `Fixed`，并附提交号。**不得凭印象编造条目**——以 `git log` 为准。
 
 ### 提交信息
 
