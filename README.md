@@ -8,7 +8,7 @@
 > **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
 > 声明两个研究主线。
 
-[![tests](https://img.shields.io/badge/tests-936%20passed-brightgreen)](#测试)
+[![tests](https://img.shields.io/badge/tests-972%20passed-brightgreen)](#测试)
 [![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%202%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -214,7 +214,7 @@ cd learnflow-frontend && cp .env.example .env.local
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前 936 passed）
+# 全量测试（当前 972 passed）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 

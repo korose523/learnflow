@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-27T14:16:21+08:00",
-  "git_commit": "unknown",
-  "python_version": "3.13.14",
-  "backend_root": "D:\\learnflow-main\\learnflow-main\\learnflow-backend",
+  "generated_at": "2026-10-02T11:00:31+09:00",
+  "git_commit": "37124db27832365feb76dbd609d715ea305f5c06",
+  "python_version": "3.11.9",
+  "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
     "engine_classes": {
       "value": 86,

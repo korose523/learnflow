@@ -162,20 +162,20 @@ SPLIT_DOC = PROJECT_ROOT / "docs" / "LearnFlow_期刊论文拆分方案.md"
 
 REGISTERED: Dict[str, Dict[str, Any]] = {
     "python_loc": {
-        "registered": 25389,
+        "registered": 26745,
         "strict": False,
         "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值"
-                "（历史值为 23,927，已漂移）。",
+                "（合并后基线 26,745）。",
     },
     "source_files": {
-        "registered": 87,
+        "registered": 92,
         "strict": False,
-        "note": "informative：app/**/*.py 文件数。文档 §1 引用此值（历史值 81）。",
+        "note": "informative：app/**/*.py 文件数。文档 §1 引用此值（合并后基线 92）。",
     },
     "service_modules": {
-        "registered": 54,
+        "registered": 59,
         "strict": False,
-        "note": "informative：app/services/*.py 文件数。文档 §1 历史值 41 为残留，已修正。",
+        "note": "informative：app/services/*.py 文件数。文档 §1 历史值 41 为残留，已修正（合并后基线 59）。",
     },
     "api_files": {
         "registered": 13,
@@ -189,21 +189,21 @@ REGISTERED: Dict[str, Dict[str, Any]] = {
                 "是文档 §1「API 端点」应对应的口径（历史值 72 为残留）。",
     },
     "test_files": {
-        "registered": 53,
+        "registered": 56,
         "strict": False,
-        "note": "informative：tests/test_*.py 文件数。文档 §1 引用此值（历史值 49）。",
+        "note": "informative：tests/test_*.py 文件数。文档 §1 引用此值（合并后基线 56）。",
     },
     "test_functions": {
-        "registered": 826,
+        "registered": 878,
         "strict": False,
         "note": "informative：AST 定义数（含任意嵌套层级），≠ pytest 收集数"
-                "（parametrize 会把一个函数展开成多个用例）。",
+                "（parametrize 会把一个函数展开成多个用例）。合并后基线 878。",
     },
     "tests_collected": {
-        "registered": 920,
+        "registered": 972,
         "strict": False,
         "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。"
-                "仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。",
+                "仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。合并后基线 972。",
     },
 }
 
