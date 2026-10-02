@@ -176,10 +176,6 @@ def run_a1():
     print("[A1] 拟合 IRT-1PL ...", flush=True)
     b = fit_irt_1pl_scaled(fp2, fj2, fc2, M, K, n_iter=25, n_nodes=15)
     mean_abs_b = sum(abs(x) for x in b) / K
-    success_diff_B = []
-    for u in qual_ucid:
-        n, corr = aggB[u]
-        success_diff_B.append(_logit((n - corr + 0.5) / (n + 1.0)))
     sig_success = []; sig_hint = []; sig_dur = []; sig_att = []
     sig_up = []; sig_down = []; sig_rep = []
     for u in qual_ucid:
@@ -195,75 +191,48 @@ def run_a1():
     fusion_A = _equal_weight_signed_fusion(
         [sig_success, sig_hint, sig_dur, sig_att, sig_up, sig_down, sig_rep],
         [+1, +1, +1, +1, -1, +1, +1])
-    rho_fusion = V.spearman_rho(b, fusion_A)
-    rho_success = V.spearman_rho(b, success_diff_B)
-    print(f"[A1] Spearman(b_j,融合_A)={rho_fusion:.4f}", flush=True)
-    print(f"[A1] Spearman(b_j,仅成功率_B)={rho_success:.4f}", flush=True)
+    # Review 3.1 (2026-09-29): both estimators are computed on the A half and compared
+    # against the SAME b_j (fitted on the B half). Previously the success-rate baseline
+    # was taken from the B half (success_diff_B) and shared the B-half sample with b_j,
+    # inflating Spearman(b_j, success_B) via common sampling noise. Now neither estimator
+    # shares a half with b_j, so the two Spearman(b_j, *) values are on a level playing
+    # field and can be reported side by side.
+    rho_fusion_A = V.spearman_rho(b, fusion_A)          # fusion (A half) vs b_j (B half)
+    rho_success_A = V.spearman_rho(b, sig_success)      # success-rate baseline (A half) vs b_j
+    rho_within_A = V.spearman_rho(sig_success, fusion_A)  # diagnostic: within-A correlation
+    print(f"[A1] Spearman(b_j,融合_A)={rho_fusion_A:.4f}", flush=True)
+    print(f"[A1] Spearman(b_j,成功率_A)={rho_success_A:.4f}", flush=True)
+    print(f"[A1] Spearman(成功率_A,融合_A)={rho_within_A:.4f} (within A half)", flush=True)
     print(f"[A1] mean|b_j|={mean_abs_b:.4f}", flush=True)
     return {
         "experiment": "A1", "dataset": "Junyi",
-        "split_protocol": "O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；融合信号仅 A 内、IRT 仅 B 内",
+        "split_protocol": ("O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；"
+                           "融合信号与成功率基线均在 A 半估计，b_j 在 B 半拟合；"
+                           "两估计器不与 b_j 同半，消除同半抽样噪声泄漏"),
         "n_items": K, "n_persons_b_half": M, "n_responses_used_for_irt": n_resp,
         "min_b_half_responses": MIN_B_RESP, "mean_abs_b": mean_abs_b,
-        "spearman_fusion": rho_fusion, "spearman_success": rho_success,
-        "note": ("融合=A 半 O5 七信号等权符号校正融合(ECDF→logit)；仅成功率=B 半失败率 logit；"
-                 "IRT b_j 与仅成功率同源于 B 半（不独立，计划已声明）；"
+        "spearman_fusion_vs_bj": rho_fusion_A, "spearman_successrate_vs_bj": rho_success_A,
+        "spearman_successrate_vs_fusion_withinA": rho_within_A,
+        "note": ("融合=A 半 O5 七信号等权符号校正融合(ECDF→logit)；成功率基线=A 半失败率；"
+                 "b_j 在 B 半拟合。两估计器均与 b_j 分属不同半，故 Spearman(b_j,·) 不受同半抽样噪声膨胀；"
                  "每题 B 半 IRT 响应上限 %d（远>%d）。" % (MAX_PER_ITEM_STORE, MIN_B_RESP)),
     }
 
 def run_a2():
-    zip_path = "E:/learnflow/data/dbe_kt22/2_DBE_KT22_datafiles_100102_csv.zip"
-    import zipfile
-    from datetime import datetime
-    q_diff = {}
-    with zipfile.ZipFile(zip_path) as z:
-        with z.open("Questions.csv") as f:
-            text = f.read().decode("utf-8")
-    reader = csv.reader(text.splitlines()); hq = next(reader)
-    ix_id = hq.index("id"); ix_diff = hq.index("difficulty")
-    for row in reader:
-        if not row: continue
-        qid = row[ix_id].strip(); dv = row[ix_diff].strip()
-        try: q_diff[qid] = int(float(dv))
-        except ValueError: continue
-    print(f"[A2] 专家标签题数={len(q_diff)}", flush=True)
-    agg = defaultdict(lambda: [0, 0, 0, 0.0, 0.0, 0.0, 0.0])
-    with zipfile.ZipFile(zip_path) as z:
-        with z.open("Transaction.csv") as f:
-            text = f.read().decode("utf-8")
-    reader = csv.reader(text.splitlines()); ht = next(reader)
-    ix_qid = ht.index("question_id"); ix_ans = ht.index("answer_state")
-    ix_hint = ht.index("hint_used"); ix_self = ht.index("difficulty_feedback")
-    ix_trust = ht.index("trust_feedback"); ix_st = ht.index("start_time"); ix_et = ht.index("end_time")
-    n_tx = 0
-    for row in reader:
-        if not row: continue
-        qid = row[ix_qid].strip()
-        if qid not in q_diff: continue
-        n_tx += 1
-        a = agg[qid]; a[0] += 1
-        a[1] += 1 if row[ix_ans].strip().lower() == "true" else 0
-        a[2] += 1 if row[ix_hint].strip().lower() == "true" else 0
-        a[3] += _num(row[ix_self]); a[4] += _num(row[ix_trust])
-        try:
-            st = datetime.strptime(row[ix_st].strip()[:23], "%Y-%m-%d %H:%M:%S.%f")
-            et = datetime.strptime(row[ix_et].strip()[:23], "%Y-%m-%d %H:%M:%S.%f")
-            d = (et - st).total_seconds()
-            if d > 0: a[5] += d; a[6] += 1
-        except Exception: pass
-    print(f"[A2] 交易 {n_tx} 条", flush=True)
-    qids = [q for q in q_diff if q in agg and agg[q][0] > 0]
+    # Unified signal construction shared with o4_fusion.py (review 3.2 ①, 2026-09-29).
+    # Both experiments now call dbe_signals.build() so the five behavioural signals
+    # are constructed identically: all transactions used (no is_hidden exclusion),
+    # feedback = mean over rows with a feedback value, duration capped to 0<=d<3600 s,
+    # ECDF transform (rank-0.5)/n.
+    sys.path.insert(0, os.path.join(os.path.dirname(HERE), "code"))
+    import dbe_signals as D
+    qids, M, expert = D.build(minn=30)
     K = len(qids)
     print(f"[A2] 含标签+交易题数={K}", flush=True)
-    expert = []; sig_success = []; sig_hint = []; sig_self = []; sig_trust = []; sig_dur = []
-    for q in qids:
-        n, corr, hint, selfrep, trust, dur, ndur = agg[q]
-        expert.append(q_diff[q])
-        sig_success.append(1.0 - corr / n); sig_hint.append(hint / n)
-        sig_self.append(selfrep / n); sig_trust.append(trust / n)
-        sig_dur.append((dur / ndur) if ndur > 0 else 0.0)
-    fusion = _equal_weight_signed_fusion(
-        [sig_success, sig_hint, sig_self, sig_trust, sig_dur], [+1, +1, +1, -1, +1])
+    # equal-weight fusion = mean of the five ECDF-logit signals per item
+    fusion = [sum(row) / len(row) for row in M]
+    # success-only baseline: the success_inverse column (monotonic with raw success rate)
+    sig_success = [row[0] for row in M]
     rho_fusion = V.spearman_rho(fusion, expert)
     rho_success = V.spearman_rho(sig_success, expert)
     order = ["1", "2", "3"]; tert = sorted(fusion)
@@ -279,12 +248,13 @@ def run_a2():
     print(f"[A2] 加权κ(专家 vs 行为三分位)={kappa:.4f}", flush=True)
     return {
         "experiment": "A2", "dataset": "DBE-KT22",
-        "split_protocol": "题级 A/B 蓄水池留出（等权融合无参数，全样本评估，与 O4 一致）",
-        "n_items": K, "n_transactions": n_tx,
+        "split_protocol": ("题级全样本评估；信号定义与 o4_fusion.py 调用同一 dbe_signals.build()"
+                          "（全交易、反馈取有反馈记录行的均值、时长 0~3600、(rank-0.5)/n）"),
+        "n_items": K,
         "weighted_kappa_expert_vs_reference": kappa,
         "spearman_fusion": rho_fusion, "spearman_success": rho_success,
         "note": ("DBE 仅单专家难度标注，无法算编码者间κ；κ 为专家标签 vs 行为难度(融合)三分位参照编码的线性加权κ(1<2<3)。"
-                 "Spearman 基于全 212 题（等权融合无泄漏风险）。"),
+                 "信号定义已与 O4 统一（review 3.2 ①），两实验现给出一致的 Spearman(融合,专家)。"),
     }
 
 def main():

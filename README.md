@@ -255,7 +255,7 @@ python ../results/code/verify_window_support.py
 > 只写「54 机制」会被读成「54 个都在运行」——运行时真正构造干预效果的只有 2 处
 > （`deep_addiction_engine.py:296` LF-M44、`learning_orchestrator.py:986` LF-M52），
 > 其余机制只写评估记录或不构造效果。三元组由 `verify_counts.py` 复算，`tests/test_count_verification.py` 钉死。
-> **（2026-09-29，审阅 §2.1④）效果生产者一律写成带条件的同一句话**：**审计时点 2（封存 tag `audit-m2-20260911`）；路线 A opt-in 下为 14 个机制、AST 16 处，默认关闭**。按审阅 §5.4，路线 A 的 A2/A3/A4 产出不作为结果接受。
+> **（2026-09-29，审阅 §2.1④）效果生产者一律写成带条件的同一句话**：**审计时点 2（封存 tag `audit-m2-20260911`）；路线 A opt-in 下为 14 个机制（声明式候选集，不计入 AST 生产者审计），默认关闭**。按审阅 §5.4，路线 A 的 A2/A3/A4 产出不作为结果接受。
 
 主要统计脚本：
 

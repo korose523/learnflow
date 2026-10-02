@@ -14,6 +14,10 @@ LearnFlow 有 18 个干预生成点（15 处严格 nudge + 3 处学习提示, �
     Layer 2  冲突消解 (Conflict Resolution)
             按语义方向: 反方向对立时保留 withdraw (保守偏置, default to safety);
             同方向同 (effect_type, direction) 桶内保留优先级最高者
+            ⚠ 两类语义不同, 现已分列字段 (导师 2026-09-29 审阅意见 5.3):
+              - 方向对立丢弃 → ArbitrationTrace.dropped_by_conflict
+              - 同桶去重丢弃 → ArbitrationTrace.dedup_dropped
+            论文「方向对立丢弃占比」只能引用 dropped_by_conflict, 不得混入 dedup_dropped。
     Layer 3  干预预算 (Intervention Budget)
             按 priority 降序贪心装箱, 直到会话/日/加权成本上限; 健康类绕过预算
 
@@ -62,6 +66,10 @@ class ArbitrationTrace:
     candidates: List[str] = field(default_factory=list)
     vetoed_by_health: List[str] = field(default_factory=list)
     dropped_by_conflict: List[str] = field(default_factory=list)
+    # 同桶去重丢弃（与「方向对立丢弃」严格区分，导师 2026-09-29 审阅意见 5.3 字段分离）。
+    # 此前 same-bucket dedup 也被计入 dropped_by_conflict，导致「方向对立丢弃占比」
+    # 混入非方向对立的去重，定义不可核实。现在二者分列不同字段。
+    dedup_dropped: List[str] = field(default_factory=list)
     dropped_by_budget: List[str] = field(default_factory=list)
     dropped_by_risk: List[str] = field(default_factory=list)
     delivered: List[str] = field(default_factory=list)
@@ -209,6 +217,10 @@ class MechanismArbitrator:
                 logger.info("RL 仲裁器在风险档 t%d 选中 %s", risk_tier, rl_id)
 
         # ---------- 第 2 层: 冲突消解 ----------
+        # 注（导师 5.3）：Layer-2 同时处理「方向对立丢弃」与「同桶去重」两类，**语义不同**：
+        #   - 方向对立丢弃 → trace.dropped_by_conflict（approach×withdraw 反方向，保守偏置保留 withdraw）
+        #   - 同桶去重       → trace.dedup_dropped（同 (effect_type, direction) 桶内保留优先级最高者）
+        # 二者分列字段，使论文可核实「方向对立丢弃占比」不再混入去重。
         effects = self._resolve_conflicts(ctx, effects, trace)
 
         # ---------- 第 3 层: 干预预算 ----------
@@ -216,7 +228,10 @@ class MechanismArbitrator:
 
         trace.delivered = [e.mechanism_id for e in effects]
         # 路线 A · A1：填充账本落库字段（纯计算，无 I/O，向后兼容）
-        trace.preempted_by = trace.dropped_by_conflict + trace.dropped_by_budget
+        # 被抢占 = 方向对立丢弃 + 同桶去重丢弃 + 预算丢弃（三者均为未下发的机制）
+        trace.preempted_by = (
+            trace.dropped_by_conflict + trace.dedup_dropped + trace.dropped_by_budget
+        )
         trace.arbitration_decision = "executed" if trace.delivered else "blocked"
         trace.budget_consumed = float(
             sum(e.cost for e in effects if e.user_visible and not e.health_critical)
@@ -369,12 +384,14 @@ class MechanismArbitrator:
             logger.info("conflict resolved: dropped approach nudges %s",
                         [e.mechanism_id for e in dropped])
 
-        # 同方向: 每个 (effect_type, direction) 桶内保留优先级最高者
+        # 同方向: 每个 (effect_type, direction) 桶内保留优先级最高者。
+        # 注意（导师 5.3）：这是「同桶去重」，并非方向对立——必须记入 dedup_dropped，
+        # 而非 dropped_by_conflict，否则「方向对立丢弃占比」会被去重污染而不可核实。
         buckets: Dict[Tuple[str, str], Effect] = {}
         for e in sorted(visible, key=lambda x: -x.priority):
             key = (e.effect_type.value, self._DIRECTION.get(e.mechanism_id, "neutral"))
             if key in buckets:
-                trace.dropped_by_conflict.append(e.mechanism_id)
+                trace.dedup_dropped.append(e.mechanism_id)
             else:
                 buckets[key] = e
 

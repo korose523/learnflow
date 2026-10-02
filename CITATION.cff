@@ -19,7 +19,8 @@ abstract: >-
   learnflow-backend/scripts/, and the consistency check fails loudly when a documented number
   diverges from the code.   The headline mechanism count is always reported as a triple —
   registered 54 / runtime effect producers 2 (at the sealed audit tag audit-m2-20260911; 14
-  distinct mechanisms via 16 AST sites under the Route A opt-in, off by default) / maturity
+  declared mechanisms under the Route A opt-in — a declarative candidate set, not counted as
+  AST producers — off by default) / maturity
   complete 9, partial 37, placeholder 8 — so the registered figure is never read as
   "54 mechanisms are running". Per review 5.4 the Route A A2/A3/A4 outputs are not accepted
   as results.

@@ -62,7 +62,7 @@ A single locally deployed open-weight model is used: `qwen36:latest` (base Qwen3
 
 ### 4.3 Model matrix and verification
 
-To bound the claim we evaluate a four-family × three-scale open-weight matrix, of which 11 cells could be evaluated; cells that could not be run are reported as gaps rather than imputed. Verification is automated and reproducible: 936 tests pass across the analysis pipeline, and the cold-start landing implementation (`o11_land_verify`) passes 15/15 checks, reproducing all k × variant gains reported by the optimization script. Annotation protocols, prompt templates and parsing procedures are documented in the supplementary code, and the audited model is pinned by its Ollama manifest SHA-256 so that the annotation step is byte-identifiable rather than merely named by a version string.
+To bound the claim we evaluate a four-family × three-scale open-weight matrix, of which 11 cells could be evaluated; cells that could not be run are reported as gaps rather than imputed. Verification is automated and reproducible: 972 tests pass across the analysis pipeline, and the cold-start landing implementation (`o11_land_verify`) passes 15/15 checks, reproducing all k × variant gains reported by the optimization script. Annotation protocols, prompt templates and parsing procedures are documented in the supplementary code, and the audited model is pinned by its Ollama manifest SHA-256 so that the annotation step is byte-identifiable rather than merely named by a version string.
 
 ## 5 Results
 
@@ -153,7 +153,7 @@ Consistency gain ≠ predictive-power gain. An estimator can agree better with a
 
 ### 5.8 Reproducibility artefacts
 
-All annotation protocols, prompt templates, parsing procedures and optimization scripts are released with the paper, and the audited model is pinned by manifest digest rather than by name so that the annotation step is byte-identifiable. The landing implementation is checked against the optimization script by `o11_land_verify`, which reproduces every k × variant gain (15/15 checks), and the wider pipeline is covered by 936 automated tests. Together these make the reported numbers re-derivable rather than merely asserted, and they are the reason we can state which protocols failed and why instead of reporting only the runs that succeeded.
+All annotation protocols, prompt templates, parsing procedures and optimization scripts are released with the paper, and the audited model is pinned by manifest digest rather than by name so that the annotation step is byte-identifiable. The landing implementation is checked against the optimization script by `o11_land_verify`, which reproduces every k × variant gain (15/15 checks), and the wider pipeline is covered by 972 automated tests. Together these make the reported numbers re-derivable rather than merely asserted, and they are the reason we can state which protocols failed and why instead of reporting only the runs that succeeded.
 
 ## 6 Discussion
 

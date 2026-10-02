@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-02T11:00:31+09:00",
-  "git_commit": "37124db27832365feb76dbd609d715ea305f5c06",
+  "generated_at": "2026-10-02T11:54:00+09:00",
+  "git_commit": "4a8d2bc5c4e81e1c1592cd31582bc61402cd104f",
   "python_version": "3.11.9",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
@@ -331,7 +331,7 @@
       "definition": "mechanism_registry._SPECS_DATA 中 maturity == 'placeholder' 的条目数"
     },
     "effect_producers": {
-      "value": 16,
+      "value": 2,
       "sites": [
         {
           "location": "app/services/deep_addiction_engine.py:296",
@@ -355,118 +355,6 @@
           "enclosing_function": "process_submission",
           "mechanism_labels": [
             "LF-M52"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:103",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M16"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:107",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M51"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:111",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M53"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:136",
-          "enclosing_function": "build_route_a_effects",
-          "mechanism_labels": [
-            "LF-M44"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:140",
-          "enclosing_function": "build_route_a_effects",
-          "mechanism_labels": [
-            "LF-M52"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:67",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M01"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:71",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M04"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:75",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M05"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:79",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M06"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:83",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M07"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:87",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M08"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:91",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M12"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:95",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M13"
-          ],
-          "registry_impl_ref_ids": []
-        },
-        {
-          "location": "app/services/route_a_producers.py:99",
-          "enclosing_function": "_new_effects",
-          "mechanism_labels": [
-            "LF-M15"
           ],
           "registry_impl_ref_ids": []
         }
@@ -521,9 +409,9 @@
       "note": "strict：占位机制数。报告曾以 4 表述（M29/M32/M49/M50），实测为 8，更正后必须与此处一致；ID 清单见 JSON 的 maturity_placeholder.ids。"
     },
     "effect_producers": {
-      "registered": 16,
+      "registered": 2,
       "strict": true,
-      "note": "strict：运行时真正构造 Effect(...) 的位置数（AST 静态复算）。改造前 2 处（封存 tag audit-m2-20260911：deep_addiction_engine.py:296 / learning_orchestrator.py:995）。路线 A · A2（2026-09-22）新增 route_a_producers.py，贡献 14 处字面 Effect( 构造点（12 新增机制 + 把既有 LF-M44/LF-M52 显式列入以保 A3 仿真自包含）；加既有 2 处位置 → 当前 AST 站点 = 16。运行时 opt-in 激活的**不同机制** 生产者按机制去重 = 14（> 封存时点 2，直接消解 M2 审计「冲突稀少 vs 不可发生」不可区分）。改造后仅当 LEARN2_A2_PRODUCERS=1 时并入候选，默认关闭，不影响 936 既有测试。"
+      "note": "strict：运行时真正构造 Effect(...) 的位置数（AST 静态复算，排除 tests/、scripts/ 与 opt-in 候选声明模块 route_a_producers.py）。审计时点（封存 tag audit-m2-20260911）真实生产者仅 2 处：deep_addiction_engine.py / learning_orchestrator.py（即 LF-M44 / LF-M52）。路线 A 曾为抬升该数而在 route_a_producers.py 字面展开 12 个固定 Effect（使 AST 站点虚高到 16），导师 2026-09-29 审阅意见 5.2 认定其为「为计数器写的代码」，已改写为声明式候选集 + 单一工厂，且本模块从「效果生产者」审计中显式排除。route_a_producers.ROUTE_A_PRODUCERS_COUNT=14 是「声明的 opt-in 机制数」口径，与「效果生产者 AST 审计口径（=2）」明确区分，不再靠形状凑数。"
     }
   },
   "claims": {
@@ -605,11 +493,11 @@
     },
     "effect_producers": {
       "status": "verified",
-      "registered": 16,
-      "actual": 16,
+      "registered": 2,
+      "actual": 2,
       "delta": 0,
       "strict": true,
-      "notes": "生产者位置：app/services/deep_addiction_engine.py:296; app/services/learning_orchestrator.py:995; app/services/route_a_producers.py:103; app/services/route_a_producers.py:107; app/services/route_a_producers.py:111; app/services/route_a_producers.py:136; app/services/route_a_producers.py:140; app/services/route_a_producers.py:67; app/services/route_a_producers.py:71; app/services/route_a_producers.py:75; app/services/route_a_producers.py:79; app/services/route_a_producers.py:83; app/services/route_a_producers.py:87; app/services/route_a_producers.py:91; app/services/route_a_producers.py:95; app/services/route_a_producers.py:99"
+      "notes": "生产者位置：app/services/deep_addiction_engine.py:296; app/services/learning_orchestrator.py:995"
     },
     "_overall": {
       "status": "verified",

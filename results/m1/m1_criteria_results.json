@@ -2,25 +2,25 @@
   "a1": {
     "experiment": "A1",
     "dataset": "Junyi",
-    "split_protocol": "O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；融合信号仅 A 内、IRT 仅 B 内",
+    "split_protocol": "O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；融合信号与成功率基线均在 A 半估计，b_j 在 B 半拟合；两估计器不与 b_j 同半，消除同半抽样噪声泄漏",
     "n_items": 1274,
     "n_persons_b_half": 32563,
     "n_responses_used_for_irt": 1845035,
     "min_b_half_responses": 500,
-    "mean_abs_b": 0.800916657519524,
-    "spearman_fusion": 0.8923453945851886,
-    "spearman_success": 0.9630538332387334,
-    "note": "融合=A 半 O5 七信号等权符号校正融合(ECDF→logit)；仅成功率=B 半失败率 logit；IRT b_j 与仅成功率同源于 B 半（不独立，计划已声明）；每题 B 半 IRT 响应上限 1500（远>500）。"
+    "mean_abs_b": 0.8009166575195255,
+    "spearman_fusion_vs_bj": 0.8923453945851886,
+    "spearman_successrate_vs_bj": 0.9540930395843433,
+    "spearman_successrate_vs_fusion_withinA": 0.940425905071719,
+    "note": "融合=A 半 O5 七信号等权符号校正融合(ECDF→logit)；成功率基线=A 半失败率；b_j 在 B 半拟合。两估计器均与 b_j 分属不同半，故 Spearman(b_j,·) 不受同半抽样噪声膨胀；每题 B 半 IRT 响应上限 1500（远>500）。"
   },
   "a2": {
     "experiment": "A2",
     "dataset": "DBE-KT22",
-    "split_protocol": "题级 A/B 蓄水池留出（等权融合无参数，全样本评估，与 O4 一致）",
+    "split_protocol": "题级全样本评估；信号定义与 o4_fusion.py 调用同一 dbe_signals.build()（全交易、反馈取有反馈记录行的均值、时长 0~3600、(rank-0.5)/n）",
     "n_items": 212,
-    "n_transactions": 161953,
-    "weighted_kappa_expert_vs_reference": 0.12297651472326414,
-    "spearman_fusion": 0.20509836810285337,
+    "weighted_kappa_expert_vs_reference": 0.1774500231255462,
+    "spearman_fusion": 0.291786208650993,
     "spearman_success": 0.22043569539610774,
-    "note": "DBE 仅单专家难度标注，无法算编码者间κ；κ 为专家标签 vs 行为难度(融合)三分位参照编码的线性加权κ(1<2<3)。Spearman 基于全 212 题（等权融合无泄漏风险）。"
+    "note": "DBE 仅单专家难度标注，无法算编码者间κ；κ 为专家标签 vs 行为难度(融合)三分位参照编码的线性加权κ(1<2<3)。信号定义已与 O4 统一（review 3.2 ①），两实验现给出一致的 Spearman(融合,专家)。"
   }
 }

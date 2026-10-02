@@ -199,15 +199,16 @@ REGISTERED: Dict[str, Dict[str, Any]] = {
                 "更正后必须与此处一致；ID 清单见 JSON 的 maturity_placeholder.ids。",
     },
     "effect_producers": {
-        "registered": 16,
+        "registered": 2,
         "strict": True,
-        "note": "strict：运行时真正构造 Effect(...) 的位置数（AST 静态复算）。"
-                "改造前 2 处（封存 tag audit-m2-20260911：deep_addiction_engine.py:296 / "
-                "learning_orchestrator.py:995）。路线 A · A2（2026-09-22）新增 route_a_producers.py，"
-                "贡献 14 处字面 Effect( 构造点（12 新增机制 + 把既有 LF-M44/LF-M52 显式列入以保 A3 "
-                "仿真自包含）；加既有 2 处位置 → 当前 AST 站点 = 16。运行时 opt-in 激活的**不同机制** "
-                "生产者按机制去重 = 14（> 封存时点 2，直接消解 M2 审计「冲突稀少 vs 不可发生」不可区分）。"
-                "改造后仅当 LEARN2_A2_PRODUCERS=1 时并入候选，默认关闭，不影响 936 既有测试。",
+        "note": "strict：运行时真正构造 Effect(...) 的位置数（AST 静态复算，排除 tests/、scripts/ "
+                "与 opt-in 候选声明模块 route_a_producers.py）。审计时点（封存 tag "
+                "audit-m2-20260911）真实生产者仅 2 处：deep_addiction_engine.py / "
+                "learning_orchestrator.py（即 LF-M44 / LF-M52）。路线 A 曾为抬升该数而在 "
+                "route_a_producers.py 字面展开 12 个固定 Effect（使 AST 站点虚高到 16），导师 "
+                "2026-09-29 审阅意见 5.2 认定其为「为计数器写的代码」，已改写为声明式候选集 + 单一工厂，"
+                "且本模块从「效果生产者」审计中显式排除。route_a_producers.ROUTE_A_PRODUCERS_COUNT=14 "
+                "是「声明的 opt-in 机制数」口径，与「效果生产者 AST 审计口径（=2）」明确区分，不再靠形状凑数。",
     },
 }
 
@@ -738,6 +739,11 @@ def count_effect_producers() -> Dict[str, Any]:
     for py in sorted(APP_DIR.rglob("*.py")):
         rel = py.relative_to(BACKEND_ROOT).as_posix()
         if "/tests/" in f"./{rel}" or rel.startswith("tests/") or "/scripts/" in f"./{rel}":
+            continue
+        # opt-in 候选声明模块：路线 A 设想的候选生产者由声明式规格 + 单一工厂在
+        # LEARN2_A2_PRODUCERS=1 时实例化，不是运行时真实生产引擎，故不计入
+        # 「效果生产者」审计（导师 2026-09-29 审阅意见 5.2：避免靠形状凑数）。
+        if rel == "app/services/route_a_producers.py":
             continue
         tree = _parse_python(py)
         parents: Dict[int, str] = {}

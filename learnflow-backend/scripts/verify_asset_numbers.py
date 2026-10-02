@@ -162,10 +162,10 @@ SPLIT_DOC = PROJECT_ROOT / "docs" / "LearnFlow_期刊论文拆分方案.md"
 
 REGISTERED: Dict[str, Dict[str, Any]] = {
     "python_loc": {
-        "registered": 26745,
+        "registered": 26782,
         "strict": False,
         "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值"
-                "（合并后基线 26,745）。",
+                "（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算）。",
     },
     "source_files": {
         "registered": 92,

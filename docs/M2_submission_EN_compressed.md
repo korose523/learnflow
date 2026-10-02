@@ -22,7 +22,7 @@ When a learning system registers dozens of behavioural intervention mechanisms a
 
 **First, this paper is "an internal static audit and its limits," not a general finding about similar systems.** Three inferences **exceed our material and must not be written**: (1) Do not call the 77.8% unclassifiable proportion a "discovery triggered by a falsification condition" — its cause is that four fields of the seven-tuple we ourselves designed do not exist in our own code, i.e. a diagnosis of implementation completeness; (2) Do not infer "multi-intervention systems rarely conflict" from "1 run-time conflict pair, 0 budget-contention pairs" — we have no real user logs (limitation ⑧); (3) Do not infer "most similar systems avoid conflict by structural design" from 2 external systems (both Moodle/PHP plug-ins, single coder, no reliability).
 
-**Second, wherever a mechanism scale appears, the three figures must be stated together**: registered **54** / effect-producing **2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries 16 AST sites / 14 opt-ins, off by default) / maturity **complete 9 · partial 37 · placeholder 8**. A bare "54" reads a registration scale as a capability scale.
+**Second, wherever a mechanism scale appears, the three figures must be stated together**: registered **54** / effect-producing **2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries 14 mechanism opt-ins (declarative candidate set), off by default) / maturity **complete 9 · partial 37 · placeholder 8**. A bare "54" reads a registration scale as a capability scale.
 
 **Third, all numbers are taken only from script products under `results/m2/`, and all code anchors from the sealed tree `audit-m2-20260911`.** The audited repository has moved on (current HEAD far past `8a328430`); asset line-count metrics have drifted, which affects no audit conclusion. Code-anchor evidence (registry, direction table, effect-producer locations) is sealed by tag and verified item by item (7/7 PASS).
 
@@ -163,16 +163,17 @@ All 54 are "landed" in the weak sense and none is orphaned, yet far fewer truly 
 
 | Metric | Registration baseline | Measured | Verdict |
 |---|---:|---:|---|
-| `python_loc` | 25,389 | **26,107** | drift +718 |
-| `source_files` | 87 | **90** | drift +3 |
-| `service_modules` | 54 | **57** | drift +3 |
+| `python_loc` | 25,389 | **26,782** | drift +1,393 |
+| `source_files` | 87 | **92** | drift +5 |
+| `service_modules` | 54 | **59** | drift +5 |
 | `api_files` | 13 | 13 | consistent |
 | `api_routes_defined` | — | 104 | — |
 | `api_routes_reachable` | 104 | 104 | consistent (unreachable = 0) |
-| `test_files` | 53 | **54** | drift +1 |
-| `test_functions` | 826 | **842** | drift +16 |
+| `test_files` | 53 | **56** | drift +3 |
+| `test_functions` | 826 | **878** | drift +52 |
+| `tests_collected` (pytest actual) | 920 | **972** | drift +52 |
 
-These values drifted relative to the registration baseline and, after Route A, relative to the audit time as well; per limitation ⑪ they **are not part of the audit conclusions** and only illustrate that drift exists between the registration baseline and implementation status.
+These values drifted relative to the registration baseline and, after Route A, relative to the audit time as well; per limitation ⑪ they **are not part of the audit conclusions** and only illustrate that drift exists between the registration baseline and implementation status. (Evaluated on the 2026-10-02 merged tree; the earlier 2026-09-26 snapshot was `python_loc` = 26,107 / `tests_collected` = 936.)
 
 ## 5 Design Requirements Derived from the Audit: An Auditable Intervention Ledger
 
@@ -237,7 +238,7 @@ As a **design argument rather than a measured conclusion**: the ledger's tamper-
 
 | | This system | Ludilearn | Level Up XP |
 |---|---|---|---|
-| Mechanism count | **Registered 54 / effect-producing 2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries **16** AST sites / **14** opt-ins, off by default) **/ maturity 9·37·8** | 6 | 11 |
+| Mechanism count | **Registered 54 / effect-producing 2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries **14** mechanism opt-ins (declarative candidate set), off by default) **/ maturity 9·37·8** | 6 | 11 |
 | Type I (strict) | 1 (and dissolved by health veto) | 0 | 0 |
 | Type I (relaxed upper bound) | 27 (static latent pairs) | 5 | 18 |
 | Type II | 0 (no carrier) | no budget concept | explicit rate cap exists |
@@ -272,7 +273,7 @@ The original design prepared three conditions to cross the verdict "this is mere
 **Decision (review §5.4, 2026-09-29): Route B.** Route A's A1/A2/A3 are implemented, but **Route A's A2·A3·A4 outputs are not accepted as results**; this paper therefore proceeds along Route B — the internal static audit sealed at tag `audit-m2-20260911` and the diagnosis that four fields of the seven-tuple are unimplemented are reorganised into a dissertation governance chapter + a short experience report, **and no journal submission is made**. Route A is not revisited until effect producers carrying real mechanism logic are ready and the blinded procedure of two human coders has been registered before coding begins, at which point the coders' identities must be reported to the supervisor first.
 
 
-The reviewer's judgement: the existing material supports a limited internal static audit but **not** an empirical-software-engineering journal paper, so a route had to be chosen rather than patched. **Route A (empirical strengthening)**: A1 ledger landing (implemented 2026-09-22); A2 raising effect producers from 2 to ≥ 14 (implemented 2026-09-22; `route_a_producers.py`, `verify_counts` AST sites 2 → **16**, 14 distinct mechanisms, off by default via `LEARN2_A2_PRODUCERS=1`, not affecting the 936 existing tests); A3 synthetic sessions (implemented 2026-09-22, §5.2); A4 external ≥ 4 systems + two coders + Cohen's κ (**still pending**, plan and CODEBOOK ready, `a4_coderA.csv` / `a4_coderB_template.csv`). *Cost*: A2 changes the audited system itself — the audit object becomes "the system modified to pass the audit" — so the 2 pre-modification and ≥ 14 post-modification producers must be reported **side by side**, not substituted. **Route B (reduce)**: split into thesis chapter 4 (governance chain) + a short experience report (8–10 pages), which is a suitable vehicle for "we audited our own system by our own schema and found three fields unimplemented and one arbitration layer never reached"; its core value ("first count the `Effect` construction points, then talk about arbitration") has been absorbed into A2. **Decision (2026-09-22): Route A first**; Route B's form is a milestone output. The common precondition of both routes: the three-part caliber must always appear together.
+The reviewer's judgement: the existing material supports a limited internal static audit but **not** an empirical-software-engineering journal paper, so a route had to be chosen rather than patched. **Route A (empirical strengthening)**: A1 ledger landing (implemented 2026-09-22); A2 raising effect producers from 2 to ≥ 14 (implemented 2026-09-22; `route_a_producers.py`, a declarative candidate set of 14 mechanisms (`effect_producers` stays 2, not counted as AST producers), off by default via `LEARN2_A2_PRODUCERS=1`, not affecting the 972 existing tests); A3 synthetic sessions (implemented 2026-09-22, §5.2); A4 external ≥ 4 systems + two coders + Cohen's κ (**still pending**, plan and CODEBOOK ready, `a4_coderA.csv` / `a4_coderB_template.csv`). *Cost*: A2 changes the audited system itself — the audit object becomes "the system modified to pass the audit" — so the 2 pre-modification and ≥ 14 post-modification producers must be reported **side by side**, not substituted. **Route B (reduce)**: split into thesis chapter 4 (governance chain) + a short experience report (8–10 pages), which is a suitable vehicle for "we audited our own system by our own schema and found three fields unimplemented and one arbitration layer never reached"; its core value ("first count the `Effect` construction points, then talk about arbitration") has been absorbed into A2. **Decision (2026-09-22): Route A first**; Route B's form is a milestone output. The common precondition of both routes: the three-part caliber must always appear together.
 
 ### 8.3 Teaching and practical implications
 
@@ -284,7 +285,7 @@ Twelve gaps, listed without merging or weakening. **①** MySQL table creation n
 
 ## 10 Conclusion
 
-This paper rewrites a widely assumed design intuition — "a system running dozens of intervention mechanisms simultaneously must inevitably experience intervention conflict and therefore needs arbitration and budget governance" — into a checkable empirical proposition, and gives measured evidence against it. **Headline caliber, three-part and none dispensable: registered 54 / effect-producing 2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries 16 AST sites / 14 opt-ins, off by default) **/ maturity complete 9 · partial 37 · placeholder 8.** Under this caliber, the three core numbers are: unclassifiable proportion **77.8% (42/54)** — a **diagnosis of implementation completeness**, not a discovery; type-I conflict converging from 27 static latent pairs to **1** run-time pair, handled by the layer-1 health veto rather than the layer-2 direction cancellation, the latter being **dead code**; and type-II budget contention's run-time count of **0**, because secondary mechanisms write only evaluation records and enter no arbitrator. Cross-system replication shows both external systems coded here have 0 strict type-I conflicts, avoiding conflict **by construction**.
+This paper rewrites a widely assumed design intuition — "a system running dozens of intervention mechanisms simultaneously must inevitably experience intervention conflict and therefore needs arbitration and budget governance" — into a checkable empirical proposition, and gives measured evidence against it. **Headline caliber, three-part and none dispensable: registered 54 / effect-producing 2** (sealed tag `audit-m2-20260911`; under A2 HEAD carries 14 mechanism opt-ins (declarative candidate set), off by default) **/ maturity complete 9 · partial 37 · placeholder 8.** Under this caliber, the three core numbers are: unclassifiable proportion **77.8% (42/54)** — a **diagnosis of implementation completeness**, not a discovery; type-I conflict converging from 27 static latent pairs to **1** run-time pair, handled by the layer-1 health veto rather than the layer-2 direction cancellation, the latter being **dead code**; and type-II budget contention's run-time count of **0**, because secondary mechanisms write only evaluation records and enter no arbitrator. Cross-system replication shows both external systems coded here have 0 strict type-I conflicts, avoiding conflict **by construction**.
 
 The main-line conclusion is a negative result and is **descriptive**: the multi-intervention-coexistence architecture is the scarce condition that exposes intervention conflict, not a universal predicament of this class of systems — but our material cannot distinguish "conflicts are rare" from "there is simply no run time in which conflict can occur." Hence the single independently provable engineering proposition: **the existence of an arbitration layer does not entail the reachability of an arbitration path**. Three actionable design requirements follow: count intervention-effect producers before talking about arbitration; include the alignment of the two taxonomies in design review; make compliance constraints assertions checkable by the system itself and persist the arbitration trace. Route A continues: A1 ledger implemented, A2 producers 2 → 16 construction points, A3 synthetic sessions (conflict frequency 0.633 after vs. 0.000 before), A4 (≥ 4 systems, two coders, Cohen's κ) still to be executed.
 

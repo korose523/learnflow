@@ -92,17 +92,22 @@ def test_maturity_triple_is_9_37_8():
     ]
 
 
-def test_runtime_effect_producers_at_least_14_after_route_a():
-    """路线 A 改造后，运行时构造 Effect(...) 的位置应 ≥14（改造前 2 见封存 tag audit-m2-20260911）。
+def test_runtime_effect_producers_genuine_only():
+    """运行时构造 Effect(...) 的位置须为真实生产者（导师 2026-09-29 审阅意见 5.2 校准）。
 
-    注：本测试校验**当前源码**的改造后生产者数（route_a_producers.py 提供 ≥14 处字面
-    Effect( 调用）；封存审计时点的"效果生产 2"由 verify_m2_anchors 对 tag 校验，互不替代。
+    「效果生产者」审计口径只统计运行时真正构造 Effect 的代码位置；opt-in 候选声明
+    模块 route_a_producers.py 已被显式排除（它是声明式候选集 + 单一工厂，不是生产引擎）。
+    审计时点（封存 tag audit-m2-20260911）的真实生产者只有 2 处：
+    deep_addiction_engine.py（LF-M44）/ learning_orchestrator.py（LF-M52）。
+
+    此前该测试断言 ≥14（把 route_a_producers.py 字面展开的 12 个固定 Effect 也算入），
+    那是为计数器写的代码，已被撤销。这里恢复为「≥2 且两处真实生产者均在」。
     """
     mod = _load_module()
     counts = mod.collect_all()
     ep = counts["effect_producers"]
-    assert ep["value"] >= 14, (
-        f"路线 A 改造后，运行时干预效果生产者应 ≥14 处，实测 {ep['value']}；"
+    assert ep["value"] >= 2, (
+        f"运行时干预效果生产者应 ≥2 处（真实生产者口径），实测 {ep['value']}；"
         f"位置：{[s['location'] for s in ep['sites']]}"
     )
     # 锚点用「文件 + 机制关联」而非硬编码行号，避免代码位移即脆断
@@ -110,6 +115,10 @@ def test_runtime_effect_producers_at_least_14_after_route_a():
     locs = [s["location"] for s in ep["sites"]]
     assert any("deep_addiction_engine.py" in s for s in locs), f"缺 LF-M44 生产者: {locs}"
     assert any("learning_orchestrator.py" in s for s in locs), f"缺 LF-M52 生产者: {locs}"
+    # route_a_producers.py 不得计入（opt-in 候选声明，非生产生产者）
+    assert not any("route_a_producers.py" in s for s in locs), (
+        f"route_a_producers.py 不应计入效果生产者审计: {locs}"
+    )
     # 每个生产者都必须能关联到具体机制，否则「N 个机制在运行」不可追溯
     for s in ep["sites"]:
         assert s["mechanism_labels"] or s["registry_impl_ref_ids"], (

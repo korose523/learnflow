@@ -14,11 +14,22 @@ K2 当前已用 Spearman ρ + Cohen's κ 刻画"模型评级 vs 教师标签"的
   (4) k-scan (Jaccard@k) —— 最难的 k 题集合（按教师标签）与模型最难的 k 题集合的重叠
                            ，k 取计划值 {10,25,50,100,200}
 
-纯 numpy 实现，不依赖 scipy。无需重跑 LLM。
+纯标准库实现（**不依赖 numpy**：本仓库 venv 无 numpy，同 castleman_hmab.py 约定），
+无需重跑 LLM。
 输出：exogenous_metrics.json + 控制台表
+
+⚠️ ordinal_auc 的语义修正（审阅意见 6.2 / 6.3，2026-09-29）。
+早期实现（见 §5.8 / §5.4 撤回记录）的说明写着"仅在教师标签不同的题对上比较"，但代码
+实际跳过的是**模型评级相同**的题对（`if x[i] == x[j]: continue`），并把**教师标签相同**
+的题对计入（`x[i]==x[j]` 跳过只删掉了模型同级的题对）。这导致 qwen3:1.7b（98.1% 预测
+集中在单一等级）的绝大部分题对被排除、得到虚高的 AUC=0.782，并非"保留难度顺序优于
+保留难度间距"的证据。本版已修正：跳过**教师标签相同**的题对，模型评级相同的题对计入
+并判为"未保持同序（discordant）"。修正后 qwen3:1.7b 的 ordinal AUC 落回 ~0.5 附近，
+与其等级塌缩（不可用）判定一致。
 """
 import json
-import numpy as np
+import math
+import statistics
 from collections import Counter
 
 SRC = "results/m3/local_matrix.jsonl"
@@ -51,32 +62,36 @@ def load():
 
 
 def _rank(a):
-    a = np.asarray(a, dtype=float)
-    order = np.argsort(a, kind="mergesort")
-    ranks = np.empty(len(a), dtype=float)
-    sa = a[order]
+    """平均秩（含并列 mid-rank），1-based。纯标准库实现。"""
+    a = list(a)
     n = len(a)
+    order = sorted(range(n), key=lambda i: a[i])
+    ranks = [0.0] * n
     i = 0
     while i < n:
         j = i
-        while j + 1 < n and sa[j + 1] == sa[i]:
+        while j + 1 < n and a[order[j + 1]] == a[order[i]]:
             j += 1
         avg = (i + j) / 2.0 + 1.0
-        ranks[order[i:j + 1]] = avg
+        for k in range(i, j + 1):
+            ranks[order[k]] = avg
         i = j + 1
     return ranks
 
 
 def spearmanr(x, y):
     rx, ry = _rank(x), _rank(y)
-    xc, yc = rx - rx.mean(), ry - ry.mean()
-    denom = float(np.sqrt((xc * xc).sum() * (yc * yc).sum()))
-    return 0.0 if denom == 0 else float((xc * yc).sum() / denom)
+    n = len(x)
+    xc = [rx[i] - sum(rx) / n for i in range(n)]
+    yc = [ry[i] - sum(ry) / n for i in range(n)]
+    num = sum(xc[i] * yc[i] for i in range(n))
+    den = math.sqrt(sum(v * v for v in xc) * sum(v * v for v in yc))
+    return 0.0 if den == 0 else float(num / den)
 
 
 def kendall_tau_b(x, y):
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
+    x = list(x)
+    y = list(y)
     n = len(x)
     c = d = 0
     for i in range(n):
@@ -92,56 +107,64 @@ def kendall_tau_b(x, y):
                 c += 1
             else:
                 d += 1
-    cx = Counter(x.tolist())
-    cy = Counter(y.tolist())
+    cx = Counter(x)
+    cy = Counter(y)
     tx = sum(v * (v - 1) // 2 for v in cx.values())
     ty = sum(v * (v - 1) // 2 for v in cy.values())
-    denom = float(np.sqrt((c + d + tx) * (c + d + ty)))
+    denom = math.sqrt((c + d + tx) * (c + d + ty))
     return 0.0 if denom == 0 else (c - d) / denom
 
 
 def ordinal_auc(x, y):
-    """pairwise 顺序保持率：仅在教师标签不同的题对上比较模型评级是否同序。"""
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
+    """pairwise 顺序保持率：仅在**教师标签不同**的题对上比较模型评级是否同序。
+
+    修正（2026-09-29，审阅 §6.2/§6.3）：
+      - 跳过 y[i] == y[j]（教师标签相同：无顺序可比，跳过）——而不是旧的 x[i]==x[j]；
+      - 对"教师不同、模型评级相同"的题对，模型未保持顺序，计为 discordant（den+1、num 不增）。
+    含义：分子=在同序题对中被模型正确保持的同序数，分母=教师标签确实不同的题对数。
+    """
+    x = list(x)
+    y = list(y)
     n = len(x)
     num = den = 0
     for i in range(n):
         for j in range(i + 1, n):
-            if x[i] == x[j]:
+            if y[i] == y[j]:        # 教师标签相同：无顺序可比，跳过（修正点）
                 continue
             den += 1
-            if (x[i] < x[j]) == (y[i] < y[j]):
+            if (y[i] < y[j]) == (x[i] < x[j]):   # 模型评级是否保持教师顺序
                 num += 1
     return float(num / den) if den > 0 else float("nan")
 
 
 def graded_auc(x, y, positive_labels):
     """把教师 3 级量表按切点转为二分类，报模型评级作为分数的 AUC（Mann-Whitney / 秩）。"""
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    pos = np.isin(y, list(positive_labels))
-    n_pos = int(pos.sum())
-    n_neg = int((~pos).sum())
+    x = list(x)
+    y = list(y)
+    pos_idx = [i for i in range(len(y)) if y[i] in positive_labels]
+    neg_idx = [i for i in range(len(y)) if y[i] not in positive_labels]
+    n_pos = len(pos_idx)
+    n_neg = len(neg_idx)
     if n_pos == 0 or n_neg == 0:
         return float("nan")
     r = _rank(x)  # 1-based 平均秩（含并列 mid-rank）
-    sum_pos = float(r[pos].sum())
+    sum_pos = sum(r[i] for i in pos_idx)
     auc = (sum_pos - n_pos * (n_pos + 1) / 2.0) / (n_pos * n_neg)
     return float(auc)
 
 
 def kscan(x, y, ks):
-    x = np.asarray(x, dtype=float)
-    y = np.asarray(y, dtype=float)
-    order_x = np.argsort(-x)   # 最难（值最大）在前
-    order_y = np.argsort(-y)
+    x = list(x)
+    y = list(y)
+    order_x = sorted(range(len(x)), key=lambda i: -x[i])   # 最难（值最大）在前
+    order_y = sorted(range(len(y)), key=lambda i: -y[i])
     out = {}
     for k in ks:
-        top_x = set(order_x[:k].tolist())
-        top_y = set(order_y[:k].tolist())
-        jac = len(top_x & top_y) / len(top_x | top_y)
-        out[k] = round(float(jac), 4)
+        top_x = set(order_x[:k])
+        top_y = set(order_y[:k])
+        union = top_x | top_y
+        jac = len(top_x & top_y) / len(union) if union else 0.0
+        out[k] = round(jac, 4)
     return out
 
 
@@ -157,8 +180,8 @@ def main():
           f"{'':>12s} {'':>12s} | " + " ".join(f"{k:>7d}" for k in KS))
     for m in models:
         items = list(recs[m].values())
-        x = np.array([v[0] for v in items])   # 模型评级
-        y = np.array([v[1] for v in items])    # 教师标签
+        x = [v[0] for v in items]   # 模型评级
+        y = [v[1] for v in items]    # 教师标签
         rho = spearmanr(x, y)
         tau = kendall_tau_b(x, y)
         oa = ordinal_auc(x, y)

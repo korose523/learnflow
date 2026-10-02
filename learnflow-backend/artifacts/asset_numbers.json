@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-02T11:00:07+09:00",
+  "generated_at": "2026-10-02T11:49:53+09:00",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
-    "python_loc": 26745,
-    "python_loc_excl_init": 26661,
+    "python_loc": 26782,
+    "python_loc_excl_init": 26698,
     "source_files": 92,
     "service_modules": 59,
     "api_files": 13,
@@ -102,17 +102,16 @@
       ]
     },
     "test_files": 56,
-    "test_functions": 878,
-    "tests_collected": 972
+    "test_functions": 878
   },
   "verdict": {
     "python_loc": {
-      "registered": 26745,
-      "actual": 26745,
+      "registered": 26782,
+      "actual": 26782,
       "delta": 0,
       "strict": false,
       "status": "verified",
-      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（合并后基线 26,745）。"
+      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算）。"
     },
     "source_files": {
       "registered": 92,
@@ -164,10 +163,10 @@
     },
     "tests_collected": {
       "registered": 972,
-      "actual": 972,
-      "delta": 0,
+      "actual": null,
+      "delta": null,
       "strict": false,
-      "status": "verified",
+      "status": "drifted",
       "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。合并后基线 972。"
     }
   },
@@ -176,9 +175,9 @@
     "items": [
       {
         "metric": "python_loc",
-        "doc_text": "26,745 行 Python",
-        "doc_value": 26745,
-        "actual_value": 26745,
+        "doc_text": "26,782 行 Python",
+        "doc_value": 26782,
+        "actual_value": 26782,
         "ok": true,
         "note": ""
       },
@@ -210,9 +209,9 @@
         "metric": "tests_collected",
         "doc_text": "972 项测试",
         "doc_value": 972,
-        "actual_value": 972,
+        "actual_value": null,
         "ok": true,
-        "note": ""
+        "note": "本次未复算该指标（加 --with-pytest 可复算），仅记录文档值"
       },
       {
         "metric": "test_files",

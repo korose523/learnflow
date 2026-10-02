@@ -13,73 +13,20 @@ from scipy import stats as st
 
 BASE = r"E:/learnflow"
 OUT = BASE + "/results/code/o4_fusion_results.json"
+MINN = 30  # minimum transactions per item (matches D.build(minn=30))
 
-expert = {}
-with open(BASE + "/data/dbe_kt22/csv/Questions.csv", encoding="utf-8-sig", errors="replace") as f:
-    for d in csv.DictReader(f):
-        try:
-            expert[d["id"]] = int(d["difficulty"])
-        except (ValueError, TypeError):
-            pass
-
-sig = defaultdict(lambda: {"n": 0, "ok": 0, "hint": 0, "dfb": [], "tfb": [], "dur": []})
-with open(BASE + "/data/dbe_kt22/csv/Transaction.csv", encoding="utf-8-sig", errors="replace") as f:
-    for row in csv.DictReader(f):
-        q = row["question_id"]
-        if q not in expert or row["is_hidden"] == "true":
-            continue
-        s = sig[q]
-        s["n"] += 1
-        if row["answer_state"] == "true":
-            s["ok"] += 1
-        if row["hint_used"] == "true":
-            s["hint"] += 1
-        try:
-            s["dfb"].append(int(row["difficulty_feedback"]))
-        except ValueError:
-            pass
-        try:
-            s["tfb"].append(int(row["trust_feedback"]))
-        except ValueError:
-            pass
-        try:
-            t0 = row["start_time"][:19]; t1 = row["end_time"][:19]
-            import datetime as dt
-            a = dt.datetime.strptime(t0, "%Y-%m-%d %H:%M:%S")
-            b = dt.datetime.strptime(t1, "%Y-%m-%d %H:%M:%S")
-            d = (b - a).total_seconds()
-            if 0 <= d < 3600:
-                s["dur"].append(d)
-        except ValueError:
-            pass
-
-MINN = 30
-qids = [q for q, s in sig.items() if s["n"] >= MINN and q in expert]
-print("questions with >=%d transactions:" % MINN, len(qids))
-
-def ecdf_logit(vals):
-    """rank -> ECDF -> logit, sign: larger raw value -> larger output (harder direction set by caller)."""
-    v = np.asarray(vals, dtype=float)
-    n = len(v)
-    ranks = st.rankdata(v, method="average")
-    p = (ranks - 0.5) / n
-    p = np.clip(p, 1e-4, 1 - 1e-4)
-    return np.log(p / (1 - p))
-
-# signals: positive = harder
-S = {}
-S["success_inverse"] = -ecdf_logit([sig[q]["ok"] / sig[q]["n"] for q in qids])          # low success = hard
-S["hint_rate"] = ecdf_logit([sig[q]["hint"] / sig[q]["n"] for q in qids])               # more hints = hard
-S["difficulty_feedback"] = ecdf_logit([np.mean(sig[q]["dfb"]) if sig[q]["dfb"] else np.nan for q in qids])
-S["trust_inverse"] = -ecdf_logit([np.mean(sig[q]["tfb"]) if sig[q]["tfb"] else np.nan for q in qids])
-S["duration"] = ecdf_logit([np.mean(sig[q]["dur"]) if sig[q]["dur"] else np.nan for q in qids])
-
-y_exp = np.array([expert[q] for q in qids])
-names = list(S.keys())
-M = np.vstack([S[n] for n in names]).T          # (n_questions, K)
-mask = ~np.isnan(M).any(axis=1)
-M, y_exp2 = M[mask], y_exp[mask]
-q2 = [q for q, m in zip(qids, mask) if m]
+# --- Unified signal construction (review 3.2 ①, 2026-09-29) ---
+# Both O4 and the A2 experiment (results/m1/run_a1a2_fit.py) MUST call the same
+# builder so the five behavioural signals are constructed identically:
+#   * all transactions used (no is_hidden exclusion),
+#   * feedback = mean over rows with a feedback value,
+#   * duration capped to 0 <= d < 3600 s,
+#   * ECDF transform (rank - 0.5)/n.
+import dbe_signals as D
+q2, M_list, expert_labels = D.build(minn=30)
+M = np.array(M_list, dtype=float)          # (n_questions, 5) ECDF-logit signals
+y_exp2 = np.array(expert_labels, dtype=float)
+names = D.NAMES
 print("usable questions:", len(q2), "signals:", names)
 
 # per-signal Spearman
