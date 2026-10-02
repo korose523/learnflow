@@ -1,9 +1,8 @@
 # 目标期刊 AI 使用披露政策对照表（投稿前合规）
 
 > 生成时间：2026-09-22（续会话 8 · I 任务）
-> **2026-09-29 复核**：`docs/` 下现已出版**四篇**完整稿（`M1_难度可公度性与最优错误率_完整稿.md`、`M2_多干预并存学习系统的冲突结构审计_完整稿.md`、`M3_有序难度决策与大模型先验边界_完整稿.md`、`M4_信度结构化组合难度估计_完整稿.md`），本表相应扩展至四篇；M4 的目标期刊依据其文首「目标期刊」段。
 > 政策核验日期：2026-09-22（各出版方/学会官网最新版，URL 见各条）
-> 用途：为 M1 / M2 / M3 / **M4** 四篇投稿锁定**目标期刊**的 AI 使用披露要求；投稿前须再次复核官网最新版（出版方 AI 政策更新频繁）
+> 用途：为 M1 / M2 / M3 三篇投稿锁定**目标期刊**的 AI 使用披露要求；投稿前须再次复核官网最新版（出版方 AI 政策更新频繁）
 > 关联：待办 §3-I；M3 稿 L15「投稿前 AIGC 合规提示」；M3 稿 L633「作者与角色」要求「在致谢/方法中列表说明工具使用（含本文所用的 LLM 标注流水线）」
 > 纪律：本表仅据**官方政策原文**整理，未虚构任何披露要求；政策若有更新以官网为准。
 
@@ -11,18 +10,17 @@
 
 ## 0. 目标期刊清单（英文 Scopus 第一顺位 · 毕业口径）
 
-四篇完整稿的并集（毕业口径 = 英文 Scopus 收录刊）：
+三篇完整稿的并集（毕业口径 = 英文 Scopus 收录刊）：
 
 | 期刊 | 出版方 / 学会 | 归属稿 | 政策依据 |
 |---|---|---|---|
-| *IEEE Transactions on Learning Technologies* (TLT) | IEEE | M1、M3、**M4** | IEEE Editorial Style Manual + IEEE PSPB《Principles of Ethical Use of AI in Publishing》 |
-| *International Journal of Artificial Intelligence in Education* (IJAIED) | Springer | M1、M3、**M4** | Springer Nature 投稿指南（LLM 披露政策） |
+| *IEEE Transactions on Learning Technologies* (TLT) | IEEE | M1、M3 | IEEE Editorial Style Manual + IEEE PSPB《Principles of Ethical Use of AI in Publishing》 |
+| *International Journal of Artificial Intelligence in Education* (IJAIED) | Springer | M1、M3 | Springer Nature 投稿指南（LLM 披露政策） |
 | *Journal of Educational Data Mining* (JEDM) | Int. Educational Data Mining Society (IEDMS) | M1 | JEDM《Publication Ethics and Malpractice Statement》（遵循 ACM 政策） |
 | *Journal of Systems and Software* (JSS) | Elsevier | M2 | Elsevier《Generative AI policies for journals》 |
 | *Empirical Software Engineering* (EMSE) | Springer | M2 | Springer Nature 投稿指南（LLM 披露政策） |
 | *Information and Software Technology* (IST) | Elsevier | M2 | Elsevier《Generative AI policies for journals》 |
 
-> **M4 的归属依据**（2026-09-29）：`M4_信度结构化组合难度估计_完整稿.md` 文首「目标期刊」段原文为「拟投 *IEEE Transactions on Learning Technologies* 或 *International Journal of Artificial Intelligence in Education*；备选中文学术期刊（不作毕业口径）同 M3」。故 M4 落在已覆盖的 IEEE 与 Springer 两家政策内，**不引入新的出版方**。
 > 第二顺位（**不作毕业口径**，仅英文第一顺位被拒且时间不可接受时启用）：
 > - M1：《开放教育研究》（CSSCI/北大核心，免版面费与审稿费）、《数据分析与知识发现》（CSSCI/EI）
 > - 中文刊 AI 政策须在各自投稿时单独核查，本表不预先覆盖（低优先，见 §5）。
@@ -115,7 +113,7 @@
 
 ### 3.1 中文撰写 → 英文翻译流程的披露处理（2026-09-23 新增）
 
-**项目既定流程**：**四篇**稿件以**中文**撰写（便于作者本人阅读与逐句核校），投稿前译为**英文**。该流程已写入研究计划 v1.1 §10.5（中/韩两版）。
+**项目既定流程**：三篇稿件以**中文**撰写（便于作者本人阅读与逐句核校），投稿前译为**英文**。该流程已写入研究计划 v1.1 §10.5（中/韩两版）。
 
 **三条必须说清的边界**：
 

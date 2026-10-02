@@ -285,15 +285,13 @@
 | F 情绪动机 | 4 | 0 | 3 | 1 | 3 |
 | G UX 微交互 | 4 | 0 | 2 | 2 | 3 |
 | H 健康护栏 | 4 | 1 | 2 | 1 | 3 |
-| **合计** | **54** | **9** | **37** | **8** | **34** |
+| **合计** | **54** | **9** | **41** | **4** | **34** |
 
 > 复算命令：`python -c "from app.services.mechanism_registry import all_mechanisms; import collections; print(collections.Counter(m.maturity for m in all_mechanisms()))"`
-> **合计行更正（2026-09-29 实算）**：原合计记 `partial=41 / placeholder=4`，与上述复算命令的实测输出 `Counter({'partial': 37, 'complete': 9, 'placeholder': 8})` 不符，也与 `artifacts/count_verification.json` 的 `maturity_complete=9 / maturity_partial=37 / maturity_placeholder=8` 不符（三者之和均为 54）。已采纳实算值：9 / **37** / **8**。
-> ⚠️ **分项行未同步更正（待核）**：上表 A–H 八类的分项数字为较早快照，无法用同一条命令复算——注册表的 `category` 字段只有 5 个取值（`retention` 19 / `motivation` 18 / `selfreg` 9 / `cognition` 4 / `health` 4），与本文的分类学 A–H 八类**不是同一套划分**，不存在字段级映射。故分项行保持原样并在投稿前须人工逐条复核；分项之和与合计行暂不一致，以合计行（可由命令复算）为准。
 
 表 4-4 揭示三项审计发现。
 
-**发现一：实现成熟度分布严重右偏。** 54 个机制中 9 个（16.7%，含本轮新增的完整模块 LF-M54）达到完整成熟度，**37 个（68.5%）**处于"有逻辑但未持久化"状态，**8 个（14.8%）**为占位实现（原记 41 / 4，2026-09-29 按 §4.4 复算命令更正）。这意味着在消融实验中，占多数的机制其处理效应可能弱到无法检出，且部分机制的处理变异本身可能不成立。
+**发现一：实现成熟度分布严重右偏。** 54 个机制中 9 个（16.7%，含本轮新增的完整模块 LF-M54）达到完整成熟度，41 个（75.9%）处于"有逻辑但未持久化"状态，4 个（7.4%）为占位实现。这意味着在消融实验中，占多数的机制其处理效应可能弱到无法检出，且部分机制的处理变异本身可能不成立。
 
 **发现二：接线强度存在两类，且不可等同。** 34 个机制在编排器中具有显式 `is_enabled` 门控，构成真正的可开关处理；19 个机制仅在 `services`/`api` 源码中存在文本引用（§6.4）。二者的差别对实验效力具有决定性影响：对后一类机制做消融，处理组与对照组可能无实际差异，从而产生假阴性结论。
 
@@ -503,7 +501,7 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 **威胁**：机制之间存在交互，关闭某一类别的效应可能依赖其他类别的开启状态。
 **缓解**：Gate 2.5 仅检验预注册的少量交互项，避免事后探索；主要分析以类别级主效应为准。
 
-**威胁**：部分机制实现成熟度为占位（**8/54**，2026-09-29 更正，原记 4/54），其处理变异可能不成立。
+**威胁**：部分机制实现成熟度为占位（4/54），其处理变异可能不成立。
 **缓解**：在预注册中声明占位机制不参与主要分析，仅作为探索性结果报告。
 
 ### 8.3 外部效度
@@ -531,10 +529,10 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 | # | 项目 | 性质 | 对实验的影响 | 状态 |
 |---:|---|---|---|---|
 | 1 | `anti_addiction_compliance.py` 的 `MinorProtectionEngine`（LF-M52）**无调用方** | 合规硬伤 | 健康一票否决依赖编排器内构造的等效效应，而非该引擎本身 | **已解决·2026-09-10**：`MinorProtectionEngine` 已接线，全仓 16 处引用，原“无调用方”已消除 |
-| 2 | `learning_orchestrator.py` 中 `get_skill_tree()` 返回值与 `_skilltree_repo_format()` 期望形状不兼容 | 既有缺陷 | 技能树相关结局在真实扁平入参下不可用 | **已解决·2026-09-10**：`_skilltree_repo_format`（`learning_orchestrator.py:439`，行号 2026-09-29 由 430 更正）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径已消除 |
+| 2 | `learning_orchestrator.py` 中 `get_skill_tree()` 返回值与 `_skilltree_repo_format()` 期望形状不兼容 | 既有缺陷 | 技能树相关结局在真实扁平入参下不可用 | **已解决·2026-09-10**：`_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径已消除 |
 | 3 | `SQLExperimentStore` 未实现 | 基础设施缺口 | 实验数据仅支持 JSON 后端，规模化受限 | **已解决·2026-09-10**：`SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端） |
 | 4 | 9 个内存态容器默认仍为 `MemoryStateStore` | 持久化缺口（**未决**） | `StateStore` 接口已落地，但默认后端仍为 `MemoryStateStore`，进程重启后状态未落盘，影响长期结局的连续性 | 未决 |
-| 5 | **8 个机制**（LF-M19、LF-M28、LF-M29、LF-M32、LF-M45、LF-M49、LF-M50、LF-M53，`maturity="placeholder"`）实现为占位（原记 4 个，2026-09-29 按注册表实算更正） | 实现缺口（**未决**） | 其步骤 13 输出为引擎占位数据，不参与主要分析 | 未决 |
+| 5 | 4 个机制（LF-M29、LF-M32、LF-M49、LF-M50，`maturity="placeholder"`）实现为占位 | 实现缺口（**未决**） | 其步骤 13 输出为引擎占位数据，不参与主要分析 | 未决 |
 
 上述五项必须在论文的"威胁到效度"或"实现状态"章节中如实陈述，不得以任何方式隐藏。
 
@@ -559,26 +557,9 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 | 全指标复算与印章刷新 | `python scripts/verify_counts.py` | 控制台比对表 + `artifacts/count_verification.json` |
 | 机制落地扫描 | `python scripts/scan_mechanism_landing.py --quiet` | `artifacts/mechanism_landing_status.json` |
 | 注册表指纹 | `python -c "from app.services.mechanism_registry import registry_fingerprint as f; print(f())"` | `ee1a49be5732` |
-| 成熟度分布 | `python -c "from app.services.mechanism_registry import all_mechanisms; import collections; print(collections.Counter(m.maturity for m in all_mechanisms()))"` | **`Counter({'partial': 37, 'complete': 9, 'placeholder': 8})`**（原记 `partial=41, complete=9, placeholder=4`，2026-09-29 实算更正） |
+| 成熟度分布 | `python -c "from app.services.mechanism_registry import all_mechanisms; import collections; print(collections.Counter(m.maturity for m in all_mechanisms()))"` | `partial=41, complete=9, placeholder=4` |
 | 样本量表 | `python scripts/power_table.py` | 八类 (MDE, ICC) 功效表 |
-| 全量回归测试 | `python -m pytest tests/ -q` | 基线 **`936 passed / 55 文件`**（原记 `868 passed / 49 文件`；2026-09-29 更正：测试文件按 `tests/` 下 `test_*.py` 计数为 55，`936 passed` 见既有 pytest 产物记录） |
-
-> 上述命令须用项目虚拟环境解释器（`learnflow-backend/.venv/Scripts/python.exe`）执行：`scan_mechanism_landing.py` 等脚本会 import `app.models`，系统 Python 缺 `sqlalchemy` 时直接报 `ModuleNotFoundError`。
-
-### 附录 A.1　最小可用示例（2026-09-29 实跑通过）
-
-```bash
-cd E:/learnflow/learnflow-backend
-./.venv/Scripts/python.exe scripts/scan_mechanism_landing.py --quiet
-```
-
-实测输出：
-
-```
-mechanism_landing: landed=54/54 orphan=0 (engine_classes/mechanism_units unaffected)
-```
-
-同步刷新 `artifacts/mechanism_landing_status.json`（其中 `total=54, landed=54, orphan=0`）。
+| 全量回归测试 | `python -m pytest tests/ -q` | 基线 `868 passed / 49 文件` |
 
 ## 附录 B　术语表
 
@@ -601,9 +582,8 @@ mechanism_landing: landed=54/54 orphan=0 (engine_classes/mechanism_units unaffec
 | 76 个/种游戏化机制 | 54 个唯一机制（LF-M01–LF-M54）；PRD 标题声称 76 与其表格求和 69 自相矛盾 | §3.2，`verify_counts` |
 | 23 / 21 种学习方法 | 28 种学习方法（LF-L01–LF-L28，权威源 `method_registry.py`） | `verify_counts` |
 | 48 个零调用机制 | 落地 54/54，orphan = 0；其中 19 个仅有文本引用 | §6.4 |
-| 394 / 868 个测试用例 | **936 passed（55 个测试文件）**（409/685/868/920 类的旧值一律作废） | `pytest tests/ -q` |
-| 后端 16,593 / 20,349 / 23,927 / 25,795 行 | **后端 91 个 Python 文件 / 26,628 行**（2026-09-29 复算） | 文件统计 |
-| 4 个占位机制 | **8 个**占位机制（LF-M19 / M28 / M29 / M32 / M45 / M49 / M50 / M53） | `all_mechanisms()` maturity Counter |
+| 394 个测试用例 | 868 passed（49 个测试文件） | `pytest tests/ -q` |
+| 后端 16,593 行 | 后端 81 个 Python 文件 / 23,927 行 | 文件统计 |
 
 ## 附录 D　待核验引用清单
 
@@ -617,7 +597,7 @@ mechanism_landing: landed=54/54 orphan=0 (engine_classes/mechanism_units unaffec
 - 机制运行时落地 54/54，orphan=0（`scripts/scan_mechanism_landing.py --quiet`）；
 - `SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端），原「未实现」状态于 2026-09-10 标记为已解决；
 - `MinorProtectionEngine` 已接线（全仓 16 处引用），原「零调用」状态于 2026-09-10 消除；
-- 技能树持久化 `_skilltree_repo_format`（`learning_orchestrator.py:439`，行号 2026-09-29 由 430 更正）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径于 2026-09-10 消除；
+- 技能树持久化 `_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径于 2026-09-10 消除；
 - 4 个机制 `maturity="placeholder"`：LF-M29（`social_addiction_engine.py:411`）、LF-M32（`social_addiction_engine.py:288`）、LF-M49（`ux_addiction_engine.py:290`）、LF-M50（`ux_addiction_engine.py:345,482,524`），仍属未决项。
 
 

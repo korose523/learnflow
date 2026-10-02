@@ -68,7 +68,10 @@ median_err = median_k / W
 share_807 = float(k_counts[4]) / n_windows                 # 0.17 ≤ e ≤ 0.23 只含 0.20 一个支撑点
 share_85 = float(k_counts[2:5].sum()) / n_windows          # 0.10 / 0.15 / 0.20 三个支撑点
 # 众数的置信集合：离散分布的众数无点估计意义，按“学生（用户）”重抽样做 bootstrap
-BOOT = 200
+# 审阅意见 3.3（2026-09-29）：200 次下众数占比 95.5% 的蒙特卡洛标准误约 1.5 个百分点，
+#   恰好压在 95% 门槛之上，不足以支撑结论；要求增至 2,000 次以上，且报告对象改为
+#   **分布形状**（0.15~0.35 区间的平坦），而非众数位置。故 BOOT 200 -> 2000。
+BOOT = 2000
 rng = np.random.default_rng(20260922)
 boot_argmax = np.zeros((BOOT, W + 1), dtype=np.int64)
 for b in range(BOOT):
@@ -95,6 +98,12 @@ results["assist09_window"] = {
     "modal_error_rate": [round(k / W, 2) for k in modal_k],
     "modal_error_rate_center": round(float(np.mean(modal_k)) / W, 4),
     "bootstrap_modal_ci95_k": ci95,
+    # 审阅意见 3.3：报告分布形状，而非众数。plateau = 错误率 0.15~0.35（k=3..7）的窗占比。
+    "plateau_0p15_0p35_share": round(float(k_counts[3:8].sum()) / n_windows, 4),
+    "plateau_0p15_0p35_n_windows": int(k_counts[3:8].sum()),
+    # 第一名与第二名的差距（审阅 3.3：0.25 与 0.20 只差 838 窗，占 0.29%）
+    "top2_gap_windows": int(k_counts.max() - int(np.sort(k_counts)[-2])),
+    "top2_gap_share": round(float(k_counts.max() - int(np.sort(k_counts)[-2])) / n_windows, 6),
     "k_frequency_table": k_table,
     "share_err_in_17_23pct": round(share_807, 4),
     "share_err_in_10_20pct": round(share_85, 4),

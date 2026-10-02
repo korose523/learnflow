@@ -39,31 +39,6 @@ from app.services.onboarding_engine import (
 
 router = APIRouter(prefix="/api/v1/onboarding", tags=["新手引导"])
 
-# ── 会话同一性：服务端引导进度（进程内占位） ───────────────────────────────
-# 把已认证用户（user.id）的已完成引导步骤记录在此，使引导进度**绑定到用户身份**
-# （会话同一性），而非完全依赖客户端回传的 ``completed``。
-#
-# @todo 生产化：当前为进程内 dict（单 worker 仅、重启即丢，参考 placement.py 的
-# 会话存储局限说明）。持久化绑定需要 ``User`` 增加 ``onboarding_state``（JSON）
-# 列或独立表，并在完整实现里以「模型 + 迁移」落地；多 worker 时改用 Redis / DB，
-# 并加 TTL 清理。届时 complete_step 落库、get_current 从库读取。
-_ONBOARDING_SESSIONS: dict = {}
-
-
-# ── @todo 持久化桩（含函数签名与意图） ─────────────────────────────────────
-# 意图：把已认证用户的引导进度（已完成步骤集合）持久化到 DB，使「会话同一性」
-# 跨进程 / 重启 / 多 worker 仍成立。
-#
-# async def persist_onboarding_progress(
-#     user_id: str,
-#     completed_step_ids: set,
-#     db: AsyncSession,
-# ) -> None:
-#     """将用户已完成引导步骤写入持久层（User.onboarding_state JSON 或独立表）。
-#     鉴权：调用方须已通过 get_current_user（或 require_admin，视场景）。
-#     缺口：User 需新增 onboarding_state 列 / 迁移；多 worker 用 Redis/DB + TTL。"""
-#     ...
-
 
 # ── 请求体 ───────────────────────────────────────────────
 class CompleteStepRequest(BaseModel):
@@ -128,15 +103,8 @@ async def get_current(
     completed: str = Query("", description="已完成步骤 step_id，逗号分隔，可省略"),
     user: User = Depends(get_current_user),
 ) -> dict:
-    """获取当前应进行的步骤；全部完成则返回 has_next=False。
-
-    会话同一性：已认证用户（user.id）的已完成步骤会从服务端会话进度
-    ``_ONBOARDING_SESSIONS`` 合并进 completed，使引导进度绑定到该用户身份，而非
-    完全依赖客户端传入的 ``completed``。客户端参数仍可作为覆盖 / 补充。
-    """
+    """获取当前应进行的步骤；全部完成则返回 has_next=False。"""
     completed_steps = _parse_completed(completed)
-    # 合并服务端为该用户记录的已完成步骤（会话同一性绑定）
-    completed_steps = sorted(set(completed_steps) | _ONBOARDING_SESSIONS.get(user.id, set()))
     return OnboardingEngine.get_current_step(role, completed_steps)
 
 
@@ -145,16 +113,8 @@ async def complete_step(
     body: CompleteStepRequest,
     user: User = Depends(get_current_user),
 ) -> dict:
-    """完成一个引导步骤，返回 XP 奖励 / 徽章 / 解锁信息。
-
-    会话同一性：完成步骤会写入服务端 ``_ONBOARDING_SESSIONS[user.id]``，从而把引导
-    进度绑定到已认证用户身份（即便客户端不回传 completed）。注意：本端点只对**产品
-    导览**做无状态奖励查询 + 服务端进度记录，不落库（与模块 docstring 一致）；
-    持久化见上方 @todo 桩 persist_onboarding_progress。
-    """
-    result = OnboardingEngine.complete_step(body.role, body.step_id)
-    _ONBOARDING_SESSIONS.setdefault(user.id, set()).add(body.step_id)
-    return result
+    """完成一个引导步骤，返回 XP 奖励 / 徽章 / 解锁信息。"""
+    return OnboardingEngine.complete_step(body.role, body.step_id)
 
 
 @router.post("/skip")

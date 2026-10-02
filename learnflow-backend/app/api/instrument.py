@@ -11,12 +11,12 @@ LAI 五维框架中 ``control``(25%) 与 ``function``(10%) 无法从 ``Attempt``
 观测，``cognition`` 亦有一个子指标不能观测。此前这些输入被硬编码为 0，使索引
 结构性偏向「不成瘾」。本模块提供**自陈侧采集入口**，与行为日志组成双源测量：
 
-- ``GET  /api/v1/instruments``               量表目录（含题项；可按维度过滤）
-- ``GET  /api/v1/instruments/catalog``       目录元信息 + 指纹（可复现性引用）
-- ``GET  /api/v1/instruments/me/responses``  我本人的作答历史
-- ``GET  /api/v1/instruments/me/coverage``   我的 LAI 测量覆盖度（哪些维度已实测）
-- ``POST /api/v1/instruments/{code}/responses``  提交一次施测（服务端计分后落库）
-- ``GET  /api/v1/instruments/{code}``        单份量表题项
+- ``GET  /instruments``               量表目录（含题项；可按维度过滤）
+- ``GET  /instruments/catalog``       目录元信息 + 指纹（可复现性引用）
+- ``GET  /instruments/me/responses``  我本人的作答历史
+- ``GET  /instruments/me/coverage``   我的 LAI 测量覆盖度（哪些维度已实测）
+- ``POST /instruments/{code}/responses``  提交一次施测（服务端计分后落库）
+- ``GET  /instruments/{code}``        单份量表题项
 
 计分与映射全部委托 ``instrument_catalog``，覆盖度推导委托
 ``self_report_service``；本模块只做参数解析、鉴权与错误映射，不复制任何计分逻辑。

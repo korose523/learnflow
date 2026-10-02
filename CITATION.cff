@@ -18,8 +18,11 @@ abstract: >-
   Every headline count in the documentation is recomputed from source by scripts under
   learnflow-backend/scripts/, and the consistency check fails loudly when a documented number
   diverges from the code.   The headline mechanism count is always reported as a triple —
-  registered 54 / runtime effect producers 16 / maturity complete 9, partial 37, placeholder 8 —
-  so the registered figure is never read as "54 mechanisms are running".
+  registered 54 / runtime effect producers 2 (at the sealed audit tag audit-m2-20260911; 14
+  distinct mechanisms via 16 AST sites under the Route A opt-in, off by default) / maturity
+  complete 9, partial 37, placeholder 8 — so the registered figure is never read as
+  "54 mechanisms are running". Per review 5.4 the Route A A2/A3/A4 outputs are not accepted
+  as results.
   The repository also contains a behavioural-log plus self-report measurement layer (a
   five-dimension learning-addiction index, LAI). It is an AUXILIARY, UNVALIDATED module: it has
   no user data, its self-report items are purpose-built and have not undergone psychometric
@@ -32,13 +35,16 @@ authors:
   # 支撑论文（M1/M2/M3）的作者块为 `Zexiao Weng¹, MinPo Jung¹,*`，
   # ¹ Department of Computer and Information Engineering, Graduate School, Youngsan University,
   #    Busan 48015, Republic of Korea；通讯 minpo@ysu.ac.kr，ORCID 0009-0003-3369-757X。
-  # 本软件 artifact 的署名沿用 v0.1.0 记录（Weng 一人）；Jung 的收入见 .zenodo.json 的 contributors。
+  # 本软件 artifact 的署名沿用 v0.1.0 记录（Weng 一人）。
+  # 审阅意见 2.4 ③：导师已同意担任稿件的通讯作者，但在其读完并批准最终稿之前，
+  #   贡献者名单 / 投稿信批准语句 / AI 使用声明中均不署其姓名。
+  #   因此 .zenodo.json 的 contributors 暂为空，待最终稿获批后补入。
   - family-names: "Weng"
     given-names: "Zexiao"
     alias: "korose523"
     orcid: "https://orcid.org/0009-0009-8600-8954"
     website: "https://github.com/korose523"
-version: 0.2.0
+version: 0.1.0
 date-released: "2026-09-11"
 license: MIT
 doi: "10.5281/zenodo.22719229"

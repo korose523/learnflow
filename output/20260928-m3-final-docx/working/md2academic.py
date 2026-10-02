@@ -13,7 +13,7 @@ import html as htmlmod
 SRC = r"D:/learnflow-main/learnflow-main/docs/M3_有序难度决策与大模型先验边界_完整稿.md"
 OUT = r"D:/learnflow-main/learnflow-main/output/20260928-m3-final-docx/stage2/formatted-m3.html"
 
-TITLE = "有序难度决策与单一大模型难度先验的可靠性边界"
+TITLE = "有序难度决策与本地开放权重模型难度先验的可靠性边界"
 
 # --------------------------------------------------------------------------- #
 # Inline rendering

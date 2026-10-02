@@ -4,17 +4,14 @@
 喂养；**班级宠物园**是聚合视图，由老师（或班干部）统一加减分、查看排行榜与
 每周「喂养时间」仪式。本模块据此设计：
 
-- ``GET /api/v1/class-pet/{class_id}/garden``      班级宠物园视图（学生/老师可见）：排行榜、形态
-                                                   分布、凝聚力、连接质量。
-- ``GET /api/v1/class-pet/{class_id}/my-pet``     当前学生的专属宠物 + 形态阶段 + 是否「饿肚子」。
-- ``POST /api/v1/class-pet/{class_id}/award``     老师给某学生加减分（行为积分 → 喂养其宠物）。
-- ``POST /api/v1/class-pet/{class_id}/ritual``    老师触发/开关每周「喂养时间」仪式。
-- ``GET /api/v1/class-pet/{class_id}/teacher``    老师视图：完整班级宠物园 + 逐生明细。
+- ``GET /{class_id}/garden``      班级宠物园视图（学生/老师可见）：排行榜、形态
+                                  分布、凝聚力、连接质量。
+- ``GET /{class_id}/my-pet``     当前学生的专属宠物 + 形态阶段 + 是否「饿肚子」。
+- ``POST /{class_id}/award``     老师给某学生加减分（行为积分 → 喂养其宠物）。
+- ``POST /{class_id}/ritual``    老师触发/开关每周「喂养时间」仪式。
+- ``GET /{class_id}/teacher``    老师视图：完整班级宠物园 + 逐生明细。
 
 机制标识与路由挂载由 lead 在 main.py / mechanism_registry.py 统一接线。
-
-注：班干部（班级委员会）同权逻辑为 @todo（K3），见本模块 ``_is_teacher_or_class_committee``
-上方的注释块；当前仅 TEACHER 可操作加减分 / 仪式 / 老师视图。
 """
 import logging
 from datetime import datetime, UTC
@@ -38,39 +35,6 @@ from app.services.class_pet_service import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/api/v1/class-pet", tags=["班级宠物园"])
-
-
-# ── 班干部（班级委员会）权限 ─────────────────────────────
-# @todo(K3): 实现班干部逻辑。班干部是班级内由老师任命的「学生干部」（如班长 /
-#            学习委员），在所属班级内应拥有与老师类似的加减分、仪式开关与老师
-#            视图权限，但仅限本班、不得越权到其它班级。
-#            当前数据模型 app/models/user.py:UserRole 仅有 STUDENT/TEACHER/
-#            PARENT/ADMIN 四种角色，尚无 is_class_committee 标记或 CLASS_COMMITTEE
-#            角色，故本模块现仅放行 TEACHER。
-#            待 user 模型新增 is_class_committee: bool（或 CLASS_COMMITTEE 角色）
-#            并完成数据库迁移后，应实现如下函数并接入三处权限校验：
-#
-#             async def is_class_committee(user: User, class_id: str,
-#                                          db: AsyncSession) -> bool:
-#                 # 意图：user.role == STUDENT 且用户 is_class_committee 标记为
-#                 # True 且 user.class_id == class_id 时返回 True，否则 False。
-#                 if user.role != UserRole.STUDENT:
-#                     return False
-#                 if not getattr(user, "is_class_committee", False):
-#                     return False
-#                 return user.class_id == class_id
-#
-#            届时下方 _is_teacher_or_class_committee 改为：
-#                 return user.role == UserRole.TEACHER or await is_class_committee(
-#                     user, class_id, db
-#                 )
-def _is_teacher_or_class_committee(user: User) -> bool:
-    """当前用户是否为教师，或为本班班干部。
-
-    现仅放行 TEACHER；班干部分支为 @todo（见上方 K3 注释），需 user 模型扩展
-    is_class_committee 后实现。STUDENT 默认被拒，与既有测试保持一致。
-    """
-    return user.role == UserRole.TEACHER
 
 
 # ── 请求体 ───────────────────────────────────────────────
@@ -178,13 +142,13 @@ async def award_points(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict:
-    """老师（班干部权限见 @todo K3）给某学生加减分（行为积分 → 喂养其专属宠物）。
+    """老师/班干部给某学生加减分（行为积分 → 喂养其专属宠物）。
 
     真实规则示例：背课文+10口粮、发言+5能量、助人+2、拾金不昧+5；违纪扣分。
     正分喂养升级进化，负分使宠物「饿肚子」（属性微降、情绪 tired）。
     """
-    if not _is_teacher_or_class_committee(user):
-        raise HTTPException(status_code=403, detail="仅教师可加减分（班干部权限见 @todo K3）")
+    if user.role != UserRole.TEACHER:
+        raise HTTPException(status_code=403, detail="仅教师可加减分")
     if body.points == 0:
         raise HTTPException(status_code=400, detail="points 不能为 0")
 
@@ -211,9 +175,9 @@ async def trigger_ritual(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict:
-    """老师触发/开关每周「喂养时间」仪式（班干部权限见 @todo K3）。"""
-    if not _is_teacher_or_class_committee(user):
-        raise HTTPException(status_code=403, detail="仅教师可操作仪式（班干部权限见 @todo K3）")
+    """老师触发/开关每周「喂养时间」仪式。"""
+    if user.role != UserRole.TEACHER:
+        raise HTTPException(status_code=403, detail="仅教师可操作仪式")
     garden = await _get_or_create_garden(db, class_id)
     garden.weekly_ritual_enabled = body.enabled
     if body.enabled:
@@ -236,9 +200,9 @@ async def get_class_garden_teacher(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> dict:
-    """老师视图：完整班级宠物园 + 逐生宠物明细（班干部权限见 @todo K3）。"""
-    if not _is_teacher_or_class_committee(user):
-        raise HTTPException(status_code=403, detail="仅教师可访问（班干部权限见 @todo K3）")
+    """老师视图：完整班级宠物园 + 逐生宠物明细。"""
+    if user.role != UserRole.TEACHER:
+        raise HTTPException(status_code=403, detail="仅教师可访问")
     garden = await _get_or_create_garden(db, class_id)
     pets = await _class_pets(db, class_id)
     cohesion = _cohesion_of(pets)

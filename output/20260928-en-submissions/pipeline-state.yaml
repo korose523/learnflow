@@ -1,7 +1,7 @@
 schema_version: 1
 request_id: 20260928-en-submissions
 created_at: "2026-09-28T11:39:00Z"
-updated_at: "2026-09-28T12:45:00Z"
+updated_at: "2026-09-29T23:06:36Z"
 
 entry_type: beautify_only
 stage_chain: [2, 3]
@@ -29,30 +29,32 @@ papers:
   M1:
     source_zh: "docs/M1_难度可公度性与最优错误率_完整稿.md"
     source_en: "docs/M1_submission_EN.md"
-    title_en: "Difficulty Commensurability and the Optimal Error Rate"
+    title_en: "Commensurability of Difficulty Scales: An Instability Proposition and Its Test on assist09"
     stage2_html: "M1/stage2/formatted-M1-en.html"
     stage3_docx: "M1/stage3/M1_难度可公度性与最优错误率_EN_终稿.docx"
-    docx_bytes: 104300
-    paragraphs: 318
+    docx_bytes: 104800
+    paragraphs: 319
     approx_words: 17309
     toc_items: 11
     author_block_rendered: true
     ai_disclosure_rendered: true
-    word_limit_status: "FULL translation; exceeds typical 5-7k journal limit (see notes)"
+    word_limit_status: "FULL translation; NOT a submission manuscript (retained as dissertation material / numeric record)"
   M1c:
     kind: "compressed submission cut"
+    submission_designation: "SOLE SUBMISSION MANUSCRIPT (review 3.4, 2026-09-29): 5,067 words, within IJAIED 5,000-7,000 and IEEE TLT 10pp double-column limits. M1 full translation is retained as dissertation material and numeric record only."
     source_en_full: "docs/M1_submission_EN.md"
     source_en_compressed: "docs/M1_submission_EN_compressed.md"
     source_body: "docs/M1_compressed_body.md"
-    title_en: "Difficulty Commensurability and the Optimal Error Rate"
+    title_en: "Commensurability of Difficulty Scales: An Instability Proposition and Its Test on assist09"
     stage2_html: "M1c/stage2/formatted-M1c-en.html"
     stage3_docx: "M1c/stage3/M1_难度可公度性与最优错误率_压缩投稿版_EN_终稿.docx"
-    docx_bytes: 57018
+    docx_bytes: 57767
     stage2_html_bytes: 50699
-    paragraphs: 103
-    approx_body_words: 5067
+    paragraphs: 105
+    approx_body_words: 3856
+    approx_full_words_incl_front_and_references: 5335
     word_limit_target: "5000-7000"
-    word_limit_status: "IN RANGE"
+    word_limit_status: "BORDERLINE - body 3,856 words is BELOW the 5,000 lower bound; the whole manuscript incl. front matter and references is 5,335 and within range. The previously recorded 5,067 was the FULL count mislabelled as body. Author must confirm the target journal's counting convention (body text only vs. whole manuscript) before relying on this."
     toc_items: 11
     tables: 11
     author_block_rendered: true
@@ -64,8 +66,8 @@ papers:
     title_en: "Conflict-Structure Audit of Multi-Intervention Coexisting Learning Systems"
     stage2_html: "M2/stage2/formatted-M2-en.html"
     stage3_docx: "M2/stage3/M2_多干预并存学习系统的冲突结构审计_EN_终稿.docx"
-    docx_bytes: 88729
-    paragraphs: 318
+    docx_bytes: 89095
+    paragraphs: 319
     approx_words: 15880
     toc_items: 11
     author_block_rendered: true
@@ -79,9 +81,9 @@ papers:
     title_en: "Conflict-Structure Audit of Multi-Intervention Coexisting Learning Systems"
     stage2_html: "M2c/stage2/formatted-M2c-en.html"
     stage3_docx: "M2c/stage3/M2_多干预并存学习系统的冲突结构审计_压缩投稿版_EN_终稿.docx"
-    docx_bytes: 63085
+    docx_bytes: 63463
     stage2_html_bytes: 67319
-    paragraphs: 124
+    paragraphs: 125
     approx_body_words: 5636
     approx_full_words_incl_references: 6499
     word_limit_target: "5000-7000"
@@ -95,10 +97,10 @@ papers:
     kind: "compressed submission cut"
     source_en_full: "docs/M3_submission_EN.md"
     source_en_compressed: "docs/M3_submission_EN_compressed.md"
-    title_en: "Ordinal Difficulty Decisions and the Reliability Boundary of a Single-Model LLM Difficulty Prior"
+    title_en: "Ordinal Difficulty Decisions and the Reliability Boundary of Local Open-Weight LLM Difficulty Priors: Empirical Calibration from a Self-Built Simulator to Junyi's Real Action Space"
     stage2_html: "M3c/stage2/formatted-M3c-en.html"
     stage3_docx: "M3c/stage3/M3_有序难度决策与大模型先验边界_压缩投稿版_EN_终稿.docx"
-    docx_bytes: 54726
+    docx_bytes: 55040
     paragraphs: 101
     approx_words: 5007
     word_limit_target: "IJAIED / IEEE TLT 5000-7000"
@@ -114,8 +116,8 @@ papers:
     title_en: "Reliability-Structured Composite Difficulty Estimation"
     stage2_html: "M4/stage2/formatted-M4-en.html"
     stage3_docx: "M4/stage3/M4_信度结构化组合难度估计_EN_终稿.docx"
-    docx_bytes: 62901
-    paragraphs: 150
+    docx_bytes: 63288
+    paragraphs: 151
     approx_words: 6986
     toc_items: 9
     author_block_rendered: true

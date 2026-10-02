@@ -17,7 +17,10 @@ These boundaries delineate the scope of the method rather than invalidate its en
 
 **Data & code availability.** All numbers are produced by scripts under `results/code/`; the tested system is archived on Zenodo (DOI 10.5281/zenodo.22719229). Data/code availability and the generative-AI use disclosure will follow the targeted journal's current policy (IEEE Acknowledgment / Springer Methods / JEDM "Declaration of Generative AI Software tools" section).
 
-We confirm the manuscript is original, not under consideration elsewhere, and that all authors approve submission.
+We confirm the manuscript is original and not under consideration elsewhere.
+
+> **⚠ 批准语句与署名暂缓（审阅意见 2.4 ③ 与 §10，2026-09-29）。** 本信此前在"all authors approve submission"下方并列署有通讯作者（MinPo Jung）的姓名。**该批准语句与署名现已移除**：通讯作者已同意担任本稿通讯作者，但按其要求，**投稿信的批准语句、Zenodo 贡献者名单与 AI 使用声明，在其读完最终稿并批准之前，不得出现其姓名**。待最终稿获批后，再按其同意的方式补入。
 
 Sincerely,
-Zexiao Weng, MinPo Jung
+Zexiao Weng
+（通讯作者署名待最终稿获批后补入）

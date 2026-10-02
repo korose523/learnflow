@@ -1,0 +1,77 @@
+{
+  "generated_by": "results/m3/local_matrix_e1ab.py",
+  "n_items": 5,
+  "reps": 200,
+  "seed": 20260912,
+  "boot_seed": 20260922,
+  "source_questions": "D:\\learnflow-main\\learnflow-main\\data\\dbe_kt22\\csv\\Questions.csv",
+  "protocol_source": "results/code/llm_labeling_v2.py",
+  "stats_source": "results/code/o13_llm_protocol_audit.py",
+  "models": {
+    "ministral-3:3b": {
+      "n_items": 5,
+      "e1a_n_records": 5,
+      "e1a_n_total": 5,
+      "e1a_n_parsed": 5,
+      "e1a_parse_rate": 1.0,
+      "e1a_parse_convention_primary": "listwise",
+      "e1a_spearman": null,
+      "e1a_spearman_p": null,
+      "e1a_accuracy": 0.8,
+      "e1a_cohen_kappa": 0.0,
+      "e1a_llm_dist": {
+        "3": 5
+      },
+      "e1a_spearman_ci95": null,
+      "e1a_bootstrap_reps_used": 0,
+      "e1a_spearman_none_as_zero": null,
+      "e1a_spearman_none_as_zero_p": null,
+      "e1a_spearman_none_as_zero_ci95": null,
+      "e1a_spearman_none_as_zero_reps_used": 0,
+      "e1b_n_batches": 0,
+      "e1b_parse_fail": 0,
+      "e1b_spearman": null,
+      "e1b_spearman_ci95": null
+    }
+  },
+  "run_cells": {
+    "ministral-3:3b": {
+      "model_id": "ministral-3:3b",
+      "family": "Mistral",
+      "architecture": "dense",
+      "params_billions": 3,
+      "scale_tier": "S1_<7B",
+      "model_digest": {
+        "digest": "f04aa1c738f64e13c625b82ae92504fc0260fa6723b509ed1ece0fa188179b1d",
+        "digest_source": "api/tags",
+        "size_bytes": 2953840808,
+        "modified_at": "2026-09-28T06:49:31.5801881+08:00",
+        "family": "mistral3",
+        "parameter_size": "3.8B",
+        "quantization_level": "Q4_K_M",
+        "format": "gguf",
+        "model_info_subset": {
+          "general.architecture": "mistral3",
+          "general.parameter_count": 3849090048,
+          "mistral3.block_count": 26,
+          "mistral3.context_length": 262144,
+          "mistral3.rope.scaling.original_context_length": 16384,
+          "mistral3.vision.block_count": 24
+        },
+        "raw_top_keys": [
+          "capabilities",
+          "details",
+          "license",
+          "model_info",
+          "modelfile",
+          "modified_at",
+          "parameters",
+          "template"
+        ]
+      },
+      "e1a_new_records": 5,
+      "e1a_wall_seconds": 65.2,
+      "wall_seconds": 65.3
+    }
+  }
+}

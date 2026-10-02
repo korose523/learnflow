@@ -202,42 +202,6 @@ async def get_alert_rules(
     }
 
 
-# ─── 告警规则写操作：已鉴权的 @todo 桩（注释声称「配置」但仅有硬编码只读 GET） ───
-#
-# 模块 docstring 声称「风险告警配置」，并已在上方定义了 ``AlertRuleRequest``，
-# 但当前只有硬编码只读的 ``GET /alert-rules``。以下写端点为**已鉴权 @todo 桩**：
-#   * 鉴权：``require_admin`` —— 仅 ADMIN 可写，绝不提供未授权写入口；
-#   * 意图：管理员创建/更新风险告警规则（rule_name / trigger_condition / action / severity）；
-#   * 缺口：缺少 ``AlertRule`` 持久化模型（现有 ``Alert`` 是已触发的告警**实例**，
-#           并非可配置的规则），需新增 model + 迁移 + 仓储后才能真正落库。
-# 故以 501 显式占位并写明待办，而非假装已实现或只贴「⚠️冲突」标签。
-@router.post("/alert-rules")
-async def create_alert_rule(
-    req: AlertRuleRequest,
-    user: User = Depends(require_admin),
-    # db: AsyncSession = Depends(get_db),  # @todo: 落库时启用
-):
-    """@todo 创建风险告警规则（已鉴权，未实现持久化）。
-
-    意图：管理员提交一条风险告警规则（rule_name / trigger_condition / action /
-    severity / description），服务端校验后写入持久层并返回创建结果
-    ``{"id": <uuid>, "rule_name": ..., "severity": ...}``。
-
-    当前缺口：尚无 ``AlertRule`` 持久化模型（Alert 仅表示运行时告警实例，非规则），
-    因此本端点仅占位并返回 501，待补齐模型 + 迁移后实现落库。**已具备
-    ``require_admin`` 鉴权，不提供任何未授权写入口。**
-    """
-    # @todo: 校验 req；创建 AlertRule 记录；await db.flush()/commit；
-    #        返回 {"id": str(rule.id), "rule_name": req.rule_name, "severity": req.severity}
-    raise HTTPException(
-        status_code=501,
-        detail=(
-            "告警规则写操作尚未实现：缺少 AlertRule 持久化模型"
-            "（需新增 model + 迁移）。已具备 require_admin 鉴权。"
-        ),
-    )
-
-
 # ─── 系统统计 ─────────────────────────────────
 
 @router.get("/stats")

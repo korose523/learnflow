@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-09-29T08:13:10+09:00",
-  "git_commit": "ac91c9af19f9b09cd4ee33fbf15f15016943f1c9",
-  "python_version": "3.11.9",
-  "backend_root": "E:\\learnflow\\learnflow-backend",
+  "generated_at": "2026-09-27T14:16:21+08:00",
+  "git_commit": "unknown",
+  "python_version": "3.13.14",
+  "backend_root": "D:\\learnflow-main\\learnflow-main\\learnflow-backend",
   "counts": {
     "engine_classes": {
       "value": 86,
@@ -351,7 +351,7 @@
           ]
         },
         {
-          "location": "app/services/learning_orchestrator.py:996",
+          "location": "app/services/learning_orchestrator.py:995",
           "enclosing_function": "process_submission",
           "mechanism_labels": [
             "LF-M52"
@@ -609,7 +609,7 @@
       "actual": 16,
       "delta": 0,
       "strict": true,
-      "notes": "生产者位置：app/services/deep_addiction_engine.py:296; app/services/learning_orchestrator.py:996; app/services/route_a_producers.py:103; app/services/route_a_producers.py:107; app/services/route_a_producers.py:111; app/services/route_a_producers.py:136; app/services/route_a_producers.py:140; app/services/route_a_producers.py:67; app/services/route_a_producers.py:71; app/services/route_a_producers.py:75; app/services/route_a_producers.py:79; app/services/route_a_producers.py:83; app/services/route_a_producers.py:87; app/services/route_a_producers.py:91; app/services/route_a_producers.py:95; app/services/route_a_producers.py:99"
+      "notes": "生产者位置：app/services/deep_addiction_engine.py:296; app/services/learning_orchestrator.py:995; app/services/route_a_producers.py:103; app/services/route_a_producers.py:107; app/services/route_a_producers.py:111; app/services/route_a_producers.py:136; app/services/route_a_producers.py:140; app/services/route_a_producers.py:67; app/services/route_a_producers.py:71; app/services/route_a_producers.py:75; app/services/route_a_producers.py:79; app/services/route_a_producers.py:83; app/services/route_a_producers.py:87; app/services/route_a_producers.py:91; app/services/route_a_producers.py:95; app/services/route_a_producers.py:99"
     },
     "_overall": {
       "status": "verified",

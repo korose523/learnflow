@@ -105,8 +105,7 @@ from app.models.analytics import AbilityEstimate, AuditKind
 # ────────────────────────────────────────────────────────────
 # 机制治理接线 (Task #10: 注册表驱动流水线)
 #
-# process_submission 的 13 步机制（1–13，含 8b/9b/12b/12c 子步；其中步骤 12 即 FOMO
-# 后置 nudge 仲裁步，步骤 13 为孤儿机制评估钩子）里, 凡「应用某个游戏化机制」
+# process_submission 的 11 步机制 + 1 个后置 nudge 仲裁步里, 凡「应用某个游戏化机制」
 # 的步骤, 都在此登记其对应的 LF-M ID, 并构造期校验 ID 真实存在于 mechanism_registry。这样:
 #   * 每一步对应哪个机制可审计 (论文附表可引用 LF-Mxx);
 #   * 机制被 is_enabled(False) 关闭 (消融实验) 时, 对应步骤效果被**真实抑制**;

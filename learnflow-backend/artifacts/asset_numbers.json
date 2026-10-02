@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-09-29T08:28:17+09:00",
+  "generated_at": "2026-10-02T10:49:13+09:00",
   "backend_root": "E:\\learnflow\\learnflow-backend",
   "counts": {
-    "python_loc": 26937,
-    "python_loc_excl_init": 26853,
+    "python_loc": 26745,
+    "python_loc_excl_init": 26661,
     "source_files": 92,
     "service_modules": 59,
     "api_files": 13,
-    "api_routes_defined": 105,
-    "api_routes_reachable": 105,
+    "api_routes_defined": 104,
+    "api_routes_reachable": 104,
     "api_routes_unreachable": 0,
     "api_routes_per_file": {
       "admin": {
-        "defined": 7,
-        "reachable": 7
+        "defined": 6,
+        "reachable": 6
       },
       "analytics": {
         "defined": 5,
@@ -102,33 +102,32 @@
       ]
     },
     "test_files": 56,
-    "test_functions": 878,
-    "tests_collected": 972
+    "test_functions": 878
   },
   "verdict": {
     "python_loc": {
-      "registered": 26937,
-      "actual": 26937,
-      "delta": 0,
+      "registered": 25389,
+      "actual": 26745,
+      "delta": 1356,
       "strict": false,
-      "status": "verified",
-      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（历史快照 25,389，已随开发增长至 26,937）。"
+      "status": "drifted",
+      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（历史值为 23,927，已漂移）。"
     },
     "source_files": {
-      "registered": 92,
+      "registered": 87,
       "actual": 92,
-      "delta": 0,
+      "delta": 5,
       "strict": false,
-      "status": "verified",
+      "status": "drifted",
       "note": "informative：app/**/*.py 文件数。文档 §1 引用此值（历史值 81）。"
     },
     "service_modules": {
-      "registered": 59,
+      "registered": 54,
       "actual": 59,
-      "delta": 0,
+      "delta": 5,
       "strict": false,
-      "status": "verified",
-      "note": "informative：app/services/*.py 文件数（含 __init__.py）。文档 §1 历史值 41 为残留，已修正。"
+      "status": "drifted",
+      "note": "informative：app/services/*.py 文件数。文档 §1 历史值 41 为残留，已修正。"
     },
     "api_files": {
       "registered": 13,
@@ -139,35 +138,35 @@
       "note": "informative：app/api/*.py 文件数。"
     },
     "api_routes_reachable": {
-      "registered": 105,
-      "actual": 105,
+      "registered": 104,
+      "actual": 104,
       "delta": 0,
       "strict": false,
       "status": "verified",
       "note": "informative：已被 main.py 的 _register_routers() 注册的路由数，是文档 §1「API 端点」应对应的口径（历史值 72 为残留）。"
     },
     "test_files": {
-      "registered": 56,
+      "registered": 53,
       "actual": 56,
-      "delta": 0,
+      "delta": 3,
       "strict": false,
-      "status": "verified",
+      "status": "drifted",
       "note": "informative：tests/test_*.py 文件数。文档 §1 引用此值（历史值 49）。"
     },
     "test_functions": {
-      "registered": 878,
+      "registered": 826,
       "actual": 878,
-      "delta": 0,
+      "delta": 52,
       "strict": false,
-      "status": "verified",
+      "status": "drifted",
       "note": "informative：AST 定义数（含任意嵌套层级），≠ pytest 收集数（parametrize 会把一个函数展开成多个用例）。"
     },
     "tests_collected": {
-      "registered": 972,
-      "actual": 972,
-      "delta": 0,
+      "registered": 920,
+      "actual": null,
+      "delta": null,
       "strict": false,
-      "status": "verified",
+      "status": "drifted",
       "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。"
     }
   },
@@ -176,56 +175,66 @@
     "items": [
       {
         "metric": "python_loc",
-        "doc_text": "26,937 行 Python",
-        "doc_value": 26937,
-        "actual_value": 26937,
-        "ok": true,
-        "note": ""
+        "doc_text": "26,107 行 Python",
+        "doc_value": 26107,
+        "actual_value": 26745,
+        "ok": false,
+        "note": "文档 26107 ≠ 实测 26745"
       },
       {
         "metric": "service_modules",
-        "doc_text": "59 个服务模块",
-        "doc_value": 59,
+        "doc_text": "57 个服务模块",
+        "doc_value": 57,
         "actual_value": 59,
-        "ok": true,
-        "note": ""
+        "ok": false,
+        "note": "文档 57 ≠ 实测 59"
       },
       {
         "metric": "source_files",
-        "doc_text": "92 个源文件",
-        "doc_value": 92,
+        "doc_text": "90 个源文件",
+        "doc_value": 90,
         "actual_value": 92,
-        "ok": true,
-        "note": ""
+        "ok": false,
+        "note": "文档 90 ≠ 实测 92"
       },
       {
         "metric": "api_routes_reachable",
-        "doc_text": "105 个 API 端点",
-        "doc_value": 105,
-        "actual_value": 105,
+        "doc_text": "104 个 API 端点",
+        "doc_value": 104,
+        "actual_value": 104,
         "ok": true,
         "note": ""
       },
       {
         "metric": "tests_collected",
-        "doc_text": "972 项测试",
-        "doc_value": 972,
-        "actual_value": 972,
+        "doc_text": "936 项测试",
+        "doc_value": 936,
+        "actual_value": null,
         "ok": true,
-        "note": ""
+        "note": "本次未复算该指标（加 --with-pytest 可复算），仅记录文档值"
       },
       {
         "metric": "test_files",
-        "doc_text": "56 个测试文件",
-        "doc_value": 56,
+        "doc_text": "54 个测试文件",
+        "doc_value": 54,
         "actual_value": 56,
-        "ok": true,
-        "note": ""
+        "ok": false,
+        "note": "文档 54 ≠ 实测 56"
       }
     ],
-    "mismatches": [],
-    "passed": true
+    "mismatches": [
+      "python_loc",
+      "service_modules",
+      "source_files",
+      "test_files"
+    ],
+    "passed": false
   },
-  "_blocking": [],
-  "_exit_code": 0
+  "_blocking": [
+    "python_loc",
+    "service_modules",
+    "source_files",
+    "test_files"
+  ],
+  "_exit_code": 1
 }
