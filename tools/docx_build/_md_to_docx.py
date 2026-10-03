@@ -12,12 +12,12 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-EA_FONT = {"zh": "Microsoft YaHei", "kr": "Malgun Gothic"}
+EA_FONT = {"zh": "Microsoft YaHei", "kr": "Malgun Gothic", "en": "Times New Roman"}
 LAT_FONT = "Calibri"
 CODE_FONT = "Consolas"
 BODY_SIZE = 10.5
 HEAD_SIZES = {1: 22, 2: 16, 3: 13.5, 4: 12, 5: 11}
-TOC_TITLE = {"zh": "目录", "kr": "목차"}
+TOC_TITLE = {"zh": "目录", "kr": "목차", "en": "Contents"}
 
 
 def set_run_font(run, lang, bold=False, italic=False, code=False, size=None, color=None):
@@ -183,9 +183,12 @@ def build_docx(md_path, docx_path, lang):
     cp.author = "Zexiao Weng"
     cp.last_modified_by = "Zexiao Weng"
     cp.title = os.path.splitext(os.path.basename(md_path))[0]
-    cp.subject = ("博士学位论文研究计划书 / 研究进展报告 — 适应性学习中难度的可测量化与可治理化"
-                  if lang == "zh" else
-                  "박사학위논문 연구계획서 / 연구진행보고서 — 적응형 학습에서 난이도의 측정가능화와 거버넌스화")
+    cp.subject = {
+        "zh": "博士学位论文研究计划书 / 研究进展报告 — 适应性学习中难度的可测量化与可治理化",
+        "kr": "박사학위논문 연구계획서 / 연구진행보고서 — 적응형 학습에서 난이도의 측정가능화와 거버넌스화",
+        "en": ("Doctoral dissertation supporting paper (English submission manuscript) — "
+               "Measurability and governability of difficulty in adaptive learning"),
+    }[lang]
     cp.comments = ("LearnFlow artifact 配套文档；数字口径由 learnflow-backend/scripts/ 下门禁脚本复算。"
                    "本文件由 Markdown 源经 _build_tools/_md_to_docx.py 确定性生成。")
 
@@ -257,7 +260,11 @@ def build_docx(md_path, docx_path, lang):
                 tbl_rows.append(lines[i])
                 i += 1
             header, aligns, data = parse_table(tbl_rows)
-            t = doc.add_table(rows=1, cols=max(len(header), 1))
+            # 2026-10-04：源稿存在「数据行单元格多于表头」的不规则表格，
+            # 按表头列数建表会让 cells[c] 越界（IndexError: tuple index out of range）。
+            # 列数改为取表头与所有数据行的最大值；下方写入仍做越界保护。
+            ncols = max([len(header)] + [len(r) for r in data] + [1])
+            t = doc.add_table(rows=1, cols=ncols)
             t.alignment = WD_TABLE_ALIGNMENT.CENTER
             set_table_borders(t)
             hdr = t.rows[0].cells
@@ -274,12 +281,15 @@ def build_docx(md_path, docx_path, lang):
             for drow in data:
                 cells = t.add_row().cells
                 for c, ctext in enumerate(drow):
+                    if c >= len(cells):
+                        break  # 越界保护：不规则表格多出的单元格丢弃
                     cells[c].paragraphs[0].text = ""
                     populate_inline(cells[c].paragraphs[0], ctext, lang, size=9.5)
-                    if aligns[c] == "center":
-                        cells[c].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
-                    elif aligns[c] == "right":
-                        cells[c].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.RIGHT
+                    if c < len(aligns):
+                        if aligns[c] == "center":
+                            cells[c].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+                        elif aligns[c] == "right":
+                            cells[c].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.RIGHT
             doc.add_paragraph()
             continue
 

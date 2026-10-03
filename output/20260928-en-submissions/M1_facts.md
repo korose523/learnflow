@@ -363,7 +363,7 @@ CAP **Table 24. Summary statistics of the assist09 sliding-window error-rate dis
 | Mean error rate | **0.3511** |
 | Median error rate | **0.30** (success rate 70%) |
 | **Mode (single value)** | **error rate 0.25, i.e., success rate 75%** (k = 5, 30,899 windows) |
-| Mode's bootstrap 95% set (200 resamples by student) | **{0.25}** (occupies 95.5% of all resamples) |
+| Mode's bootstrap 95% set (**2,000** resamples by student, seed 20260922; rerun on assist09 source data 2026-10-04 per review §3.3) | **{0.25, 0.20}** — k = 5 in **94.1%**, k = 4 in **5.95%**; k = 5 alone falls below 95%, so the mode is **not unique at the 95% threshold** (Monte Carlo SE ≈ 0.5 pp; superseded 200-resample record: {0.25} at 95.5%, SE ≈ 1.5 pp) |
 | Window share with success rate 77–83% | 10.51% (only k = 4 falls in this interval) |
 | Window share with success rate 80–90% | **26.40%** (k = 2, 3, 4) |
 | Window share with success rate 80–85% | 19.64% (k = 3, 4) |

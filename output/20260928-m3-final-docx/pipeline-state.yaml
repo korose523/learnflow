@@ -1,7 +1,14 @@
+
+# 2026-10-04 重建记录（覆盖 2026-09-28 版）
+# 09-28 版构建于第二次审阅（2026-09-29）之前，不含本轮整改，且仍写已被取代的 95.5%。
+# 本次改用项目内确定性转换器重建：md -> docx（不再经学术版式 HTML 中间层），
+# 命令：python tools/docx_build/_build_en_submissions.py
+# 影响：stage2/ HTML 中间产物已随本次重建脱离构建链并删除（git 历史仍可恢复）；
+#       排版比 09-28 那版朴素，但内容保证与 docs/ 下已修订稿件逐字一致、可复算。
 schema_version: 1
 request_id: 20260928-m3-final-docx
 created_at: "2026-09-28T05:59:05Z"
-updated_at: "2026-09-29T15:35:45Z"
+updated_at: "2026-10-04T08:37:47Z"
 
 entry_type: beautify_only
 stage_chain: [2, 3]
