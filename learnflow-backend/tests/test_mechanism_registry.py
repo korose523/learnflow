@@ -15,7 +15,9 @@ import pytest
 from app.services import mechanism_registry as reg
 
 
-DOC_PATH = Path(__file__).resolve().parent.parent.parent / "docs" / "LearnFlow_机制治理与落实方案.md"
+# 2026-10-03: 治理方案已合并入《LearnFlow_研究总档.md》第四部；
+# LF-M 编号表与 ### 类别标题按原格式保留，行级正则仍可命中。
+DOC_PATH = Path(__file__).resolve().parent.parent.parent / "docs" / "LearnFlow_研究总档.md"
 
 
 @pytest.fixture

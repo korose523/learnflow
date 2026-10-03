@@ -20,8 +20,8 @@ LearnFlow 的学习方法此前散落在三个引擎文件里, 没有任何统�
 历史背景: 项目旧文档宣称"28 种学习方法", 但最初只有 23 个真实实现
 (``LF-L01``..``LF-L23``)。本项目不"把数字改掉", 而是补上了 5 个真实、证据充分、
 且与前 23 个无语义重叠的方法 (``LF-L24``..``LF-L28``, 见
-``advanced_methods_v2.py``), 让 28 成为可复算的真值。数量由
-``scripts/verify_counts.py`` 复算。
+``advanced_methods_v2.py``), 让 28 成为可复算的真值。详见
+``docs/LearnFlow_学习方法候选核验.md``。
 
 ID 稳定性约定
 -------------
@@ -95,7 +95,7 @@ MIND_MAPPING_KEY = "mind_mapping"
 # **模块导入时**以副作用 append 进 METHOD_TIPS 的, 因此注册表必须强制导入该模块,
 # 否则 METHOD_TIPS[16..22] 根本不存在, impl_ref 也就成了空指针。
 # 该模块内有去重保护, 重复导入不会产生重复条目。
-from app.services import advanced_methods_engine as _advanced_methods_engine  # noqa: F401
+from app.services import advanced_methods_engine as _advanced_methods_engine
 
 
 class MethodDisabledError(RuntimeError):

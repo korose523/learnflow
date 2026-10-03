@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import time
 from collections import deque
-from typing import Any, Callable, Deque, Dict, List, Optional
+from typing import Callable, Deque, Dict, List, Optional
 
 # 规范特征向量维度 (顺序即索引, 与 ml_risk_model 严格对应)
 FEATURE_KEYS = [

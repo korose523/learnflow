@@ -12,7 +12,7 @@
   * app/services/mechanism_registry.py      —— 54 机制规格（category/maturity/stage/...）
   * app/services/mechanism_arbitrator.py    —— _DIRECTION 方向表 + BudgetPolicy
   * app/services/learning_orchestrator.py   —— PIPELINE_MECHANISM_MAP + is_enabled 字面量
-  * docs/LearnFlow_机制治理与落实方案.md     —— §2.4 八类别清单表
+  * docs/LearnFlow_研究总档.md     —— §2.4 八类别清单表
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ from app.services import mechanism_registry as MR          # noqa: E402
 from app.services.learning_orchestrator import PIPELINE_MECHANISM_MAP  # noqa: E402
 from app.services.mechanism_arbitrator import BudgetPolicy  # noqa: E402
 
-GOV_DOC = REPO / "docs" / "LearnFlow_机制治理与落实方案.md"
+GOV_DOC = REPO / "docs" / "LearnFlow_研究总档.md"
 ORCH = BACKEND / "app" / "services" / "learning_orchestrator.py"
 ARB = BACKEND / "app" / "services" / "mechanism_arbitrator.py"
 

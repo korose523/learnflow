@@ -9,20 +9,16 @@
 数字纪律：不手写任何统计量，全部由驱动脚本与 build_matrix_rows.py 产出。
 """
 import json
-import os
 import subprocess
 import sys
 import time
 import urllib.request
 from pathlib import Path
 
-# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/）推导
-BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[2]))
-M3 = BASE / "results" / "m3"
-OLLAMA = os.environ.get("OLLAMA_BIN", "ollama")  # 原为硬编码本机路径，已移除
-PYV = os.environ.get("PYTHON", sys.executable)   # 原为硬编码本机解释器路径，已移除
-DRIVER = str(M3 / "local_matrix_e1ab.py")
-JSONL = M3 / "local_matrix.jsonl"
+OLLAMA = r"C:/Users/mac/AppData/Local/Programs/Ollama/ollama.exe"
+PYV = r"C:/Users/mac/.workbuddy/binaries/python/envs/default/Scripts/python.exe"
+DRIVER = r"E:/learnflow/results/m3/local_matrix_e1ab.py"
+JSONL = Path("E:/learnflow/results/m3/local_matrix.jsonl")
 TARGET = 108
 DEADLINE = time.time() + 8 * 3600
 DETACH = 0x00000008 | 0x00000200  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
@@ -62,8 +58,8 @@ def ensure_ollama():
     try:
         subprocess.Popen(
             [OLLAMA, "serve"],
-            cwd=str(BASE),
-            stdout=open(str(M3 / "_ollama_serve_worker.log"), "ab"),
+            cwd="E:/learnflow",
+            stdout=open("E:/learnflow/results/m3/_ollama_serve_worker.log", "ab"),
             stderr=subprocess.STDOUT,
             creationflags=DETACH,
         )
@@ -93,7 +89,7 @@ def main():
             [PYV, DRIVER, "--models", "mistral:7b",
              "--meta-file", "results/m3/local_matrix_meta_small.json",
              "--conditions", "E1B", "--out", "results/m3/local_matrix"],
-            cwd=str(BASE), capture_output=True, text=True,
+            cwd="E:/learnflow", capture_output=True, text=True,
             encoding="utf-8", errors="replace")
         tail = "\n".join((r.stdout or "").splitlines()[-6:])
         print(f"[worker] driver rc={r.returncode} count={count()}", flush=True)

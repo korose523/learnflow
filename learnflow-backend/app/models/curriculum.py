@@ -7,10 +7,10 @@
 import uuid
 from datetime import datetime, UTC
 from enum import Enum
-from typing import Optional, List
+from typing import List
 
 from sqlalchemy import (
-    Column, String, DateTime, ForeignKey, JSON, Text, Integer, UniqueConstraint,
+    Column, String, DateTime, ForeignKey, JSON, UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
 

@@ -149,7 +149,7 @@ MAIN_SRC = APP_DIR / "main.py"
 ARTIFACTS_DIR = BACKEND_ROOT / "artifacts"
 JSON_OUT = ARTIFACTS_DIR / "asset_numbers.json"
 
-SPLIT_DOC = PROJECT_ROOT / "docs" / "LearnFlow_期刊论文拆分方案.md"
+SPLIT_DOC = PROJECT_ROOT / "docs/LearnFlow_研究总档.md"   # 合并入研究总档第三部
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 登记口径（registered baseline）
@@ -162,10 +162,10 @@ SPLIT_DOC = PROJECT_ROOT / "docs" / "LearnFlow_期刊论文拆分方案.md"
 
 REGISTERED: Dict[str, Dict[str, Any]] = {
     "python_loc": {
-        "registered": 26782,
+        "registered": 26749,
         "strict": False,
         "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值"
-                "（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算）。",
+                "（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算；2026-10-03 ruff 死代码清理删除 33 行后复算为 26,749）。",
     },
     "source_files": {
         "registered": 92,

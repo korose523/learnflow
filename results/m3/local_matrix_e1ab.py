@@ -72,8 +72,7 @@ import numpy as np
 from scipy import stats as st
 
 # ─────────────────────────── 路径与常量 ───────────────────────────
-# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/）推导
-BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[2]))
+BASE = Path("E:/learnflow")
 DATA = BASE / "data"
 CODE = BASE / "results" / "code"
 M3 = BASE / "results" / "m3"
@@ -82,7 +81,7 @@ QUESTIONS_CSV = DATA / "dbe_kt22" / "csv" / "Questions.csv"
 O13_PATH = CODE / "o13_llm_protocol_audit.py"
 
 API_BASE = "http://127.0.0.1:11434/api"
-OLLAMA_EXE = os.environ.get("OLLAMA_BIN", "ollama")  # 原为硬编码本机路径，已移除；默认走 PATH
+OLLAMA_EXE = r"C:\Users\mac\AppData\Local\Programs\Ollama\ollama.exe"
 
 #: 与审计完全一致的随机种子与批配置（llm_labeling_v2.py L29 / L144）
 SEED = 20260912

@@ -11,13 +11,11 @@
 幂等：按唯一键 (code / subject+grade+title / node+content) 跳过已存在数据。
 """
 import asyncio
-import os
 
 from app.core.database import AsyncSessionLocal, init_db
-from app.core.security import hash_password
 from sqlalchemy import select
 
-from app.models.user import User, UserRole
+from app.models.user import User
 from app.models.curriculum import Subject, GradeLevel, CurriculumNode, Class, GradeBand
 from app.models.task import Task
 

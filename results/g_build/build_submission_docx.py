@@ -13,20 +13,20 @@
 import os
 import sys
 
-BUILD_TOOLS = r"E:\learnflow\docs\研究计划与报告\_build_tools"
+BUILD_TOOLS = r"E:\learnflow\tools\docx_build"   # 2026-10-03: 构建工具迁出 docs/
 sys.path.insert(0, BUILD_TOOLS)
 
 from _md_to_docx import build_docx  # noqa: E402
 
 JOBS = [
     # (md 源, docx 目标, 语言)
-    (r"E:\learnflow\docs\研究计划与报告\研究计划_韩文版.md",
+    (r"E:\learnflow\docs\LearnFlow_研究总档.md",
      r"E:\learnflow\docs\研究计划_韩文版.docx", "kr"),
-    (r"E:\learnflow\docs\研究计划与报告\研究计划_中文版.md",
+    (r"E:\learnflow\docs\LearnFlow_研究总档.md",
      r"E:\learnflow\docs\研究计划_中文版.docx", "zh"),
-    (r"E:\learnflow\docs\研究计划与报告\研究报告_韩文版.md",
+    (r"E:\learnflow\docs\LearnFlow_研究总档.md",
      r"E:\learnflow\docs\研究报告_韩文版.docx", "kr"),
-    (r"E:\learnflow\docs\研究计划与报告\研究报告_中文版.md",
+    (r"E:\learnflow\docs\LearnFlow_研究总档.md",
      r"E:\learnflow\docs\研究报告_中文版.docx", "zh"),
     # 审阅表 6 第三份：因果侧识别策略文档（未接触结果变量状态）
     (r"E:\learnflow\docs\因果侧识别策略.md",

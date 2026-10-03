@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import bisect
 import math
-from typing import List, Sequence, Tuple
+from typing import List, Sequence
 
 Vector = List[float]
 Matrix = List[Vector]

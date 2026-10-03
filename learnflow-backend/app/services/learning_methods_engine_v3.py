@@ -1,6 +1,6 @@
 """学习方法引擎 v3：思维导图、双重编码、交错练习、精细加工、生成效应"""
 import random
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 
 
 class MindMappingEngine:

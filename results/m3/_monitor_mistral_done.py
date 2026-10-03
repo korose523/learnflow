@@ -1,12 +1,9 @@
-import json, os, time, subprocess, sys
+import json, time, subprocess, sys
 from pathlib import Path
-# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/）推导
-BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[2]))
-M3 = BASE / "results" / "m3"
-JSONL = M3 / "local_matrix.jsonl"
-PYV = os.environ.get("PYTHON", sys.executable)  # 原为硬编码本机解释器路径，已移除
-BUILD = str(M3 / "build_matrix_rows.py")
-CSV = str(M3 / "m3_model_scale_matrix.csv")
+JSONL = Path("E:/learnflow/results/m3/local_matrix.jsonl")
+PYV = r"C:/Users/mac/.workbuddy/binaries/python/envs/default/Scripts/python.exe"
+BUILD = r"E:/learnflow/results/m3/build_matrix_rows.py"
+CSV = r"E:/learnflow/results/m3/m3_model_scale_matrix.csv"
 TARGET = 108
 deadline = time.time() + 4*3600
 prev = 0
@@ -45,7 +42,7 @@ while time.time() < deadline:
                 uniq2.add(d.get("key"))
         if len(uniq2) >= TARGET:
             print("[monitor] stable; running build_matrix_rows.py --csv-out", flush=True)
-            r = subprocess.run([PYV, BUILD, "--csv-out", CSV], cwd=str(BASE),
+            r = subprocess.run([PYV, BUILD, "--csv-out", CSV], cwd="E:/learnflow",
                                capture_output=True, text=True, encoding="utf-8", errors="replace")
             sys.stdout.write(r.stdout)
             sys.stdout.flush()

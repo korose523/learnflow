@@ -18,13 +18,34 @@ v2（2026-09-22，审阅意见整改）：
 """
 import io, os, re, sys
 
-BASE = r"E:\learnflow\docs\研究计划与报告"
-FILES = [
-    ("计划·中", "研究计划_中文版.md"),
-    ("计划·韩", "研究计划_韩文版.md"),
-    ("报告·中", "研究报告_中文版.md"),
-    ("报告·韩", "研究报告_韩文版.md"),
-]
+# 2026-10-03: 四份 md 已合并入 docs/LearnFlow_研究总档.md 的第一~四部，
+# 源文件不再单独存在；改为从总档按部抽取到临时目录后再校验，
+# 硬门禁逻辑（逐字标记核对）完全不变。
+import importlib.util as _ilu
+import tempfile as _tf
+
+# 2026-10-03: 原 `docs/研究计划与报告/` 已移除（内容并入研究总档），
+# 校验改为从总档抽取到临时目录后逐字核对（见下方 EXTRACT 逻辑）。
+BASE = r"E:\learnflow\docs"
+MASTER = os.path.join(BASE, "LearnFlow_研究总档.md")
+_TMP = _tf.mkdtemp(prefix="_verify_docs_")
+# 同目录导入 _md_to_docx.py（本脚本与它已一并迁到 tools/docx_build/）
+_spec = _ilu.spec_from_file_location(
+    "_md2docx", os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             "_md_to_docx.py"))
+_m = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_m)
+_EXTRACT = {
+    "研究计划_中文版.md": "第一部 · 研究计划",
+    "研究计划_韩文版.md": "第三部 · 研究计划（韩文版）",
+    "研究报告_中文版.md": "第二部 · 研究进展报告",
+    "研究报告_韩文版.md": "第四部 · 研究进展报告（韩文版）",
+}
+FILES = []
+for _label, _fn in [("计划·中", "研究计划_中文版.md"), ("计划·韩", "研究计划_韩文版.md"),
+                    ("报告·中", "研究报告_中文版.md"), ("报告·韩", "研究报告_韩文版.md")]:
+    _out = os.path.join(_TMP, _fn)
+    _m.extract_master_part(MASTER, _EXTRACT[_fn], _out)
+    FILES.append((_label, _fn))
 
 # 四份文件都必须逐字出现的权威标记（硬门禁）
 REQUIRED_CORE = [
@@ -106,7 +127,7 @@ def p(s=""):
 fail = []
 
 for label, fn in FILES:
-    path = os.path.join(BASE, fn)
+    path = os.path.join(_TMP, fn)   # 2026-10-03: 从总档抽取的临时副本
     if not os.path.exists(path):
         p("[MISSING] %s -> %s" % (label, path))
         fail.append("%s 文件缺失" % label)
@@ -151,8 +172,8 @@ for cn, kr, reqname in [
     ("研究计划_中文版.md", "研究计划_韩文版.md", "计划"),
     ("研究报告_中文版.md", "研究报告_韩文版.md", "报告"),
 ]:
-    tc = norm(io.open(os.path.join(BASE, cn), "r", encoding="utf-8").read())
-    tk = norm(io.open(os.path.join(BASE, kr), "r", encoding="utf-8").read())
+    tc = norm(io.open(os.path.join(_TMP, cn), "r", encoding="utf-8").read())
+    tk = norm(io.open(os.path.join(_TMP, kr), "r", encoding="utf-8").read())
     req = REQUIRED_PLAN if reqname == "计划" else REQUIRED_REPORT
     only_cn = [k for k in req if norm(k) in tc and norm(k) not in tk]
     only_kr = [k for k in req if norm(k) in tk and norm(k) not in tc]

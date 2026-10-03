@@ -57,7 +57,7 @@ def test_skill_tree_nodes_is_16():
     assert st["duplicate_skill_ids"] == []
 
 
-def test_mechanism_unique_is_53():
+def test_mechanism_unique_is_54():
     mod = _load_module()
     counts = mod.collect_all()
     mq = counts["mechanism_unique"]

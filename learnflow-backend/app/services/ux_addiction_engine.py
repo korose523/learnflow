@@ -11,9 +11,7 @@
   5. 色彩心理学 — 暖色激励 / 冷色信任 / 中性安全
   6. 触觉节奏 (Haptic Rhythm) — 成功-休息-期待的循环
 """
-from dataclasses import dataclass, field
-from datetime import datetime, UTC
-from typing import Dict, List, Optional
+from typing import Optional
 import random
 
 

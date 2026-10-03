@@ -172,7 +172,7 @@ async def lifespan(app: FastAPI):
     await _register_routers(app)
 
     # 导入所有模型（确保 Base.metadata 包含所有表）
-    import app.models  # noqa: F401
+    import app.models
 
     # 初始化数据库
     try:

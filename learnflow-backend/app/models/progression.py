@@ -17,7 +17,7 @@ import uuid
 from datetime import datetime, UTC
 
 from sqlalchemy import (
-    Column, String, DateTime, ForeignKey, Integer, Float, Text, JSON, Boolean, Index
+    Column, String, DateTime, ForeignKey, Integer, Float, JSON, Boolean, Index
 )
 from sqlalchemy.orm import relationship
 

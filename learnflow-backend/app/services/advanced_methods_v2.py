@@ -6,7 +6,7 @@ LearnFlow 历史宣称"28 种学习方法", 真实只有 23 个 (见 scripts/ver
 的 learning_methods=23)。本项目不"把数字改掉", 而是**补上 5 个真实、证据充分、
 且与现有 23 个无语义重叠的学习方法**, 让 28 成为可复算的真值。
 
-选这 5 个的判据:
+选这 5 个的判据 (见 docs/LearnFlow_学习方法候选核验.md):
 1. 与现有 23 个不构成重复 (各自有明确的区分边界);
 2. 有可靠的一手实证文献支撑;
 3. 在 K12 数学/语文在线练习场景可真实实施 (不是纯理论构想)。
@@ -15,7 +15,7 @@ LearnFlow 历史宣称"28 种学习方法", 真实只有 23 个 (见 scripts/ver
 method_registry 里它们的 delivery 标注为 interactive/plan/quiz, 与仅 tip 的方法
 区分开。
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 # ────────────────────────────────────────────────────────────

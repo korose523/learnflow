@@ -22,7 +22,7 @@ from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import random
 
-from app.services.state_store import StateStore, MemoryStateStore, default_state_store
+from app.services.state_store import StateStore, default_state_store
 
 
 # ═══════════════════════════════════════════════════════════

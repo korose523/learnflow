@@ -13,7 +13,7 @@
 输出：给定学生能力 θ，推荐难度 d* 使 P(correct | θ, d*) ≈ 0.85
 """
 import math
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Tuple
 from enum import Enum
 
@@ -551,7 +551,6 @@ class OptimalDifficultyEngine:
 
         Returns: [(task_id, score, expected_success), ...] 按匹配度降序
         """
-        optimal_elo = self.flow.optimal_difficulty_elo(student_theta)
         ranked = []
 
         for task_id, fsrs_d in tasks:

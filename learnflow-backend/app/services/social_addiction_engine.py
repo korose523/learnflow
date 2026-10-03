@@ -10,8 +10,8 @@
   所有指标都是"你付出了什么"的证明，而非"你比别人强多少"。
 """
 from dataclasses import dataclass, field
-from datetime import datetime, UTC, timedelta
-from typing import Dict, List, Optional
+from datetime import datetime, UTC
+from typing import List, Optional
 import random
 
 

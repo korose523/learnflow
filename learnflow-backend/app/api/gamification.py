@@ -7,7 +7,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
@@ -17,8 +17,8 @@ from app.models.user import User, UserRole
 from app.models.pet import PetProfile
 from app.models.task import Attempt, StudentSkillProfile
 from app.services.gamification_service import GamificationService
-from app.services.duolingo_addiction_engine import DuolingoStreakEngine, DuolingoStreakState, XPEngine, XPState, XPEventType
-from app.services.team_competition_engine import TeamManagementEngine, TeamLeagueEngine, SoloRankEngine, SubjectRank, RankTier, RankDivision
+from app.services.duolingo_addiction_engine import DuolingoStreakState, XPEngine
+from app.services.team_competition_engine import TeamManagementEngine, TeamLeagueEngine
 from app.services.meta_learning_skilltree import SkillTreeEngine, MethodQuestEngine
 from app.services.learning_methods_engine import LearningMethodEngine
 from app.services.memory_science_engine import (
@@ -30,9 +30,9 @@ from app.services.memory_science_engine import (
 )
 from app.services.habit_addiction_engine import HabitAddictionOrchestrator
 from app.services.learning_addiction_index import (
-    LearningAddictionIndex, lai_engine, LAIAssessment,
+    lai_engine,
 )
-from app.services.ab_test_framework import ab_test_framework, ExperimentPhase
+from app.services.ab_test_framework import ab_test_framework
 from app.services.self_report_service import (
     coverage_report,
     lai_inputs_from_self_report,
@@ -71,7 +71,6 @@ async def get_streak(
     db: AsyncSession = Depends(get_db),
 ):
     """获取当前连胜状态（根据历史答题记录计算）"""
-    from app.services.duolingo_addiction_engine import DuolingoStreakState
     from datetime import datetime, UTC, timedelta
 
     state = DuolingoStreakState()
@@ -83,7 +82,7 @@ async def get_streak(
         # fetchall -> list[tuple], 每项第0位为 created_at
         rows = attempts.fetchall()
         dates = [r[0].date() for r in rows if r[0]]
-    except Exception as exc:  # noqa: BLE001 —— 连胜展示不应因查询故障而 500
+    except Exception as exc:
         # 缺陷修复：原实现静默吞掉**数据库查询**异常，并返回一份与「用户真的
         # 没有学习记录」完全相同的响应（message 同为「目前暂无学习记录」）。
         # 后果：真实的 DB 故障、查询错误与真实的零连胜在客户端无从区分，服务端

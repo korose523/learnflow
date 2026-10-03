@@ -11,17 +11,15 @@
 # 用法：sh run_local_e1a_full.sh
 
 set -u
-# 仓库根：默认按脚本位置推导（<root>/results/m3/../..），可用 LEARNFLOW_ROOT 覆盖
-: "${LEARNFLOW_ROOT:=$(cd "$(dirname "$0")/../.." && pwd)}"
-cd "$LEARNFLOW_ROOT/results/m3" || exit 1
+cd /e/learnflow/results/m3 || exit 1
 
 # 本地回环必须绕过代理，否则被本机 http_proxy 拦成 502/000
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY 2>/dev/null
 
-OLLAMA="${OLLAMA_BIN:-ollama}"   # 原为硬编码本机路径，已移除；默认走 PATH
-PY="${PYTHON:-python}"           # 原为硬编码本机解释器路径，已移除；默认走 PATH
+OLLAMA="C:/Users/mac/AppData/Local/Programs/Ollama/ollama.exe"
+PY="C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe"
 
 "$OLLAMA" serve > ollama_serve_full.log 2>&1 &
 SERVE_PID=$!

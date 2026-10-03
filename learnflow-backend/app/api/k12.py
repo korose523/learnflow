@@ -5,7 +5,7 @@
 - GET /k12/curriculum?subject=&grade=
 所有难度/奖励/风险决策写 AuditLog（此处为只读查询，不写审计）。
 """
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 

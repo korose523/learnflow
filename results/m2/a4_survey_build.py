@@ -29,7 +29,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "a4_items_all.csv")
 OUT = os.path.join(ROOT, "a4_coder_survey_v2.html")
 
-NODE = os.environ.get("NODE_BIN", "node")  # 原为硬编码本机 node 路径，已移除；默认走 PATH
+NODE = r"C:/Users/mac/.workbuddy/binaries/node/versions/22.22.2-3/node.exe"
 
 # items where a-priori ambiguity was flagged during the coderA mapping review
 FLAGGED = {

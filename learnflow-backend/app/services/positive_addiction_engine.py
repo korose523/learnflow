@@ -14,7 +14,7 @@
   目标: 让"每天学习"像"每天刷牙"一样自动发生。
 """
 from dataclasses import dataclass, field
-from datetime import datetime, UTC, timedelta
+from datetime import datetime, UTC
 from enum import Enum
 from typing import Dict, List, Optional
 import random
@@ -291,7 +291,6 @@ class HabitLoopEngine:
     @classmethod
     def record_session(cls, state: HabitState) -> dict:
         """记录一次学习会话，更新习惯强度"""
-        today = datetime.now(UTC).strftime("%Y-%m-%d")
         state.total_days_learned += 1
 
         # 习惯强度: 基于总学习天数 / 习惯形成天数

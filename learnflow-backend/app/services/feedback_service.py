@@ -8,8 +8,8 @@
 """
 import logging
 import random
-from dataclasses import dataclass, field
-from typing import Optional, List
+from dataclasses import dataclass
+from typing import Optional
 from enum import Enum
 
 from app.services.learning_methods_engine import LearningMethodEngine
@@ -273,7 +273,7 @@ class FeedbackService:
                 "action": tip.get("action"),
                 "fallback": False,
             }
-        except Exception as exc:  # noqa: BLE001 —— 提示不应阻断反馈主流程
+        except Exception as exc:
             logger.warning(
                 "学习方法提示生成失败, 已降级为兜底值 (topic=%r, is_correct=%s): %s",
                 topic, is_correct, exc,

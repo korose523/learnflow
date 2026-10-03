@@ -18,9 +18,9 @@ import random
 from dataclasses import dataclass, field
 from datetime import datetime, UTC, timedelta
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
-from app.services.state_store import StateStore, MemoryStateStore, default_state_store
+from app.services.state_store import StateStore, default_state_store
 
 
 # ─── 奖励类型 ───────────────────────────────────────

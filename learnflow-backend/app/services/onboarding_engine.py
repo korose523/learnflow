@@ -12,11 +12,8 @@
   - 游戏化: 完成引导=获得引导徽章
   - 情境化: 在实际界面中教学，不是看文档
 """
-from dataclasses import dataclass, field
-from datetime import datetime, UTC
-from enum import Enum
-from typing import Dict, List, Optional
-import random
+from dataclasses import dataclass
+from typing import List, Optional
 
 
 # ═══════════════════════════════════════════════════════════

@@ -25,12 +25,10 @@
 
 注意：计数器是**进程内**的，多 worker 部署时需各自采集后汇总。
 """
-from datetime import datetime, UTC
 from typing import Optional
 import logging
 import threading
 
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.analytics import AuditLog, AuditKind

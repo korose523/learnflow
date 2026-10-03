@@ -28,9 +28,7 @@ FAMILY_DISPLAY = {
 #: 分类法按「发布方」定族，不用 /api/show 的 family 字段——该字段反映**架构谱系**
 #: （Mistral 基于 Llama 架构，实测返回 family=llama；DeepSeek-V2 返回 deepseek2），
 #: 直接采用会把 Mistral 误并入 F2_Llama、虚增族覆盖数。
-#: 依据：本文件 TAG_TAXONOMY 与 `results/m3/verify_m3_matrix.py` 的 MODEL_FAMILIES 定义的
-#: F1–F4 划分（Qwen / Llama / Mistral / DeepSeek）。（原引用的方案清单文档已于 2026-10-02
-#: 按审阅意见 §2.4 撤出公开仓库。）
+#: 依据：`docs/LearnFlow_研究总档.md` 的 F1–F4 划分（Qwen / Llama / Mistral / DeepSeek）。
 TAG_TAXONOMY = {
     "qwen3:1.7b": "Qwen",
     "qwen3:8b": "Qwen",

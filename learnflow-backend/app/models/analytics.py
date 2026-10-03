@@ -7,7 +7,6 @@
 import uuid
 from datetime import datetime, UTC
 from enum import Enum
-from typing import Optional
 
 from sqlalchemy import (
     Column, String, DateTime, ForeignKey, JSON, Float, Enum as SAEnum,

@@ -2,14 +2,9 @@
 import { chromium } from 'playwright-core';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'node:url';
 import { globSync } from 'node:fs';
 
-// 原为硬编码本机绝对路径，已按公开仓库卫生要求（2026-10-02）移除。
-// 默认落到仓库内 data/dbe_kt22，可用 DBE_OUT 覆盖。
-const ROOT = process.env.LEARNFLOW_ROOT
-  ?? path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT = process.env.DBE_OUT ?? path.join(ROOT, 'data', 'dbe_kt22');
+const OUT = String.raw`C:\Users\mac\WorkBuddy\2026-09-02-22-50-15\data\dbe_kt22`;
 fs.mkdirSync(OUT, { recursive: true });
 
 // 找 Chromium 可执行文件

@@ -20,7 +20,7 @@
 """
 import math
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from app.models.pet import PetProfile, PetMood
 

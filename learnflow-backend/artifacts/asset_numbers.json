@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-10-02T13:06:45+09:00",
-  "backend_root": "E:\\learnflow\\learnflow-backend",
+  "generated_at": "2026-10-04T07:19:52+09:00",
+  "backend_root": "/Volumes/Untitled/learnflow/learnflow-backend",
   "counts": {
-    "python_loc": 26782,
-    "python_loc_excl_init": 26698,
+    "python_loc": 26749,
+    "python_loc_excl_init": 26665,
     "source_files": 92,
     "service_modules": 59,
     "api_files": 13,
@@ -106,12 +106,12 @@
   },
   "verdict": {
     "python_loc": {
-      "registered": 26782,
-      "actual": 26782,
+      "registered": 26749,
+      "actual": 26749,
       "delta": 0,
       "strict": false,
       "status": "verified",
-      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算）。"
+      "note": "informative：app/**/*.py 总行数，随正常开发增长。文档 §1 引用此值（合并后基线 26,782；2026-10-02 审阅整改改写 route_a_producers.py 后复算；2026-10-03 ruff 死代码清理删除 33 行后复算为 26,749）。"
     },
     "source_files": {
       "registered": 92,
@@ -169,61 +169,6 @@
       "status": "drifted",
       "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。合并后基线 972。"
     }
-  },
-  "doc_check": {
-    "doc": "E:\\learnflow\\docs\\LearnFlow_期刊论文拆分方案.md",
-    "items": [
-      {
-        "metric": "python_loc",
-        "doc_text": "26,782 行 Python",
-        "doc_value": 26782,
-        "actual_value": 26782,
-        "ok": true,
-        "note": ""
-      },
-      {
-        "metric": "service_modules",
-        "doc_text": "59 个服务模块",
-        "doc_value": 59,
-        "actual_value": 59,
-        "ok": true,
-        "note": ""
-      },
-      {
-        "metric": "source_files",
-        "doc_text": "92 个源文件",
-        "doc_value": 92,
-        "actual_value": 92,
-        "ok": true,
-        "note": ""
-      },
-      {
-        "metric": "api_routes_reachable",
-        "doc_text": "104 个 API 端点",
-        "doc_value": 104,
-        "actual_value": 104,
-        "ok": true,
-        "note": ""
-      },
-      {
-        "metric": "tests_collected",
-        "doc_text": "972 项测试",
-        "doc_value": 972,
-        "actual_value": null,
-        "ok": true,
-        "note": "本次未复算该指标（加 --with-pytest 可复算），仅记录文档值"
-      },
-      {
-        "metric": "test_files",
-        "doc_text": "56 个测试文件",
-        "doc_value": 56,
-        "actual_value": 56,
-        "ok": true,
-        "note": ""
-      }
-    ],
-    "mismatches": [],
-    "passed": true
   },
   "_blocking": [],
   "_exit_code": 0

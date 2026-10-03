@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-02T13:22:05+09:00",
-  "git_commit": "8631e545db5274c17f4b62df665772c4cdf90105",
-  "python_version": "3.11.9",
-  "backend_root": "E:\\learnflow\\learnflow-backend",
+  "generated_at": "2026-10-04T07:19:52+09:00",
+  "git_commit": "c7837f44804ab0906deecb83906b8d52a57e9f5b",
+  "python_version": "3.13.12",
+  "backend_root": "/Volumes/Untitled/learnflow/learnflow-backend",
   "counts": {
     "engine_classes": {
       "value": 86,
@@ -334,7 +334,7 @@
       "value": 2,
       "sites": [
         {
-          "location": "app/services/deep_addiction_engine.py:296",
+          "location": "app/services/deep_addiction_engine.py:295",
           "enclosing_function": "generate_fomo_nudge",
           "mechanism_labels": [
             "LF-M44"
@@ -497,7 +497,7 @@
       "actual": 2,
       "delta": 0,
       "strict": true,
-      "notes": "生产者位置：app/services/deep_addiction_engine.py:296; app/services/learning_orchestrator.py:995"
+      "notes": "生产者位置：app/services/deep_addiction_engine.py:295; app/services/learning_orchestrator.py:995"
     },
     "_overall": {
       "status": "verified",

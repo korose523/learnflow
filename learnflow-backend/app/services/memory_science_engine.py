@@ -14,9 +14,8 @@
 - Roediger & Karpicke (2006) Test-Enhanced Learning
 - Bjork (1994) Desirable Difficulties
 """
-import math
 import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timedelta, UTC
 from typing import Dict, List, Optional, Any
 
@@ -87,8 +86,7 @@ class FSRSSpacedRepetitionEngine:
         else:
             elapsed = 0.0
 
-        # 可提取性
-        r = cls.retrievability(state.stability, elapsed)
+        # 可提取性（retrievability 当前未参与稳定性更新，保留计算以备扩展）
 
         # 稳定性更新：答得好增加，答得差减少
         if grade >= cls.GRADE_GOOD:

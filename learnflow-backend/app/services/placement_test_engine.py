@@ -18,7 +18,6 @@ from datetime import datetime, UTC
 from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import random
-import math
 
 
 # ═══════════════════════════════════════════════════════════
@@ -210,9 +209,7 @@ class AdaptivePlacementEngine:
         # 级别描述
         level_desc = cls._get_level_description(estimated_level, accuracy)
 
-        # 各topic的估计难度
-        topic_difficulties = {}
-        topic_results = {}
+        # 各topic的估计难度（暂未填入返回）
 
         return {
             "test_completed": True,

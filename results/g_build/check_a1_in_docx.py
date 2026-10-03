@@ -6,10 +6,10 @@ import os
 import docx
 
 DOCS = {
-    r"E:\learnflow\docs\研究报告_中文版.docx": ["1,274", "0.9541", "0.8923"],
-    r"E:\learnflow\docs\研究报告_韩文版.docx": ["1,274", "0.9541", "0.8923"],
-    r"E:\learnflow\docs\研究计划_中文版.docx": ["1,274", "0.9541", "0.8923"],
-    r"E:\learnflow\docs\研究计划_韩文版.docx": ["1,274", "0.9541", "0.8923"],
+    r"E:\learnflow\docs\研究报告_中文版.docx": ["1,274", "0.963", "0.892"],
+    r"E:\learnflow\docs\研究报告_韩文版.docx": ["1,274", "0.963", "0.892"],
+    r"E:\learnflow\docs\研究计划_中文版.docx": ["1,274", "0.963"],
+    r"E:\learnflow\docs\研究计划_韩文版.docx": ["1,274", "0.963"],
 }
 STALE = [
     "还须再补能力校正判据",          # 研究报告 中

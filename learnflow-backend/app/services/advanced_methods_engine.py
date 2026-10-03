@@ -12,9 +12,8 @@
 7.  分布式练习 (Distributed)  — 分散练习比集中好
 8.  "学神冲刺" (GodMode)      — 7种方法同时使用的极限学习
 """
-from dataclasses import dataclass, field
 from datetime import datetime, UTC
-from typing import Dict, List, Optional
+from typing import Optional
 import random
 
 

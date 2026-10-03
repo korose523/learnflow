@@ -11,15 +11,15 @@
 import io, os
 
 D = r"E:\learnflow\docs"
-R = os.path.join(D, "研究计划与报告")
+R = D   # 2026-10-03: `docs/研究计划与报告/` 已移除（内容并入研究总档）
 
 M1 = os.path.join(D, "M1_难度可公度性与最优错误率_完整稿.md")
 M2 = os.path.join(D, "M2_多干预并存学习系统的冲突结构审计_完整稿.md")
 M3 = os.path.join(D, "M3_有序难度决策与大模型先验边界_完整稿.md")
-MEMO = None  # 2026-10-02：原指向的内部工作文档已按审阅意见 §2.4 撤出公开仓库，取值置 None；本脚本为 2026-09-22 一次性同步工具，不再重跑
-SPLIT = os.path.join(D, "LearnFlow_期刊论文拆分方案.md")
-SPEC = None  # 2026-10-02：原指向的内部工作文档已按审阅意见 §2.4 撤出公开仓库，取值置 None
-CHK = None   # 2026-10-02：原指向的内部工作文档已按审阅意见 §2.4 撤出公开仓库，取值置 None
+MEMO = os.path.join(D, "M2_路线A_B决策备忘.md")
+SPLIT = os.path.join(D, "LearnFlow_研究总档.md")
+SPEC = os.path.join(D, "LearnFlow_研究总档.md")
+CHK = os.path.join(D, "LearnFlow_研究总档.md")  # NOTE 2026-09-29: 본 파일은 심사 의견 §2.4에 따라 공개 저장소에서 철수된 내부 문서를 가리킨다. 이 스크립트는 2026-09-22 1회성 동기화 도구로 재실행하지 않는다.
 RPT_CN = os.path.join(R, "研究报告_中文版.md")
 RPT_KR = os.path.join(R, "研究报告_韩文版.md")
 PLN_CN = os.path.join(R, "研究计划_中文版.md")

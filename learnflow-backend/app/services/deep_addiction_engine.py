@@ -12,9 +12,8 @@
 设计原则: 每一轮都让人"还想再来一题"。
 """
 from dataclasses import dataclass, field
-from datetime import datetime, UTC, timedelta
-from enum import Enum
-from typing import Dict, List, Optional
+from datetime import datetime, UTC
+from typing import List, Optional
 import random
 
 from app.services.mechanism_registry import Effect, EffectType

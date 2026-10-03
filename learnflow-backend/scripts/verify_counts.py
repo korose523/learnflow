@@ -119,7 +119,7 @@ APP_DIR = BACKEND_ROOT / "app"
 ARTIFACTS_DIR = BACKEND_ROOT / "artifacts"
 JSON_OUT = ARTIFACTS_DIR / "count_verification.json"
 
-GOVERNANCE_DOC = PROJECT_ROOT / "docs" / "LearnFlow_机制治理与落实方案.md"
+GOVERNANCE_DOC = PROJECT_ROOT / "docs/LearnFlow_研究总档.md"   # 合并入研究总档第四部（行级正则仍命中 LF-M 表与 ### 类别标题）
 PRD_DOC = BACKEND_ROOT / "docs" / "incremental_prd.md"
 SKILLTREE_SRC = APP_DIR / "services" / "meta_learning_skilltree.py"
 GAMIFICATION_SRC = APP_DIR / "services" / "gamification_service.py"

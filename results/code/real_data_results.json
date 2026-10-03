@@ -14,13 +14,8 @@
     ],
     "modal_error_rate_center": 0.25,
     "bootstrap_modal_ci95_k": [
-      5,
-      4
+      5
     ],
-    "plateau_0p15_0p35_share": 0.493,
-    "plateau_0p15_0p35_n_windows": 141064,
-    "top2_gap_windows": 838,
-    "top2_gap_share": 0.002929,
     "k_frequency_table": [
       {
         "k_errors": 0,
@@ -60,7 +55,7 @@
         "success_rate": 0.8,
         "n_windows": 30061,
         "share": 0.105053,
-        "bootstrap_argmax_freq": 0.0595
+        "bootstrap_argmax_freq": 0.045
       },
       {
         "k_errors": 5,
@@ -68,7 +63,7 @@
         "success_rate": 0.75,
         "n_windows": 30899,
         "share": 0.107982,
-        "bootstrap_argmax_freq": 0.941
+        "bootstrap_argmax_freq": 0.955
       },
       {
         "k_errors": 6,
