@@ -33,9 +33,11 @@ abstract: >-
 authors:
   # 署名（审阅意见 §9）：与稿件作者写法统一为 Weng Zexiao（此前 CITATION 写"翁泽潇"）。
   # 单位：Youngsan University（Busan, KR）计算机与信息工程系，博士研究生（2025-09 起）。
-  # 支撑论文（M1/M2/M3）的作者块为 `Zexiao Weng¹, MinPo Jung¹,*`，
+  # 支撑论文（M1/M2/M3）的作者块现为**单作者** `Zexiao Weng¹`，
   # ¹ Department of Computer and Information Engineering, Graduate School, Youngsan University,
-  #    Busan 48015, Republic of Korea；通讯 minpo@ysu.ac.kr，ORCID 0009-0003-3369-757X。
+  #    Busan 48015, Republic of Korea。
+  # 2026-10-03 起：M1–M4 四篇英文投稿件的通讯作者姓名/邮箱/ORCID 已按审阅意见
+  #   2.4 ③ 与 §10 暂缓（单作者署名 + withheld 声明段），与本文件口径一致。
   # 本软件 artifact 的署名沿用 v0.1.0 记录（Weng 一人）。
   # 审阅意见 2.4 ③：导师已同意担任稿件的通讯作者，但在其读完并批准最终稿之前，
   #   贡献者名单 / 投稿信批准语句 / AI 使用声明中均不署其姓名。
