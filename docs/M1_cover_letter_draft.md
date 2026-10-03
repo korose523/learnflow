@@ -19,8 +19,8 @@ These boundaries delineate the scope of the method rather than invalidate its en
 
 We confirm the manuscript is original and not under consideration elsewhere.
 
-> **⚠ 批准语句与署名暂缓（审阅意见 2.4 ③ 与 §10，2026-09-29）。** 本信此前在"all authors approve submission"下方并列署有通讯作者（MinPo Jung）的姓名。**该批准语句与署名现已移除**：通讯作者已同意担任本稿通讯作者，但按其要求，**投稿信的批准语句、Zenodo 贡献者名单与 AI 使用声明，在其读完最终稿并批准之前，不得出现其姓名**。待最终稿获批后，再按其同意的方式补入。
+> **⚠ Approval statement and byline withheld (review item 2.4③ and §10, 2026-09-29).** This letter previously carried the corresponding author's name (MinPo Jung) directly beneath the "all authors approve submission" statement. **That approval statement and the byline have now been removed**: the corresponding author has agreed to serve as such, but at their request, **the approval statement in this submission letter, the Zenodo contributor list, and the AI-use statement must not carry their name until they have read and approved the final manuscript**. Once the final version is approved, it will be restored in the manner they consent to.
 
 Sincerely,
 Zexiao Weng
-（通讯作者署名待最终稿获批后补入）
+(corresponding-author byline to be inserted after the final manuscript is approved)
