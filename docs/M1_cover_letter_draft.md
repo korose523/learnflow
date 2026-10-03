@@ -1,6 +1,12 @@
 **Subject:** Submission of a theory/method paper — "Commensurability of Difficulty Scales: An Instability Proposition and Its Test on assist09" (with honest negative results)
 
-**To the Editor-in-Chief of [IEEE TLT / IJAIED / JEDM],**
+**To the Editor-in-Chief of IEEE Transactions on Learning Technologies,**
+
+> **收件期刊说明（2026-10-03 填实）**：按研究计划书 §7.1 的期刊表，M1 的**第一顺位**为
+> *IEEE Transactions on Learning Technologies*（TLT），备选 *International Journal of
+> Artificial Intelligence in Education*（IJAIED）与 *Journal of Educational Data Mining*（JEDM）。
+> 定稿投哪一刊时，只需替换上方刊名并删去本说明块；**三刊均在投稿前合规声明的适用范围内**
+> （TLT→Acknowledgment；IJAIED→Methods；JEDM→致谢或相关章节）。
 
 We submit the enclosed manuscript for consideration as a Regular/Research Article. It is a theory/method paper in educational measurement: we recast the neglected question of "whether difficulty can be placed on a single commensurable scale" as a falsifiable metrological proposition, and test it on synthetic data and four public learning-log corpora.
 
