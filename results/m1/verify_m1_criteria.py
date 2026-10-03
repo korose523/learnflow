@@ -1,6 +1,6 @@
 """M1 · A1/A2 两类追加判据：可复算骨架 + 门禁（待真实数据外部执行）。
 
-方案与 CSV 模板见 `docs/LearnFlow_研究设计与审阅档案.md`；模板 `results/m1/m1_criteria_template.csv`
+方案与 CSV 模板见 `docs/LearnFlow_研究总档.md`；模板 `results/m1/m1_criteria_template.csv`
 （列：item_id, expert_label_1_2_3, behavior_block_A_anchor, criterion_block_B_anchor）。
 
 ⚠️ 本文件是**方法学骨架**，不代表已完成的实验。A1/A2 需要真实数据集拟合：
@@ -35,7 +35,7 @@ from typing import Dict, List, Tuple
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "LearnFlow_研究设计与审阅档案.md"))
+SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "LearnFlow_研究总档.md"))
 TEMPLATE_CSV = os.path.join(HERE, "m1_criteria_template.csv")
 
 

@@ -149,7 +149,7 @@ MAIN_SRC = APP_DIR / "main.py"
 ARTIFACTS_DIR = BACKEND_ROOT / "artifacts"
 JSON_OUT = ARTIFACTS_DIR / "asset_numbers.json"
 
-SPLIT_DOC = PROJECT_ROOT / "docs" / "LearnFlow_期刊论文拆分方案.md"
+SPLIT_DOC = PROJECT_ROOT / "docs/LearnFlow_研究总档.md"   # 合并入研究总档第三部
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 登记口径（registered baseline）

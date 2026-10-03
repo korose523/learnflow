@@ -3,7 +3,7 @@
 aipw_run.py — LearnFlow M1 因果侧升级：离策略剂量—反应 AIPW/DR 估计
 ======================================================================
 
-冻结方案（唯一权威规格）: E:/learnflow/docs/LearnFlow_研究设计与审阅档案.md  (编号 LF-CIS-2026-09-22)
+冻结方案（唯一权威规格）: E:/learnflow/docs/LearnFlow_研究总档.md  (编号 LF-CIS-2026-09-22)
 目标论文:                E:/learnflow/docs/M1_难度可公度性与最优错误率_完整稿.md §8
 
 本脚本严格按冻结方案执行：
@@ -70,7 +70,7 @@ RF_NEST       = 120
 RF_MIN_LEAF   = 2
 
 # 路径
-DOC_PATH   = "E:/learnflow/docs/LearnFlow_研究设计与审阅档案.md"
+DOC_PATH   = "E:/learnflow/docs/LearnFlow_研究总档.md"
 OUT_DIR    = "E:/learnflow/results/m1/aipw"
 JSON_PATH  = os.path.join(OUT_DIR, "aipw_results.json")
 AUDIT_PATH = os.path.join(OUT_DIR, "aipw_audit.log")

@@ -49,10 +49,13 @@ DOCS = REPO_ROOT / "docs"
 PLAN_REPORT = DOCS / "研究计划与报告"
 
 # (doc key, display label, path) ------------------------------------------------ #
+# 2026-10-03: plan / report / split 三份已合并入《LearnFlow_研究总档.md》
+# （第一/二/三部），改为指向总档；行级正则按内容匹配，合档后仍命中。
+MASTER = DOCS / "LearnFlow_研究总档.md"
 DOCUMENTS = [
-    ("plan",   "计划书(计划)",  PLAN_REPORT / "研究计划_中文版.md"),
-    ("report", "计划书(报告)",  PLAN_REPORT / "研究报告_中文版.md"),
-    ("split",  "拆分方案",      DOCS / "LearnFlow_期刊论文拆分方案.md"),
+    ("plan",   "计划书(计划)",  MASTER),
+    ("report", "计划书(报告)",  MASTER),
+    ("split",  "拆分方案",      MASTER),
     ("M1",     "M1 完整稿",     DOCS / "M1_难度可公度性与最优错误率_完整稿.md"),
     ("M2",     "M2 完整稿",     DOCS / "M2_多干预并存学习系统的冲突结构审计_完整稿.md"),
     ("M3",     "M3 完整稿",     DOCS / "M3_有序难度决策与大模型先验边界_完整稿.md"),

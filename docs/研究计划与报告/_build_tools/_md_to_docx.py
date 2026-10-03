@@ -383,15 +383,25 @@ def build_docx(md_path, docx_path, lang):
 def main():
     base = r"E:\learnflow\docs\研究计划与报告"
     out_dir = r"E:\learnflow\docs"
+    # 2026-10-03: 中文版计划/报告已合并入 docs/LearnFlow_研究总档.md 第一/二部，
+    # 源 md 不再单独存在；韩文版仍是独立文件。中文版改为从总档按部抽取后构建。
+    MASTER = os.path.join(out_dir, "LearnFlow_研究总档.md")
     jobs = [
-        ("研究计划_中文版.md", "研究计划_中文版.docx", "zh"),
+        (r"@MASTER:第一部 · 研究计划", "研究计划_中文版.docx", "zh"),
         ("研究计划_韩文版.md", "研究计划_韩文版.docx", "kr"),
-        ("研究报告_中文版.md", "研究报告_中文版.docx", "zh"),
+        (r"@MASTER:第二部 · 研究进展报告", "研究报告_中文版.docx", "zh"),
         ("研究报告_韩文版.md", "研究报告_韩文版.docx", "kr"),
     ]
     log = []
+    tmpdir = os.path.join(out_dir, "_master_extract")
+    os.makedirs(tmpdir, exist_ok=True)
     for src, dst, lang in jobs:
-        sp = os.path.join(base, src)
+        if src.startswith("@MASTER:"):
+            part = src.split(":", 1)[1]
+            sp = os.path.join(tmpdir, dst.replace(".docx", ".md"))
+            extract_master_part(MASTER, part, sp)
+        else:
+            sp = os.path.join(base, src)
         dp = os.path.join(out_dir, dst)
         try:
             np_, nt_ = build_docx(sp, dp, lang)
@@ -404,3 +414,47 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2026-10-03: 从《LearnFlow_研究总档.md》抽取指定部为独立 md（供 docx 构建）
+# ─────────────────────────────────────────────────────────────────────────────
+_PART_RE_CACHE = {}
+
+
+def extract_master_part(master_path, part_title, out_path):
+    """把总档中 `## <部名>` 到下一个 `## ` 之间的内容抽成独立 md。
+
+    总档的部标题形如 `## 第一部 · 研究计划`；抽取时保留部标题本身，
+    使 docx 产物仍带有可识别的章节名。
+    """
+    import re as _re
+    with open(master_path, encoding="utf-8") as fh:
+        text = fh.read()
+    pat = _re.compile(r"^## " + _re.escape(part_title) + r"\s*$.*?(?=^## |\Z)",
+                      _re.MULTILINE | _re.DOTALL)
+    m = pat.search(text)
+    if not m:
+        raise SystemExit("ERROR: 总档中未找到部标题: %s" % part_title)
+    body = m.group(0)
+    # 去掉注入的来源说明块（> **来源** … 及其后的空行）
+    # 去掉注入的来源说明块（以 '> **来源**' 开头的一组连续引用行）
+    lines = body.splitlines()
+    # 跳过合档注入的元信息：部标题行 + 连续的 '>' 引用行 + 空行
+    i = 0
+    if i < len(lines) and lines[i].startswith("## "):
+        i += 1
+    while i < len(lines) and (lines[i].startswith(">") or not lines[i].strip()):
+        i += 1
+    lines = lines[i:]
+    # 还原大标题层级：合档时降了两级（# -> ###），此处把首个标题还原为 '# '
+    for j, ln in enumerate(lines):
+        if ln.lstrip("#").strip():
+            m = _re.match(r"^(#{3,6})\s+(.*)$", ln)
+            if m:
+                lines[j] = "# " + m.group(2)
+            break
+    body = "\n".join(lines)
+    with open(out_path, "w", encoding="utf-8", newline="") as fh:
+        fh.write(body)
+    return out_path

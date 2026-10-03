@@ -19,7 +19,7 @@ from app.services import mechanism_registry as MR                      # noqa: E
 from app.services.learning_orchestrator import PIPELINE_MECHANISM_MAP  # noqa: E402
 from app.services.mechanism_arbitrator import MechanismArbitrator       # noqa: E402
 
-GOV = REPO / "docs" / "LearnFlow_机制治理与落实方案.md"
+GOV = REPO / "docs" / "LearnFlow_研究总档.md"
 text = GOV.read_text(encoding="utf-8")
 SEC = re.compile(r"^###\s+([A-H])\.\s*([^（(]*)[（(](\d+)[）)]", re.MULTILINE)
 ROW = re.compile(r"^\|\s*(LF-M\d{2})\s*\|([^|]*)\|([^|]*)\|([^|]*)\|([^|]*)\|", re.MULTILINE)

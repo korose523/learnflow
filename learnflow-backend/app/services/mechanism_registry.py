@@ -2,7 +2,7 @@
 
 背景
 ----
-LearnFlow 的 54 个游戏化机制此前只存在于 ``docs/LearnFlow_机制治理与落实方案.md``
+LearnFlow 的 54 个游戏化机制此前只存在于 ``docs/LearnFlow_研究总档.md``
 的 §2.4 清单表里, 运行时代码里没有任何统一枚举入口。``learning_orchestrator.py``
 的 ``process_submission`` 用 11 个硬编码步骤把其中几个机制（宠物 LF-M22 / XP 等级
 LF-M19 / 未成年保护 LF-M52 / 强制休息 LF-M51 / LAI 自适应降级 LF-M53）直接写死,
@@ -263,7 +263,7 @@ def _make_spec(**data: Any) -> MechanismSpec:
 
 # ---------------------------------------------------------------------------
 # 注册表数据（顺序即 ID 顺序, 顺序一经发布不再变动）
-# 来源: docs/LearnFlow_机制治理与落实方案.md §2.4 完整机制清单（经 grep 核验）
+# 来源: docs/LearnFlow_研究总档.md §2.4 完整机制清单（经 grep 核验）
 # ---------------------------------------------------------------------------
 
 _SPECS_DATA: List[Dict[str, Any]] = [
