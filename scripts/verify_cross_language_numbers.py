@@ -62,6 +62,36 @@ PAIRS = [
 ]
 
 
+# 四份计划/报告已并入 docs/LearnFlow_研究总档.md：
+#   第一部（中文计划书）/ 第二部（中文报告）/ 第三部（韩文计划书）/ 第四部（韩文报告）
+# 韩文部此前长期停在 936 / 54개 / 88개 / 25,795행，中文部已推进到 972 / 56 / 92 / 26,749
+# （2026-10-04 全量同步）。此处用同一套「指标等价判定」把中韩两侧钉住，防止再次漂移。
+MASTER = DOCS / "LearnFlow_研究总档.md"
+_MASTER_CN_RANGE = ("## 第一部", "## 第三部")
+_MASTER_KR_RANGE = ("## 第三部", "## 第五部")
+
+# (指标名, 中文部定位正则, 韩文部定位正则)
+MASTER_METRICS = [
+    ("全量测试通过条数",
+     r"(\d{3})\s*条通过", r"(\d{3})건 통과"),
+    ("测试文件数",
+     r"(\d{2})\s*个测试文件", r"(\d{2})개 테스트 파일"),
+    ("后端源文件数",
+     r"后端\s*\*\*(\d{2})\s*个文件", r"백엔드\s*\*\*(\d{2})개 파일"),
+    ("后端 Python 行数",
+     r"/\s*(\d{2},\d{3})\s*行", r"/\s*(\d{2},\d{3})행"),
+]
+
+
+def _slice_master(text: str, start: str, end: str) -> str:
+    """按部标题切出研究总档的某一语言段。"""
+    i = text.find(start)
+    if i < 0:
+        return ""
+    j = text.find(end, i + len(start))
+    return text[i: j if j > 0 else len(text)]
+
+
 def _first(text: str, pat: str) -> str | None:
     m = re.search(pat, text)
     return m.group(1) if m else None
@@ -90,6 +120,29 @@ def main() -> int:
             else:
                 ok += 1
         rows.append((tag, ok, len(metrics)))
+
+    # 研究总档：中文部（第一/二部）↔ 韩文部（第三/四部）
+    if MASTER.exists():
+        mt = MASTER.read_text(encoding="utf-8")
+        cn_sec = _slice_master(mt, *_MASTER_CN_RANGE)
+        kr_sec = _slice_master(mt, *_MASTER_KR_RANGE)
+        ok = 0
+        if not cn_sec or not kr_sec:
+            failures.append("研究总档: 未能按部标题切出中文段/韩文段")
+        else:
+            for label, cn_pat, kr_pat in MASTER_METRICS:
+                a, b = _first(cn_sec, cn_pat), _first(kr_sec, kr_pat)
+                if a is None:
+                    failures.append(f"研究总档「{label}」: 中文部未定位到数值")
+                elif b is None:
+                    failures.append(f"研究总档「{label}」: 韩文部未定位到数值")
+                elif a != b:
+                    failures.append(f"研究总档「{label}」: 数值不一致 中={a} 韩={b}")
+                else:
+                    ok += 1
+        rows.append(("总档中韩", ok, len(MASTER_METRICS)))
+    else:
+        failures.append(f"研究总档缺失: {MASTER}")
 
     print("=" * 74)
     print("跨语言数字一致性门禁（中文完整稿 ↔ 英文投稿件）")
