@@ -14,7 +14,8 @@
     ],
     "modal_error_rate_center": 0.25,
     "bootstrap_modal_ci95_k": [
-      5
+      5,
+      4
     ],
     "k_frequency_table": [
       {
@@ -187,7 +188,18 @@
       }
     ],
     "share_err_in_17_23pct": 0.1051,
-    "share_err_in_10_20pct": 0.264
+    "share_err_in_10_20pct": 0.264,
+    "bootstrap_reps": 2000,
+    "bootstrap_seed": 20260922,
+    "bootstrap_argmax_freq": {
+      "4": 0.0595,
+      "5": 0.941
+    },
+    "plateau_0p15_0p35_share": 0.493,
+    "plateau_0p15_0p35_n_windows": 141064,
+    "top2_gap_windows": 838,
+    "top2_gap_share": 0.002929,
+    "_note_bootstrap_2000": "2026-10-04 以 data/assist09_corrected.csv 重跑（BOOT=2000, seed 20260922）。k=5 众数占比由 200 次的 95.5% 降至 94.1%，95% 置信集由 {0.25} 扩大为 {0.25,0.20}；报告对象按审阅 3.3 改为分布形状（0.15~0.35 占 49.3%）。"
   },
   "assist09_sources": {
     "n_problems": 994,

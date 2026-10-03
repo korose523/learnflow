@@ -58,7 +58,7 @@ L1 mechanism_units
 
 L2 mechanism_unique
     语义去重后的唯一机制数，权威来源是
-    `docs/LearnFlow_机制治理与落实方案.md` 的 LF-M01..LF-Mnn 编号表。
+    `docs/LearnFlow_研究总档.md（第六部·机制治理与落实方案）` 的 LF-M01..LF-Mnn 编号表。
     本脚本**不重新做语义去重**（那是需要评分者间信度的人工判定，见治理方案
     §2.3 预注册规则 R1–R6），而是解析该文档并做三重交叉验证：
       - 编号表的唯一 LF-M ID 数

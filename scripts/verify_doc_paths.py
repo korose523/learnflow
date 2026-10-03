@@ -19,6 +19,9 @@
   * 一个 `docs/x.md` 字面量按两种解释试解：相对**仓库根**（代码注释里的常见写法）与
     相对**引用文件所在目录**（markdown 链接的常见写法），任一命中即视为有效。
   * 省略号简写（如 `docs/...机制治理方案.md`）不是真实路径，跳过。
+  * 本文件自身（`scripts/verify_doc_paths.py`）不参与扫描：其 docstring 中的
+    `docs/x.md`、`docs/research_tooling.md` 是说明性示例而非真实引用，若纳入扫描
+    会永久自我 FAIL。这是唯一的自我豁免，且只豁免本文件一个文件。
 
 排除项（理由见下）：
   * `output/`          —— 构建产物中间件，可重建，且已在 .gitignore（提交时 git rm --cached）；
@@ -50,6 +53,9 @@ _SKIP_PREFIXES = (
     "node_modules/",
     "data/", "data_backup/",
 )
+
+# 本文件自身：docstring 里的 docs/ 路径是说明性示例，不是真实引用（见 docstring「排除项」）。
+_SELF_RELPATH = "scripts/verify_doc_paths.py"
 
 # 抽取 `docs/<...>.md|.docx`。字符类限于：字母/数字/下划线/连字符/点/斜杠/汉字。
 # 负向后顾 (?<![/\w]) 避免误匹配 URL 或更长路径中的 `.../docs/x.md`（只认独立出现的 docs/ 引用）。
@@ -102,6 +108,8 @@ def scan(root: str) -> Tuple[List[Tuple[str, int, str]], int]:
     bad: List[Tuple[str, int, str]] = []
     files = _tracked_files(root)
     for rel in files:
+        if rel == _SELF_RELPATH:
+            continue  # 自身 docstring 含说明性示例路径，豁免（见 docstring）
         abspath = os.path.join(root, rel)
         try:
             with open(abspath, "r", encoding="utf-8") as fh:

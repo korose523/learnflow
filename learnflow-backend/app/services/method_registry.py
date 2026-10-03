@@ -20,8 +20,8 @@ LearnFlow 的学习方法此前散落在三个引擎文件里, 没有任何统�
 历史背景: 项目旧文档宣称"28 种学习方法", 但最初只有 23 个真实实现
 (``LF-L01``..``LF-L23``)。本项目不"把数字改掉", 而是补上了 5 个真实、证据充分、
 且与前 23 个无语义重叠的方法 (``LF-L24``..``LF-L28``, 见
-``advanced_methods_v2.py``), 让 28 成为可复算的真值。详见
-``docs/LearnFlow_学习方法候选核验.md``。
+``advanced_methods_v2.py``), 让 28 成为可复算的真值。5 个新方法的选取判据见 ``app/services/advanced_methods_v2.py``；
+「28」这一数字由 ``learnflow-backend/scripts/verify_counts.py`` 复算。
 
 ID 稳定性约定
 -------------

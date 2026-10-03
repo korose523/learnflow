@@ -14,7 +14,7 @@ verify_asset_numbers.py —— LearnFlow 自身资产数字复算脚本
     T 项测试（F 个测试文件）
 
 这类数字此前**没有任何脚本复算**，全部靠手工维护，因而必然漂移。复核结果证实
-了这一点：`docs/LearnFlow_期刊论文拆分方案.md` §1 写的是「23,927 行 Python、
+了这一点：`docs/LearnFlow_研究总档.md（第五部·期刊论文拆分方案）` §1 写的是「23,927 行 Python、
 41 个服务模块、81 个源文件、72 个 API 端点」，而实测为 24,073 行 / 52 个服务
 模块 / 81 个源文件 / 95 个路由。「81 个源文件」碰巧是对的，其余三个全是历史
 残留。
@@ -590,7 +590,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument("--quiet", action="store_true", help="只打印一行结论")
     parser.add_argument(
         "--doc-check", action="store_true",
-        help="额外解析 docs/LearnFlow_期刊论文拆分方案.md §1，逐项核对资产数字",
+        help="额外解析 docs/LearnFlow_研究总档.md（第五部·期刊论文拆分方案） §1，逐项核对资产数字",
     )
     parser.add_argument(
         "--with-pytest", action="store_true",
