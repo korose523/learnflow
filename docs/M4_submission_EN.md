@@ -1,10 +1,12 @@
 # Reliability-Structured Composite Difficulty Estimation
 
-Zexiao Weng¹ and MinPo Jung¹,*
+Zexiao Weng¹
 
 ¹ Youngsan University, Busan 48015, Republic of Korea
 
-* Corresponding author. Email: minpo@ysu.ac.kr; ORCID: 0009-0003-3369-757X. Zexiao Weng ORCID: 0009-0009-8600-8954.
+Corresponding author: to be assigned on approval of the final manuscript. ORCID: 0009-0009-8600-8954.
+
+> **Byline and corresponding-author fields withheld pending approval (supervisor review items 2.4③ and §10, 2026-09-29).** This manuscript previously carried a second author and a named corresponding author (name, email and ORCID). Under the supervisor's review those fields must not appear in the submission, the Zenodo contributor list, or the AI-use statement until the corresponding author has read and approved the final manuscript. The corresponding author has agreed to serve in that role; the byline, the corresponding-author contact, and the contributor list will be restored in the manner they consent to once the final version is approved.
 
 AI-Assisted Writing Disclosure. This manuscript was prepared with the assistance of large language models (LLMs) and AI coding agents. These tools were used, to varying extents, for: (i) generating and editing analysis scripts; (ii) executing and re-running experiments; (iii) drafting, translating and polishing manuscript text; (iv) drafting internal revision-tracking documents. The claim made in an earlier version of this disclosure — that the LLM "was used strictly as a language-polishing and drafting aid" and that no LLM participated in analytical, statistical or experimental work — **has been withdrawn**, because it is not consistent with the traces visible in the accompanying repository (supervisor's review §2.3, 2026-09-29). The per-task division of work between the author and these tools, and the scope of the author's own verification of each tool output, is recorded by the author in the role-and-tools table of the dissertation proposal (§10.1) and will be stated here in its final form before submission. The corresponding author has **not** yet reviewed and approved this disclosure; accordingly, and per review §10, the corresponding author's name is withheld from this manuscript until the final version is approved. All numerical results reported here were produced by the scripts in the accompanying repository and are reproducible from them.
 

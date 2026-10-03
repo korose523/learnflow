@@ -1506,6 +1506,17 @@
   note         = {[2026-09-27 补录并核实，源 = ScienceDirect S156042922601317X] **已正式发表**：IJAIED 36(3), Article 100015, September 2026, DOI 10.1016/j.ijaied.2026.100015，Elsevier。另有预印本 arXiv:2504.08804 与 NCME 2025（Denver）会议报告，引用时以期刊版为准。数据 Edmentum 专有题库 K-5 数学与阅读 N=5170（Rasch 校准；因知识产权不公开数据，LLM 派生数据与 R 代码见 https://osf.io/2yf7d）。结论：零样本直接评级整体 ρ 尚可但不稳（数学 0.83 / 阅读 0.81，K 与 1 年级不优于年级均值哑回归）；**LLM 抽取认知·语言特征 + 树集成（RF / GBM）达 r = 0.87 且 RMSE/MAE 更低**。推荐报告列为 R11，关系=增益路径。**M3 的诚实引用边界（§5.4，第 386 行）**：本文在 DBE-KT22 / XES3G5M 上的同类实验**不声称复现该 0.87**（数据/特征/协议均不同），只证明"结构化特征能否把 ρ 提升到高于直接评级基线"这一更窄命题，故列为未来工作而非替换现有基线}
 }
 
+% ── LearnFlow 内部姊妹篇（companion manuscript；审稿中，非已发表）────────────
+% 引用时必须写 "working paper" / "under review"，不得声称已期刊发表。
+% 用途：M4 §参考文献 互引 M1（消除单向引用）；M4 完整稿 §3 引用 M1 的 ECDF-logit 变换。
+@misc{weng2026m1,
+  author       = {Weng, Zexiao and Jung, MinPo},
+  title        = {Commensurability of {Difficulty} {Scales}: An {Instability} {Proposition} and {Its} {Test} on {assist09}},
+  year         = {2026},
+  howpublished = {LearnFlow companion manuscript (M1), under review},
+  note         = {[2026-10-03 补录] 姊妹篇 M1，回答"难度如何可公度"（ECDF--logit 秩链接、留出验证、符号校正 + 折半信度加权 srw7）。与 M2（多干预冲突审计）、M3（有序难度决策与单模型先验可靠性边界）、M4（信度结构化组合估计）构成本研究的四篇姊妹篇。**审稿中，非已发表**；引用须写 working paper / under review。英文稿 = docs/M1_submission_EN.md}
+}
+
 % =====================================================================
 % 文件结束
 % 维护提醒：新增条目前必须检索核实；核实后请把对应条目从
