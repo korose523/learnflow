@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """在本地记录中检索 Zenodo API token。
 
+本脚本用于本机一次性凭据迁移；公开仓库版本不含任何本机路径，
+扫描范围一律由环境变量提供（未设置即留空，脚本将报告 NOT_FOUND）。
+
 安全约定：
   - **不把 token 明文打印到输出**（仅打印掩码与前若干字符的指纹）；
   - 找到后把 token 写入**仓库外**的临时文件（os tempdir），供后续脚本读取，
@@ -11,17 +14,20 @@ import os
 import re
 import tempfile
 
-# 注意：不扫 ~/.workbuddy 全树（plugins/marketplaces 缓存极大，会超时），
-# 只取其中的 MEMORY.md 单文件。
-ROOTS = [
-    r"E:\learnflow",
-    r"C:\Users\mac\WorkBuddy\2026-09-22-18-14-08\.workbuddy",
-]
+# 扫描范围由环境变量提供（公开仓库不含任何本机路径，默认留空）：
+#   LEARNFLOW_ROOT  —— 仓库根目录
+#   WORKBUDDY_DIR   —— 内部工具链目录（含 MEMORY.md 记录）
+#   MEMORY_MD       —— 额外的单文件路径
+# 注意：不递归扫描内部工具链目录全树（缓存极大，会超时），只取其中的 MEMORY.md 单文件。
+ROOTS = [p for p in (
+    os.environ.get("LEARNFLOW_ROOT", ""),
+    os.environ.get("WORKBUDDY_DIR", ""),
+) if p]
 
 # 额外单文件（不走 os.walk）
-EXTRA_FILES = [
-    os.path.expanduser(r"~\.workbuddy\MEMORY.md"),
-]
+EXTRA_FILES = [p for p in (
+    os.environ.get("MEMORY_MD", ""),
+) if p]
 
 SKIP_DIRS = {".venv", ".venv_new", "node_modules", "data", "data_backup", ".git",
              "__pycache__", "external", ".pytest_cache", ".pytest_tmp", "build",

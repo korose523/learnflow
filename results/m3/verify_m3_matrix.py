@@ -1,6 +1,6 @@
 """M3 · C 项：≥3 模型族 × ≥3 规模标注矩阵 —— 可复算骨架 + 门禁（待真实多模型评估外部执行）。
 
-方案与 CSV 模板见 `docs/M3_模型族规模标注矩阵方案.md`；模板 `results/m3/m3_model_scale_matrix.csv`
+方案与口径见本文件 ``MODEL_FAMILIES`` / ``SCALE_TIERS`` 分类法与 ``validate_matrix`` 门槛；CSV 模板 `results/m3/m3_model_scale_matrix.csv`
 （列：model_id, family, scale_tier, params_billions, architecture, eval_status, datasets, protocol,
 parse_rate, spearman_rho, accuracy, cohen_kappa, reliability_verdict, source_anchor）。
 
@@ -31,7 +31,8 @@ from typing import Dict, List
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "M3_模型族规模标注矩阵方案.md"))
+# 2026-10-02：原 SCHEME_DOC 常量指向的方案文档已按审阅意见 §2.4 撤出公开仓库，
+# 故删除该常量及其存在性检查（方案口径已内联于本文件分类法与 validate_matrix）。
 TEMPLATE_CSV = os.path.join(HERE, "m3_model_scale_matrix.csv")
 
 
@@ -175,8 +176,6 @@ def _structural_checks() -> List[str]:
         problems.append(f"MODEL_FAMILIES={len(MODEL_FAMILIES)} < 3")
     if len(SCALE_TIERS) < 3:
         problems.append(f"SCALE_TIERS={len(SCALE_TIERS)} < 3")
-    if not os.path.isfile(SCHEME_DOC):
-        problems.append(f"方案文档缺失：{SCHEME_DOC}")
     if not os.path.isfile(TEMPLATE_CSV):
         problems.append(f"CSV 模板缺失：{TEMPLATE_CSV}")
     return problems
@@ -194,7 +193,7 @@ def main() -> int:
         print("结论: FAIL   退出码 1")
         return 1
     print(f"结构层: PASS（模型族 {len(MODEL_FAMILIES)} ≥3；规模档 {len(SCALE_TIERS)} ≥3；"
-          f"方案文档与模板存在）")
+          f"CSV 模板存在）")
 
     if not _self_test():
         print("结论: FAIL   退出码 1")

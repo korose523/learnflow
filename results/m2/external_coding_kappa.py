@@ -1,6 +1,6 @@
 """路线 A · A4 骨架：外部 ≥4 系统 + 双人独立编码 + Cohen κ（待外部/人工执行）。
 
-方案与 CODEBOOK 细则见 `docs/M2_A4_外部系统双编码方案.md`；CSV 模板见
+方案与 CODEBOOK 细则见本文件 ``CODEBOOK`` / ``ORDERED_FIELDS`` 定义；CSV 模板见
 `results/m2/a4_coding_template.csv`（列：system,item_id,target_construct,direction,channel,coder,source_anchor）。
 
 ⚠️ 本文件是**方法学骨架**，不代表已完成的实验。A4 需要：

@@ -49,7 +49,7 @@ REGISTERED: Dict[str, Any] = {
     "n_users_input": 4217,        # 输入中出现的全部用户数
     "n_users_used": 2314,         # 实际贡献滑窗的用户数（≥20 条作答）——旧实现误写 4217
     "modal_k_errors": [5],        # 单值众数 k=5 → 错误率 0.25 / 成功率 0.75
-    "bootstrap_modal_ci95_k": [5],
+    "bootstrap_modal_ci95_k": [5, 4],   # 2026-10-02：BOOT 200→2000 重跑，k=5 占 0.941 < 0.95，95% 集扩为 {0.25, 0.20}
     "by_filter_mode": {           # 三种过滤口径的单值众数（旧主张称三者都是 0.15~0.20）
         "all": [5],
         "original_only(main_problem)": [4],

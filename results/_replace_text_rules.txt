@@ -1,0 +1,8 @@
+literal:C:\\Users\\mac==>C:\\Users\\<user>
+literal:C:\Users\mac==>C:\Users\<user>
+literal:C:/Users/mac==>C:/Users/<user>
+literal:/c/Users/mac==>/c/Users/<user>
+literal:C:/Users/Administrator==>C:/Users/<user>
+literal:pytest-of-mac==><pytest-tmp>
+literal:~\.workbuddy==><home>\.workbuddy
+literal:~/.workbuddy==><home>/.workbuddy

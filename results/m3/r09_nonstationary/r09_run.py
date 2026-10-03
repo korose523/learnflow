@@ -28,13 +28,17 @@ R09 非平稳性诊断 — LearnFlow / M3 §3.4 平稳-MDP 假设实证检验
 """
 import json, csv, os, math, random, array, statistics
 from collections import defaultdict
+from pathlib import Path
 
-PY = "C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe"
-CACHE = "E:/learnflow/results/code/junyi_m3_cache.json"
-INFO  = "E:/learnflow/data/junyi/Info_Content.csv"
-LOG   = "E:/learnflow/data/junyi/Log_Problem.csv"
-OUT_JSON = "E:/learnflow/results/m3/r09_nonstationary/r09_results.json"
-OUT_MD   = "E:/learnflow/results/m3/r09_nonstationary/r09_edits.md"
+# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/r09_nonstationary/）推导
+BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[3]))
+BASE_POSIX = BASE.as_posix()
+PY = os.environ.get("PYTHON", "python")  # 原为硬编码本机解释器路径，已移除（本脚本未使用）
+CACHE = str(BASE / "results" / "code" / "junyi_m3_cache.json")
+INFO  = str(BASE / "data" / "junyi" / "Info_Content.csv")
+LOG   = str(BASE / "data" / "junyi" / "Log_Problem.csv")
+OUT_JSON = str(BASE / "results" / "m3" / "r09_nonstationary" / "r09_results.json")
+OUT_MD   = str(BASE / "results" / "m3" / "r09_nonstationary" / "r09_edits.md")
 
 SEED = 42
 BOOT = 1000
@@ -249,10 +253,10 @@ result = {
     "protocol": {
         "objective": "实证检验每题(ucid)成功率是否随时间/作答次序漂移，以检验 M3 §3.4 把可提取性作为 MDP 状态/平稳奖励所依赖的平稳性前提。",
         "data_sources": [
-            "E:/learnflow/data/junyi/Log_Problem.csv (真实逐次作答：timestamp_TW, is_correct, total_attempt_cnt, uuid, ucid)",
-            "E:/learnflow/data/junyi/Info_Content.csv (ucid -> difficulty, level3_id)",
-            "E:/learnflow/results/code/junyi_m3_cache.json (M3 cache 核心题集 64 ucid；user_dec, pt)",
-            "E:/learnflow/results/code/junyi_m3_results.json (ordered_difficulty_transitions 作为背景上下文)"
+            f"{BASE_POSIX}/data/junyi/Log_Problem.csv (真实逐次作答：timestamp_TW, is_correct, total_attempt_cnt, uuid, ucid)",
+            f"{BASE_POSIX}/data/junyi/Info_Content.csv (ucid -> difficulty, level3_id)",
+            f"{BASE_POSIX}/results/code/junyi_m3_cache.json (M3 cache 核心题集 64 ucid；user_dec, pt)",
+            f"{BASE_POSIX}/results/code/junyi_m3_results.json (ordered_difficulty_transitions 作为背景上下文)"
         ],
         "method": {
             "A_time_window": "按 timestamp_TW 排序，时间中位数切分早期/晚期窗口，Δ_A = p_late - p_early",

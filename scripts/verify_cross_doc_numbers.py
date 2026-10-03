@@ -29,13 +29,13 @@ Usage:
     python scripts/verify_cross_doc_numbers.py
     python scripts/verify_cross_doc_numbers.py --strict-only   # only print strict rows
     python scripts/verify_cross_doc_numbers.py --fail-on-drift # also fail on drift
+    python scripts/verify_cross_doc_numbers.py --selftest    # prove the gate rejects injected bad numbers
 
 Author: meta-editor (LearnFlow merge team).  No external dependencies.
 """
 
 from __future__ import annotations
 
-import os
 import re
 import sys
 from pathlib import Path
@@ -52,6 +52,11 @@ PLAN_REPORT = DOCS / "研究计划与报告"
 DOCUMENTS = [
     ("plan",   "计划书(计划)",  PLAN_REPORT / "研究计划_中文版.md"),
     ("report", "计划书(报告)",  PLAN_REPORT / "研究报告_中文版.md"),
+    # 2026-10-02 补齐盲区：韩文版是正式提交件（导师为韩国教授），此前不在扫描范围内，
+    # 导致韩文计划/报告长期停留在 2026-09-22 旧快照（88 文件 / 25,795 行 / 936 测试）
+    # 而门禁仍报 PASS——正是审阅 §2.1「门禁通过不等于文档正确」所指的失效模式。
+    ("plan_ko",   "계획서(韩)",  PLAN_REPORT / "研究计划_韩文版.md"),
+    ("report_ko", "보고서(韩)",  PLAN_REPORT / "研究报告_韩文版.md"),
     ("split",  "拆分方案",      DOCS / "LearnFlow_期刊论文拆分方案.md"),
     ("M1",     "M1 完整稿",     DOCS / "M1_难度可公度性与最优错误率_完整稿.md"),
     ("M2",     "M2 完整稿",     DOCS / "M2_多干预并存学习系统的冲突结构审计_完整稿.md"),
@@ -72,6 +77,8 @@ METRICS = [
     ("mechanisms", "机制数(登记)", "strict", {
         "plan":   [r"游戏化干预机制（登记）\s*\|\s*\*\*(\d+)"],
         "report": [r"游戏化干预机制（登记）\s*\|\s*\*\*(\d+)"],
+        "plan_ko":   [r"등록\s*(\d+)"],
+        "report_ko": [r"메커니즘\s+(\d+)\s*/\s*방법"],
         "split":  [r"(\d{1,3})\s*个唯一机制", r"登记\s*(\d{1,3})\b"],
         "M1":     [r"(\d{1,3})\s*个游戏化干预机制", r"机制\s*\*\*(\d+)"],
         "M2":     [r"登记\s*(\d{1,3})\s*个", r"登记\s*(\d{1,3})\s*/\s*效果生产"],
@@ -81,6 +88,7 @@ METRICS = [
     ("methods", "学习方法数", "strict", {
         "plan":   [r"学习方法\s*\|\s*\*\*(\d+)"],
         "report": [r"学习方法\s*\|\s*\*\*(\d+)"],
+        "report_ko": [r"방법\s+(\d+)\s*/"],
         "split":  [r"(\d{1,3})\s*种学习方法"],
         "M1":     [r"(\d{1,3})\s*种学习方法"],
         "M2":     [r"`learning_methods`[^*\n]*\*\*(\d+)", r"学习方法\s*\*\*(\d+)"],
@@ -90,6 +98,8 @@ METRICS = [
     ("effect_producers_audit", "效果生产者(审计时点)", "strict", {
         "plan":   [r"效果生产\s*(\d+)"],
         "report": [r"运行时真实效果生产者\s*\|\s*\*\*(\d+)"],
+        "plan_ko":   [r"효과 생산\s*(\d+)"],
+        "report_ko": [r"효과 생산자\s*\*\*(\d+)"],
         "split":  [r"效果生产(?:者)?[^。\n]{0,30}?(\d+)"],
         "M1":     [r"效果生产\s*(\d+)"],
         "M2":     [r"效果生产\s*(\d+)\s*个"],
@@ -108,7 +118,7 @@ METRICS = [
     ("test_files", "测试文件数", "strict", {
         "plan":   [r"全量测试\s*\|\s*\*\*(\d+)\s*个测试文件"],
         "report": [r"全量测试\s*\|\s*\*\*(\d+)\s*个测试文件"],
-        "split":  [],
+        "split":  [r"(\d+)\s*个测试文件"],
         "M1":     [r"(\d{1,3})\s*个测试文件"],
         "M2":     [r"`test_files`\s*\|\s*[^|]*\|\s*\*\*(\d+)"],
         "M3":     [r"(\d{1,3})\s*个测试文件"],
@@ -117,7 +127,8 @@ METRICS = [
     ("tests_collected", "pytest 收集测试数", "strict", {
         "plan":   [r"个测试文件\s*/\s*(\d+)\s*条通过"],
         "report": [r"个测试文件\s*/\s*(\d+)\s*条通过"],
-        "split":  [],
+        "report_ko": [r"(\d+)\s*collected"],
+        "split":  [r"测试\s*\|\s*\*\*(\d+)\s*项通过", r"(\d+)\s*项通过"],
         "M1":     [r"凡引用测试数量，本文一律写\s*(\d{3,4})", r"全量测试[^。\n]{0,40}?(\d{3,4})"],
         "M2":     [r"tests_collected[^|]*\|\s*[^|]*\|\s*\*\*(\d+)"],
         "M3":     [r"涉及仓库回归测试数量时，一律写\s*\*\*(\d+)\*\*", r"全量测试(?:数)?[^。\n]{0,20}?(\d{3,4})", r"全量测试数[^。\n]{0,12}?\*\*(\d+)"],
@@ -126,6 +137,7 @@ METRICS = [
     ("skill_tree_nodes", "技能树节点数", "strict", {
         "plan":   [r"元学习技能树节点\s*\|\s*\*\*(\d+)"],
         "report": [r"元学习技能树节点\s*\|\s*\*\*(\d+)"],
+        "report_ko": [r"스킬 트리\s+(\d+)"],
         "split":  [],
         "M1":     [r"技能树节点\s*\*\*(\d+)"],
         "M2":     [r"`skill_tree_nodes`\s*\*\*(\d+)"],
@@ -135,6 +147,7 @@ METRICS = [
     ("registry_fingerprint", "注册表指纹", "strict", {
         "plan":   [r"机制注册表指纹\s*`([0-9a-f]+)`"],
         "report": [r"机制注册表指纹\s*`([0-9a-f]+)`"],
+        "report_ko": [r"지문\s*`([0-9a-f]+)`"],
         "split":  [r"注册表指纹\s*`([0-9a-f]+)`"],
         "M1":     [r"注册表指纹\s*`([0-9a-f]+)`"],
         "M2":     [r"注册表指纹\s*`([0-9a-f]+)`"],
@@ -145,7 +158,8 @@ METRICS = [
     ("python_loc", "Python 代码行数", "drift", {
         "plan":   [r"(\d{2,3},\d{3})\s*行"],
         "report": [r"(\d{2,3},\d{3})\s*行"],
-        "split":  [],
+        "report_ko": [r"행수\s*\|\s*(\d{2,3},\d{3})"],
+        "split":  [r"(\d{2,3},\d{3})\s*行"],
         "M1":     [],
         "M2":     [r"`python_loc`\s*\|[^|]*\|\s*\*\*(\d{1,3}(?:,\d{3})*)"],
         "M3":     [],
@@ -154,7 +168,7 @@ METRICS = [
     ("source_files", "源文件数", "drift", {
         "plan":   [r"(\d{2,3})\s*源文件"],
         "report": [r"(\d{2,3})\s*源文件"],
-        "split":  [],
+        "split":  [r"(\d+)\s*个源文件"],
         "M1":     [r"(\d{2,3})\s*源文件"],
         "M2":     [r"`source_files`\s*\|[^|]*\|\s*\*\*(\d+)"],
         "M3":     [r"(\d{2,3})\s*源文件"],
@@ -163,7 +177,7 @@ METRICS = [
     ("service_modules", "服务模块数", "drift", {
         "plan":   [r"服务模块\s*\|\s*\*\*(\d+)"],
         "report": [r"服务模块\s*\|\s*\*\*(\d+)"],
-        "split":  [],
+        "split":  [r"(\d+)\s*个服务模块"],
         "M1":     [r"服务模块\s*\*\*\s*(\d+)"],
         "M2":     [r"`service_modules`\s*\|[^|]*\|\s*\*\*(\d+)"],
         "M3":     [r"服务模块\s*\*\*\s*(\d+)"],
@@ -179,6 +193,30 @@ METRICS = [
         "M4":     [],
     }),
 ]
+
+# --------------------------------------------------------------------------- #
+# Korean-document patterns (keyed by metric key; applied to any doc key ending
+# in "_ko").  Kept separate so adding a translated document does not require
+# touching every metric entry.  Korean tables use the same shape as the Chinese
+# ones, e.g.  | 백엔드 Python | **92개 파일 / 26,782행** | .
+# --------------------------------------------------------------------------- #
+KO_PATTERNS = {
+    "mechanisms":              [r"메커니즘\s*\*\*(\d+)",
+                                r"메커니즘\(등록\)\s*\|\s*\*\*?(\d+)"],
+    "methods":                 [r"학습 방법\s*\|\s*\*\*(\d+)"],
+    "effect_producers_audit":  [r"런타임[^\n|]{0,14}?효과 생산자\s*\|\s*\*\*(\d+)",
+                                r"효과를 생성하는 생산자[^\n]{0,14}?(\d+)"],
+    "api_routes_reachable":    [r"API 엔드포인트\s*\|\s*\*\*(\d+)"],
+    "test_files":              [r"(\d+)개\s*테스트 파일"],
+    "tests_collected":         [r"테스트 파일\s*/\s*(\d+)\s*건",
+                                r"전체 테스트 수[^\n]{0,30}?(\d{3,4})"],
+    "skill_tree_nodes":        [r"스킬 트리 노드\s*\|\s*\*\*(\d+)"],
+    "registry_fingerprint":    [r"레지스트리 지문\s*`([0-9a-f]+)`"],
+    "python_loc":              [r"(\d{2,3},\d{3})\s*행"],
+    "source_files":            [r"\*\*(\d{2,3})개 파일"],
+    "service_modules":         [r"서비스 모듈\s*\|\s*\*\*(\d+)"],
+    "test_functions":          [r"테스트 함수[^\n|]{0,15}?(\d+)"],
+}
 
 
 # --------------------------------------------------------------------------- #
@@ -209,8 +247,18 @@ def extract_all() -> dict:
             for key, _l, _m, _p in METRICS:
                 table[key][dkey] = "缺失(读错)"
             continue
+        is_ko = dkey.endswith("_ko")
         for key, _label, _mode, per_doc in METRICS:
-            regexes = per_doc.get(dkey, [])
+            # Translated documents carry their own table wording.  Ordered
+            # chain, first capture wins:
+            #   1. KO_PATTERNS[key]  -> shared Korean table wording
+            #   2. per_doc[dkey]     -> any document-specific pattern
+            # Both lists are concatenated rather than using `or`, so a
+            # document-specific pattern still acts as a *fallback* when the
+            # shared Korean pattern finds nothing (e.g. a table shaped
+            # differently in one of the two Korean documents).  Preferring
+            # silence over a miss is what let the Korean drift hide for a week.
+            regexes = (KO_PATTERNS.get(key, []) if is_ko else []) + per_doc.get(dkey, [])
             found = "缺失"
             for rx in regexes:
                 m = re.search(rx, text)
@@ -231,7 +279,6 @@ def _fmt_cell(value: str) -> str:
 
 
 def print_table(table: dict, strict_only: bool) -> None:
-    headers = [label for _k, label, _p in DOCUMENTS]  # doc labels
     metric_rows = [(k, l, m) for k, l, m, _p in METRICS if (not strict_only or m == "strict")]
 
     # column widths
@@ -283,10 +330,26 @@ def evaluate(table: dict, fail_on_drift: bool) -> tuple[bool, list[str]]:
     return ok, problems
 
 
+def _selftest() -> int:
+    """Inject a fake STRICT divergence and confirm the gate rejects it."""
+    table = extract_all()
+    table["mechanisms"]["plan"] = "999"          # inject a bogus value
+    ok, problems = evaluate(table, fail_on_drift=False)
+    injected_caught = (not ok) and any("机制数" in p for p in problems)
+    # and confirm the real table passes
+    real_ok, _ = evaluate(extract_all(), fail_on_drift=False)
+    print("selftest: 注入 机制数 plan=999 -> 门禁拦截 =", injected_caught)
+    print("selftest: 未注入的真实表 PASS =", real_ok)
+    return 0 if (injected_caught and real_ok) else 1
+
+
 def main(argv=None) -> int:
     argv = argv or sys.argv[1:]
     strict_only = "--strict-only" in argv
     fail_on_drift = "--fail-on-drift" in argv
+
+    if "--selftest" in argv:
+        return _selftest()
 
     print("=" * 78)
     print("LearnFlow 跨文档数字一致性门禁  (审阅意见 §2.1)")

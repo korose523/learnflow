@@ -1,6 +1,6 @@
 """M1 · A1/A2 两类追加判据：可复算骨架 + 门禁（待真实数据外部执行）。
 
-方案与 CSV 模板见 `docs/M1_两类判据补充方案.md`；模板 `results/m1/m1_criteria_template.csv`
+方案与口径见本文件 ``EXPERIMENTS`` 登记（A1/A2 协议内联）；CSV 模板 `results/m1/m1_criteria_template.csv`
 （列：item_id, expert_label_1_2_3, behavior_block_A_anchor, criterion_block_B_anchor）。
 
 ⚠️ 本文件是**方法学骨架**，不代表已完成的实验。A1/A2 需要真实数据集拟合：
@@ -14,7 +14,7 @@
   - ``weighted_kappa``：线性加权 κ（有序字段，复用 A4 数学，用于专家标签评分者信度）；
   - ``EXPERIMENTS``：A1/A2 实验登记（name/criterion/split_protocol/dataset/status）；
   - ``__main__`` 自测：IRT 难度恢复 + Spearman 已知值 + 加权 κ 数学，证明方法正确。
-  - 可选 ``--results``：载入真实拟合 JSON（外部产出）做结构校验；缺省则打印「外部待补」不阻断。
+  - 可选 ``--results``：载入真实拟合 JSON（外部产出）做分块 schema + 数值快照校验（tol=5e-4）；缺省则打印「外部待补」不阻断。
 
 用法（骨架自测）：
   python results/m1/verify_m1_criteria.py
@@ -35,7 +35,8 @@ from typing import Dict, List, Tuple
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "M1_两类判据补充方案.md"))
+# 2026-10-02：原 SCHEME_DOC 常量指向的方案文档已按审阅意见 §2.4 撤出公开仓库，
+# 故删除该常量及其存在性检查（方案口径已内联于本文件 EXPERIMENTS）。
 TEMPLATE_CSV = os.path.join(HERE, "m1_criteria_template.csv")
 
 
@@ -297,28 +298,81 @@ def _structural_checks() -> List[str]:
         for field in ("name", "criterion", "split_protocol", "dataset", "status"):
             if not exp.get(field):
                 problems.append(f"EXPERIMENTS[{key}] 缺字段 {field}")
-    if not os.path.isfile(SCHEME_DOC):
-        problems.append(f"方案文档缺失：{SCHEME_DOC}")
     if not os.path.isfile(TEMPLATE_CSV):
         problems.append(f"CSV 模板缺失：{TEMPLATE_CSV}")
     return problems
 
 
+# 期望数值快照（2026-10-02）。A1/A2 schema 不同：A1 于 M1 泄漏修复后改用
+# *_vs_bj 字段名；若确为重新拟合，须同步更新本门禁与 docs/ 中的引用。
+_A1_EXPECT = {
+    "spearman_fusion_vs_bj": 0.892345,
+    "spearman_successrate_vs_bj": 0.954093,
+}
+_A2_EXPECT = {
+    "spearman_fusion": 0.291786,
+    "spearman_success": 0.220436,
+}
+_A1_OLD_FIELDS = ("spearman_fusion", "spearman_success")  # 修复前（同半泄漏）schema
+_TOL = 5e-4
+
+
 def _validate_external_results(path: str) -> List[str]:
-    """校验真实拟合 JSON（外部产出）结构；仅做存在性与字段检查。"""
+    """校验真实拟合 JSON（外部产出）：分块 schema + 数值快照（tol=5e-4）。
+
+    A1 与 A2 schema 不同——A1 在泄漏修复后写 ``spearman_fusion_vs_bj`` /
+    ``spearman_successrate_vs_bj``（融合与成功率基线同在 A 半），A2 写
+    ``spearman_fusion`` / ``spearman_success``。老 schema 的 a1（早于泄漏修复）
+    不得作为门禁依据，须明确 FAIL。
+    """
     problems: List[str] = []
     try:
         data = json.loads(open(path, encoding="utf-8").read())
     except (OSError, ValueError) as exc:
         return [f"外部结果 JSON 读取失败：{exc}"]
-    for block in ("a1", "a2"):
-        if block not in data:
-            problems.append(f"外部结果缺块 {block}")
-            continue
-        blk = data[block] or {}
-        for field in ("spearman_fusion", "spearman_success"):
-            if field not in blk:
-                problems.append(f"外部结果 {block} 缺字段 {field}")
+
+    # ---- a1 ----
+    a1 = data.get("a1")
+    if a1 is None:
+        problems.append("外部结果缺块 a1")
+    elif all(f in a1 for f in _A1_OLD_FIELDS) and not all(f in a1 for f in _A1_EXPECT):
+        problems.append(
+            "外部结果 a1 使用修复前的字段名 spearman_fusion/spearman_success —— "
+            "该文件早于 M1 泄漏修复（A1 融合与成功率基线必须同在 A 半），"
+            "其结果不得作为门禁依据；请改用 results/m1/m1_criteria_results.json")
+    else:
+        for field, want in _A1_EXPECT.items():
+            got = a1.get(field)
+            if not isinstance(got, (int, float)):
+                problems.append(f"外部结果 a1 缺字段或非数值 {field}")
+            elif abs(got - want) > _TOL:
+                problems.append(
+                    f"外部结果 a1 的 {field} = {got}，期望 {want} ± {_TOL}"
+                    f"（快照 2026-10-02；若确为重新拟合请同步更新本门禁与 docs/ 中的引用）")
+        fv, sv = a1.get("spearman_fusion_vs_bj"), a1.get("spearman_successrate_vs_bj")
+        if isinstance(fv, (int, float)) and isinstance(sv, (int, float)) and not fv < sv:
+            problems.append(
+                f"外部结果 a1 要求 success > fusion（A1 融合败于成功率基线），"
+                f"实测 fusion={fv} success={sv}")
+
+    # ---- a2 ----
+    a2 = data.get("a2")
+    if a2 is None:
+        problems.append("外部结果缺块 a2")
+    else:
+        for field, want in _A2_EXPECT.items():
+            got = a2.get(field)
+            if not isinstance(got, (int, float)):
+                problems.append(f"外部结果 a2 缺字段或非数值 {field}")
+            elif abs(got - want) > _TOL:
+                problems.append(
+                    f"外部结果 a2 的 {field} = {got}，期望 {want} ± {_TOL}"
+                    f"（快照 2026-10-02；若确为重新拟合请同步更新本门禁与 docs/ 中的引用）")
+        fv, sv = a2.get("spearman_fusion"), a2.get("spearman_success")
+        if isinstance(fv, (int, float)) and isinstance(sv, (int, float)) and not fv > sv:
+            problems.append(
+                f"外部结果 a2 要求 fusion > success（O4 与 A2 同值），"
+                f"实测 fusion={fv} success={sv}")
     return problems
 
 
@@ -335,7 +389,7 @@ def main() -> int:
             print(f"[FAIL] {p}")
         print("结论: FAIL   退出码 1")
         return 1
-    print("结构层: PASS（EXPERIMENTS A1/A2 登记完整；方案文档与 CSV 模板存在）")
+    print("结构层: PASS（EXPERIMENTS A1/A2 登记完整；CSV 模板存在）")
 
     # 自测层
     ok_irt = _self_test_irt()
@@ -354,7 +408,8 @@ def main() -> int:
                 print(f"[FAIL] {p}")
             print("结论: FAIL   退出码 1")
             return 1
-        print(f"外部结果校验: PASS（{args.results} 含 a1/a2 双块）")
+        print(f"外部结果校验: PASS（{args.results}：a1 *_vs_bj schema + a2 schema，"
+              f"数值对齐 2026-10-02 快照 ±{_TOL}）")
     else:
         print("⚠ 外部结果 JSON 未提供：A1/A2 真实数据集拟合为外部动作，"
               "须确认 assist09/DBE-KT22/Junyi 可得后由人工执行（状态 🟡）。")

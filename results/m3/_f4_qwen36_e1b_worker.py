@@ -4,9 +4,12 @@
 #   2) F4_DeepSeek: deepseek-v2:16b 的 E1-A + E1-B（新拉权重）
 # 跑完重生成 m3_model_scale_matrix.csv 并跑门禁，落盘报告。
 import subprocess, sys, time, json, os, urllib.request, shutil
+from pathlib import Path
 
-ROOT = r"E:/learnflow/results/m3"
-PY = r"C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe"
+# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/）推导
+BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[2]))
+ROOT = str(BASE / "results" / "m3")
+PY = os.environ.get("PYTHON", sys.executable)  # 原为硬编码本机解释器路径，已移除
 DRIVER = os.path.join(ROOT, "local_matrix_e1ab.py")
 BUILD = os.path.join(ROOT, "build_matrix_rows.py")
 GATE = os.path.join(ROOT, "verify_m3_matrix.py")

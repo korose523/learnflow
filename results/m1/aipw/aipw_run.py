@@ -3,8 +3,8 @@
 aipw_run.py — LearnFlow M1 因果侧升级：离策略剂量—反应 AIPW/DR 估计
 ======================================================================
 
-冻结方案（唯一权威规格）: E:/learnflow/docs/因果侧识别策略.md  (编号 LF-CIS-2026-09-22)
-目标论文:                E:/learnflow/docs/M1_难度可公度性与最优错误率_完整稿.md §8
+冻结方案（唯一权威规格）: docs/因果侧识别策略.md  (编号 LF-CIS-2026-09-22)，相对仓库根
+目标论文:                docs/M1_难度可公度性与最优错误率_完整稿.md §8，相对仓库根
 
 本脚本严格按冻结方案执行：
   * 处理变量 d = k/20, k = 结局窗之前最近 W=20 条同知识点作答的错误条数（整数 0..20）。
@@ -25,12 +25,12 @@ aipw_run.py — LearnFlow M1 因果侧升级：离策略剂量—反应 AIPW/DR 
   * 诚实铁律：阴性结果写“未检出剂量—反应”，绝不写“证明不存在”；阴性对照显著须如实
     报告并把主结论降级为“关联性证据”；不做未声明亚组分析。
 
-运行环境（Windows, E:/ 路径）：
-  * venv: C:/Users/mac/.workbuddy/binaries/python/envs/default/Scripts/python.exe
-  * 需 numpy + scikit-learn（已装 1.9.1）。
+运行环境（Windows）：
+  * 解释器: 默认使用当前解释器（sys.executable）；原为硬编码本机 venv 绝对路径，已移除。
+  * 需 numpy + scikit-learn（已验证）。
   * 可复现：所有分桶/分半使用 zlib.crc32（非内置 hash）；bootstrap/RNG 固定 SEED。
 
-输出（E:/learnflow/results/m1/aipw/）：
+输出（results/m1/aipw/，相对仓库根）：
   * aipw_results.json — 结构化结果
   * aipw_audit.log   — §9 留痕（append-only）：冻结文档 SHA256+mtime(未提交状态)、
                        各输入文件 SHA256、脚本 SHA256、首跑日志(运行时间/脚本哈希/
@@ -43,6 +43,7 @@ aipw_run.py — LearnFlow M1 因果侧升级：离策略剂量—反应 AIPW/DR 
 """
 
 import os, sys, json, csv, math, hashlib, argparse, time, random
+from pathlib import Path
 from collections import defaultdict
 from zlib import crc32
 
@@ -69,18 +70,19 @@ SESSION_GAP_S = 1800.0  # 会话间隔阈值（秒）：>30 分钟视为跨会�
 RF_NEST       = 120
 RF_MIN_LEAF   = 2
 
-# 路径
-DOC_PATH   = "E:/learnflow/docs/因果侧识别策略.md"
-OUT_DIR    = "E:/learnflow/results/m1/aipw"
+# 路径（仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置推导）
+ROOT       = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[3]))
+DOC_PATH   = str(ROOT / "docs" / "因果侧识别策略.md")
+OUT_DIR    = str(ROOT / "results" / "m1" / "aipw")
 JSON_PATH  = os.path.join(OUT_DIR, "aipw_results.json")
 AUDIT_PATH = os.path.join(OUT_DIR, "aipw_audit.log")
 
-ASSIST_CSV = "E:/learnflow/data/assist09_corrected.csv"
-DBE_TXN    = "E:/learnflow/data/dbe_kt22/csv/Transaction.csv"
-DBE_QKC    = "E:/learnflow/data/dbe_kt22/csv/Question_KC_Relationships.csv"
-DBE_KC     = "E:/learnflow/data/dbe_kt22/csv/KCs.csv"
-JUNYI_LOG  = "E:/learnflow/data/junyi/Log_Problem.csv"
-JUNYI_INFO = "E:/learnflow/data/junyi/Info_Content.csv"
+ASSIST_CSV = str(ROOT / "data" / "assist09_corrected.csv")
+DBE_TXN    = str(ROOT / "data" / "dbe_kt22" / "csv" / "Transaction.csv")
+DBE_QKC    = str(ROOT / "data" / "dbe_kt22" / "csv" / "Question_KC_Relationships.csv")
+DBE_KC     = str(ROOT / "data" / "dbe_kt22" / "csv" / "KCs.csv")
+JUNYI_LOG  = str(ROOT / "data" / "junyi" / "Log_Problem.csv")
+JUNYI_INFO = str(ROOT / "data" / "junyi" / "Info_Content.csv")
 
 rng = np.random.RandomState(SEED)
 

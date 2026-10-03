@@ -12,14 +12,16 @@
 #   例：sh run_local_matrix_finalize.sh --conditions E1A
 
 set -u
-cd /e/learnflow/results/m3 || exit 1
+# 仓库根：默认按脚本位置推导（<root>/results/m3/../..），可用 LEARNFLOW_ROOT 覆盖
+: "${LEARNFLOW_ROOT:=$(cd "$(dirname "$0")/../.." && pwd)}"
+cd "$LEARNFLOW_ROOT/results/m3" || exit 1
 
 export no_proxy=localhost,127.0.0.1
 export NO_PROXY=localhost,127.0.0.1
 unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY 2>/dev/null
 
-OLLAMA="C:/Users/mac/AppData/Local/Programs/Ollama/ollama.exe"
-PY="C:/Users/mac/.workbuddy/binaries/python/versions/3.13.12/python.exe"
+OLLAMA="${OLLAMA_BIN:-ollama}"   # 原为硬编码本机路径，已移除；默认走 PATH
+PY="${PYTHON:-python}"           # 原为硬编码本机解释器路径，已移除；默认走 PATH
 
 "$OLLAMA" serve > ollama_serve_finalize.log 2>&1 &
 SERVE_PID=$!

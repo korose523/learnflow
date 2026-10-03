@@ -33,12 +33,12 @@ abstract: >-
 authors:
   # 署名（审阅意见 §9）：与稿件作者写法统一为 Weng Zexiao（此前 CITATION 写"翁泽潇"）。
   # 单位：Youngsan University（Busan, KR）计算机与信息工程系，博士研究生（2025-09 起）。
-  # 支撑论文（M1/M2/M3）的作者块为 `Zexiao Weng¹, MinPo Jung¹,*`，
-  # ¹ Department of Computer and Information Engineering, Graduate School, Youngsan University,
-  #    Busan 48015, Republic of Korea；通讯 minpo@ysu.ac.kr，ORCID 0009-0003-3369-757X。
+  # 支撑论文（M1/M2/M3）的作者块含通讯作者标注；该通讯作者的身份信息不在本文件登记，
+  #   亦本不应在注释中出现（2026-10-02 更正：上一版注释曾写出其姓名、邮箱与 ORCID，
+  #   与审阅意见 2.4 ③ 相悖，现已撤除）。
   # 本软件 artifact 的署名沿用 v0.1.0 记录（Weng 一人）。
-  # 审阅意见 2.4 ③：导师已同意担任稿件的通讯作者，但在其读完并批准最终稿之前，
-  #   贡献者名单 / 投稿信批准语句 / AI 使用声明中均不署其姓名。
+  # 审阅意见 2.4 ③：稿件的通讯作者已同意担任该角色，但在其读完并批准最终稿之前，
+  #   贡献者名单 / 投稿信批准语句 / AI 使用声明中均不出现其姓名、邮箱与 ORCID。
   #   因此 .zenodo.json 的 contributors 暂为空，待最终稿获批后补入。
   - family-names: "Weng"
     given-names: "Zexiao"

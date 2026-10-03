@@ -6,10 +6,11 @@ We submit the enclosed manuscript for consideration as a Regular/Research Articl
 
 **Methodological contribution.** We show that linear [0,1] fusion of difficulty sources drifts under monotone reparameterization, while a quantile→logit commensurability metric is strictly invariant; on assist09 (994 items) the real drift falls from 0.5357 to 0.0001. We further locate a concrete directional error in fusion configuration (a negatively-signed signal assigned a positive weight) and propose a sample-size-adaptive shrinkage, both verified to improve small-sample rank stability without claiming predictive-power gains.
 
+**Causal side — executed but not interpretable (boundary, not a result).** An off-policy (AIPW/DR) dose–response identification was executed on 2026-09-24 under a frozen identification strategy, but it **did not pass the preregistered positive-control criterion** and its **implementation differs from the frozen document**; its results are therefore **not interpretable**. We make **no point estimate, confidence interval, or test against 15.87%** for the optimal error rate, and we do not report the executed dose–response readings as a negative result.
+
 **Honest negative results (reported, not concealed).** In the spirit of preregistration-executable-verifiable research, we explicitly report what did *not* work or was *not* performed, and treat this as a contribution rather than a weakness:
-1. The causal side was executed under a frozen identification strategy (2026-09-24): we detected **no preregistered internal optimum**, and a Junyi time-reversed negative control was significant, downgrading all dose–response readings to associational evidence. We therefore make **no point estimate, confidence interval, or test against 15.87%** for the optimal error rate.
-2. Of seven preregistered hypotheses, **H2 was only partially tested and H3 and H7 were not executed** (source sets differed from the preregistration; ECE/Brier not computed). We do not rewrite these as supported.
-3. The `srw7` fusion optimizer and direction-error correction (O8/O11/O12) were verified **only on Junyi**, not cross-system replicated (no corresponding validation on DBE).
+1. Of seven preregistered hypotheses, **H2 was only partially tested and H3 and H7 were not executed** (source sets differed from the preregistration; ECE/Brier not computed). We do not rewrite these as supported.
+2. The `srw7` fusion optimizer and direction-error correction (O8/O11/O12) were verified **only on Junyi**, not cross-system replicated (no corresponding validation on DBE).
 
 These boundaries delineate the scope of the method rather than invalidate its engineering contribution, which (invariance + criterion-dependence of fusion gains) replicates across more than two systems. We believe this candid handling of negative/null results and preregistration gaps aligns with your journal's emphasis on methodological rigor and reproducibility.
 
@@ -19,7 +20,7 @@ These boundaries delineate the scope of the method rather than invalidate its en
 
 We confirm the manuscript is original and not under consideration elsewhere.
 
-> **⚠ 批准语句与署名暂缓（审阅意见 2.4 ③ 与 §10，2026-09-29）。** 本信此前在"all authors approve submission"下方并列署有通讯作者（MinPo Jung）的姓名。**该批准语句与署名现已移除**：通讯作者已同意担任本稿通讯作者，但按其要求，**投稿信的批准语句、Zenodo 贡献者名单与 AI 使用声明，在其读完最终稿并批准之前，不得出现其姓名**。待最终稿获批后，再按其同意的方式补入。
+> **⚠ 批准语句与署名暂缓（审阅意见 2.4 ③ 与 §10，2026-09-29）。** 本信此前在"all authors approve submission"下方并列署有通讯作者的姓名。**该批准语句与署名现已移除**：通讯作者已同意担任本稿通讯作者，但按其要求，**投稿信的批准语句、Zenodo 贡献者名单与 AI 使用声明，在其读完最终稿并批准之前，不得出现其姓名**。**本注记自身亦不例外**（2026-10-02 更正：上一版注记在陈述该规则时写出了被禁止出现的姓名，现予撤除；同类更正亦适用于 `.zenodo.json` 的 `_contributors_note`）。待最终稿获批后，再按其同意的方式补入。
 
 Sincerely,
 Zexiao Weng

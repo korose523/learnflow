@@ -34,11 +34,13 @@
 % 关键限定：结论在人工神经网络与生物可解释的感知学习模型上验证；
 % 作者明确限定适用于二元分类，并指出最可能适用于感知学习。
 % 引用时必须写明这一限定，否则构成对外推的隐瞒。
+% [已核验-2026-10-02] number 取自 Crossref https://api.crossref.org/works/10.1038/s41467-019-12552-4（volume=10, issue=1；4646 为 article number）
 @article{wilson2019eightyfive,
   author  = {Wilson, Robert C. and Shenhav, Amitai and Straccia, Mark and Cohen, Jonathan D.},
   title   = {The Eighty Five Percent Rule for optimal learning},
   journal = {Nature Communications},
   volume  = {10},
+  number  = {1},
   pages   = {4646},
   year    = {2019},
   doi     = {10.1038/s41467-019-12552-4},
@@ -77,13 +79,16 @@
 % [已核验] 知识追踪权威综述，CCF-A。
 % 独立确认了数据质量问题的完整清单，是方向 4 的可安全引用的主引
 % （优于依赖未同行评议的预印本）。
+% [已核验-2026-10-02] ACM CSUR 55(11) 该文 article number = 224、页码范围 1--37。
+% 原 bib 把 article number 误填进 pages；依 Crossref 10.1145/3569576（page=1-37）改为 pages=1--37 并补 articleno=224。
 @article{abdelrahman2023knowledge,
   author  = {Abdelrahman, Ghodai and Wang, Qing and Nunes, Bernardo},
   title   = {Knowledge Tracing: A Survey},
   journal = {ACM Computing Surveys},
   volume  = {55},
   number  = {11},
-  pages   = {224},
+  pages   = {1--37},
+  articleno = {224},
   month   = feb,
   year    = {2023},
   doi     = {10.1145/3569576},
@@ -134,6 +139,9 @@
 %   1. 通道模型预测与被试自报告不匹配
 %   2. Shin: 平衡变量与心流状态相关仅 r=0.206 (p<0.01)
 %   3. Pearce/Ainley/Howard 用 Challenge/Skills = 1 线性化，损害效度
+% [已核验-2026-10-02] year 维持 2026：MDPI 卷期页（https://www.mdpi.com/1424-8220/26/1）
+% 载 "Volume 26, Issue 1 (January-1 2026)"，正式卷期年为 2026；Crossref issued=2025-12-20 为 online 发布日。
+% 故注册库的 2025 为在线发布年，本库按正式卷期年著录 2026。
 @article{sensors2026flowbalance,
   title   = {Modelling the Balance Axiom in Flow Theory: A Physiological and Computational Approach in {STEAM} Education},
   journal = {Sensors},
@@ -152,6 +160,10 @@
 % #####################################################################
 
 % [已核验] 领域泡沫的量化证据，也是反驳「我们再做一个教育区块链」的最佳武器。
+% [已核验-2026-10-02] year 维持 2025：Springer 卷期页
+% （https://link.springer.com/journal/11042/volumes-and-issues/84-8）载 "Volume 84, Issue 8, March 2025"，
+% 正式卷期年为 2025；Crossref issued=2024-10-04 系 online-first 首发日。故注册库的 2024 为在线首发年，
+% 本库按正式卷期年著录 2025。（原 note 内「..., 2024」已随之改为 2025。）
 @article{choudhary2025blockchain,
   author  = {Choudhary and Chawla and Tiwari},
   title   = {Analyzing functional, technical and bibliometric trends of blockchain applications in education: A systematic review},
@@ -161,14 +173,19 @@
   pages   = {4003--4048},
   year    = {2025},
   doi     = {10.1007/s11042-024-20303-x},
-  note    = {[已核验] Multimedia Tools Appl. 84(8):4003-4048, 2024. DOI: 10.1007/s11042-024-20303-x. 作者：Choudhary Ankita, Chawla Meenu, Tiwari Namita. PRISMA 系统综述. 关键数据：150 个模型中 124 个为原型/试点、26 个仅为提案}
+  note    = {[已核验] Multimedia Tools Appl. 84(8):4003-4048, 2025（Issue 8 = March 2025；online-first 2024-10-04）. DOI: 10.1007/s11042-024-20303-x. 作者：Choudhary Ankita, Chawla Meenu, Tiwari Namita. PRISMA 系统综述. 关键数据：150 个模型中 124 个为原型/试点、26 个仅为提案}
 }
 
-% [部分核验] VERIFY: 作者全名、卷期页码待补；且 DOI 前缀 "sfw2" 较异常，建议复核
+% [部分核验] VERIFY: 作者全名待补；且 DOI 前缀 "sfw2" 较异常，建议复核
+% [已核验-2026-10-02] volume/number/pages 取自 Crossref https://api.crossref.org/works/10.1049/sfw2/5556408
+% （volume=2026, issue=1；5556408 为 article number，本库按既有惯例置于 pages）。该刊卷号按年份编号。
 @article{razzaq2026blockchain,
   author  = {Abdul Razzaq and others},
   title   = {Can Blockchain Decentralize Education? A Systematic Review of Challenges and Pathways},
   journal = {IET Software},
+  volume  = {2026},
+  number  = {1},
+  pages   = {5556408},
   year    = {2026},
   doi     = {10.1049/sfw2/5556408},
   note    = {[已核验] IET Software 2026(1), 2026. DOI: 10.1049/sfw2/5556408（前缀 sfw2 经 Crossref 核验有效，非异常）. 作者：Razzaq Abdul, Numair Muhammad, Ahmed Salman, Junaid Waqas. 64 项研究 (2017-2025). 应用类别：证书/文凭管理、微证书与学分转移、能力与评估追踪——注意：无「算法决策审计」类}
@@ -188,21 +205,30 @@
 }
 
 % [已核验] 欧洲区块链微证书倡议综述。引用此综述即可，不必逐一回溯 EBSI/ESSA 等。
+% [已核验-2026-10-02] 题名改为注册库正式题名（Crossref 10.21125/edulearn.2025.1342，container=EDULEARN Proceedings）；
+% 注册库原为全大写，此处按正常大小写书写。原 bib 简写题名「...in European Education Initiatives」与正式题名不符。
+% [已核验-2026-10-02] volume=1 取自 Crossref https://api.crossref.org/works/10.21125/edulearn.2025.1342（page=5382-5388）
 @inproceedings{jusic2025microcredential,
   author    = {Jusi{\'c} and Fuks and Kochovski and Stankovski},
-  title     = {Blockchain-Enabled Micro Credentialing in European Education Initiatives},
+  title     = {Blockchain-Enabled Micro Credentialing: Enhancing Trust, Mobility, and Interoperability in Lifelong Learning},
   booktitle = {EDULEARN25 Proceedings},
+  volume    = {1},
   pages     = {5382--5388},
   year      = {2025},
   doi       = {10.21125/edulearn.2025.1342},
   note      = {[已核验] EDULEARN Proc. 1:5382-5388, 2025. DOI: 10.21125/edulearn.2025.1342. 作者：Jusic Arvin, Fuks Svetlana, Kochovski Petar, Stankovski Vlado. 综述 EBSI、ESSA、NOO Ultra、TRUSTCHAIN、FRI Academy. 结论：微证书/学分互认赛道已被制度化占据，LearnFlow 不应进入}
 }
 
-% [部分核验] VERIFY: 卷期页码待补。机制细节已由官方文档独立核实。
+% [部分核验] VERIFY: 作者全名待补。机制细节已由官方文档独立核实。
+% [已核验-2026-10-02] volume/number/pages 取自 Crossref https://api.crossref.org/works/10.1515/itit-2018-0020
+% （volume=60, issue=5-6, page=273-281）
 @article{hepp2018originstamp,
   author  = {Hepp and Schoenhals and Gondek and Gipp},
   title   = {OriginStamp: A Blockchain-Backed System for Decentralized Trusted Timestamping},
   journal = {it - Information Technology},
+  volume  = {60},
+  number  = {5--6},
+  pages   = {273--281},
   year    = {2018},
   doi       = {10.1515/itit-2018-0020},
   note    = {[已核验] it - Inf. Technol. 60(5-6):273-281, 2018. DOI: 10.1515/itit-2018-0020. 作者：Hepp Thomas, Schoenhals Alexander, Gondek Christopher, Gipp Bela. 机制（已由 docs.originstamp.com 官方文档与 2018-11-26 白皮书 v2 独立核实）：本地 SHA-256 → 固定间隔批收集哈希 → 字典序排序 → 平衡 Merkle 树 → 根写入区块链}
@@ -299,10 +325,17 @@
 }
 
 % [已核验] 定时炸弹：仅「框架化」为游戏，效果与完整机制相当。
+% [已核验-2026-10-02] 注册库 container-title 为截断简写（"Shallow Gamification"，不含副标题），
+% 本条目保留完整标题与副标题 "Testing Psychological Effects of Framing an Activity as a Game"。
+% [已核验-2026-10-02] volume/number/pages 取自 Crossref https://api.crossref.org/works/10.1177/1555412014559978
+% （volume=10, issue=3, page=229-248）
 @article{lieberoth2015shallow,
   author  = {Lieberoth, Andreas},
   title   = {Shallow Gamification: Testing Psychological Effects of Framing an Activity as a Game},
   journal = {Games and Culture},
+  volume  = {10},
+  number  = {3},
+  pages   = {229--248},
   year    = {2015},
   doi     = {10.1177/1555412014559978},
   note    = {[已核验] Games Cult. 10(3):229-248, 2015. DOI: 10.1177/1555412014559978. N=90. framing 单独即可产生与完整游戏机制相当的兴趣/享受效果. 威胁：LearnFlow 60 个机制的效果可能大部分来自框架效应. 机会：N=90 短时实验室；真实生产系统上的长期复制/否证有明确价值}
@@ -392,10 +425,15 @@
 
 % [已核验] 测试用例级代码知识追踪。TIKTOC 铺好路但没走完的那一步
 % （把测试级信号接入难度选择）即 LearnFlow 的落点。
+% [已核验-2026-10-02] 属会议名写法规范差异（非截断）：注册库 container-title 作
+% "Proceedings of the 15th International Learning Analytics and Knowledge Conference"，
+% 本条目沿用会议自用简称 "LAK 2025: The 15th International Learning Analytics and Knowledge Conference"，保留 bib 原写法。
+% [已核验-2026-10-02] pages 取自 Crossref https://api.crossref.org/works/10.1145/3706468.3706500（page=238-248）
 @inproceedings{duan2025tiktoc,
   author    = {Duan, Zhangqi and Fernandez, Nigel and Hicks, Alexander and Lan, Andrew},
   title     = {Test Case-Informed Knowledge Tracing for Open-ended Coding Tasks},
   booktitle = {LAK 2025: The 15th International Learning Analytics and Knowledge Conference},
+  pages     = {238--248},
   year      = {2025},
   address   = {Dublin, Ireland},
   doi       = {10.1145/3706468.3706500},
@@ -406,8 +444,12 @@
 }
 
 % [部分核验] LLM 生成的知识组件 vs 人工编写的 KC。
+% [已核验-2026-10-02] 题名改用 arXiv 最新版（v4, 2026-05-17 更新）正式题名，
+% 见 https://arxiv.org/abs/2502.18632 ："Automated Knowledge Component Generation for Interpretable
+% Knowledge Tracing in Coding Problems"；原 bib 题名「KCGen-KT: Knowledge Component Generation for
+% Knowledge Tracing」为早期版/方法名简写。
 @misc{kcgenkt2025,
-  title        = {KCGen-KT: Knowledge Component Generation for Knowledge Tracing},
+  title        = {Automated Knowledge Component Generation for Interpretable Knowledge Tracing in Coding Problems},
   year         = {2025},
   eprint       = {2502.18632},
   archivePrefix= {arXiv},
@@ -426,9 +468,18 @@
 }
 
 % [已核验] 入门 Python 课程数据集，与 CodeWorkout（Java）互补。
+% [已核验-2026-10-02] 题名与年份更正：Crossref 10.1145/3545945.3569822 正式题名为
+% "FalconCode: A Multiyear Dataset of Python Code Samples from an Introductory Computer Science Course"，
+% 发表于 SIGCSE TS 2023（2023-03-02），pp. 938--944。原 bib 题名（A Dataset of Introductory Python
+% Programming Submissions）与年份（2022）均不符。
+% [已核验-2026-10-02] 出版方/注册库来源：Crossref https://api.crossref.org/works/10.1145/3545945.3569822
+% （补 author 5 名、booktitle 与 pages 938--944；作者与该文 SIGCSE TS 2023 byline 一致）
 @inproceedings{falconcode2022,
-  title     = {FalconCode: A Dataset of Introductory Python Programming Submissions},
-  year      = {2022},
+  author    = {de Freitas, Adrian and Coffman, Joel and de Freitas, Michelle and Wilson, Justin and Weingart, Troy},
+  title     = {FalconCode: A Multiyear Dataset of Python Code Samples from an Introductory Computer Science Course},
+  booktitle = {Proceedings of the 54th ACM Technical Symposium on Computer Science Education V. 1},
+  pages     = {938--944},
+  year      = {2023},
   doi       = {10.1145/3545945.3569822},
   note      = {[已核验] SIGCSE TS 2023, pp.938-944 (Proc. 54th ACM Tech. Symp. Comput. Sci. Educ. V.1). DOI: 10.1145/3545945.3569822. 作者：de Freitas Adrian, Coffman Joel, de Freitas Michelle, Wilson Justin, Weingart Troy. 数据规模：3,267 名学生 / 157 题 / 20 个知识组件}
 }
@@ -640,6 +691,8 @@
 
 % [已核验] 游戏化定义的奠基文献。「在非游戏情境中使用游戏设计元素」。
 % 题名须照录期刊原样：冒号后小写 defining "gamification"。
+% [已核验-2026-10-02] 注册库 container-title 为截断简写（"From game design elements to gamefulness"，
+% 不含副标题），本条目保留完整标题与副标题的定义式表述。
 @inproceedings{deterding2011gamification,
   author    = {Deterding, Sebastian and Dixon, Dan and Khaled, Rilla and Nacke, Lennart},
   title     = {From game design elements to gamefulness: defining {``gamification''}},
@@ -698,6 +751,8 @@
 % 关键结论可直接引用：过半数研究发现 RL 诱导策略显著优于基线；
 % 且 RL 在与认知心理学/学习科学理论结合时最成功。
 % 注意：该文有勘误（Correction），引用时宜一并留意。
+% [已核验-2026-10-02] 注册库 container-title 为截断简写（"Where's the Reward?"，不含副标题），
+% 本条目保留完整标题与副标题 "A Review of Reinforcement Learning for Instructional Sequencing"。
 @article{doroudi2019wheresreward,
   author  = {Doroudi, Shayan and Aleven, Vincent and Brunskill, Emma},
   title   = {Where's the Reward? {A} Review of Reinforcement Learning for Instructional Sequencing},
@@ -749,6 +804,9 @@
 
 % [已核验] RL 实时排课的大规模实证。对本文最有价值的一条：
 % 首个在大型在线课程中实时调度教学活动的 RL 模型，控制实验逾 1000 名学习者。
+% [已核验-2026-10-02] 属会议名写法规范差异（非截断）：注册库 container-title 作
+% "Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems"，
+% 本条目沿用 ACM 通行简写 "CHI '20: CHI Conference on Human Factors in Computing Systems"，保留 bib 原写法。
 @inproceedings{bassen2020rlscheduling,
   author    = {Bassen, Jonathan and Balaji, Bharathan and Schaarschmidt, Michael and Thille, Candace and Painter, Jay and Zimmaro, Dawn and Games, Alex and Fast, Ethan and Mitchell, John C.},
   title     = {Reinforcement Learning for the Adaptive Scheduling of Educational Activities},
@@ -844,23 +902,29 @@
 }
 
 % M1 [5] IRT 参数稳定性。
+% [已核验-2026-10-02] year 由 2025 更正为 2026：Frontiers 出版方页面
+% （https://www.frontiersin.org/articles/10.3389/fpsyg.2025.1652341/full）载 "Published 12 January 2026"，
+% 其官方推荐引用串亦为 "Weber D, ... and Koch M (2026) ..."。注：卷号 16 属 2025 卷次（DOI 年份段 2025），
+% 但正式出版/引用年为 2026，故依出版方引用口径著录 2026。
 @article{weber2025stabilityIRT,
   author  = {Weber, Dominik and Becker, Nicolas and Spinath, Frank M. and Koch, Marco},
   title   = {The stability of {IRT} parameters under several test equating conditions},
   journal = {Frontiers in Psychology},
   volume  = {16},
   pages   = {1652341},
-  year    = {2025},
+  year    = {2026},
   doi     = {10.3389/fpsyg.2025.1652341},
-  note    = {[已核验]}
+  note    = {[已核验] Front. Psychol. 16:1652341，正式出版 2026-01-12（卷 16 属 2025 卷次；DOI 年份段 2025）}
 }
 
 % M1 [6] 快速猜测反应对链接误差的影响。
+% [已核验-2026-10-02] number 取自 Crossref https://api.crossref.org/works/10.1186/s40536-025-00265-8（volume=13, issue=1；28 为 article number）
 @article{deng2025linkingerrors,
   author  = {Deng, Jiayi},
   title   = {Linking errors introduced by rapid guessing responses when employing multigroup concurrent {IRT} scaling},
   journal = {Large-scale Assessments in Education},
   volume  = {13},
+  number  = {1},
   pages   = {28},
   year    = {2025},
   doi     = {10.1186/s40536-025-00265-8},
@@ -869,7 +933,7 @@
 
 % M1 [8] / M3 [14] 标准化的难度标签基准（两稿同条）。
 @misc{ding2024easy2hard,
-  author       = {Ding, Mucong and Agrawal, Aakriti and Choo, Jaewoo and Deng, Chenghao and others},
+  author       = {Ding, Mucong and Deng, Chenghao and Choo, Jocelyn and Wu, Zichu and Agrawal, Aakriti and Schwarzschild, Avi and Zhou, Tianyi and Goldstein, Tom and Langford, John and Anandkumar, Anima and Huang, Furong},
   title        = {{Easy2Hard-Bench}: Standardized difficulty labels for profiling {LLM} performance and generalization},
   howpublished = {Advances in Neural Information Processing Systems (NeurIPS), Datasets and Benchmarks Track},
   year         = {2024},
@@ -928,17 +992,24 @@
 }
 
 % M1 [13] / M3 [19] DBE-KT22 数据集（两稿同条）。
+% [已核验-2026-10-02] DOI 10.26193/6DZWOH 经 DataCite 核验指向**数据集本体**（type=Dataset，ADA Dataverse，2022），
+% 正式题名为 "Database Exercises for Knowledge Tracing (DBE-KT22)"。原 bib 题名是「论文」题名，且与 arXiv 正式题名
+% （"DBE-KT22: A Knowledge Tracing Dataset Based on Online Student Evaluation"）也不一致。
+% 故 title 改用数据集正式名，配套论文题名与预印本标识写入 note / eprint（未改 doi）。
 @misc{abdelrahman2022dbekt22,
   author       = {Abdelrahman, Ghodai and Abdelfattah, Sherif and Wang, Qing and Lin, Yu},
-  title        = {{DBE-KT22}: A knowledge tracing dataset based on database systems exercises},
+  title        = {Database Exercises for Knowledge Tracing ({DBE-KT22})},
   year         = {2022},
   eprint       = {2208.12651},
   archivePrefix= {arXiv},
   doi          = {10.26193/6DZWOH},
-  note         = {[已核验] 数据集托管于 ADA Dataverse}
+  note         = {[已核验] DataCite DOI 10.26193/6DZWOH 指向数据集本体（ADA Dataverse，2022），题名采用数据集正式名。配套论文题名 "DBE-KT22: A Knowledge Tracing Dataset Based on Online Student Evaluation"（arXiv:2208.12651，2022-08-19），作者同本条目}
 }
 
 % M1 [14] XES3G5M 知识追踪基准数据集。
+% [已核验-2026-10-02] 属论文集名写法规范差异（非截断）：注册库 container-title 作
+% "Advances in Neural Information Processing Systems 36"，本条目补出会议年与 Track
+% （"...36 (NeurIPS 2023), Datasets and Benchmarks Track"），保留 bib 原写法。
 @inproceedings{liu2023xes3g5m,
   author    = {Liu, Zitao and Liu, Qiongqiong and Guo, Teng and Chen, Jiahao and Huang, Shuyan and Zhao, Xiangyu and Tang, Jiliang and Luo, Weiqi and Weng, Jian},
   title     = {{XES3G5M}: A knowledge tracing benchmark dataset with auxiliary information},
@@ -1062,15 +1133,19 @@
 % ------------------------- M2《多干预并存学习系统的冲突结构审计》 -------------------------
 
 % M2 [1] JITAI 范围综述。审阅附录 A 已确认存在。
+% [已核验-2026-10-02] year 由 2024 更正为 2025：Crossref 10.1111/bjhp.12766 的
+% published-print=2025-02（Volume 30, Issue 1），2024-11-14 为 online-first 首发日。
+% 依「正式卷期年份」著录为 2025。number=1 取自 Crossref https://api.crossref.org/works/10.1111/bjhp.12766。
 @article{hsu2024jitai,
   author  = {Hsu, Tzu-Chieh C. and Whelan, Paul and Gandrup, Jonathan and Armitage, Christopher J. and Cordingley, Lis and McBeth, John},
   title   = {Personalized interventions for behaviour change: A scoping review of just-in-time adaptive interventions},
   journal = {British Journal of Health Psychology},
   volume  = {30},
+  number  = {1},
   pages   = {e12766},
-  year    = {2024},
+  year    = {2025},
   doi     = {10.1111/bjhp.12766},
-  note    = {[审阅已核]}
+  note    = {[审阅已核] Br. J. Health Psychol. 30(1):e12766, 2025（print 2025-02；online-first 2024-11-14，DOI 年份段 2024 为投稿/首发年）}
 }
 
 % M2 [2] Bandit Pareto 集识别。
@@ -1313,14 +1388,23 @@
 }
 
 % M3 [6] MLEKT。
+% [已核验-2026-10-02] year 由 2025 更正为 2026：Springer 章节页 "Published Time: 2026"、
+% Springer 官方 RIS 导出 PY=2026、Crossref issued=2026 三者一致。
+% booktitle 保留 PRICAI 会议名（对读者信息量更大），另加 series 与注册库 container-title（LNCS）对应。
+% VERIFY: 作者姓氏切分三源互斥，暂保留原值，待按论文 PDF byline 一次定稿：
+%   · Springer 官方 RIS：AU - Qian, Wang / Wei, Pan / Lan, Tang Xiao / Qi, Liang Jing（family=Qian/Wei/Lan/Qi）
+%   · OpenAlex raw_author_name：Wang Qian / Pan Wei / Tang Xiao Lan / Liang Jing Qi（family=Wang/Pan/Tang/Liang）
+%   · Semantic Scholar：Qian Wang / Wei Pan / Xiao-Lan Tang / Jing-Qi Liang
+%   bib 现值（Qian, Wei / Wei, Peng / Tan, Xiao Lan / Li, Jing Qi）与三者均不完全一致（第 1、2 姓同 RIS，第 3、4 不同）。
 @inproceedings{qian2025mlekt,
   author    = {Qian, Wei and Wei, Peng and Tan, Xiao Lan and Li, Jing Qi},
   title     = {Personalized knowledge tracing model with memory reinforcement and forgetting-aware mechanisms},
   booktitle = {PRICAI 2025: Trends in Artificial Intelligence, Part I},
+  series    = {Lecture Notes in Computer Science},
   pages     = {54--69},
-  year      = {2025},
+  year      = {2026},
   doi       = {10.1007/978-981-95-7075-1_4},
-  note      = {[已核验]}
+  note      = {[已核验] Springer LNCS（PRICAI 2025, Part I），pp. 54--69，出版年 2026。VERIFY(作者姓名切分)：三源互斥——Springer RIS 作 family=Qian/Wei/Lan/Qi（AU: Qian, Wang / Wei, Pan / Lan, Tang Xiao / Qi, Liang Jing）；OpenAlex raw 作 Wang Qian / Pan Wei / Tang Xiao Lan / Liang Jing Qi；Semantic Scholar 作 Qian Wang / Wei Pan / Xiao-Lan Tang / Jing-Qi Liang。bib 现值与三者均不完全一致，保留原值待按论文 PDF byline 定稿}
 }
 
 % M3 [7] SAFFKT。
@@ -1403,8 +1487,12 @@
 }
 
 % M3 [15] 生成式 AI 自动标注教育题目数据集。
+% [已核验-2026-10-02] bib 原记 2 名作者（Pratiwi, Ovi / Fakhrurroja, Hanif）系漏第 1 作者并与第 2 作者混称。
+% 依 Crossref 10.1109/ICDSG67714.2025.11381390、IEEE Xplore 与 ACM DL 引用串（Orvalamarva; Pratiwi O; Fakhrurroja H）
+% 补全为 3 名：Orvalamarva（出版方只登记单名，无 given name）/ Pratiwi, Oktariani Nurul / Fakhrurroja, Hanif。
+% VERIFY: 第 1 作者 given name 在 Crossref/IEEE/ACM 三处均为空，待出版方 XML 确认。
 @inproceedings{pratiwi2025automatic,
-  author    = {Pratiwi, Ovi and Fakhrurroja, Hanif},
+  author    = {Orvalamarva and Pratiwi, Oktariani Nurul and Fakhrurroja, Hanif},
   title     = {Automatic labeling using generative {AI} in educational question dataset},
   booktitle = {2025 1st International Conference on Data Science and Geoinformatics (ICDSG)},
   pages     = {230--235},
@@ -1477,7 +1565,7 @@
   year         = {2019},
   eprint       = {1904.11738},
   archivePrefix= {arXiv},
-  note         = {[2026-09-27 补录并核实] **正式版为 EDM 2019**（Proceedings of the 12th International Conference on Educational Data Mining, pp. 683--686；据作者本人代码仓 ckyeungac/DeepIRT 的引用样例，且与 arXiv:1904.11738 为同一工作）；预印本 arXiv:1904.11738（2019-04-26 投稿，04-29 上线）。推荐报告列为 R4 且只给了 arXiv，本次按出版方/作者页面升级为会议版著录。方法：DKVMN 估学生能力与题目难度 + IRT 估答对概率，使深度 KT 可解释。**M1 的引用点仅为一项数值旁证**：该文报告"项目分析（首次作答错误比例）与 1PL IRT 难度的 Pearson r = 0.96"，与本文 Junyi 上实测的 Spearman(b_j, 仅成功率_B)=0.963 同量级、同结论，用于论证"1PL 与成功率几乎完全同源，故不能充当外生基准"。另行注明（推荐报告 K4 的限定）：不得把其网络输出的难度用作判定基准（与出版商标签仅相关 0.08）}
+  note         = {[2026-09-27 补录并核实] **正式版为 EDM 2019**（Proceedings of the 12th International Conference on Educational Data Mining, pp. 683--686；据作者本人代码仓 ckyeungac/DeepIRT 的引用样例，且与 arXiv:1904.11738 为同一工作）；预印本 arXiv:1904.11738（2019-04-26 投稿，04-29 上线）。推荐报告列为 R4 且只给了 arXiv，本次按出版方/作者页面升级为会议版著录。方法：DKVMN 估学生能力与题目难度 + IRT 估答对概率，使深度 KT 可解释。**M1 的引用点仅为一项数值旁证**：该文报告"项目分析（首次作答错误比例）与 1PL IRT 难度的 Pearson r = 0.96"，与本文 Junyi 上实测的 Spearman(b_j, 仅成功率_A)=0.9541（旧 0.963 因成功率基线取自 B 半、与 b_j 同半受同半泄漏膨胀已作废）同量级、同结论，用于论证"1PL 与成功率几乎完全同源，故不能充当外生基准"。另行注明（推荐报告 K4 的限定）：不得把其网络输出的难度用作判定基准（与出版商标签仅相关 0.08）}
 }
 
 % M3 §5 协议可靠性边界（解析成功率为必报项）；推荐报告 R5。

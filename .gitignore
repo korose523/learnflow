@@ -83,6 +83,18 @@ data_backup/
 # `git clone --depth 1` 原样重建，故不入本库——避免把他人的 GPL 代码当作本项目产物分发。
 results/m2/external/
 
+# ── 投稿 docx 构建流水线的中间产物 ────────────────────────────────
+# output/ 下是 stage1→stage2→stage3 的构建现场：stage2 的 formatted-*.html、
+# pipeline-state.yaml、*_facts.md、submission_checklist_remaining.md 等。
+# 它们**不是研究成果**，而是可随时由 docs/ 下的 md 源重新生成的中间态：
+#   1. 真正要交付的 docx 在 docs/ 根目录（研究计划/研究报告 中·韩 + 因果侧识别策略），
+#      那几个文件仍随仓库归档，不受此条影响；
+#   2. 中间产物含本机绝对路径（如 C:/Users/<user>/...）与已撤下的内部文档名，
+#      留在公开仓库既不必要也不卫生；
+#   3. 与 data/ 同理——凡能由源重建的，就不当产物分发。
+# 注：仅移出版本控制，磁盘文件保留（git rm --cached 后不会删除工作区文件）。
+output/
+
 # ── 项目临时文件 ────────────────────────────────────────
 tmp_*.json
 

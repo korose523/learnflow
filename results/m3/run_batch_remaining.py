@@ -17,12 +17,16 @@ import subprocess
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
-PY = r"C:/Users/mac/.workbuddy/binaries/python/envs/default/Scripts/python.exe"
-DRIVER = "E:/learnflow/results/m3/local_matrix_e1ab.py"
+# 仓库根可用 LEARNFLOW_ROOT 覆盖；默认按本文件位置（results/m3/）推导
+BASE = Path(os.environ.get("LEARNFLOW_ROOT", Path(__file__).resolve().parents[2]))
+M3 = BASE / "results" / "m3"
+PY = os.environ.get("PYTHON", sys.executable)  # 原为硬编码本机解释器路径，已移除
+DRIVER = str(M3 / "local_matrix_e1ab.py")
 META = "results/m3/local_matrix_meta_small.json"
 OUT = "results/m3/local_matrix"
-JSONL = "E:/learnflow/results/m3/local_matrix.jsonl"
+JSONL = str(M3 / "local_matrix.jsonl")
 TAGS = "http://127.0.0.1:11434/api/tags"
 
 #: 目标模型（严格串行；已完成的单元格由断点续跑自动跳过）
@@ -71,14 +75,14 @@ def run_model(model: str) -> None:
            "--conditions", "E1A,E1B", "--out", OUT]
     print(f"\n=== 启动 {model} ===", flush=True)
     t0 = time.time()
-    proc = subprocess.run(cmd, cwd="E:/learnflow", capture_output=True,
+    proc = subprocess.run(cmd, cwd=str(BASE), capture_output=True,
                           text=True, encoding="utf-8", errors="replace")
     # local_matrix.json 每次跑批会被整体覆盖，故按模型留存一份副本，
     # 否则先跑完模型的 ρ/CI 汇总会丢失（build_matrix_rows.py 依赖这些值）。
     try:
         import shutil
-        src = "E:/learnflow/results/m3/local_matrix.json"
-        dst = f"E:/learnflow/results/m3/local_matrix__{model.replace(':', '_')}.json"
+        src = str(M3 / "local_matrix.json")
+        dst = str(M3 / f"local_matrix__{model.replace(':', '_')}.json")
         if os.path.isfile(src):
             shutil.copyfile(src, dst)
             print(f"[save] 汇总副本 -> {dst}", flush=True)
