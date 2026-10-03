@@ -46,7 +46,9 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DOCS = REPO_ROOT / "docs"
-PLAN_REPORT = DOCS / "研究计划与报告"
+# 2026-10-03: `docs/研究计划与报告/` 已移除（md 并入研究总档），
+# plan/report/split 三列现直接指向 MASTER。PLAN_REPORT 保留仅为向后兼容。
+PLAN_REPORT = DOCS   # 已废弃：原为 DOCS/"研究计划与报告"
 
 # (doc key, display label, path) ------------------------------------------------ #
 # 2026-10-03: plan / report / split 三份已合并入《LearnFlow_研究总档.md》

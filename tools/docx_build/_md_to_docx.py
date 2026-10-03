@@ -381,7 +381,10 @@ def build_docx(md_path, docx_path, lang):
 
 
 def main():
-    base = r"E:\learnflow\docs\研究计划与报告"
+    # 2026-10-03: 原 `docs/研究计划与报告/` 的中文 md 已并入研究总档，
+    # 该目录已移除（构建工具迁至 tools/docx_build/）。此处 base 指向 docs/ 根，
+    # 因为韩文版源仍需从此处读取（若已随总档并入则 jobs 全部为 @MASTER 虚拟源）。
+    base = r"E:\learnflow\docs"
     out_dir = r"E:\learnflow\docs"
     # 2026-10-03: 中文版计划/报告已合并入 docs/LearnFlow_研究总档.md 第一/二部，
     # 源 md 不再单独存在；韩文版仍是独立文件。中文版改为从总档按部抽取后构建。

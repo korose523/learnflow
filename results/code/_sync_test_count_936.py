@@ -11,7 +11,7 @@
 import io, os
 
 D = r"E:\learnflow\docs"
-R = os.path.join(D, "研究计划与报告")
+R = D   # 2026-10-03: `docs/研究计划与报告/` 已移除（内容并入研究总档）
 
 M1 = os.path.join(D, "M1_难度可公度性与最优错误率_完整稿.md")
 M2 = os.path.join(D, "M2_多干预并存学习系统的冲突结构审计_完整稿.md")

@@ -24,11 +24,15 @@ import io, os, re, sys
 import importlib.util as _ilu
 import tempfile as _tf
 
-BASE = r"E:\learnflow\docs\研究计划与报告"
-MASTER = os.path.join(os.path.dirname(BASE), "LearnFlow_研究总档.md")
+# 2026-10-03: 原 `docs/研究计划与报告/` 已移除（内容并入研究总档），
+# 校验改为从总档抽取到临时目录后逐字核对（见下方 EXTRACT 逻辑）。
+BASE = r"E:\learnflow\docs"
+MASTER = os.path.join(BASE, "LearnFlow_研究总档.md")
 _TMP = _tf.mkdtemp(prefix="_verify_docs_")
+# 同目录导入 _md_to_docx.py（本脚本与它已一并迁到 tools/docx_build/）
 _spec = _ilu.spec_from_file_location(
-    "_md2docx", os.path.join(BASE, "_build_tools", "_md_to_docx.py"))
+    "_md2docx", os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             "_md_to_docx.py"))
 _m = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_m)
 _EXTRACT = {
     "研究计划_中文版.md": "第一部 · 研究计划",

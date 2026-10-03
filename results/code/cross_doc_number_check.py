@@ -109,9 +109,9 @@ CHECKS = [
 
 DOCS = [
     ("计划书·中", "docs/LearnFlow_研究总档.md"),
-    ("计划书·韩", "docs/研究计划与报告/研究计划_韩文版.md"),
+    ("计划书·韩", "docs/LearnFlow_研究总档.md"),
     ("报告·中", "docs/LearnFlow_研究总档.md"),
-    ("报告·韩", "docs/研究计划与报告/研究报告_韩文版.md"),
+    ("报告·韩", "docs/LearnFlow_研究总档.md"),
     ("README", "README.md"),
     ("CITATION", "CITATION.cff"),
     (".zenodo", ".zenodo.json"),
