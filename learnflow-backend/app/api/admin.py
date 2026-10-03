@@ -8,7 +8,7 @@ from app.core.database import get_db
 from app.api.auth import get_current_user
 from app.models.user import User, UserRole
 from app.models.task import Task, Attempt
-from app.models.consent import FeedbackScript, Alert
+from app.models.consent import FeedbackScript
 
 router = APIRouter(prefix="/api/v1/admin", tags=["管理端"])
 

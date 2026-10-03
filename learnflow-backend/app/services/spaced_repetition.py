@@ -5,7 +5,6 @@
 - 答错：缩短复习间隔（÷2）
 - 最小间隔：1天，最大间隔：180天
 """
-import math
 from datetime import datetime, timedelta, UTC
 from typing import Optional
 

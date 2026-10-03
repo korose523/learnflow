@@ -1,6 +1,6 @@
 """新增游戏化成瘾引擎：损失厌恶、新起点效应、蔡格尼克效应、峰终定律、惊喜彩蛋"""
 import random
-from datetime import datetime, UTC, timedelta
+from datetime import datetime, UTC
 from typing import Dict, Any, Optional
 
 

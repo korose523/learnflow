@@ -5,7 +5,7 @@ import logging
 import os
 import random
 from dataclasses import dataclass
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, UTC
 from typing import Any, Dict, List, Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,15 +16,15 @@ from app.models.user import User
 from app.models.pet import PetProfile
 from app.models.task import Task, Attempt, SpacedReview, StudentSkillProfile
 from app.models.consent import Alert, AlertType, AlertSeverity
-from app.services.knowledge_tracing import bkt_engine, KnowledgeState, SkillState
-from app.services.dda import dda_engine, DDADirection
+from app.services.knowledge_tracing import bkt_engine, KnowledgeState
+from app.services.dda import dda_engine
 from app.services.optimal_difficulty import optimal_difficulty_engine
 from app.services.risk_monitor import RiskMonitor, UsageSnapshot, RiskLevel
 from app.services.spaced_repetition import SpacedRepetitionService
 from app.services.pet_service import PetService
 from app.services.feedback_service import FeedbackService, FeedbackContext
 from app.services.learning_methods_engine import LearningMethodEngine
-from app.services.duolingo_addiction_engine import XPEngine, XPState, XPEventType
+from app.services.duolingo_addiction_engine import XPEngine, XPEventType
 from app.services.meta_learning_skilltree import SkillTreeEngine
 from app.services.cache import (
     cache_ability, get_ability, invalidate_dashboard, invalidate_ability, ABILITY_TTL,
@@ -235,7 +235,7 @@ def _mech_output(fn, *args, **kwargs):
     """调用机制引擎并保证输出 JSON 可序列化; 单机制异常仅记录、不中断提交。"""
     try:
         out = fn(*args, **kwargs)
-    except Exception as exc:  # noqa: BLE001 —— 单机制失败不拖垮整条流水线
+    except Exception as exc:
         return {"error": type(exc).__name__}
     try:
         json.dumps(out, ensure_ascii=False)
@@ -1046,7 +1046,7 @@ class LearningOrchestrator:
                 )
                 if _personalized:
                     _fomo_nudge = {**_fomo_nudge, "message": _personalized}
-            except Exception as _llm_exc:  # noqa: BLE001
+            except Exception as _llm_exc:
                 logger.warning("LLM 干预话术生成失败, 使用规则文案: %s", _llm_exc)
 
         # 12c. 在线决策闭环: RL 奖励回灌 (AI 行为管控核心接线)
@@ -1083,7 +1083,7 @@ class LearningOrchestrator:
                 _FOMO_ARBITRATOR.report_reward(
                     str(user.id), _reward, session_id=session_id
                 )
-        except Exception as _rl_exc:  # noqa: BLE001
+        except Exception as _rl_exc:
             logger.warning("RL 奖励回灌失败 (不影响主流程): %s", _rl_exc)
 
 
@@ -1247,11 +1247,9 @@ class LearningOrchestrator:
     @classmethod
     async def _build_risk_snapshot(cls, user: User, db: AsyncSession) -> UsageSnapshot:
         """基于真实数据构建风险快照"""
-        from datetime import timedelta
 
         now = datetime.now(UTC)
         today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-        week_ago = now - timedelta(days=7)
 
         # 今日答题
         today_attempts = await db.execute(

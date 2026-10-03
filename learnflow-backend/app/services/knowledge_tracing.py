@@ -18,8 +18,7 @@
 - 85%规则: Wilson et al. (2019) "The Eighty Five Percent Rule for optimal learning"
 """
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
-import math
+from typing import Dict, List, Tuple
 
 
 @dataclass

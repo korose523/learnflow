@@ -49,7 +49,6 @@ from app.services import instrument_catalog
 from app.services.learning_addiction_index import LearningAddictionIndex
 from app.services.research_consent import resolve_research_consent
 from app.services.self_report_service import (
-    MAX_AGE_DAYS,
     coverage_report,
     lai_inputs_from_self_report,
 )

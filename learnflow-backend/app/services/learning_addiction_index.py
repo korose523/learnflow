@@ -14,10 +14,9 @@ LAI 评分：0-100，越高越健康（0=深度成瘾，100=完全健康）
 风险等级：L1(80-100 正常) / L2(50-79 关注) / L3(20-49 深度) / L4(0-19 病理)
 """
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta, UTC
+from datetime import datetime, UTC
 from enum import IntEnum
 from typing import Optional
-from collections import deque
 
 
 class LAIRiskTier(IntEnum):

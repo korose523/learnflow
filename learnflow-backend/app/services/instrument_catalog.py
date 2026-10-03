@@ -45,7 +45,7 @@ LAI（学习成瘾化指数）的五维框架中，**「行为控制」与「功
 ``InstrumentSpec.dimension`` 直接给出该量表结果应写入哪个 LAI 输入键，
 使聚合逻辑无需硬编码映射表；新增量表只改本目录即可。
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 

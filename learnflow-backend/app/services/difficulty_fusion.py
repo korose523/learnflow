@@ -50,7 +50,7 @@
 不引入 numpy（保持零依赖以适配受限环境）。
 """
 import math
-from typing import Dict, List, Mapping, Optional, Sequence
+from typing import List, Mapping, Optional, Sequence
 
 __all__ = [
     "ecdf_logit", "fuse_signals", "logit_to_fsrs", "EPS",

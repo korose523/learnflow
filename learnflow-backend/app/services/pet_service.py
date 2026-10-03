@@ -6,9 +6,8 @@
 - creativity (创造力): 解题方式多样、独特解法
 - collaboration (协作力): 帮助同学、参加小组、受助
 """
-import math
 from dataclasses import dataclass
-from typing import Optional, Dict
+from typing import Dict
 
 from app.models.pet import PetProfile, PetMood
 

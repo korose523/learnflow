@@ -95,7 +95,7 @@ MIND_MAPPING_KEY = "mind_mapping"
 # **模块导入时**以副作用 append 进 METHOD_TIPS 的, 因此注册表必须强制导入该模块,
 # 否则 METHOD_TIPS[16..22] 根本不存在, impl_ref 也就成了空指针。
 # 该模块内有去重保护, 重复导入不会产生重复条目。
-from app.services import advanced_methods_engine as _advanced_methods_engine  # noqa: F401
+from app.services import advanced_methods_engine as _advanced_methods_engine
 
 
 class MethodDisabledError(RuntimeError):

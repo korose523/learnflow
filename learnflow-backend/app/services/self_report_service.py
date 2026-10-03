@@ -26,7 +26,7 @@ LAI 的五个维度中，``control``（25%）与 ``function``（10%）**无法�
 """
 import logging
 from datetime import datetime, timedelta, UTC
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Set, Tuple
 
 from sqlalchemy import select
 

@@ -19,7 +19,6 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import ceil, sqrt
 from statistics import NormalDist
-from typing import Optional
 
 
 def design_effect(cluster_size: int, icc: float) -> float:

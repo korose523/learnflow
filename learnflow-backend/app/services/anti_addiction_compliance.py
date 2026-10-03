@@ -4,10 +4,10 @@
 设计哲学: 所有限制用认知科学解释——休息是学习的一部分。
 """
 
-from dataclasses import dataclass, field
-from datetime import datetime, UTC, timedelta
+from dataclasses import dataclass
+from datetime import datetime, UTC
 from enum import Enum
-from typing import Optional, Dict
+from typing import Optional
 
 
 class AgeGroup(str, Enum):

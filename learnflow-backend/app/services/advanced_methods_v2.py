@@ -15,7 +15,7 @@ LearnFlow 历史宣称"28 种学习方法", 真实只有 23 个 (见 scripts/ver
 method_registry 里它们的 delivery 标注为 interactive/plan/quiz, 与仅 tip 的方法
 区分开。
 """
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 # ────────────────────────────────────────────────────────────

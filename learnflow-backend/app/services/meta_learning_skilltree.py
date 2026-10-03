@@ -17,7 +17,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime, UTC
 from enum import Enum
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 import hashlib
 import random
 

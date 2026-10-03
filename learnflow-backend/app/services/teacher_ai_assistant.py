@@ -11,8 +11,7 @@
   教师不是数据的消费者，而是教学决策的制定者。
   AI 提供建议，教师保留最终决定权。
 """
-from dataclasses import dataclass, field
-from datetime import datetime, UTC, timedelta
+from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 
@@ -109,7 +108,6 @@ class TeacherAIAssistant:
     def analyze_student(cls, student: dict, stats: dict,
                          bkt_state: dict = None) -> StudentAnalysisReport:
         """生成单个学生的 AI 分析报告"""
-        from app.services.knowledge_tracing import BKTEngine
 
         # 能力分析
         overall_mastery = stats.get("avg_mastery", 0.5)

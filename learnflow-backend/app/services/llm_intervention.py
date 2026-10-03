@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 import re
-from typing import Dict, List
+from typing import Dict
 
 from app.services.ollama_client import get_ollama
 

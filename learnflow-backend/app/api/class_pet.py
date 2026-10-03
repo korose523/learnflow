@@ -26,7 +26,7 @@ from app.core.database import get_db
 from app.api.auth import get_current_user
 from app.models.user import User, UserRole
 from app.models.class_pet import ClassPetGarden
-from app.models.pet import PetProfile, PetMood
+from app.models.pet import PetProfile
 from app.services.class_pet_service import (
     ClassPetService,
     BehaviorPointEvent,
@@ -116,7 +116,7 @@ async def get_class_garden(
     db: AsyncSession = Depends(get_db),
 ) -> dict:
     """班级宠物园视图：排行榜、形态分布、凝聚力、连接质量。"""
-    garden = await _get_or_create_garden(db, class_id)
+    await _get_or_create_garden(db, class_id)  # 确保班级宠物园存在（结果未直接使用）
     pets = await _class_pets(db, class_id)
     cohesion = _cohesion_of(pets)
     return ClassPetService.build_garden_view(pets, class_id, cohesion)
