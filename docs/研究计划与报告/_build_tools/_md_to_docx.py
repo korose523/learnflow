@@ -388,9 +388,9 @@ def main():
     MASTER = os.path.join(out_dir, "LearnFlow_研究总档.md")
     jobs = [
         (r"@MASTER:第一部 · 研究计划", "研究计划_中文版.docx", "zh"),
-        ("研究计划_韩文版.md", "研究计划_韩文版.docx", "kr"),
+        (r"@MASTER:第三部 · 研究计划（韩文版）", "研究计划_韩文版.docx", "kr"),
         (r"@MASTER:第二部 · 研究进展报告", "研究报告_中文版.docx", "zh"),
-        ("研究报告_韩文版.md", "研究报告_韩文版.docx", "kr"),
+        (r"@MASTER:第四部 · 研究进展报告（韩文版）", "研究报告_韩文版.docx", "kr"),
     ]
     log = []
     tmpdir = os.path.join(out_dir, "_master_extract")
