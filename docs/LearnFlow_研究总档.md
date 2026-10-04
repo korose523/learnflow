@@ -266,13 +266,13 @@
 
 | 指标 | 实测值 | 复算来源 |
 |---|---:|---|
-| 游戏化干预机制（登记） | **54**（LF-M01…LF-M54，连续无缺口） | `scripts/verify_counts.py` |
+| 游戏化干预机制（登记） | **54**（LF-M01…LF-M54，连续无缺口） | `learnflow-backend/scripts/verify_counts.py` |
 | 其中：运行时真实效果生产者 | **2**（`deep_addiction_engine.py:296` LF-M44；`learning_orchestrator.py:986` LF-M52） | 同上（`Effect(` 构造点） |
 | 其中：成熟度分布 | **complete 9 / partial 37 / placeholder 8**（占位 ID：LF-M19 / LF-M28 / LF-M29 / LF-M32 / LF-M45 / LF-M49 / LF-M50 / LF-M53） | 同上（`mechanism_registry.py` 的 `maturity`） |
 | 学习方法 | **28**（LF-L01…LF-L28） | 同上 |
 | 元学习技能树节点 | **16** | 同上 |
 | 机制注册表指纹 | `ee1a49be5732` | `registry_fingerprint()` |
-| 后端 Python | **92 个文件 / 26,749 行** | `scripts/verify_asset_numbers.py` |
+| 后端 Python | **92 个文件 / 26,749 行** | `learnflow-backend/scripts/verify_asset_numbers.py` |
 | 可及 API 端点 | **104** | 同上 |
 | 全量测试 | **56 个测试文件 / 972 条通过**（2026-09-13 基线为 936） | `pytest tests/ -q` |
 | 归档标识 | Zenodo DOI `10.5281/zenodo.22719229`（v0.1.0；v0.2.0 元数据已备） | `CITATION.cff` / `.zenodo.json` |
@@ -678,7 +678,7 @@
 > **⚠ 时点统一（审阅意见 2.1，2026-09-29）。** 本报告与计划书停在 9 月 22~23 日的状态，而稿件与仓库已是 9 月 29 日（HEAD `b41a76a`）。10 月 20 日的提交件须**全部以同一 git tag（如 `v1.1-submit`）为基准**，且该 tag 之后的工作不进入提交件。**该 tag 尚未建立**（本工作副本无 `.git`），**此处基线暂以占位形式保留，待 tag 建立后替换**。
 > **数字口径**：本报告全部数字取自可复算脚本的实测输出，不含估算，不含对既往设计稿预期值的沿用。凡同一量存在多个口径，一律采用更稳的口径并注明。
 >
-> **机制计数三元组（强制口径）**：凡出现机制数量处，一律并列 **登记 54 / 效果生产 2 / 成熟度 complete 9·partial 37·placeholder 8**，以免"54"被读作"54 个机制都在运行"。复算命令 `python scripts/verify_counts.py`。
+> **机制计数三元组（强制口径）**：凡出现机制数量处，一律并列 **登记 54 / 效果生产 2 / 成熟度 complete 9·partial 37·placeholder 8**，以免"54"被读作"54 个机制都在运行"。复算命令 `python learnflow-backend/scripts/verify_counts.py`。
 >
 > **v1.1 更正说明（2026-09-22，回应导师审阅意见第 4 节更正表）**：本版共更正 9 处数字与表述，逐条留痕列于 **§8.4**；本版仍未闭环的项（含已被撤回的一般化主张）列于 **§9.4**。更正涉及：滑窗直方图分箱边界伪影、占位机制数（4 → 8）、运行时效果生产者数（新增为并列口径）、Junyi 练习数三口径、LLM 模型身份与协议口径、目标期刊与毕业要求对照。**凡本版撤回的旧表述，一律不得再被引用。**
 
@@ -735,21 +735,21 @@
 
 | 指标 | 实测值 | 复算来源 |
 |---|---:|---|
-| 游戏化干预机制（登记） | **54**（LF-M01…LF-M54，连续无缺口） | `scripts/verify_counts.py` |
+| 游戏化干预机制（登记） | **54**（LF-M01…LF-M54，连续无缺口） | `learnflow-backend/scripts/verify_counts.py` |
 | 其中：运行时真实效果生产者 | **2**（`deep_addiction_engine.py:296` LF-M44；`learning_orchestrator.py:986` LF-M52） | 同上（`Effect(` 构造点，排除测试与评估脚本） |
 | 其中：成熟度分布 | **complete 9 / partial 37 / placeholder 8** | 同上（`mechanism_registry.py` 的 `maturity` 字段） |
-| 学习方法 | **28**（LF-L01…LF-L28） | `scripts/verify_counts.py` |
+| 学习方法 | **28**（LF-L01…LF-L28） | `learnflow-backend/scripts/verify_counts.py` |
 | 元学习技能树节点 | **16** | 同上 |
 | 机制注册表指纹 | `ee1a49be5732` | `registry_fingerprint()` |
-| 后端 Python | **92 个文件 / 26,749 行** | `scripts/verify_asset_numbers.py` |
+| 后端 Python | **92 个文件 / 26,749 行** | `learnflow-backend/scripts/verify_asset_numbers.py` |
 | 可及 API 端点 | **104** | 同上 |
 | 服务模块 | **59** | 同上 |
 | 全量测试 | **56 个测试文件 / 972 条通过**（0 error / 0 failure / 16 warning） | `python -m pytest tests/ -q` |
 | 语义类别分布 | 留存 19 / 动机 18 / 自我调节 9 / 认知 4 / 健康 4，和 = 54 | `count_verification.json` |
 
-> **"运行时落地 54 / 54，孤儿 0"这一旧口径的更正（2026-09-22）**：该数字出自 `scripts/scan_mechanism_landing.py`，其含义是"54 个机制各自都有登记条目与至少一个实现单元可被扫描到"，即**登记与实现单元的对应关系完整**。它**不等于**"54 个机制都在运行时构造干预效果"。实测在生产环境的 `app/services` 下，真正构造干预效果对象（`Effect(`）的位置只有 **2 处**；其余 28 个次级机制只在评估路径上写记录，不进入仲裁器。此后本报告不再单独使用"54/54 落地"这一表述，一律并列三元组。
+> **"运行时落地 54 / 54，孤儿 0"这一旧口径的更正（2026-09-22）**：该数字出自 `learnflow-backend/scripts/scan_mechanism_landing.py`，其含义是"54 个机制各自都有登记条目与至少一个实现单元可被扫描到"，即**登记与实现单元的对应关系完整**。它**不等于**"54 个机制都在运行时构造干预效果"。实测在生产环境的 `app/services` 下，真正构造干预效果对象（`Effect(`）的位置只有 **2 处**；其余 28 个次级机制只在评估路径上写记录，不进入仲裁器。此后本报告不再单独使用"54/54 落地"这一表述，一律并列三元组。
 
-> 复算命令：`python scripts/verify_counts.py`（输出：`artifacts/count_verification.json`，6 项全部 `verified`）
+> 复算命令：`python learnflow-backend/scripts/verify_counts.py`（输出：`learnflow-backend/artifacts/count_verification.json`，6 项全部 `verified`）
 
 ##### 2.2 数字诚信门禁
 
@@ -768,7 +768,7 @@
 
 **机制计数三元组（v1.1 新增口径）。** `verify_counts.py` 在输出权威计数的同时，并列输出 **登记 54 / 效果生产 2 / 成熟度 complete 9·partial 37·placeholder 8**，使"注册机制数"与"运行时会产生效果的机制数"不会在文档传播中被合并为一个数字。本报告凡出现机制数量处，一律使用该三元组。
 
-> 复算命令：`python scripts/verify_asset_numbers.py --doc-check`
+> 复算命令：`python learnflow-backend/scripts/verify_asset_numbers.py --doc-check`
 > **资产指标的"文档侧 ↔ 实测"关系（v1.1 更正，已在本次整改中核实）**：`--doc-check` 的**文档侧口径**是 ``LearnFlow_期刊论文拆分方案.md`（已并入本档第五部）` §1 的资产句。
 >
 > - **当前状态（2026-09-22 实测）**：该句登记的是实测值 **26,782 行 / 59 服务模块 / 92 源文件 / 104 API 端点 / 972 项测试（56 个测试文件）**，与代码事实**逐项一致**，因此该命令**返回退出码 0（通过）**。v1.0 报告的"当前返回退出码 1"对应的是一句登记 **25,389 / 54 / 87 / 104 / 920（53 测试文件）** 的早期快照，该快照已在本次整改中与实测对齐。**（时点提示：上列为 2026-09-22 实测值，保留作历史校准记录；2026-10-03 ruff 死代码清理后 `python_loc` 复算为 **26,749**，其余指标不变，`verify_asset_numbers.py` 的 registered 值已同步。）**
@@ -1098,7 +1098,7 @@
 |---|---|---|
 | 新增难度公制层 | `app/services/difficulty_fusion.py` | ECDF-logit 秩融合，对任意单调重参数化不变 |
 | 优化难度估计 | `app/services/optimal_difficulty.py` | 硬阈值分档改为 log-time 上的连续单调软项，并加入提示惩罚 |
-| 新增回归测试 | `tests/test_difficulty_fusion.py` | **14 条**回归测试 |
+| 新增回归测试 | `learnflow-backend/tests/test_difficulty_fusion.py` | **14 条**回归测试 |
 | 增量落地的估计器 | `estimate_optimized_difficulty()` | λ 收缩与优化估计器，以增量函数形式落地，未新增 pytest 用例 |
 
 **对全量测试数的影响**：前两处改动使全量测试数由改动前的 920 增至 934（中间值）；本次审阅整改新增 2 条机制计数门禁测试、并入 learnflow-main 快照后为 **972**；后一处为增量函数落地，不改变测试数，其正确性由外部校验脚本 `o11_land_verify.py` 复核（15/15 通过）。
@@ -1549,13 +1549,13 @@
 
 | 지표 | 실측값 | 재계산 출처 |
 |---|---:|---|
-| 게이미피케이션 개입 메커니즘(등록) | **54**(LF-M01…LF-M54, 연속이며 결번 없음) | `scripts/verify_counts.py` |
+| 게이미피케이션 개입 메커니즘(등록) | **54**(LF-M01…LF-M54, 연속이며 결번 없음) | `learnflow-backend/scripts/verify_counts.py` |
 | 그중: 런타임 실제 효과 생산자 | **2**(`deep_addiction_engine.py:296` LF-M44; `learning_orchestrator.py:986` LF-M52) | 상동(`Effect(` 생성 지점) |
 | 그중: 성숙도 분포 | **complete 9 / partial 37 / placeholder 8**(placeholder ID: LF-M19 / LF-M28 / LF-M29 / LF-M32 / LF-M45 / LF-M49 / LF-M50 / LF-M53) | 상동(`mechanism_registry.py`의 `maturity`) |
 | 학습 방법 | **28**(LF-L01…LF-L28) | 상동 |
 | 메타학습 스킬 트리 노드 | **16** | 상동 |
 | 메커니즘 레지스트리 지문 | `ee1a49be5732` | `registry_fingerprint()` |
-| 백엔드 Python | **92개 파일 / 26,749행** | `scripts/verify_asset_numbers.py` |
+| 백엔드 Python | **92개 파일 / 26,749행** | `learnflow-backend/scripts/verify_asset_numbers.py` |
 | 접근 가능 API 엔드포인트 | **104** | 상동 |
 | 전체 테스트 | **56개 테스트 파일 / 972건 통과**(2026-09-13 기준선은 936건) | `pytest tests/ -q` |
 | 아카이브 식별자 | Zenodo DOI `10.5281/zenodo.22719229`(v0.1.0; v0.2.0 메타데이터 준비 완료) | `CITATION.cff` / `.zenodo.json` |
@@ -2005,21 +2005,21 @@
 
 | 지표 | 실측값 | 재계산 출처 |
 |---|---:|---|
-| 게이미피케이션 개입 메커니즘(등록) | **54**(LF-M01…LF-M54, 연속 무결손) | `scripts/verify_counts.py` |
+| 게이미피케이션 개입 메커니즘(등록) | **54**(LF-M01…LF-M54, 연속 무결손) | `learnflow-backend/scripts/verify_counts.py` |
 | 그중: 런타임 실제 효과 생산자 | **2**(`deep_addiction_engine.py:296` LF-M44; `learning_orchestrator.py:986` LF-M52) | 상동(`Effect(` 생성 지점, 테스트·평가 스크립트 제외) |
 | 그중: 성숙도 분포 | **complete 9 / partial 37 / placeholder 8** | 상동(`mechanism_registry.py`의 `maturity` 필드) |
-| 학습 방법 | **28**(LF-L01…LF-L28) | `scripts/verify_counts.py` |
+| 학습 방법 | **28**(LF-L01…LF-L28) | `learnflow-backend/scripts/verify_counts.py` |
 | 메타학습 스킬 트리 노드 | **16** | 상동 |
 | 메커니즘 레지스트리 지문 | `ee1a49be5732` | `registry_fingerprint()` |
-| 백엔드 Python | **92개 파일 / 26,749행** | `scripts/verify_asset_numbers.py` |
+| 백엔드 Python | **92개 파일 / 26,749행** | `learnflow-backend/scripts/verify_asset_numbers.py` |
 | 접근 가능한 API 엔드포인트 | **104** | 상동 |
 | 서비스 모듈 | **55** | 상동 |
 | 전체 테스트 | **56개 테스트 파일 / 972건 통과**(0 error / 0 failure / 16 warning) | `python -m pytest tests/ -q` |
 | 의미 범주 분포 | 리텐션 19 / 동기 18 / 자기조절 9 / 인지 4 / 건강 4, 합 = 54 | `count_verification.json` |
 
-> **"런타임 구현 반영 54 / 54, 고아 0"이라는 구 기준의 정정(2026-09-22)**: 이 수치는 `scripts/scan_mechanism_landing.py`에서 산출되며, 그 의미는 "54개 메커니즘 각각에 등록 항목과 최소 하나의 구현 단위가 스캔 가능하게 존재한다", 즉 **등록과 구현 단위의 대응 관계가 완전하다**는 것이다. 이는 **"54개 메커니즘이 모두 런타임에서 개입 효과를 생성한다"는 뜻이 아니다**. 실측 결과 프로덕션 환경의 `app/services` 아래에서 개입 효과 객체(`Effect(`)를 실제로 생성하는 위치는 **2곳**뿐이며, 나머지 28개 2차 메커니즘은 평가 경로에서 기록만 작성하고 중재기에 진입하지 않는다. 이후 본 보고서는 "54/54 구현 반영"이라는 표현을 단독으로 사용하지 않고 삼중값을 병기한다.
+> **"런타임 구현 반영 54 / 54, 고아 0"이라는 구 기준의 정정(2026-09-22)**: 이 수치는 `learnflow-backend/scripts/scan_mechanism_landing.py`에서 산출되며, 그 의미는 "54개 메커니즘 각각에 등록 항목과 최소 하나의 구현 단위가 스캔 가능하게 존재한다", 즉 **등록과 구현 단위의 대응 관계가 완전하다**는 것이다. 이는 **"54개 메커니즘이 모두 런타임에서 개입 효과를 생성한다"는 뜻이 아니다**. 실측 결과 프로덕션 환경의 `app/services` 아래에서 개입 효과 객체(`Effect(`)를 실제로 생성하는 위치는 **2곳**뿐이며, 나머지 28개 2차 메커니즘은 평가 경로에서 기록만 작성하고 중재기에 진입하지 않는다. 이후 본 보고서는 "54/54 구현 반영"이라는 표현을 단독으로 사용하지 않고 삼중값을 병기한다.
 
-> 재계산 명령: `python scripts/verify_counts.py`(출력: `artifacts/count_verification.json`, 6개 항목 전부 `verified`)
+> 재계산 명령: `python learnflow-backend/scripts/verify_counts.py`(출력: `learnflow-backend/artifacts/count_verification.json`, 6개 항목 전부 `verified`)
 
 ##### 2.2 수치 정직성 게이트
 
@@ -2038,7 +2038,7 @@
 
 **메커니즘 계수 삼중값(v1.1 신설 기준).** `verify_counts.py`는 권위 집계를 출력하는 동시에 **등록 54 / 효과 생산 2 / 성숙도 complete 9·partial 37·placeholder 8**을 병기 출력하여, "등록 메커니즘 수"와 "런타임에서 효과를 생성하는 메커니즘 수"가 문서 유통 과정에서 하나의 수치로 합쳐지지 않게 한다. 본 보고서는 메커니즘 수량이 등장하는 모든 지점에서 이 삼중값을 사용한다.
 
-> 재계산 명령: `python scripts/verify_asset_numbers.py --doc-check`
+> 재계산 명령: `python learnflow-backend/scripts/verify_asset_numbers.py --doc-check`
 > **자산 지표의 "문서 측 ↔ 실측" 관계(v1.1 정정, 이번 개정에서 검증 완료)**: `--doc-check`의 **문서 측 기준**은 ``LearnFlow_期刊论文拆分方案.md`（已并入本档第五部）` §1의 자산 문장이다.
 >
 > - **현재 상태(2026-09-22 실측)**: 해당 문장이 등록한 값은 실측값 **26,782행 / 59개 서비스 모듈 / 92개 소스 파일 / 104개 API 엔드포인트 / 972건 테스트(56개 테스트 파일)**이며 코드 사실과 **항목별로 일치**하므로, 이 명령은 **종료 코드 0(통과)을 반환한다**. v1.0 보고서가 말한 "현재 종료 코드 1을 반환"은 **25,389 / 54 / 87 / 104 / 920(53개 테스트 파일)**을 등록한 초기 스냅샷 문장에 대응하며, 그 스냅샷은 이번 개정에서 실측에 맞추어 정렬되었다. **(시점 주의: 위는 2026-09-22 실측값이며 역사적 교정 기록으로 보존한다. 2026-10-03 ruff 죽은 코드 정리 후 `python_loc`은 **26,749**로 재계산되었고 나머지 지표는 변하지 않았으며, `verify_asset_numbers.py`의 registered 값도 동기화되었다.)**
@@ -2367,7 +2367,7 @@ XES3G5M에서 지식 구성요소 트리의 깊이와 경험적 난이도는 단
 |---|---|---|
 | 난이도 공척도 계층 신설 | `app/services/difficulty_fusion.py` | ECDF-logit 순위 융합, 임의 단조 재모수화에 불변 |
 | 난이도 추정 최적화 | `app/services/optimal_difficulty.py` | 하드 임계값 구간 분류를 log-time 상의 연속 단조 소프트 항으로 변경하고 힌트 페널티를 추가 |
-| 회귀 테스트 신설 | `tests/test_difficulty_fusion.py` | **14건** 회귀 테스트 |
+| 회귀 테스트 신설 | `learnflow-backend/tests/test_difficulty_fusion.py` | **14건** 회귀 테스트 |
 | 증분 구현된 추정기 | `estimate_optimized_difficulty()` | λ 수축과 최적화 추정기를 증분 함수 형태로 구현 반영, pytest 케이스 미추가 |
 
 **전체 테스트 수에 대한 영향**: 앞의 두 변경은 전체 테스트 수를 변경 전 920에서 934(중간값)로 증가시켰고, 이번 심사 개정에서 메커니즘 계수 게이트 테스트 2건을 추가하고 learnflow-main 스냅샷을 병합한 후 **972**가 되었으며, 뒤의 한 곳은 증분 함수 구현으로 테스트 수를 바꾸지 않으며, 그 정확성은 외부 검증 스크립트 `o11_land_verify.py`로 검증한다(15/15 통과).
@@ -2693,15 +2693,15 @@ XES3G5M에서 지식 구성요소 트리의 깊이와 경험적 난이도는 단
 
 | 指标 | 权威值 | 复算命令 |
 |---|---:|---|
-| 唯一游戏化机制 | **54**（LF-M01…LF-M54） | `python scripts/scan_mechanism_landing.py` |
+| 唯一游戏化机制 | **54**（LF-M01…LF-M54） | `python learnflow-backend/scripts/scan_mechanism_landing.py` |
 | 机制落地（可达） | **54 / 54**，孤儿 **0** | 同上，读 `artifacts/mechanism_landing_status.json` |
-| 学习方法 | **28**（`method_registry.py`，849 行） | `python scripts/verify_counts.py` |
+| 学习方法 | **28**（`method_registry.py`，849 行） | `python learnflow-backend/scripts/verify_counts.py` |
 | 元学习技能树节点 | **16** | 同上 |
 | PRD 表格逐项求和 | **69**（与 54 的差额须在稿件中说明） | 同上 |
 | 后端源码行数 | **26,749**（`app/` 下 92 个 .py 文件，59 个服务模块） | `learnflow-backend/scripts/verify_asset_numbers.py` |
 | API 端点 | **104** | 同上（`api_routes_reachable`） |
 | 测试 | **972 项通过**，56 个测试文件 | `pytest tests/ -q`；留存日志 `results/code/_final_redline_pytest.txt` |
-| 成熟度分布 | **complete 9 / partial 37 / placeholder 8** | `scripts/verify_counts.py`（`maturity_*`） |
+| 成熟度分布 | **complete 9 / partial 37 / placeholder 8** | `learnflow-backend/scripts/verify_counts.py`（`maturity_*`） |
 | 占位机制 ID | `LF-M19, M28, M29, M32, M45, M49, M50, M53` | 同上 |
 | 运行时效果生产者 | **默认 2**（`LF-M44` / `LF-M52`）；路线 A·A2 开启后 **14 个机制（声明式候选集，不计入 AST 生产者审计）**（`LEARN2_A2_PRODUCERS=1` 时 opt-in 生效，**默认关闭**，未启用时运行时行为不变；封存基线 tag `audit-m2-20260911`；按审阅 §5.4，路线 A 的 A2·A3·A4 产出不作为结果接受） | 同上（`effect_producers`，**审计时点实测 2**；`route_a_producers.py` 的 14 个候选已按审阅 §5.2 改为声明式 opt-in 候选集并**排除出 AST 审计**，故不再计入；机制标签去重 14：`LF-M01/04/05/06/07/08/12/13/15/16/44/51/52/53`） |
 | 语义类别分布 | 留存 19 / 动机 18 / 自我调节 9 / 认知 4 / 健康 3 | `mechanism_landing_status.json` |
@@ -2749,7 +2749,7 @@ XES3G5M에서 지식 구성요소 트리의 깊이와 경험적 난이도는 단
 | 离策略评估所需日志 | ⚠️ 部分 | 事件流表与埋点接口已就位（`record_learning_event`），但**尚无真实用户产生的日志** |
 | 机制级随机化开关 | ✅ 已具备 | `mechanism_toggles` 按 `mechanism_id` 开关，支持类别级整类关闭 |
 | 实验设计功效参数 | ✅ 已具备 | `power_table.py` 与 `required_n_per_group`；DEFF = 1 + (m−1)ρ，m=30、ρ=0.05 时 DEFF = 2.45 |
-| 分层门控预注册 | ✅ 已具备 | `scripts/prereg/ablation_design_v1.yaml`：Gate 0 总括检验（α=0.05）→ Gate 1 八类别 Holm 校正（α′=0.00625）→ Gate 2 机制级（α′=0.004167）→ Gate 2.5 交互（α′=0.0167）；IRB 排除未成年与高风险被试 |
+| 分层门控预注册 | ✅ 已具备 | `learnflow-backend/scripts/prereg/ablation_design_v1.yaml`：Gate 0 总括检验（α=0.05）→ Gate 1 八类别 Holm 校正（α′=0.00625）→ Gate 2 机制级（α′=0.004167）→ Gate 2.5 交互（α′=0.0167）；IRB 排除未成年与高风险被试 |
 | **大规模人类被试** | ❌ **不具备** | 见 §7.3 与 §7.4 的功效测算 |
 | **真实部署流量** | ❌ **不具备** | 972 项测试全部为单元与契约测试，无任何真实用户数据 |
 
@@ -3087,7 +3087,7 @@ Wilson 等 (2019) `wilson2019eightyfive` 在梯度下降类学习者的二分类
 
 **E4 的样本量（依本项目功效脚本实测，已修正早期估计）**
 
-`scripts/power_table.py` 在聚类规模 m=30、功效 0.8、α=0.05 条件下的实测值为：
+`learnflow-backend/scripts/power_table.py` 在聚类规模 m=30、功效 0.8、α=0.05 条件下的实测值为：
 
 | 最小可检效应量 | ICC=0（个体随机） | ICC=0.05（班级聚类） | ICC=0.10 |
 |---:|---:|---:|---:|
@@ -3538,7 +3538,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 | 项 | 为什么不可行 |
 |---|---|
 | **单机制消融实验** | 样本量需数千；该方向最好的实证是 n=252 且只测任务绩效（F8） |
-| **类别级（八类）分层消融** | **工程前提已具备，样本前提不具备。** 依 `scripts/prereg/ablation_design_v1.yaml`（m=30、ρ=0.05、DEFF=2.45）与 `power_table.py` 实测：主要终点 `knowledge_mastery_growth` 若取 MDE d=0.3，需 **428 人/臂**；八类别并行 ⇒ 总样本量达**数千人**。无部署条件则不可达。**预注册文件保留，当前不作执行承诺** |
+| **类别级（八类）分层消融** | **工程前提已具备，样本前提不具备。** 依 `learnflow-backend/scripts/prereg/ablation_design_v1.yaml`（m=30、ρ=0.05、DEFF=2.45）与 `power_table.py` 实测：主要终点 `knowledge_mastery_growth` 若取 MDE d=0.3，需 **428 人/臂**；八类别并行 ⇒ 总样本量达**数千人**。无部署条件则不可达。**预注册文件保留，当前不作执行承诺** |
 | n ≥ 500 真实 K12 被试的 RCT | 无经费、无部署、伦理审查难、招募难 |
 | 任何声称测得"长期学习增益"的实证研究 | 真实学习增益效应量 d ≈ 0.1–0.3，需 n ≥ 1000 起步，且需跨学期追踪 |
 | 区块链模块的实际部署与机构采纳 | 无机构授权、无法律承认。领域共识路径（法律承认 + 标准合规 + 小规模试点）一条都不具备 |
@@ -3561,7 +3561,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 | 后端规模 | 16,593 行 | **26,749 行**（`app/` 下 92 个 .py 文件，59 个服务模块，104 个 API 端点） | `verify_asset_numbers.py` |
 | 测试 | 394 项 | **972 项通过**，56 个测试文件；**全部为单元与契约测试，无集成测试、无用户研究、无真实数据** | `pytest tests/ -q` |
 | 统一注册表 | "不存在" | **已存在**（`mechanism_registry.py` 597 行 + `mechanism_arbitrator.py` 215 行三层漏斗） | 源码 |
-| 实验基础设施 | "无法作机制消融" | **机制级开关已具备**（`ab_test_framework.py` 779 行；支持 `mechanism_id` 粒度开关、类别级整类关闭、注册表指纹、设计效应与样本量门槛、分层门控预注册）；**但样本前提不具备**，见 §7.4 | `scripts/prereg/ablation_design_v1.yaml` |
+| 实验基础设施 | "无法作机制消融" | **机制级开关已具备**（`ab_test_framework.py` 779 行；支持 `mechanism_id` 粒度开关、类别级整类关闭、注册表指纹、设计效应与样本量门槛、分层门控预注册）；**但样本前提不具备**，见 §7.4 | `learnflow-backend/scripts/prereg/ablation_design_v1.yaml` |
 | 事件流与决策快照 | "无会话标识、无时间戳分离、无跳过标记" | **已具备**：`learning_events` 只追加事件流表含 `session_id` / `presented_at` / `answered_at` / `thinking_ms` / `skipped` / `decision_snapshot`。原 `attempts` 窄表保留为业务投影，未改动 | `app/models/progression.py` |
 | 内存态容器 | "11 个，重启即丢" | **已迁移至可插拔状态存储**（`state_store.py`）；**默认后端仍为内存实现**，持久化为可选后端，切换需一行代码。**论文中不得声称"已持久化"** | `app/services/state_store.py` |
 | 学习成瘾指数 | 作为研究变量引用 | **彻底移除**；披露为"未实现的界面占位符"（11 项输入全部由调用方传入或硬编码为常数，引擎自身零采集代码） | `learning_addiction_index.py`、`api/gamification.py` |
@@ -3633,7 +3633,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 以下条目由 `learnflow-backend` 仓库内脚本复算，须在投稿前逐条复核并保留「待核验」标注：
 
 - 机制注册表指纹 `ee1a49be5732`（`registry_fingerprint()`，`app/services/mechanism_registry.py:145`）；
-- 机制运行时落地 54/54，orphan=0（`scripts/scan_mechanism_landing.py --quiet`）；
+- 机制运行时落地 54/54，orphan=0（`learnflow-backend/scripts/scan_mechanism_landing.py --quiet`）；
 - `SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端），原「未实现」状态于 2026-09-10 标记为已解决；
 - `MinorProtectionEngine` 已接线（全仓 16 处引用），原「零调用」状态于 2026-09-10 消除；
 - 技能树持久化 `_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径于 2026-09-10 消除；
@@ -3643,7 +3643,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 **文档结束**
 
-*本文档的全部自身资产数字（Python 行数、服务模块数、源文件数、API 端点、测试数）由 `learnflow-backend/scripts/verify_asset_numbers.py --doc-check` 复算——该命令在「文档数字 ≠ 代码事实」时以退出码 1 报错，当前为 exit 0；文中的机制数与方法数由 `scripts/verify_counts.py` 复算。CCF 分区以《CCF 推荐国际学术会议和期刊目录》为准（第七版已于 2026-03-31 发布，投稿前须复核）。附录 B 中标注 C 级的检查项为 go/no-go 节点，须在第 1 个月内闭环；标注 B 级的文献须在投稿前补入 `references.bib`，否则不得在稿件中引用。*
+*本文档的全部自身资产数字（Python 行数、服务模块数、源文件数、API 端点、测试数）由 `learnflow-backend/scripts/verify_asset_numbers.py --doc-check` 复算——该命令在「文档数字 ≠ 代码事实」时以退出码 1 报错，当前为 exit 0；文中的机制数与方法数由 `learnflow-backend/scripts/verify_counts.py` 复算。CCF 分区以《CCF 推荐国际学术会议和期刊目录》为准（第七版已于 2026-03-31 发布，投稿前须复核）。附录 B 中标注 C 级的检查项为 go/no-go 节点，须在第 1 个月内闭环；标注 B 级的文献须在投稿前补入 `references.bib`，否则不得在稿件中引用。*
 
 
 ---
@@ -3660,7 +3660,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 > **文档性质**：本篇为期刊论文 P4「游戏化干预的形式化与冲突仲裁」的主稿件，同时作为博士学位论文机制章节的底稿。
 > **可复现性声明**：文中全部统计量均可由 `E:\learnflow\learnflow-backend` 下的一条命令复算，命令清单见附录 A。
-> **代码基线**：`git HEAD = 79d7f36`；可复现性印章 `artifacts/count_verification.json`（六项指标全部 `verified`）。
+> **代码基线**：`git HEAD = 79d7f36`；可复现性印章 `learnflow-backend/artifacts/count_verification.json`（六项指标全部 `verified`）。
 > **版本**：2026-09-04
 
 ---
@@ -3755,7 +3755,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 | — | PRD §2.3 表格逐项求和 | 69 | 文档内部值，与标题 76 矛盾 |
 | — | PRD 标题/概述声称值 | 76 | 禁用：不可复算 |
 
-> 复算命令：`python scripts/verify_counts.py`（输出：`artifacts/count_verification.json`）
+> 复算命令：`python learnflow-backend/scripts/verify_counts.py`（输出：`learnflow-backend/artifacts/count_verification.json`）
 
 **22 的差额分解**（76 − 54 = 22）：
 
@@ -3927,7 +3927,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 **小计**：A 8 + B 8 + C 6 + D 10 + E 10 + F 4 + G 4 + H 4 = **54**
 
-> 复算命令：`python scripts/verify_counts.py` → `category_counts`（自检：类别和 54、编号连续无重复）
+> 复算命令：`python learnflow-backend/scripts/verify_counts.py` → `category_counts`（自检：类别和 54、编号连续无重复）
 
 ### 4.4 类别—状态汇总与审计发现
 
@@ -3998,7 +3998,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 健康一票否决在第 1 层实现，其触发条件为：学习者被判定为未成年人或处于强制休息状态。此时编排器构造一个健康关键效应 `Effect(mechanism_id="LF-M52", effect_type=NOTIFICATION, health_critical=True, direction="withdraw", priority=100)`，交由仲裁器处理；仲裁器在第 1 层据此丢弃全部趋近效应，其中包括 LF-M44 的错失恐惧效应（代码证据：`app/services/learning_orchestrator.py`）。
 
-> 该设计的验证方式见 `tests/test_fomo_arbitrator.py`：在未成年条件下，FOMO 效应被第 1 层丢弃，测试断言其不进入下发集合。
+> 该设计的验证方式见 `learnflow-backend/tests/test_fomo_arbitrator.py`：在未成年条件下，FOMO 效应被第 1 层丢弃，测试断言其不进入下发集合。
 
 ### 5.5 仲裁器的性质
 
@@ -4041,7 +4041,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 ### 6.4 两类接线强度的界定
 
-落地扫描脚本（`scripts/scan_mechanism_landing.py`）对 54 个机制逐条判定两个布尔量：
+落地扫描脚本（`learnflow-backend/scripts/scan_mechanism_landing.py`）对 54 个机制逐条判定两个布尔量：
 
 - `orchestrator_wired`：机制键出现在 `PIPELINE_MECHANISM_MAP` 中，或编排器中存在字面量 `is_enabled("<key>")` 门控；
 - `external_ref`：机制键字符串出现在 `services`/`api` 源码文本中（排除注册表自身与测试）。
@@ -4050,11 +4050,11 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 
 **必须强调**：`external_ref` 仅为文本出现判据，**不等同于有效运行时调用**。19 个仅满足 `external_ref` 的机制（表 4-3 中"运行时接入 = 外部"者），其处理变异未经证实。因此，在实验设计中，仅应对具备编排器门控的 34 个机制做消融；对其余 19 个，应在预注册中声明为"处理变异待验证"。
 
-> 复算命令：`python scripts/scan_mechanism_landing.py --quiet`（输出：`artifacts/mechanism_landing_status.json`）
+> 复算命令：`python learnflow-backend/scripts/scan_mechanism_landing.py --quiet`（输出：`artifacts/mechanism_landing_status.json`）
 
 ### 6.5 可复现性印章
 
-`scripts/verify_counts.py` 对六项指标执行登记值—实测值比对，输出 `artifacts/count_verification.json`，其中记录生成时间、git 提交指针、Python 版本与逐项判定结果。
+`learnflow-backend/scripts/verify_counts.py` 对六项指标执行登记值—实测值比对，输出 `learnflow-backend/artifacts/count_verification.json`，其中记录生成时间、git 提交指针、Python 版本与逐项判定结果。
 
 **表 6-2　可复现性印章的指标构成**
 
@@ -4067,7 +4067,7 @@ JOSS 的**预筛门槛**（依据 `joss.readthedocs.io/en/latest/review_criteria
 | `mechanism_units` | 60 | 非严格 | 实现单元数（工程演进指示量） |
 | `engine_classes` | 86 | 非严格 | `Engine` 类总数（含学习科学算法） |
 
-> 复算命令：`python scripts/verify_counts.py`（退出码 0 表示全部通过；严格指标漂移会阻塞）
+> 复算命令：`python learnflow-backend/scripts/verify_counts.py`（退出码 0 表示全部通过；严格指标漂移会阻塞）
 
 ---
 
@@ -4104,7 +4104,7 @@ $$\text{DEFF} = 1 + (m - 1)\rho$$
 | Gate 2 | 类别内机制级检验（每类 ≤ 12） | 类别内 Holm 校正 | 仅检验通过 Gate 1 的类别 |
 | Gate 2.5 | 预先指定的交互项（≤ 3） | 0.05 / 3 ≈ 0.0167 | 仅检验预注册的交互 |
 
-> 预注册文件：`scripts/prereg/ablation_design_v1.yaml`
+> 预注册文件：`learnflow-backend/scripts/prereg/ablation_design_v1.yaml`
 
 ### 7.4 样本量
 
@@ -4112,7 +4112,7 @@ $$\text{DEFF} = 1 + (m - 1)\rho$$
 
 $$n_{\text{per group}} = \text{DEFF} \times \frac{2(z_{1-\alpha/2} + z_{1-\beta})^2}{d^2}$$
 
-在 $\alpha = 0.05$（经 Gate 1 校正后为 0.00625）、功效 0.8、$d = 0.3$、$\rho = 0.05$、$m = 30$ 的条件下，每组需约 428 人（代码证据：`scripts/power_table.py`）。
+在 $\alpha = 0.05$（经 Gate 1 校正后为 0.00625）、功效 0.8、$d = 0.3$、$\rho = 0.05$、$m = 30$ 的条件下，每组需约 428 人（代码证据：`learnflow-backend/scripts/power_table.py`）。
 
 **表 7-2　八类机制的效应量与样本量要求（$\alpha = 0.00625$，功效 0.8）**
 
@@ -4127,7 +4127,7 @@ $$n_{\text{per group}} = \text{DEFF} \times \frac{2(z_{1-\alpha/2} + z_{1-\beta}
 | G UX 微交互 | 0.20 | 0.05 | 2.45 | 963 |
 | H 健康护栏 | — | — | — | 恒开，不参与消融 |
 
-> 复算命令：`python scripts/power_table.py`（输出逐类样本量）
+> 复算命令：`python learnflow-backend/scripts/power_table.py`（输出逐类样本量）
 
 H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规风险。这是一个不可协商的约束，必须在预注册中声明。
 
@@ -4212,11 +4212,11 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 
 | 目的 | 命令 | 输出 |
 |---|---|---|
-| 全指标复算与印章刷新 | `python scripts/verify_counts.py` | 控制台比对表 + `artifacts/count_verification.json` |
-| 机制落地扫描 | `python scripts/scan_mechanism_landing.py --quiet` | `artifacts/mechanism_landing_status.json` |
+| 全指标复算与印章刷新 | `python learnflow-backend/scripts/verify_counts.py` | 控制台比对表 + `learnflow-backend/artifacts/count_verification.json` |
+| 机制落地扫描 | `python learnflow-backend/scripts/scan_mechanism_landing.py --quiet` | `artifacts/mechanism_landing_status.json` |
 | 注册表指纹 | `python -c "from app.services.mechanism_registry import registry_fingerprint as f; print(f())"` | `ee1a49be5732` |
 | 成熟度分布 | `python -c "from app.services.mechanism_registry import all_mechanisms; import collections; print(collections.Counter(m.maturity for m in all_mechanisms()))"` | `partial=41, complete=9, placeholder=4` |
-| 样本量表 | `python scripts/power_table.py` | 八类 (MDE, ICC) 功效表 |
+| 样本量表 | `python learnflow-backend/scripts/power_table.py` | 八类 (MDE, ICC) 功效表 |
 | 全量回归测试 | `python -m pytest tests/ -q` | 基线 `868 passed / 49 文件` |
 
 ## 附录 B　术语表
@@ -4252,7 +4252,7 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 以下条目由 `learnflow-backend` 仓库内脚本复算，须在投稿前逐条复核并保留「待核验」标注：
 
 - 机制注册表指纹 `ee1a49be5732`（`registry_fingerprint()`，`app/services/mechanism_registry.py:145`）；
-- 机制运行时落地 54/54，orphan=0（`scripts/scan_mechanism_landing.py --quiet`）；
+- 机制运行时落地 54/54，orphan=0（`learnflow-backend/scripts/scan_mechanism_landing.py --quiet`）；
 - `SQLExperimentStore` 已落地（`ab_test_framework.py:510`，真实 SQLAlchemy Core 后端），原「未实现」状态于 2026-09-10 标记为已解决；
 - `MinorProtectionEngine` 已接线（全仓 16 处引用），原「零调用」状态于 2026-09-10 消除；
 - 技能树持久化 `_skilltree_repo_format`（`learning_orchestrator.py:430`）已兼容 `get_skill_tree`（`meta_learning_skilltree.py:273`）返回的 `categories` 形状，原 `AttributeError` 路径于 2026-09-10 消除；
@@ -4348,11 +4348,11 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 
 | 指标 | 权威值 | 复算命令（在 `E:\learnflow\learnflow-backend` 下执行） |
 |---|---:|---|
-| 唯一游戏化机制数 | **54**（LF-M01…LF-M54） | `python scripts/verify_counts.py` → `artifacts/count_verification.json` |
+| 唯一游戏化机制数 | **54**（LF-M01…LF-M54） | `python learnflow-backend/scripts/verify_counts.py` → `learnflow-backend/artifacts/count_verification.json` |
 | 机制分类（八类 A–H） | 8 / 8 / 6 / 10 / 10 / 4 / 4 / 4，和 = 54 | 同上（`category_counts`） |
 | 机制注册表指纹 | `ee1a49be5732`（`registry_fingerprint()`，`app/services/mechanism_registry.py:145`） | `python -c "from app.services.mechanism_registry import registry_fingerprint as f; print(f())"` |
-| 机制运行时落地 | **54 / 54，orphan = 0** | `python scripts/scan_mechanism_landing.py --quiet` → `landed=54/54 orphan=0` |
-| 学习方法数 | **28**（LF-L01…LF-L28，`app/services/method_registry.py`） | `python scripts/verify_counts.py` |
+| 机制运行时落地 | **54 / 54，orphan = 0** | `python learnflow-backend/scripts/scan_mechanism_landing.py --quiet` → `landed=54/54 orphan=0` |
+| 学习方法数 | **28**（LF-L01…LF-L28，`app/services/method_registry.py`） | `python learnflow-backend/scripts/verify_counts.py` |
 | 元学习技能树节点 | **16**（`SKILL_DEFINITIONS`） | 同上 |
 | 实现单元数（informative，非论文主表述） | 60（mechanism_units） | 同上（`mechanism_units`） |
 | 引擎类数（informative） | 86（engine_classes） | 同上（`engine_classes`） |
@@ -4360,12 +4360,12 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 | PRD 标题/概述声称值 | 76（**与表格自相矛盾**） | 同上（`prd_headline_claimed`） |
 | 后端 Python | 92 个文件 / 26,749 行 | `python -c "import os;ps=[os.path.join(d,f) for d,_,fs in os.walk(\"app\") for f in fs if f.endswith(\".py\")];print(len(ps),sum(len(open(x,encoding=\"utf-8\").readlines()) for x in ps))"` |
 | 测试 | 56 个测试文件 / **972 passed**（0 error / 0 failure / 16 warning） | `python -m pytest tests/ -q`（**实测 2026-10-02：`972 passed, 16 warnings`**；2026-09-22 为 936，2026-09-13 基线为 934） |
-| 可复现性印章 | `artifacts/count_verification.json`（6 项全部 `verified`；HEAD = 4073bb0） | `python scripts/verify_counts.py` |
-| 预注册实验设计 | `scripts/prereg/ablation_design_v1.yaml`（DEFF = 2.45，分层 Gatemaking Gate0/1/2/2.5） | 直接读文件 |
+| 可复现性印章 | `learnflow-backend/artifacts/count_verification.json`（6 项全部 `verified`；HEAD = 4073bb0） | `python learnflow-backend/scripts/verify_counts.py` |
+| 预注册实验设计 | `learnflow-backend/scripts/prereg/ablation_design_v1.yaml`（DEFF = 2.45，分层 Gatemaking Gate0/1/2/2.5） | 直接读文件 |
 | 埋点 | `learning_events` 表 + `decision_snapshot` JSON（`record_learning_event`） | `app/services/progression_repository.py` |
 | 机制编排 | `PIPELINE_MECHANISM_MAP`：step 6 / 8 / 9 / 12 为主机制，**step 13 为 28 个次级机制评估钩子** | `app/services/learning_orchestrator.py` |
 | 干预仲裁 | `MechanismArbitrator` 三层漏斗（健康一票否决 → 冲突消解 → 干预预算） | `app/services/mechanism_arbitrator.py` |
-| 实验框架 | `ab_test_framework.py`；`SQLExperimentStore` 已落地（SQLAlchemy Core，方言无关）；`--off-category` 类别级消融；`--advance-to` 尊重 `required_n_per_group` | `scripts/run_experiment.py` |
+| 实验框架 | `ab_test_framework.py`；`SQLExperimentStore` 已落地（SQLAlchemy Core，方言无关）；`--off-category` 类别级消融；`--advance-to` 尊重 `required_n_per_group` | `learnflow-backend/scripts/run_experiment.py` |
 
 ##### 禁用数字清单（出现即判定不合格）
 
@@ -4457,7 +4457,7 @@ H 类（健康护栏）**不参与消融**，因其关闭涉及伦理与合规�
 每个实证性论断之后必须标注证据类型之一：
 
 - **代码证据**：`app/services/xxx.py:123`（行号必须真实，写前请核实）；
-- **复算证据**：标注命令，如「复算命令：`python scripts/verify_counts.py`」；
+- **复算证据**：标注命令，如「复算命令：`python learnflow-backend/scripts/verify_counts.py`」；
 - **文献证据**：`[@citekey]`。
 
 **禁止**无源断言："研究表明""众所周知""显然""学习科学表明""业界公认"等一律删除或补源。
@@ -6306,7 +6306,7 @@ python results/m3/verify_m3_matrix.py --matrix results/m3/m3_model_scale_matrix.
 - **为什么需要人类被试**：仅 P4 的 **E4 实验**（最小可行验证）涉及真人；E1–E3 为静态分析，**不需要**人类被试（《LearnFlow_期刊论文拆分方案.md》§7.3「五项核心工作中有四项完全不需要自有用户，一项（P4）的 E1–E3 亦不需要；仅 E4 需要人类被试」）。
 - **角色定位**：自有被试实验定位为「对公开数据结论的**最小可行验证**」，不作为主结论的唯一支撑（研究计划 §4.5、§9）。主分析一律在公开日志（assist09 / Junyi）上以离策略方式完成（因果侧识别策略 §「与公开数据的关系」）。
 - **伦理等级**：对象为**未成年人**（K12），安全与同意为一等约束（研究计划 §8 章首）。
-- **与大规模消融设计的关系**：类别级分层门控消融（`scripts/prereg/ablation_design_v1.yaml`）依 IRB 设计**排除未成年与高风险被试**且其「数千名被试」规模因无经费/无部署/伦理审查难已**终止**（拆分方案 §7、§890、§957）；本表覆盖的是**降级后的最小可行 E4（含未成年、须 IRB）**，二者不冲突。
+- **与大规模消融设计的关系**：类别级分层门控消融（`learnflow-backend/scripts/prereg/ablation_design_v1.yaml`）依 IRB 设计**排除未成年与高风险被试**且其「数千名被试」规模因无经费/无部署/伦理审查难已**终止**（拆分方案 §7、§890、§957）；本表覆盖的是**降级后的最小可行 E4（含未成年、须 IRB）**，二者不冲突。
 
 ---
 
