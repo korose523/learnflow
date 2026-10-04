@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-04T08:49:21+09:00",
+  "generated_at": "2026-10-04T10:56:17+09:00",
   "backend_root": "/Volumes/Untitled/learnflow/learnflow-backend",
   "counts": {
     "python_loc": 26749,
@@ -169,6 +169,61 @@
       "status": "drifted",
       "note": "informative：pytest 实际收集的用例数，即文档 §1「N 项测试」的真实口径。仅在 --with-pytest 时复算；默认不计算（需启动解释器导入整个测试栈）。合并后基线 972。"
     }
+  },
+  "doc_check": {
+    "doc": "/Volumes/Untitled/learnflow/docs/LearnFlow_研究总档.md",
+    "items": [
+      {
+        "metric": "python_loc",
+        "doc_text": "26,749 行 Python",
+        "doc_value": 26749,
+        "actual_value": 26749,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "service_modules",
+        "doc_text": "59 个服务模块",
+        "doc_value": 59,
+        "actual_value": 59,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "source_files",
+        "doc_text": "92 个源文件",
+        "doc_value": 92,
+        "actual_value": 92,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "api_routes_reachable",
+        "doc_text": "104 个 API 端点",
+        "doc_value": 104,
+        "actual_value": 104,
+        "ok": true,
+        "note": ""
+      },
+      {
+        "metric": "tests_collected",
+        "doc_text": "936 项测试",
+        "doc_value": 936,
+        "actual_value": null,
+        "ok": true,
+        "note": "本次未复算该指标（加 --with-pytest 可复算），仅记录文档值"
+      },
+      {
+        "metric": "test_files",
+        "doc_text": "56 个测试文件",
+        "doc_value": 56,
+        "actual_value": 56,
+        "ok": true,
+        "note": ""
+      }
+    ],
+    "mismatches": [],
+    "passed": true
   },
   "_blocking": [],
   "_exit_code": 0

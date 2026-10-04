@@ -121,6 +121,10 @@ def scan(root: str) -> Tuple[List[Tuple[str, int, str]], int]:
                 ref = m.group(0)
                 if "..." in ref:
                     continue  # 省略号简写（如 docs/...机制治理方案.md）不是真实路径
+                if "git show" in line:
+                    # `git show <rev>:path` 指向 git 历史而非工作树：被引文件可能
+                    # 已不在工作树（如已删除文档的 v1 恢复命令），属历史引用，豁免。
+                    continue
                 if not _resolves(root, rel, ref):
                     bad.append((rel, lineno, ref))
     return bad, len(files)
