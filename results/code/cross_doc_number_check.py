@@ -35,22 +35,34 @@ ANNO_WORDS = [
 
 # ---------------------------------------------------------------- 核对项
 # (标签, 上下文正则, 现行值集合, 历史值集合)
+#
+# ⚠️ 维护须知（2026-10-05 补）
+# ------------------------------------------------------------------
+# 本脚本的「现行值集合」是**硬编码**的，而严口径脚本
+# `scripts/verify_cross_doc_numbers.py` 的期望值是**从代码实时算出的**（无硬编码）。
+# 因此：文档里的资产数字一旦更新（例如后端文件数 88 → 92、测试数 936 → 972、
+# LOC 25,795 → 26,749），本脚本就会**静默过期**并累积大量告警
+# （实测曾一次累积 47 处 alerts，且「后端文件数」一度把实测值 92 列进「历史值」）。
+#
+# ⇒ 每次资产数字变更后，**必须同步更新下方 CHECKS 的三个集合**，并运行：
+#     python results/code/cross_doc_number_check.py      # 期望 alerts=0 / 退出码 0
+# 断言「现行值集合」与实测一致的自检见下方 selfcheck_current_values()。
 CHECKS = [
     ("全量测试数",
      r"(?:全量测试|전체 테스트|tests_collected|tests?\s*passed)[^\n]{0,60}?\b(920|934|936|972)\b",
-     {"936"}, {"920", "934", "972"}),
+     {"972"}, {"920", "934", "936"}),
 
     ("后端 LOC",
-     r"(?:python_loc|后端[^\n]{0,10}行|라인)[^\n]{0,40}?\b(25,389|25,795|26,937)\b",
-     {"25,795"}, {"25,389", "26,937"}),
+     r"(?:python_loc|后端[^\n]{0,10}行|라인)[^\n]{0,40}?\b(25,389|25,795|26,749|26,782)\b",
+     {"26,749", "26,782"}, {"25,389", "25,795"}),
 
     ("后端文件数",
      r"(?:后端|파일)[^\n]{0,20}?\b(88|92)\b[^\n]{0,6}(?:个|개)?\s*(?:文件|파일)?",
-     {"88"}, {"92"}),
+     {"92"}, {"88"}),
 
     ("测试文件数",
-     r"\b(54)\b\s*(?:个|개)?\s*(?:测试文件|테스트 파일)",
-     {"54"}, set()),
+     r"\b(54|56)\b\s*(?:个|개)?\s*(?:测试文件|테스트 파일)",
+     {"56"}, {"54"}),
 
     ("效果生产者",
      r"(?:效果生产者|效果生产|효과 생산자|effect producers?)[^\n]{0,60}?\b(2|14|16|54)\b",
@@ -141,6 +153,11 @@ def annotated(line: str, pos: int) -> bool:
 
 
 def main():
+    # 先自检硬编码期望值是否已过期；过期则直接失败，
+    # 免得用一个与实测不符的期望集去判定「告警」。
+    if selfcheck_current_values() != 0:
+        sys.exit(2)
+
     docs = collect_docs()
     present = [(lab, os.path.join(ROOT, rel)) for lab, rel in docs if os.path.exists(os.path.join(ROOT, rel))]
     texts = {}
@@ -201,6 +218,55 @@ def main():
 
     print("\nchecked=%d  docs=%d  alerts=%d" % (len(CHECKS), len(present), len(alerts)))
     sys.exit(1 if alerts else 0)
+
+
+def selfcheck_current_values() -> int:
+    """核对 CHECKS 里的「现行值集合」是否与仓库实测一致。
+
+    防止本脚本的硬编码期望值随文档更新而静默过期。
+    以 learnflow-backend/app 的实际 .py 文件数、实际 LOC、实际测试数为准。
+    """
+    import os
+    import glob
+    backend = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                           "..", "..", "learnflow-backend")
+    app = os.path.join(backend, "app")
+
+    py_files, loc = 0, 0
+    for root, dirs, fs in os.walk(app):
+        dirs[:] = [d for d in dirs if d not in {".venv", "__pycache__", ".pytest_cache"}]
+        for f in fs:
+            if f.endswith(".py"):
+                py_files += 1
+                with open(os.path.join(root, f), encoding="utf-8", errors="ignore") as fh:
+                    loc += sum(1 for _ in fh)
+    tests_files = len(glob.glob(os.path.join(backend, "tests", "test_*.py")))
+
+    measured = {
+        "后端文件数": {str(py_files)},
+        "后端 LOC": {f"{loc:,}"},
+        "测试文件数": {str(tests_files)},
+    }
+    # 「后端 LOC」在合并树上另有 26,782 的记述（2026-10-02 复算），两者并存
+    if py_files == 92:
+        measured["后端 LOC"].add("26,782")
+
+    bad = []
+    for label, want in measured.items():
+        for row in CHECKS:
+            if row[0] == label:
+                have = row[2]
+                missing = want - have
+                if missing:
+                    bad.append(f"  ✗ {label}: 实测 {sorted(want)} 不在现行值集合 {sorted(have)} 中")
+                break
+    if bad:
+        print("硬编码期望值自检 **失败**（本脚本已过期，请更新 CHECKS）：")
+        for b in bad:
+            print(b)
+        return 1
+    print("硬编码期望值自检 **通过**（现行值集合与实测一致）")
+    return 0
 
 
 if __name__ == "__main__":
