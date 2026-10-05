@@ -88,7 +88,7 @@ then the maximum-likelihood Bradley–Terry model P(i ≻ j) = σ(y_ij) satisfie
 
 **Numerical companion (rerun command: `python results/code/m4_proposition_p1.py`, output `results/code/m4_proposition_p1.json`).** On a synthetic problem where "m signals are noisy observations of the same latent variable" we run a four-way comparison (W_ij = σ(Y_ij), Y_ji = −Y_ij ⇒ N_ij ≡ 1); the solver is homotopy continuation + Newton + Armijo with a log-domain MM fallback, initialized at d ≡ 0 (the known answer is not used, avoiding implanting the identity into the starting point). Results:
 
-**Table 1** Four-rule comparison of Proposition P1 (Spearman ρ relative to u).
+**Table 3-1** Four-rule comparison of Proposition P1 (Spearman ρ relative to u).
 
 | Rule | Meaning | Expected vs u | Measured min / max (24 trials × 4 scales = 96 groups) |
 |---|---|---|---|
@@ -103,7 +103,7 @@ The two additively-separable rules reach ρ = 1.0 in **every** group (min = 1.0 
 
 **Mechanism diagnosis (answering the more important question: does violating additive separability bring a gain?).** Under the same data-generating process (each signal's noise standard deviation varies from 0.4 to 1.6, giving precision weighting resolution), we compare the correlation of three recoveries with "precision weighting" (optimal linear recovery, weight ∝ 1/σ_k²):
 
-**Table 2** Correlation of three recoveries with precision weighting (Spearman ρ, mean over 96 groups).
+**Table 3-2** Correlation of three recoveries with precision weighting (Spearman ρ, mean over 96 groups).
 
 | Quantity | Spearman ρ (mean over 96 groups) |
 |---|---:|
@@ -153,7 +153,7 @@ Then combine the incremental columns compE with reliability weighting, and mix w
 
 **Measured speedup (rerun command: `python results/code/benchmark_m4_efficiency.py`).** On synthetic data with m = 7 columns and partial observability (per-item effective observation count 1–9), comparing "recompute ranks inside the loop" (before) with "compute ranks once outside the loop" (after):
 
-**Table 3** Measured speedup from rank-matrix factoring-out (m = 7 columns, partial observability).
+**Table 3-3** Measured speedup from rank-matrix factoring-out (m = 7 columns, partial observability).
 
 | n | Before (ms) | After (ms) | Speedup |
 |---|---:|---:|---:|
