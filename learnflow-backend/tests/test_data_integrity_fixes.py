@@ -243,7 +243,13 @@ async def test_challenge_subject_and_reset_true(harness):
     )
     await _seed_task(sm, "TK", "分数加减法")
 
-    now = datetime.now(UTC)
+    # 锚到当日 UTC 正午，而非 datetime.now(UTC)：
+    # 实现侧用 func.date(created_at) == func.current_date()（两侧同为 UTC 日期，
+    # 与 app/api/student.py 其余两处一致）。若种子时间取「当前时刻」，当运行落在
+    # UTC 00:00-00:09 窗口时，回溯 i 分钟的记录会跨到「昨天」，当日计数不足 10，
+    # 30 分钟估算随之不成立 → 本用例在 UTC 午夜前后必然假失败。
+    # 正午锚定后，±10 分钟的回溯窗口永远落在同一 UTC 日内，用例与运行时刻解耦。
+    now = datetime.now(UTC).replace(hour=12, minute=0, second=0, microsecond=0)
     # 10 次当日作答，最近一次(最后插入)的 topic 即 "分数加减法"
     for i in range(10):
         await _seed_attempt(sm, "STU", "TK", now - timedelta(minutes=i), 5)
