@@ -11,10 +11,19 @@
 | 역할 | 성명(영문) | 성명(한글) | 소속 | ORCID |
 |---|---|---|---|---|
 | 제1저자 | Zexiao Weng | 웡 자샤오 | ① 영산대학교 대학원 컴퓨터정보공학과, 부산 48015, 대한민국 | 0009-0009-8600-8954 |
-| 교신저자(*) | MinPo Jung | 정 민포 | ① 영산대학교(부산, 대한민국) | 0009-0003-3369-757X |
+| 교신저자(*) | *(최종고 승인 보류)* | *( ditto )* | ① 영산대학교(부산, 대한민국) | *(최종고 승인 보류)* |
 
 - ① Department of Computer and Information Engineering, Graduate School, Youngsan University, Busan 48015, Republic of Korea
-- 교신저자 E-mail: minpo@ysu.ac.kr
+- 교신저자 E-mail / ORCID: **최종고 승인 후 기재** (아래 说明 참조)
+
+> **〔필자란 보류 — 심사 2.4③ 및 §10, 2026-09-29〕**
+> 이 원고는 공동저자 2인 저작물이나, 필자판이 최종고를 읽고 승인하기 전까지는
+> **필자란·通讯作者란(성명·이메일·ORCID)**, **Zenodo 기여자 명단**, **AI 사용 공개문** —
+> 이 세 곳에 제2저자의 이름·연락처를 싣지 않는다. 제2저자는 교신저자 역할을 승낙한 상태이며,
+> 최종고 승인 후 당사자가 동의하는 방식으로 복원한다. 이는 `docs/M3_submission_EN.md`
+> 1부 저자란 및 「Byline and corresponding-author fields withheld pending approval」 조항과 동일한 처리다.
+> (English: the second author's name, email and ORCID are withheld from the byline, the Zenodo
+> contributor list and the AI-use statement until the final manuscript is approved.)
 
 ## 2. 제목 (Title)
 
@@ -42,11 +51,12 @@
 
 ## 5. 한글 서지 정보 (Korean Bibliographic Suggestion)
 
-> Weng, Z., & Jung, M. (2026). *정렬된 난이도 결정과 단일 대규모언어모델(LLM) 난이도 사전의 신뢰성 경계* [Ordered Difficulty Decisions and the Reliability Boundary of a Single Large Model's Difficulty Prior]. 영산대학교 대학원. (학위/투고 구분은 실제 출판 형태에 따라 확정)
+> Weng, Z., & Jung, M. (2026). *정렬된 난이도 결정과 단일 대규모언어모델(LLM) 난이도 사전의 신뢰성 경계* [Ordered Difficulty Decisions and the Reliability Boundary of a Single Large Model's Difficulty Prior]. 영산대학교 대학원. 
+> **〔교저자 표기 범위 — 심사 2.4③, 2026-09-29〕** M3은 공동저자 2인 저작물이며, 위 서지条目는 저자身份的 기록이므로 이 이름이 남는다. 심사 2.4③이 보류하는 것은 **① 원고 필자란·通讯作者란, ② Zenodo 기여자 명단, ③ AI 사용 공개문** — 이 세 곳이다. 두 번째 저자는 최종고를 읽고 승인하기 전까지 위 세 곳에 이름을 싣지 않으며, 승인 후 당사자가 동의하는 방식으로 복원한다. (학위/투고 구분은 실제 출판 형태에 따라 확정)
 
 ## 6. 데이터·코드 가용성 (Data/Code Availability — 투고 전 필수)
 
-- 아티팩트(코드·재현 스크립트): Zenodo DOI 10.5281/zenodo.22719229
+- 아티팩트(코드·재현 스크립트): Zenodo DOI 10.5281/zenodo.22719229 **〔아카이브 식별자 안내〕** 이 DOI는 v0.1.0(2026-09-11)이며 Zenodo 기록 제목이 「학습중독 측정도구」로, 본 연구 주선(난이도의 측정·거버넌스)과 일치하지 않습니다. 난이도 주선으로 고친 v0.2.0 메타데이터는 `.zenodo.json`에 준비되어 있고, **새 버전 공개 시 순환합니다.** 그 전까지는 저장소 README와 `CITATION.cff`를 기준으로 인용합니다. (This DOI is v0.1.0, whose Zenodo record title is a learning-addiction measurement tool, unrelated to this paper's difficulty line of work; the corrected v0.2.0 metadata is prepared and the issue closes once the new version is published.)
 - 데이터셋许可: Junyi(CC BY-NC-SA 4.0 + Chang et al. 2015), DBE(DOI 10.26193/6DZWOH + arXiv:2208.12651), XES3G5M(MIT + Liu et al. NeurIPS 2023), ASSISTments 2009-2010(데이터 페이지 URL)
 - AI 사용 공개: 본 연구 방법은 LLM 난이도 주석 파이프라인(단일 정적 모델 `qwen36:latest`, 기저 Qwen3.6-35B-A3B, IQ3_S)에 의존하며, 이는 IEEE(2024-04) 및 Springer Nature 정책에 따라 Methods/Acknowledgements에 명시 공개 필요. AI는 저자로 등재 불가.
 

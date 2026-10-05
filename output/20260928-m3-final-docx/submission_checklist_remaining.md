@@ -55,16 +55,26 @@ v1（8 策略）**7/8 一致，已订正 1 处**：`all_hard` 稿件原写 `0.64
 
 机构名此前标"待填"，现据 `CITATION.cff` / `.zenodo.json` 确认为 **Youngsan University（Busan, Republic of Korea）**，作者块可定稿。
 
-**投稿版作者块（英文，供 TLT / IJAIED 直接粘贴）：**
+**投稿版作者块（英文，供 TLT / IJAIED 直接粘贴）— ⚠️ 当前为 withheld 口径：**
 ```
-Zexiao Weng¹, MinPo Jung¹,*
+Zexiao Weng¹
 ¹ Department of Computer and Information Engineering, Graduate School,
   Youngsan University, Busan 48015, Republic of Korea
-* Corresponding author. E-mail: minpo@ysu.ac.kr
-  ORCID: 0009-0003-3369-757X
+Corresponding author: to be assigned on approval of the final manuscript.
 ```
 - 第一作者 Zexiao Weng ORCID：0009-0009-8600-8954
-- 通讯作者 MinPo Jung ORCID：0009-0003-3369-757X（与稿件/清单要求一致）
+- 通讯作者姓名 / E-mail / ORCID：**최종고 승인 보류 — 아래 说明**
+
+> **〔필자란 보류 — 심사 2.4③ 및 §10, 2026-09-29〕**
+> 위 저자 블록은 더 이상 "직접 붙여넣기" 가능한 상태가 아니다. 심사 2.4③에 따라 최종고를
+> 읽고 승인하기 전까지는 **필자란·通讯作者란(성명·이메일·ORCID)**, **Zenodo 기여자 명단**,
+> **AI 사용 공개문** — 이 세 곳에 제2저자의 이름·연락처를 싣지 않는다.
+> 제2저자는 교신저자 역할을 승낙한 상태이며, 승인 후 당사자가 동의하는 방식으로 복원한다.
+> 이는 `docs/M3_submission_EN.md` 저자란 및 「Byline and corresponding-author fields
+> withheld pending approval」 조항과 동일한 처리다. **투고 직전(최종고 승인 후)에 위 블록을
+> 갱신할 것.**
+> (English: the paste-ready byline above is withheld pending approval of the final manuscript,
+> per review item 2.4③. Refresh it immediately before submission.)
 
 **AI 使用声明（AIGC 合规，需随投稿写入 Methods 或 Acknowledgements）**
 > 因本稿方法依赖"LLM 难度标注流水线"（单一静态模型 `qwen36:latest`，基座 Qwen3.6-35B-A3B，IQ3_S），按 IEEE（2024-04）与 Springer Nature 政策，须在 Methods/Acknowledgements 显式披露该工具的名称、用途（难度先验标注）、版本与人工核验环节，并声明作者对人类可问责性负全责。AI 不得列为作者。
