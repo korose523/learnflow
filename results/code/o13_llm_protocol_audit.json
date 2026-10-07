@@ -1,8 +1,8 @@
 {
   "generated_by": "results/code/o13_llm_protocol_audit.py",
   "source_artifacts": [
-    "results\\code\\llm_labeling_v2.jsonl",
-    "results\\code\\llm_labeling.json"
+    "results/code/llm_labeling_v2.jsonl",
+    "results/code/llm_labeling.json"
   ],
   "v1_truncated_thinking_excluded": {
     "rho": 0.0295,
@@ -23,7 +23,8 @@
     "n_total_comparisons": 1383,
     "spearman": 0.181,
     "p_value": 0.00826594,
-    "usable_as_capability_estimate": true
+    "usable_as_capability_estimate": false,
+    "interpretation": "pooled return formats; diagnostic only"
   },
   "evidence_grading_by_return_style": {
     "enum_array": {
@@ -83,34 +84,50 @@
     "note": "稿件把 0.046 归因于「108 批中 60 批解析失败」，但按存储记录重算：0.046 来自**自由字符串形态且全部解析成功**的那批记录（失败率 0）；解析失败只出现在枚举数组形态（13/60）。因此 0.0478 → 0.1808 的抬升不是「剔除失败实现」的结果，而是**两种返回形态的记录被合并**所致（枚举数组单独只给 0.1553）。该叙事必须在 M3 5.2 节改正。"
   },
   "paired_item_bootstrap": {
-    "reps_used": 200,
+    "reps_used": 2000,
+    "bt_point": 0.1553,
+    "bt_subset": "enum_array; parse-success only (47/60 batches)",
+    "seed": 20260922,
+    "ci_method": "percentile and bias-corrected (BC, no acceleration); combined return formats are diagnostic only",
+    "bias_corrected_ci95_absolute": [
+      0.085,
+      0.3417
+    ],
+    "bias_corrected_ci95_bt": [
+      0.015,
+      0.3185
+    ],
+    "bias_corrected_ci95_delta": [
+      -0.1068,
+      0.2042
+    ],
     "rho_absolute": {
-      "mean": 0.2276,
+      "mean": 0.2194,
       "ci95": [
-        0.0942,
-        0.345
+        0.0866,
+        0.3423
       ]
     },
     "rho_bt": {
-      "mean": 0.1577,
+      "mean": 0.1389,
       "ci95": [
-        -0.0097,
-        0.3018
+        -0.0149,
+        0.2821
       ]
     },
     "delta_abs_minus_bt": {
-      "point": 0.0385,
-      "mean": 0.0699,
+      "point": 0.0642,
+      "mean": 0.0805,
       "ci95": [
-        -0.0652,
-        0.2193
+        -0.0759,
+        0.2464
       ],
-      "p_two_sided": 0.34,
+      "p_two_sided": 0.338,
       "significant_at_0.05": false
     },
     "resampling_unit": "题目（DBE-KT22 的 212 道），BT 在每个重抽样样本内重新拟合"
   },
   "conclusion_for_paper": [
-    "可下结论的协议比较只有锚定绝对评级 ρ = 0.2195 与枚举数组 + BT ρ = 0.1810 两者；其差 Δ = 0.0385，95% 配对（题目级重抽样、BT 再拟合）区间 [-0.0652, 0.2193]，双侧 p = 0.3400 —— 差异不显著，不得宣称一种协议优于另一种。"
+    "可下结论的协议比较只有锚定绝对评级 ρ = 0.2195 与枚举数组 + BT ρ = 0.1553 两者；其差 Δ = 0.0642，95% 配对（题目级重抽样、BT 再拟合）区间 [-0.0759, 0.2464]，双侧 p = 0.3380 —— 差异不显著，不得宣称一种协议优于另一种。"
   ]
 }

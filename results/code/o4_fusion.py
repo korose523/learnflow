@@ -11,7 +11,8 @@ from collections import defaultdict
 import numpy as np
 from scipy import stats as st
 
-BASE = r"E:/learnflow"
+from pathlib import Path
+BASE = str(Path(__file__).resolve().parents[2])
 OUT = BASE + "/results/code/o4_fusion_results.json"
 MINN = 30  # minimum transactions per item (matches D.build(minn=30))
 
@@ -110,7 +111,7 @@ res = {
     "overfit_gap": round(float(best_rho - rho_eq), 4),
     "optimized_tertile_accuracy": round(acc, 4),
     "optimized_tertile_kappa": round(kappa, 4) if kappa else None,
-    "baselines": {"raw_success_rate_O2": 0.2207, "irt_1pl_O2": 0.2300},
+    "baselines": {"raw_success_rate_O2": round(float(st.spearmanr(M[:, 0], y_exp2).statistic), 4), "irt_1pl_O2": 0.2300},
 }
 json.dump(res, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(json.dumps(res, ensure_ascii=False, indent=1))

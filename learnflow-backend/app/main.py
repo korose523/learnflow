@@ -23,13 +23,13 @@ logger = logging.getLogger(__name__)
 async def _register_routers(app: FastAPI) -> None:
     """注册所有 API 路由"""
     try:
-        from app.api import auth, student, teacher, parent, admin, gamification, k12, class_pet, onboarding, placement, analytics, instrument
+        from app.api import auth, student, teacher, parent, admin, gamification, k12, class_pet, onboarding, placement, analytics, instrument, research
         routers = [
             auth.router, student.router, teacher.router, parent.router,
             admin.router, gamification.router, k12.router,
             teacher.k12_router, parent.k12_router, class_pet.router,
             onboarding.router, placement.router,
-            analytics.router, instrument.router,
+            analytics.router, instrument.router, research.router,
         ]
         for router in routers:
             app.include_router(router)

@@ -6,7 +6,9 @@ import { ProtectedRoute } from './components/common/ProtectedRoute';
 import { Skeleton } from './components/common/Skeleton';
 
 // 路由懒加载（Spec AC8：首屏仅登录，其余按需加载）
+const ResearchSessionPage = lazy(() => import('./pages/ResearchSessionPage'));
 const StudentDashboard = lazy(() => import('./pages/StudentDashboard'));
+const ReviewPage = lazy(() => import('./pages/ReviewPage'));
 const LearningSession = lazy(() => import('./pages/LearningSession'));
 const LearnPage = lazy(() => import('./pages/LearnPage'));
 const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'));
@@ -47,12 +49,15 @@ function App() {
         {/* 新用户引导（独立全屏，无需先登录完成引导） */}
         <Route path="/onboarding" element={<OnboardingPage />} />
 
+        <Route path="/research/:studyId" element={<ProtectedRoute allowedRoles={['student']}><ResearchSessionPage /></ProtectedRoute>} />
+
         {/* 受保护的路由 — 所有页面需认证 */}
         <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Navigate to="/student" replace />} />
 
           {/* 学生端 */}
           <Route path="student" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
+          <Route path="student/reviews" element={<ProtectedRoute allowedRoles={['student']}><ReviewPage /></ProtectedRoute>} />
           <Route path="student/learn" element={<ProtectedRoute allowedRoles={['student']}><LearningSession /></ProtectedRoute>} />
           <Route path="learn" element={<ProtectedRoute allowedRoles={['student']}><LearnPage /></ProtectedRoute>} />
           <Route path="student/skill-tree" element={<ProtectedRoute allowedRoles={['student']}><SkillTreePage /></ProtectedRoute>} />

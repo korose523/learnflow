@@ -121,8 +121,33 @@ def fit_irt_1pl_scaled(responses_p, responses_j, responses_c, n_persons, n_items
             break
     return b
 
+def paired_item_bootstrap(criterion, fusion, success, n_boot=2000, seed=20261007):
+    """Conditional on fitted scores; does not refit IRT or resample learners."""
+    import numpy as np
+    from scipy.stats import rankdata
+    y, f, s = (np.asarray(v, dtype=float) for v in (criterion, fusion, success))
+    if not (len(y) == len(f) == len(s)) or len(y) < 3:
+        raise ValueError("Aligned item vectors required")
+    rng = np.random.default_rng(seed)
+    def rho(a, b):
+        ra, rb = rankdata(a), rankdata(b)
+        if np.std(ra) == 0 or np.std(rb) == 0: return float('nan')
+        return float(np.corrcoef(ra, rb)[0, 1])
+    draws = []
+    for _ in range(n_boot):
+        ix = rng.integers(0, len(y), len(y))
+        rf, rs = rho(y[ix], f[ix]), rho(y[ix], s[ix])
+        if np.isfinite(rf) and np.isfinite(rs): draws.append([rf, rs, rf-rs])
+    if not draws: raise ValueError("All bootstrap samples degenerate")
+    ci = np.quantile(np.asarray(draws), [.025, .975], axis=0)
+    return {"unit":"item", "paired":True, "seed":seed, "n_boot_requested":n_boot,
+            "n_boot_valid":len(draws), "method":"percentile", "confidence":.95,
+            "fusion_ci":ci[:,0].tolist(), "success_ci":ci[:,1].tolist(),
+            "fusion_minus_success":rho(y,f)-rho(y,s), "difference_ci":ci[:,2].tolist(),
+            "scope":"Conditional on the fitted criterion and predictors; no learner resampling or IRT refitting. Item dependencies may limit coverage."}
+
 def run_a1():
-    log_path = "E:/learnflow/data/junyi/Log_Problem.csv"
+    log_path = os.path.join(os.path.dirname(os.path.dirname(HERE)), "data", "junyi", "Log_Problem.csv")
     MIN_B_RESP = 500
     MAX_PER_ITEM_STORE = 1500
     aggA = defaultdict(lambda: [0, 0, 0, 0.0, 0.0, 0, 0, 0.0])
@@ -206,6 +231,9 @@ def run_a1():
     print(f"[A1] mean|b_j|={mean_abs_b:.4f}", flush=True)
     return {
         "experiment": "A1", "dataset": "Junyi",
+        "aligned_item_vectors": {"item_id":qual_ucid,"criterion_b_half_irt":b,"fusion_a_half":fusion_A,"success_a_half":sig_success},
+        "paired_bootstrap": paired_item_bootstrap(b, fusion_A, sig_success),
+        "linking": "average_rank/n, clipped to [1e-9,1-1e-9], then logit; seven signals",
         "split_protocol": ("O10 学生级留出：crc32(uuid) 奇偶切 A/B 半；"
                            "融合信号与成功率基线均在 A 半估计，b_j 在 B 半拟合；"
                            "两估计器不与 b_j 同半，消除同半抽样噪声泄漏"),
@@ -248,6 +276,9 @@ def run_a2():
     print(f"[A2] 加权κ(专家 vs 行为三分位)={kappa:.4f}", flush=True)
     return {
         "experiment": "A2", "dataset": "DBE-KT22",
+        "aligned_item_vectors": {"item_id":qids,"criterion_teacher":expert,"fusion":fusion,"success":sig_success},
+        "paired_bootstrap": paired_item_bootstrap(expert, fusion, sig_success),
+        "linking": "(average_rank-0.5)/n, clipped to [1e-4,1-1e-4], then logit; five signals",
         "split_protocol": ("题级全样本评估；信号定义与 o4_fusion.py 调用同一 dbe_signals.build()"
                           "（全交易、反馈取有反馈记录行的均值、时长 0~3600、(rank-0.5)/n）"),
         "n_items": K,

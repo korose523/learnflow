@@ -1,0 +1,51 @@
+{
+  "dataset": "XES3G5M",
+  "source_url": "https://github.com/ai4ed/XES3G5M",
+  "metadata_items": 7652,
+  "question_types": {
+    "填空": 6142,
+    "单选": 1510
+  },
+  "numeric_text_app_compatible": 3209,
+  "unsupported_reasons_overlap": {
+    "requires_image": 2189,
+    "non_single_numeric_answer": 3068
+  },
+  "train": {
+    "provided_answer_records": 4446374,
+    "skipped_padding_or_invalid": 1746626,
+    "provided_unique_students": 14453
+  },
+  "test": {
+    "provided_answer_records": 1102810,
+    "skipped_padding_or_invalid": 0,
+    "provided_unique_students": 3613
+  },
+  "train_test_student_overlap": 0,
+  "heldout_observed_rate_check": {
+    "criterion": "held-out students observed item error rate",
+    "estimator": "train students smoothed inverse success rate",
+    "n_items": 4470,
+    "min_records_each_split": 30,
+    "spearman": 0.952723918566877,
+    "bootstrap_unit": "item_conditional_on_fitted_observed_rates",
+    "bootstrap_seed": 20261007,
+    "bootstrap_valid": 2000,
+    "ci95_percentile": [
+      0.9487081019426913,
+      0.9561463224305683
+    ],
+    "interpretation": "Cross-student descriptive reproducibility of observed rates; not learning gain, causal difficulty or independent ability-adjusted IRT."
+  },
+  "source_sha256": {
+    "data/xes3g5m/XES3G5M/metadata/questions.json": "57a3a63ef924e1f10bc83e673213841be4885f5ad52f0e606775a4fc030bc0d4",
+    "data/xes3g5m/XES3G5M/question_level/train_valid_sequences_quelevel.csv": "52bb050fbdb3f35cab3fe9e50f58d258d0e8e1794231f9b9026416917166ec83",
+    "data/xes3g5m/XES3G5M/question_level/test_quelevel.csv": "60fee6ceffa8880ba5dcfec37be5a577740793afee4c86c3a4a3a91df0a4c4a3"
+  },
+  "limitations": [
+    "Provided sequences are processed/truncated; record counts cannot reconstruct original interactions.",
+    "Many items require images, multiple blanks or option grading; the current numeric research adapter cannot handle all 7652 items.",
+    "No original student identifiers are included in the prepared item bank or inventory.",
+    "School grade and knowledge routes do not provide an independently calibrated item difficulty scale."
+  ]
+}

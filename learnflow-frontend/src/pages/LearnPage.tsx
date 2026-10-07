@@ -1,11 +1,12 @@
+import MathContent from '../components/content/MathContent';
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, XCircle, Clock, Sparkles, RefreshCw } from 'lucide-react';
+import { ArrowRight, CheckCircle2, XCircle, Clock, RefreshCw } from 'lucide-react';
 import { studentApi, invalidateCache } from '../services/api';
 import { useMotionPref } from '../contexts/MotionContext';
 import { EASE_SOFT } from '../theme/tokens';
-import ChallengeBar from '../components/learn/ChallengeBar';
+import TaskDifficulty from '../components/learn/TaskDifficulty';
 import RestGuide from '../components/learn/RestGuide';
 import DualCodeViz from '../components/learn/DualCodeViz';
 import SubjectBadge from '../components/learn/SubjectBadge';
@@ -30,6 +31,7 @@ export default function LearnPage() {
   const [phase, setPhase] = useState<'loading' | 'task' | 'feedback' | 'error'>('loading');
   const [answer, setAnswer] = useState('');
   const [feedbackText, setFeedbackText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const [lastCorrect, setLastCorrect] = useState<boolean | null>(null);
   const [elapsedMin, setElapsedMin] = useState(0);
   const [restDismissed, setRestDismissed] = useState(false);
@@ -57,22 +59,23 @@ export default function LearnPage() {
     return () => clearInterval(t);
   }, []);
 
-  const submit = async (forcedCorrect?: boolean) => {
-    if (!taskData?.task) return;
-    if (!answer.trim() && forcedCorrect === undefined) return;
-    const rtMs = Date.now() - startRef.current;
-    const correct = forcedCorrect ?? Math.random() > 0.3; // 演示：真实后端以作答判定
+  const submit = async () => {
+    if (!taskData?.task || !answer.trim() || submitting) return;
+    setSubmitting(true);
+    setFeedbackText('');
     try {
-      await studentApi.submitAttempt({ task_id: taskData.task!.id, correct, rt_ms: rtMs });
-      invalidateCache('/student'); // 失效学生端缓存
-      setLastCorrect(correct);
-      setFeedbackText(correct ? '太棒了，继续保持心流！🌟' : '没关系，我们换个角度再试试 💡');
+      const { data } = await studentApi.submitAnswer({
+        task_id: taskData.task.id, answer: answer.trim(),
+        time_spent: Math.max(1, Math.floor((Date.now() - startRef.current) / 1000)),
+      });
+      invalidateCache('/student');
+      setLastCorrect(data.is_correct);
+      setFeedbackText(data.feedback?.feedback_text || (data.is_correct ? '答案正确。' : '答案不正确，请再试一次。'));
       setPhase('feedback');
     } catch {
-      // 后端未就绪时仍给出本地反馈，保证体验
-      setLastCorrect(correct);
-      setFeedbackText(correct ? '答对啦（本地演示反馈）🌟' : '再想想（本地演示反馈）💡');
-      setPhase('feedback');
+      setFeedbackText('提交失败，答案尚未确认保存。请重试。');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -92,9 +95,6 @@ export default function LearnPage() {
   );
 
   const task = taskData?.task;
-  const difficulty = task?.difficulty ?? taskData?.challenge_band?.current ?? 70;
-  const bandLow = taskData?.challenge_band?.low ?? 75;
-  const bandHigh = taskData?.challenge_band?.high ?? 85;
 
   return (
     <div style={{ maxWidth: 720, margin: '0 auto' }}>
@@ -118,12 +118,12 @@ export default function LearnPage() {
 
         {/* 题目内容 */}
         <div style={{ fontSize: 18, lineHeight: 1.7, padding: '16px', background: '#F7FBFD', borderRadius: 14, marginBottom: 16 }}>
-          {task?.content || '（暂无题目内容）'}
+          <MathContent content={task?.content || '（暂无题目内容）'} />
         </div>
 
         {/* 难度通道 */}
         <div style={{ marginBottom: 16 }}>
-          <ChallengeBar value={difficulty} low={bandLow} high={bandHigh} />
+          <TaskDifficulty value={task?.difficulty} />
         </div>
 
         {/* 双编码可视化（按学科） */}
@@ -144,13 +144,10 @@ export default function LearnPage() {
               className="input"
               style={{ width: '100%', padding: '14px 16px', borderRadius: 14, fontSize: 17, boxSizing: 'border-box', marginBottom: 12 }}
             />
-            <button className="lf-btn lf-btn-primary" style={{ width: '100%' }} disabled={!answer.trim()} onClick={() => submit()}>
+            <button className="lf-btn lf-btn-primary" style={{ width: '100%' }} disabled={!answer.trim() || submitting} onClick={() => submit()}>
               提交答案 <ArrowRight size={18} />
             </button>
-            <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
-              <button className="lf-btn lf-btn-ghost" style={{ flex: 1, fontSize: 13, background: '#F0FDF4', color: '#3FA66A' }} onClick={() => submit(true)}>演示：答对</button>
-              <button className="lf-btn lf-btn-ghost" style={{ flex: 1, fontSize: 13, background: '#FEF2F2', color: '#E0533D' }} onClick={() => submit(false)}>演示：答错</button>
-            </div>
+            {feedbackText && <p role="alert">{feedbackText}</p>}
           </>
         )}
 

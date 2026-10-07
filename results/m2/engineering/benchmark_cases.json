@@ -1,0 +1,845 @@
+[
+  {
+    "name": "missing_trigger",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "trigger"
+      ]
+    ]
+  },
+  {
+    "name": "missing_target_construct",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "target_construct"
+      ]
+    ]
+  },
+  {
+    "name": "missing_direction",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "direction"
+      ]
+    ]
+  },
+  {
+    "name": "missing_channel",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "channel"
+      ]
+    ]
+  },
+  {
+    "name": "missing_cost",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "cost"
+      ]
+    ]
+  },
+  {
+    "name": "missing_side_effect",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "side_effect"
+      ]
+    ]
+  },
+  {
+    "name": "missing_precedence",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_FIELD",
+        "M1",
+        "precedence"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_trigger_",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "trigger"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_target_construct_[]",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": [],
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "target_construct"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_channel_3",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": 3,
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "channel"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_direction_push",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "push",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "direction"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_cost_-1",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": -1,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "cost"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_cost_True",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": true,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "cost"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_precedence_high",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": "high",
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "precedence"
+      ]
+    ]
+  },
+  {
+    "name": "invalid_side_effect_none",
+    "family": "contract",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": "none",
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_FIELD",
+        "M1",
+        "side_effect"
+      ]
+    ]
+  },
+  {
+    "name": "duplicate",
+    "family": "identity",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        },
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "DUPLICATE_ID",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "missing_file",
+    "family": "reference",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "absent.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_SOURCE",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "missing_symbol",
+    "family": "reference",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:absent",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "MISSING_SYMBOL",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "root_escape",
+    "family": "reference",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "../engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "INVALID_REFERENCE",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "unregistered",
+    "family": "producer",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n\ndef other():\n    return Effect(mechanism_id=\"M2\")\n",
+    "expected": [
+      [
+        "UNREGISTERED_PRODUCER",
+        "M2",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "absent_literal",
+    "family": "producer",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "def make():\n    return None\n",
+    "expected": [
+      [
+        "NO_LITERAL_PRODUCER",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "clean_direct",
+    "family": "clean",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": []
+  },
+  {
+    "name": "clean_alias",
+    "family": "clean",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect as Candidate\ndef make():\n    return Candidate(mechanism_id=\"M1\")\n",
+    "expected": []
+  },
+  {
+    "name": "clean_module",
+    "family": "clean",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "import app.services.mechanism_registry as registry\ndef make():\n    return registry.Effect(mechanism_id=\"M1\")\n",
+    "expected": []
+  },
+  {
+    "name": "clean_nested",
+    "family": "clean",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:Engine.make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\nclass Engine:\n    def make(self):\n        return Effect(mechanism_id=\"M1\")\n",
+    "expected": []
+  },
+  {
+    "name": "dynamic_id",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=identifier)\n",
+    "expected": [
+      [
+        "NO_LITERAL_PRODUCER",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "star_import",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import *\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "NO_LITERAL_PRODUCER",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "comment_only",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "def make():\n    # Effect(mechanism_id=\"M1\")\n    return None\n",
+    "expected": [
+      [
+        "NO_LITERAL_PRODUCER",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "unrelated_class",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "class Effect:\n    pass\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "NO_LITERAL_PRODUCER",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "line_reference",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:2",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    return Effect(mechanism_id=\"M1\")\n",
+    "expected": [
+      [
+        "LINE_REFERENCE_UNVERIFIED",
+        "M1",
+        null
+      ]
+    ]
+  },
+  {
+    "name": "dead_code_literal",
+    "family": "boundary",
+    "manifest": {
+      "mechanisms": [
+        {
+          "id": "M1",
+          "trigger": "after_response",
+          "target_construct": "engagement",
+          "direction": "approach",
+          "channel": "banner",
+          "cost": 1.0,
+          "side_effect": [],
+          "precedence": 10,
+          "impl_ref": "engine.py:make",
+          "expects_effect": true
+        }
+      ]
+    },
+    "source": "from app.services.mechanism_registry import Effect\ndef make():\n    if False:\n        return Effect(mechanism_id=\"M1\")\n",
+    "expected": []
+  }
+]

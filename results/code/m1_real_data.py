@@ -11,7 +11,8 @@ from collections import defaultdict
 import numpy as np
 from scipy import stats
 
-BASE = r"E:/learnflow"
+from pathlib import Path
+BASE = str(Path(__file__).resolve().parents[2])
 DATA = os.path.join(BASE, "data")
 OUT = os.path.join(BASE, "results", "code")
 os.makedirs(OUT, exist_ok=True)
@@ -98,6 +99,9 @@ results["assist09_window"] = {
     "modal_error_rate": [round(k / W, 2) for k in modal_k],
     "modal_error_rate_center": round(float(np.mean(modal_k)) / W, 4),
     "bootstrap_modal_ci95_k": ci95,
+    "bootstrap_reps": BOOT,
+    "bootstrap_seed": 20260922,
+    "bootstrap_argmax_freq": {str(k): round(float(mode_freq[k]), 4) for k in range(W + 1)},
     # 审阅意见 3.3：报告分布形状，而非众数。plateau = 错误率 0.15~0.35（k=3..7）的窗占比。
     "plateau_0p15_0p35_share": round(float(k_counts[3:8].sum()) / n_windows, 4),
     "plateau_0p15_0p35_n_windows": int(k_counts[3:8].sum()),

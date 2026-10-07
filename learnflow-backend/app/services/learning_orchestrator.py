@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from datetime import datetime, UTC
 from typing import Any, Dict, List, Optional
 
+from fastapi import HTTPException
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from sqlalchemy.orm import selectinload
@@ -486,6 +488,30 @@ class LearningOrchestrator:
     DDA_WEIGHT = 0.35
     OPTIMAL_WEIGHT = 0.20
 
+    @staticmethod
+    async def _schedule_review(user_id: str, task_id: str, correct: bool, db: AsyncSession) -> SpacedReview:
+        base = select(SpacedReview).where(SpacedReview.user_id == user_id, SpacedReview.task_id == task_id)
+        pending = (await db.execute(base.where(SpacedReview.completed_date.is_(None)).order_by(SpacedReview.created_at.desc(), SpacedReview.id.desc()).limit(1))).scalar_one_or_none()
+        last = pending or (await db.execute(base.order_by(SpacedReview.created_at.desc(), SpacedReview.id.desc()).limit(1))).scalar_one_or_none()
+        plan = SpacedRepetitionService.calculate_next_review(last.review_number if last else 0, correct, last.next_interval_days if last else None)
+        row = pending or SpacedReview(user_id=user_id, task_id=task_id)
+        row.review_number = plan['next_review_number']
+        row.scheduled_date = plan['next_review_date']
+        row.next_interval_days = plan['next_interval_days']
+        if pending is None:
+            db.add(row)
+        await db.flush()
+        return row
+
+    @staticmethod
+    async def _select_approved_task(db: AsyncSession, difficulty: int, topic: Optional[str]) -> Optional[Task]:
+        """Use the nearest available approved item, within the requested topic."""
+        query = select(Task).where(Task.is_approved == True)
+        if topic:
+            query = query.where(Task.topic == topic)
+        query = query.order_by(func.abs(Task.difficulty - difficulty), func.random()).limit(1)
+        return (await db.execute(query)).scalar_one_or_none()
+
     @classmethod
     async def build_next_task(
         cls,
@@ -573,33 +599,10 @@ class LearningOrchestrator:
         bias = float(getattr(user, "difficulty_bias", 0.0) or 0.0)
         fused_difficulty = max(1, min(10, int(round(fused_difficulty + bias))))
 
-        # 7. 查找题目
-        task_query = await db.execute(
-            select(Task)
-            .where(Task.difficulty == fused_difficulty, Task.is_approved == True)
-            .order_by(func.random())
-            .limit(1)
-        )
-        task = task_query.scalar_one_or_none()
-
-        if not task:
-            # 回退：找附近难度
-            task_query = await db.execute(
-                select(Task)
-                .where(
-                    Task.difficulty.between(
-                        max(1, fused_difficulty - 1),
-                        min(10, fused_difficulty + 1),
-                    ),
-                    Task.is_approved == True,
-                )
-                .order_by(func.random())
-                .limit(1)
-            )
-            task = task_query.scalar_one_or_none()
-
-        if not task:
-            raise Exception("暂无匹配难度的题目")
+        # 7. Keep topic constraints in every selection/fallback path.
+        task = await cls._select_approved_task(db, fused_difficulty, topic)
+        if task is None:
+            raise HTTPException(status_code=404, detail="该主题暂无已审核题目" if topic else "暂无已审核题目")
 
         # 8. 风险监控
         risk_snapshot = await cls._build_risk_snapshot(user, db)
@@ -757,32 +760,8 @@ class LearningOrchestrator:
         mastery_before = _bkt_before.p_mastery if _bkt_before is not None else None
         mastery_after = updated_skill.p_mastery
 
-        # 5. 间隔复习计划
-        existing_review = await db.execute(
-            select(SpacedReview)
-            .where(SpacedReview.user_id == user.id, SpacedReview.task_id == task.id)
-            .order_by(SpacedReview.review_number.desc())
-            .limit(1)
-        )
-        last_review = existing_review.scalar_one_or_none()
-        review_number = last_review.review_number if last_review else 0
-        current_interval = last_review.next_interval_days if last_review else None
-
-        next_review = SpacedRepetitionService.calculate_next_review(
-            review_number=review_number,
-            was_correct=is_correct,
-            current_interval=current_interval,
-        )
-        spaced_review = SpacedReview(
-            user_id=user.id,
-            task_id=task.id,
-            review_number=next_review["next_review_number"],
-            scheduled_date=next_review["next_review_date"],
-            next_interval_days=next_review["next_interval_days"],
-            result=is_correct,
-        )
-        db.add(spaced_review)
-        await db.flush()
+        # 5. Reschedule one pending review rather than appending on each practice.
+        spaced_review = await cls._schedule_review(user.id, task.id, is_correct, db)
 
         # 6. 宠物更新 (LF-M22 虚拟宠物陪伴)
         #    注册表门控: 该机制被 is_enabled(False) 关闭 (消融实验) 时跳过成长更新,
@@ -1012,18 +991,6 @@ class LearningOrchestrator:
         # 把 0..1 成瘾风险传入仲裁器: 既驱动 1.5 层「LAI 风险自适应降权」(高风险档
         # 丢弃高成瘾化拉回机制, 额外伦理护栏), 也决定 RL 决策的上下文风险档 (tier)。
         # 风险为 0 时 (绝大多数正常提交) 与各层行为完全不变, 向后兼容。
-        # 路线 A · A2（2026-09-22，opt-in）：把 ≥14 个机制升为真正的干预效果生产者，
-        # 并入同一仲裁器统一仲裁，使运行时冲突"可能发生"（消解"冲突稀少 vs 不可发生"）。
-        # 默认关闭：LEARN2_A2_PRODUCERS!=1 时行为与旧版完全一致，936 条既有测试不受影响。
-        if os.environ.get("LEARN2_A2_PRODUCERS") == "1":
-            from app.services.route_a_producers import (
-                install_route_a_directions, build_route_a_new_effects,
-            )
-            install_route_a_directions(_FOMO_ARBITRATOR)
-            # 仅注入 12 个新增生产者；既有 LF-M44/LF-M52 由 FOMO 路径各自产出，
-            # 避免候选集出现重复机制（否则 Layer-2 同桶会多计 dropped_by_conflict）。
-            fomo_effects.extend(
-                build_route_a_new_effects(_fomo_ctx.user_id, _fomo_ctx.session_id))
         _fomo_delivered = _FOMO_ARBITRATOR.arbitrate(
             _fomo_ctx, fomo_effects, lai_risk=_lai_risk
         )
@@ -1363,21 +1330,23 @@ class LearningOrchestrator:
 
     @classmethod
     def _compare_answer(cls, user_answer: str, correct_answer: str) -> bool:
-        """标准化答案后比较"""
-        def normalize(ans: str) -> str:
-            a = str(ans).strip().lower().replace(" ", "").replace(",", ".")
-            if "/" in a:
+        """比较文本或精确有理数；单变量 x=7 与 7 等价，不执行表达式。"""
+        from fractions import Fraction
+        import re
+        import unicodedata
+
+        def normalize(ans: str):
+            text = unicodedata.normalize("NFKC", str(ans)).strip().lower()
+            text = re.sub(r"\s+", "", text).replace("−", "-").replace(",", ".")
+            text = re.sub(r"^[a-z]=", "", text)
+            if re.fullmatch(r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:/[+-]?\d+)?", text):
                 try:
-                    parts = a.split("/")
-                    if len(parts) == 2:
-                        num, den = float(parts[0]), float(parts[1])
-                        if den != 0:
-                            a = str(round(num / den, 4))
+                    return ("number", Fraction(text))
                 except (ValueError, ZeroDivisionError):
                     pass
-            return a
+            return ("text", text)
 
-        return normalize(user_answer) == normalize(correct_answer)
+        return bool(str(user_answer).strip()) and normalize(user_answer) == normalize(correct_answer)
 
     @classmethod
     def _task_to_dict(cls, task: Task) -> dict:

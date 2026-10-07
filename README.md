@@ -8,12 +8,14 @@
 > **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
 > 声明两个研究主线。
 
-[![tests](https://img.shields.io/badge/tests-972%20passed-brightgreen)](#测试)
+[![tests](https://img.shields.io/badge/tests-1017%20passed-brightgreen)](#测试)
 [![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%202%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
+
+> **当前投稿路线（2026-10-07 作者确认）**：M1/M3 优先采用公开日志与离线评价，不开展新真人实验。现成 K12 题库优先复用 XES3G5M，已整理 7,652 题，当前数值界面经格式初筛兼容 3,209 题；其余图题/选择/多空题需独立适配。详见 `docs/当前投稿路线_公开数据与离线评价.md` 和 `results/k12/xes_bank_inventory.json`。研究会话仅为后续技术储备，测试通过不等于人类学习效果。
 
 ## English Overview
 
@@ -25,9 +27,9 @@ Its research contribution supports four connected lines of work:
 | Line | Question |
 |---|---|
 | **Measurement** | Are difficulty sources defined on different scales commensurable? |
-| **Target** | Does the 80–85% success-rate rule hold on real learner logs? |
+| **Target** | What can observed success-rate distributions tell us, and what requires a learning-gain experiment? |
 | **Decision** | How does difficulty enter ordered sequencing under a cold start, and where does an LLM difficulty prior stop being reliable? |
-| **Governance** | Do the dozens of coexisting gamification mechanisms actually collide at runtime? |
+| **Governance** | Which intervention schema fields and effect producers exist in the sealed internal implementation? |
 
 Three properties are load-bearing for reviewers:
 
@@ -35,9 +37,9 @@ Three properties are load-bearing for reviewers:
   (54) is always reported together with the **runtime effect-producer count (2)** and the
   **maturity breakdown (complete 9 / partial 37 / placeholder 8)**. A registered count alone
   would be read as "54 mechanisms are running", which is not what the code does.
-- **Machine-verifiable numbers.** Every headline count in the documentation is recomputed
-  from source by scripts in `learnflow-backend/scripts/`, and the check fails loudly when a
-  document number diverges from the code. See [Reproducibility](#可复现性).
+- **Recomputed counts with explicit limits.** Count scripts inspect code and selected document
+  fields. Missing document matches are not verification, and counts do not establish runtime
+  user outcomes or scientific validity. See [Reproducibility](#可复现性).
 - **Failed implementations are not results.** Annotation runs that failed for engineering
   reasons (truncated thinking blocks, unparseable output formats) are reported separately
   from valid protocol comparisons, and never enter a capability claim.
@@ -76,7 +78,7 @@ LearnFlow 是一个 **K12 游戏化自适应学习平台**，包含学生 / 教�
 | **3 决策** | 难度如何进入带记忆的序贯决策？LLM 难度先验可信到哪里？ | 已执行（Junyi 真实臂 + LLM 标注协议审计） |
 | **4 治理** | 数十个干预机制并存时，冲突是否真的发生？ | **内部静态审计**（无真实用户日志，运行时冲突频率未测） |
 
-> 🔬 计划书与进展报告（中韩四份）已全部合并入 **`docs/LearnFlow_研究总档.md`**（第一~四部），docx 交付件见 `docs/研究计划_*.docx`、`docs/研究报告_*.docx`；三篇支撑稿见 `docs/M1_*.md`、`docs/M2_*.md`、`docs/M3_*.md`。
+> 计划书与进展报告的唯一源是 `docs/研究计划与报告/` 的中韩四份 Markdown。现行稿与历史材料的区别见 `docs/README.md`；Word 工作稿由 `tools/docx_build/_md_to_docx.py` 生成到仓库外修订包。M1、M3 仍暂缓投稿；M2 为路线 B 内部章节，M4 不在提交包中。
 
 ---
 
@@ -214,7 +216,7 @@ cd learnflow-frontend && cp .env.example .env.local
 ```bash
 cd learnflow-backend
 
-# 全量测试（当前 972 passed）
+# 全量测试（历史审阅基线 972 passed；当前结果见修订包验证记录）
 PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
 ```
 
@@ -255,7 +257,7 @@ python ../results/code/verify_window_support.py
 > 只写「54 机制」会被读成「54 个都在运行」——运行时真正构造干预效果的只有 2 处
 > （`deep_addiction_engine.py:296` LF-M44、`learning_orchestrator.py:986` LF-M52），
 > 其余机制只写评估记录或不构造效果。三元组由 `verify_counts.py` 复算，`tests/test_count_verification.py` 钉死。
-> **（2026-09-29，审阅 §2.1④）效果生产者一律写成带条件的同一句话**：**审计时点 2（封存 tag `audit-m2-20260911`）；路线 A opt-in 下为 14 个机制（声明式候选集，不计入 AST 生产者审计），默认关闭**。按审阅 §5.4，路线 A 的 A2/A3/A4 产出不作为结果接受。
+> 效果生产者采用封存审计时点 2（tag `audit-m2-20260911`）。Route A 固定候选代码已移至非运行实验档案，应用不再注入。
 
 主要统计脚本：
 
@@ -275,7 +277,7 @@ python ../results/code/verify_window_support.py
 - `asset_numbers.json` —— 代码资产数字快照
 - `impl_ref_integrity.json` —— 实现引用完整性
 
-### 当前基线
+### 封存审计与历史资产口径（非本轮完整资产快照）
 
 | 指标 | 值 | 复算来源 |
 |---|---|---|
@@ -285,7 +287,7 @@ python ../results/code/verify_window_support.py
 | 占位机制 ID | `LF-M19, M28, M29, M32, M45, M49, M50, M53` | `verify_counts.py` / `maturity_placeholder.ids` |
 | 学习方法 | **28**（`LF-L01`…`LF-L28`） | `verify_counts.py` |
 | 元学习技能树节点 | **16** | `verify_counts.py` |
-| 机制运行时落地 | **54 / 54**，孤儿 0 | `scan_mechanism_landing.py` |
+| 机制引用覆盖（不表示运行时效果） | **54 / 54**，孤儿 0（历史扫描） | `scan_mechanism_landing.py` |
 | 注册表指纹 | `ee1a49be5732` | `registry_fingerprint()` |
 
 > **数字纪律**：本项目历史上曾出现「76 个机制」的表述膨胀。四层复核链为
@@ -302,7 +304,7 @@ learnflow/
 ├── README.md                   # 本文件
 ├── CONTRIBUTING.md             # 贡献与支持指南
 ├── CITATION.cff                # 引用元数据
-├── docs/                       # 最终论文稿 + 权威治理文档（写作过程产物已归档）
+├── docs/                       # 当前工作稿索引、冻结原件与明确标识的历史稿
 ├── artifacts/                  # E2E 验证截图等证据
 ├── learnflow-backend/          # FastAPI 后端
 │   ├── app/
@@ -329,20 +331,19 @@ learnflow/
 
 ## 文档索引
 
-`docs/` 只保留**最终版本**与**权威治理文档**；写作与审计过程产物已归档到仓库外的
-`learnflow_archive_20260913/`（附 `MANIFEST.md` 逐项说明，可原样移回）。
+当前源与历史稿的身份以 [docs/README.md](docs/README.md) 为准。本轮工作稿未冻结；其余完整稿不是最终版本。
 
-| 文档 | 内容 |
+| 文档 | 用途 |
 |---|---|
-| `docs/M1_难度可公度性与最优错误率_完整稿.md` | 论文 M1 完整稿（难度可公度性、合并增益的判据依赖性、冷启动估计器） |
-| `docs/M2_多干预并存学习系统的冲突结构审计_完整稿.md` | 论文 M2 完整稿（游戏化干预冲突结构审计） |
-| `docs/M3_有序难度决策与大模型先验边界_完整稿.md` | 论文 M3 完整稿（有序动作空间、LLM 难度先验边界） |
-| `docs/LearnFlow_研究总档.md（第五部·期刊论文拆分方案）` | 论文组合规划、五维新颖性审计、数字诚信红线 |
-| `docs/LearnFlow_研究总档.md（第六部·机制治理与落实方案）` | 54 个机制的去重口径与落地状态 |
-| `docs/LearnFlow_研究总档.md（第七部·研究设计与审阅档案）（§1 权威事实基线与写作体例）` | 事实基线、禁用数字清单与学术体例规范 |
-| `docs/references.bib` | 参考文献库（BibTeX） |
-| `learnflow-backend/docs/research_tooling.md` | 离线分析工具与死代码可达性登记 |
-| `learnflow-backend/docs/incremental_prd.md` | 增量产品需求 |
+| `docs/研究计划与报告/` | 四份中韩计划/报告唯一 Markdown 源 |
+| `docs/M1_submission_EN_compressed.md` | M1 唯一拟投稿主稿 |
+| `docs/M3_submission_EN_compressed.md` | M3 指标修正工作稿 |
+| `docs/M2_路线B_内部静态审计章.md` | 内部静态审计章节 |
+| `docs/机制治理_审计基线.md` | 旧审计口径，不能视为当前运行结果 |
+| `docs/因果侧识别策略.md` | f43e2a7 冻结原件 |
+| `docs/因果侧识别策略_v2_未冻结草案.md` | 执行前讨论草案 |
+
+修订 Word、答复与日志位于仓库外 `/Volumes/Untitled/learnflow_revision_20261007/`；旧材料备份位于 `/Volumes/Untitled/learnflow_revision_archive_20261007/`。当前移出文件不清除 Git 历史。最近本地后端全量测试991项通过，随后相关回归85项通过；这不表示人类实验已经实施。
 
 ---
 

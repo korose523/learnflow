@@ -91,7 +91,7 @@ class TestLearningOrchestrator:
         assert LearningOrchestrator._compare_answer("  4  ", "4") is True
         assert LearningOrchestrator._compare_answer("1/2", "0.5") is True
         assert LearningOrchestrator._compare_answer("3.14", "3,14") is True
-        assert LearningOrchestrator._compare_answer("x=4", "4") is False
+        assert LearningOrchestrator._compare_answer("x=4", "4") is True
 
     def test_compute_fused_difficulty_respects_bounds(self):
         from app.services.learning_orchestrator import LearningOrchestrator

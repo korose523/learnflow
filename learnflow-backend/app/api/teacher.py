@@ -2,7 +2,7 @@
 from datetime import datetime, UTC
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, case
 from sqlalchemy.orm import selectinload
@@ -33,21 +33,53 @@ class CreateTaskRequest(BaseModel):
     title: str | None = None
     content: str
     topic: str
-    difficulty: int = 5
+    difficulty: int = Field(default=5, ge=1, le=10)
     correct_answer: str
     explanation: str | None = None
     hint_levels: list[str] | None = None
-    time_estimate: int = 120
+    time_estimate: int = Field(default=120, ge=1, le=86400)
+
+    @field_validator("content", "topic", "correct_answer")
+    @classmethod
+    def required_text(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("字段不能为空")
+        return value
 
 
 class AdjustDifficultyRequest(BaseModel):
     student_id: str
-    new_difficulty: int
+    new_difficulty: int = Field(ge=1, le=10)
 
 
 class BatchAdjustRequest(BaseModel):
     student_ids: List[str]
     difficulty_delta: int = 0
+
+
+def student_scope(user: User):
+    conditions = [User.role == UserRole.STUDENT, User.is_active == True]
+    if user.role != UserRole.ADMIN:
+        conditions.append(User.class_id.in_(select(Class.id).where(Class.teacher_id == user.id)))
+    return conditions
+
+
+async def owned_student(student_id: str, user: User, db: AsyncSession) -> User:
+    student = (await db.execute(select(User).where(User.id == student_id, *student_scope(user)))).scalar_one_or_none()
+    if student is None:
+        raise HTTPException(status_code=404, detail="学生不存在或不属于当前教师")
+    return student
+
+
+async def owned_class(class_id: str, user: User, db: AsyncSession) -> Class:
+    conditions = [Class.id == class_id]
+    if user.role != UserRole.ADMIN:
+        conditions.append(Class.teacher_id == user.id)
+    klass = (await db.execute(select(Class).where(*conditions))).scalar_one_or_none()
+    if klass is None:
+        raise HTTPException(status_code=404, detail="班级不存在或不属于当前教师")
+    return klass
 
 
 # ─── 班级仪表盘 ───────────────────────────────
@@ -58,8 +90,12 @@ async def get_classroom(
     db: AsyncSession = Depends(get_db),
 ):
     """教师班级仪表盘数据"""
+    classes = (await db.execute(select(Class).where(
+        *([] if user.role == UserRole.ADMIN else [Class.teacher_id == user.id])
+    ).order_by(Class.name, Class.id))).scalars().all()
     students_query = await db.execute(
-        select(User).where(User.role == UserRole.STUDENT, User.is_active == True)
+        select(User).where(User.role == UserRole.STUDENT, User.is_active == True,
+                           User.class_id.in_([klass.id for klass in classes]))
     )
     students = students_query.scalars().all()
     student_ids = [s.id for s in students]
@@ -112,6 +148,7 @@ async def get_classroom(
         })
 
     return {
+        "classes": [{"id": klass.id, "name": klass.name, "grade_id": klass.grade_id} for klass in classes],
         "total_students": len(students),
         "class_avg_score": round(
             sum(s["avg_score"] for s in student_data) / max(len(student_data), 1), 1
@@ -130,10 +167,7 @@ async def get_student_detail(
     db: AsyncSession = Depends(get_db),
 ):
     """单个学生详情"""
-    student_query = await db.execute(select(User).where(User.id == student_id))
-    student = student_query.scalar_one_or_none()
-    if not student:
-        raise HTTPException(status_code=404, detail="学生不存在")
+    student = await owned_student(student_id, user, db)
 
     pet_query = await db.execute(select(PetProfile).where(PetProfile.user_id == student.id))
     pet = pet_query.scalar_one_or_none()
@@ -244,6 +278,8 @@ async def list_tasks(
             "topic": t.topic,
             "difficulty": t.difficulty,
             "is_approved": t.is_approved,
+            "review_status": "approved" if t.is_approved else "rejected" if t.reviewed_at else "pending_review",
+            "review_notes": t.review_notes,
             "created_at": t.created_at.isoformat(),
         }
         for t in tasks
@@ -259,7 +295,7 @@ async def get_suggestions(
 ):
     """AI 教学建议"""
     students_query = await db.execute(
-        select(User).where(User.role == UserRole.STUDENT, User.is_active == True)
+        select(User).where(*student_scope(user))
     )
     students = students_query.scalars().all()
     student_ids = [s.id for s in students]
@@ -319,7 +355,7 @@ async def get_alerts(
     """获取所有未解决告警"""
     result = await db.execute(
         select(Alert)
-        .where(Alert.is_resolved == False)
+        .where(Alert.is_resolved == False, Alert.user_id.in_(select(User.id).where(*student_scope(user))))
         .order_by(Alert.severity.desc(), Alert.created_at.desc())
         .limit(50)
     )
@@ -347,7 +383,7 @@ async def resolve_alert(
     db: AsyncSession = Depends(get_db),
 ):
     """解决告警"""
-    result = await db.execute(select(Alert).where(Alert.id == alert_id))
+    result = await db.execute(select(Alert).where(Alert.id == alert_id, Alert.user_id.in_(select(User.id).where(*student_scope(user)))))
     alert = result.scalar_one_or_none()
     if not alert:
         raise HTTPException(status_code=404, detail="告警不存在")
@@ -371,7 +407,7 @@ async def get_ai_classroom_analysis(
 ):
     """AI 班级全景分析"""
     students_query = await db.execute(
-        select(User).where(User.role == UserRole.STUDENT, User.is_active == True)
+        select(User).where(*student_scope(user))
     )
     students = students_query.scalars().all()
     student_ids = [str(s.id) for s in students]
@@ -470,10 +506,7 @@ async def get_ai_student_analysis(
     db: AsyncSession = Depends(get_db),
 ):
     """AI 单个学生深度分析"""
-    result = await db.execute(select(User).where(User.id == student_id))
-    student = result.scalar_one_or_none()
-    if not student:
-        raise HTTPException(status_code=404, detail="学生不存在")
+    student = await owned_student(student_id, user, db)
 
     skills_q = await db.execute(
         select(StudentSkillProfile).where(StudentSkillProfile.user_id == student_id)
@@ -527,7 +560,7 @@ async def get_difficulty_suggestions(
 ):
     """获取全班难度调整建议"""
     students_q = await db.execute(
-        select(User).where(User.role == UserRole.STUDENT, User.is_active == True)
+        select(User).where(*student_scope(user))
     )
     students = students_q.scalars().all()
 
@@ -559,10 +592,7 @@ async def adjust_student_difficulty(
     db: AsyncSession = Depends(get_db),
 ):
     """手动/自动调整学生难度（保存到最近答题难度偏置）"""
-    result = await db.execute(select(User).where(User.id == req.student_id))
-    student = result.scalar_one_or_none()
-    if not student:
-        raise HTTPException(status_code=404, detail="学生不存在")
+    student = await owned_student(req.student_id, user, db)
 
     student.difficulty_bias = float(max(-4, min(4, req.new_difficulty - 5)))  # 以 5 为中性基线
     await db.commit()
@@ -585,7 +615,7 @@ async def get_intervention_plan(
 ):
     """获取教学干预计划"""
     students_q = await db.execute(
-        select(User).where(User.role == UserRole.STUDENT, User.is_active == True)
+        select(User).where(*student_scope(user))
     )
     students = students_q.scalars().all()
 
@@ -633,7 +663,7 @@ async def get_intervention_plan(
 
 class CreateAssignmentRequest(BaseModel):
     class_id: str
-    node_ids: List[str]
+    node_ids: List[str] = Field(min_length=1, max_length=200)
     due_at: str | None = None  # ISO datetime
 
 
@@ -644,9 +674,7 @@ async def create_assignments(
     db: AsyncSession = Depends(get_db),
 ):
     """教师布置作业（班级 + 若干课标知识点 + 截止时间）"""
-    klass = (await db.execute(select(Class).where(Class.id == req.class_id))).scalar_one_or_none()
-    if not klass:
-        raise HTTPException(status_code=404, detail="班级不存在")
+    klass = await owned_class(req.class_id, user, db)
 
     due_at = None
     if req.due_at:
@@ -655,19 +683,30 @@ async def create_assignments(
         except ValueError:
             raise HTTPException(status_code=400, detail="due_at 格式应为 ISO datetime")
 
+    node_ids = list(dict.fromkeys(req.node_ids))
+    nodes = (await db.execute(select(CurriculumNode).where(CurriculumNode.id.in_(node_ids)))).scalars().all()
+    if len(nodes) != len(node_ids):
+        raise HTTPException(status_code=400, detail="包含不存在的知识点，未布置作业")
+    if klass.grade_id and any(node.grade_id != klass.grade_id for node in nodes):
+        raise HTTPException(status_code=400, detail="知识点年级与班级不匹配")
+    existing = {row.node_id: row for row in (await db.execute(
+        select(Assignment).where(Assignment.class_id == klass.id, Assignment.node_id.in_(node_ids))
+    )).scalars().all()}
     created_ids = []
-    for node_id in req.node_ids:
-        node = (await db.execute(select(CurriculumNode).where(CurriculumNode.id == node_id))).scalar_one_or_none()
-        if not node:
-            continue
-        assignment = Assignment(class_id=req.class_id, node_id=node_id, due_at=due_at)
-        db.add(assignment)
+    new_count = 0
+    for node_id in node_ids:
+        assignment = existing.get(node_id)
+        if assignment is None:
+            assignment = Assignment(class_id=klass.id, node_id=node_id, due_at=due_at)
+            db.add(assignment)
+            new_count += 1
+        else:
+            assignment.due_at = due_at
         await db.flush()
-        await db.refresh(assignment)
         created_ids.append(str(assignment.id))
 
     await db.flush()
-    return {"assignment_id": created_ids[0] if created_ids else None, "created": len(created_ids)}
+    return {"assignment_id": created_ids[0] if created_ids else None, "created": new_count, "updated": len(created_ids) - new_count}
 
 
 @k12_router.get("/assignments")
@@ -677,6 +716,7 @@ async def list_assignments(
     db: AsyncSession = Depends(get_db),
 ):
     """班级作业列表"""
+    await owned_class(class_id, user, db)
     result = await db.execute(
         select(Assignment)
         .where(Assignment.class_id == class_id)
@@ -708,9 +748,7 @@ async def class_mastery(
     db: AsyncSession = Depends(get_db),
 ):
     """班级掌握热力图（按知识点，基于该知识点下题目的答题正确率）"""
-    klass = (await db.execute(select(Class).where(Class.id == class_id))).scalar_one_or_none()
-    if not klass:
-        raise HTTPException(status_code=404, detail="班级不存在")
+    klass = await owned_class(class_id, user, db)
 
     grade_id = klass.grade_id
     if grade_id:
@@ -736,7 +774,9 @@ async def class_mastery(
             select(
                 func.count(Attempt.id),
                 func.sum(case((Attempt.is_correct == True, 1), else_=0)),
-            ).where(Attempt.task_id.in_(node_tasks))
+            ).where(Attempt.task_id.in_(node_tasks), Attempt.user_id.in_(
+                select(User.id).where(User.class_id == klass.id, User.role == UserRole.STUDENT, User.is_active == True)
+            ))
         )).first()
         total, correct = agg
         pct = round((correct or 0) / max(total or 1, 1) * 100, 1)

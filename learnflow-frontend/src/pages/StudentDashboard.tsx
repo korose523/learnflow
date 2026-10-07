@@ -69,16 +69,11 @@ export default function StudentDashboard() {
     loadDashboard();
   }, []);
 
-  // 学习状态健康时，给一次「自我拓展」式庆祝（非连胜/损失厌恶，呼应抗成瘾基调）
+  // No health inference or celebration is derived from the unvalidated LAI.
   useEffect(() => {
-    if (lai && !celebratedRef.current) {
-      const tier = lai.risk_tier || 'L1_NORMAL';
-      if (tier === 'L1_NORMAL') {
-        setCelebrateHealthy(true);
-        celebratedRef.current = true;
-      }
-    }
-  }, [lai]);
+    setCelebrateHealthy(false);
+    celebratedRef.current = true;
+  }, []);
 
   const toggleRelaxation = async () => {
     if (!relaxationMode) {
@@ -117,14 +112,7 @@ export default function StudentDashboard() {
     ? Math.round(data.skill_profiles.reduce((s, p) => s + p.score, 0) / data.skill_profiles.length)
     : 0;
 
-  // 吉祥物提示接入真实学情（基于 LAI 风险档推导健康正向提示，绝不制造负罪感/损失厌恶）
-  const mascotTips = lai
-    ? (lai.risk_tier === 'L1_NORMAL'
-        ? ['你今天的学习状态很健康，保持自己的节奏就好 🌿', '完成一个小目标就值得鼓掌，不必和别人比 👏', '大脑喜欢规律作息，今晚早点睡能记得更牢 🌙']
-        : lai.risk_tier === 'L2_WATCH'
-        ? ['感觉到你投入很多，记得每 20 分钟抬头看看远处 🌿', '如果有点累，试试顶部「放松模式」深呼吸 🧘', '学得久不代表学得好，适时休息效率更高 💡']
-        : ['最近学习强度偏高，先喝口水、站起来活动一下吧 💧', '给自己 10 分钟休息，回来会更专注 🌿', '你不需要一直绷着，休息也是学习的一部分 🧘'])
-    : undefined;
+  const mascotTips = ['按自己的节奏练习 🌿', '完成一个小目标后，可以休息一下。'];
 
   return (
     <div className={relaxationMode ? 'relaxation-mode' : ''} style={{ transition: 'background 1s' }}>
@@ -151,7 +139,7 @@ export default function StudentDashboard() {
         <ChallengeBar value={challenge} label="我的心流难度" />
       </motion.div>
 
-      {/* 学习健康分（LAI）— 论文核心构念：0-100 健康分 + 自动抗成瘾干预 */}
+      {/* 学习记录说明（不展示未经验证的 LAI 健康分） */}
       {lai && <LAIHealthCard data={lai} />}
 
       {/* 信息架构：左「今日/进步」+ 右「目标/学习入口/能力树」，移动端自动堆叠 */}
@@ -224,7 +212,7 @@ export default function StudentDashboard() {
           {/* 学习入口网格（移动端 2 列，平板/桌面 3 列） */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <GridCard icon={<BookOpen size={24} color="var(--lf-primary-low)" />} title="开始今日任务" desc="DDA 自适应难度，维持心流状态" onClick={() => navigate('/learn')} />
-            <GridCard icon={<RefreshCw size={24} color="var(--lf-subject-science)" />} title="错题再练" desc={data.pending_reviews > 0 ? `${data.pending_reviews} 道待突破` : '暂无错题，继续保持！'} onClick={() => navigate('/learn')} />
+            <GridCard icon={<RefreshCw size={24} color="var(--lf-subject-science)" />} title="到期复习" desc={data.pending_reviews > 0 ? `${data.pending_reviews} 道待复习` : '当前没有到期复习'} onClick={() => navigate('/student/reviews')} />
             <GridCard icon={<TrendingUp size={24} color="var(--lf-sem-success)" />} title="专题深入" desc="选择感兴趣的知识点深度学习" onClick={() => navigate('/curriculum')} />
             <GridCard icon={<Sparkles size={24} color="var(--lf-sem-rest)" />} title="放松学习" desc={relaxationMode ? 'α波放松模式已激活' : '点击顶部按钮开启放松模式'} onClick={() => setRelaxationMode(p => !p)} />
             <GridCard icon={<Flame size={24} color="var(--lf-sem-risk)" />} title="连胜挑战" desc="保持学习火焰" onClick={() => navigate('/student/streak')} />
@@ -258,17 +246,17 @@ export default function StudentDashboard() {
             <div className="lf-card" style={{ marginTop: 20, background: 'rgba(59,169,201,0.06)', borderLeft: '4px solid var(--lf-primary-low)' }}>
               <p style={{ margin: 0, fontSize: 'var(--lf-text-base)', color: 'var(--lf-primary-high)', lineHeight: 1.6 }}>
                 🌿 放松模式中 — 深呼吸，享受学习过程。<br />
-                研究发现：放松状态下的学习记忆力可提升 25-40%。
+                如果感到疲劳，可以暂停练习。
               </p>
             </div>
           )}
 
-          {/* 情感化陪伴伙伴（提示由真实学情 LAI 驱动）+ 健康庆祝 */}
+          {/* 一般练习提示 */}
           <MascotBubble tips={mascotTips} />
           <Celebration
             fire={celebrateHealthy}
             emoji="🌿"
-            message="你的学习状态很健康！保持自己的节奏就好～"
+            message="保持自己的练习节奏。"
             onDone={() => setCelebrateHealthy(false)}
           />
         </div>

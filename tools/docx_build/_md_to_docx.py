@@ -2,7 +2,7 @@
 """Markdown -> Word (.docx) 转换器（确定性，无需 LLM）。
 支持：标题(#~#####)、表格、围栏代码块、有序/无序列表(含嵌套)、
 引用块(>)、水平线(---)、行内 **粗体**/*斜体*/`代码`/[链接](url)。
-中/韩文分别设置正确的东亚字体（微软雅黑 / Malgun Gothic）。
+中/韩文使用 Noto Sans CJK SC / KR；英文使用 Liberation Serif。
 """
 import io, os, re
 from docx import Document
@@ -12,9 +12,9 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-EA_FONT = {"zh": "Microsoft YaHei", "kr": "Malgun Gothic", "en": "Times New Roman"}
-LAT_FONT = "Calibri"
-CODE_FONT = "Consolas"
+EA_FONT = {"zh": "Noto Sans CJK SC", "kr": "Noto Sans CJK KR", "en": "Times New Roman"}
+LAT_FONT = "Liberation Serif"
+CODE_FONT = "Liberation Mono"
 BODY_SIZE = 10.5
 HEAD_SIZES = {1: 22, 2: 16, 3: 13.5, 4: 12, 5: 11}
 TOC_TITLE = {"zh": "目录", "kr": "목차", "en": "Contents"}
@@ -181,7 +181,7 @@ def build_docx(md_path, docx_path, lang):
     # 此处显式写入作者与标题，避免生成方式造成的属性缺失被误读。
     cp = doc.core_properties
     cp.author = "Zexiao Weng"
-    cp.last_modified_by = "Zexiao Weng"
+    cp.last_modified_by = "Codex (automated draft revision)"
     cp.title = os.path.splitext(os.path.basename(md_path))[0]
     cp.subject = {
         "zh": "博士学位论文研究计划书 / 研究进展报告 — 适应性学习中难度的可测量化与可治理化",
@@ -190,17 +190,19 @@ def build_docx(md_path, docx_path, lang):
                "Measurability and governability of difficulty in adaptive learning"),
     }[lang]
     cp.comments = ("LearnFlow artifact 配套文档；数字口径由 learnflow-backend/scripts/ 下门禁脚本复算。"
-                   "本文件由 Markdown 源经 _build_tools/_md_to_docx.py 确定性生成。")
+                   "本文件由 Markdown 源经 tools/docx_build/_md_to_docx.py 生成；未冻结工作稿。")
 
     sec = doc.sections[0]
-    sec.page_width = Pt(842)
-    sec.page_height = Pt(1191)
-    for mg in (sec.left_margin, sec.right_margin, sec.top_margin, sec.bottom_margin):
-        mg.width = Pt(70)
+    sec.page_width = Pt(595.28)
+    sec.page_height = Pt(841.89)
+    sec.left_margin = sec.right_margin = Pt(50)
+    sec.top_margin = sec.bottom_margin = Pt(50)
 
     normal = doc.styles["Normal"]
     normal.font.name = LAT_FONT
     normal.font.size = Pt(BODY_SIZE)
+    for style_name in ["Title", "Heading 1", "Heading 2", "Heading 3", "Heading 4"]:
+        doc.styles[style_name].font.color.rgb = RGBColor(0, 0, 0)
     npr = normal.element.get_or_add_rPr()
     nf = npr.find(qn("w:rFonts"))
     if nf is None:
@@ -313,7 +315,7 @@ def build_docx(md_path, docx_path, lang):
                 continue
             if level >= 2 and not first_h2_seen[0]:
                 first_h2_seen[0] = True
-                ensure_toc()
+                # Navigation is provided by Word heading styles.
             style_map = {2: "Heading 1", 3: "Heading 2", 4: "Heading 3", 5: "Heading 4"}
             p = doc.add_paragraph(style=style_map.get(level, "Heading 4"))
             sz = HEAD_SIZES.get(level, 11)
@@ -385,44 +387,39 @@ def build_docx(md_path, docx_path, lang):
         p = doc.add_paragraph()
         populate_inline(p, " ".join(para_lines), lang, size=BODY_SIZE)
         p.paragraph_format.space_after = Pt(6)
+        if p.text.startswith("Table "):
+            p.paragraph_format.keep_with_next = True
 
+    # Plain black manuscript headings; avoid inherited decorative title rules.
+    for node in doc._element.xpath(".//w:pBdr"):
+        node.getparent().remove(node)
+    for style in doc.styles:
+        for node in style.element.xpath(".//w:pBdr"):
+            node.getparent().remove(node)
+    for table in doc.tables:
+        for i, row in enumerate(table.rows):
+            props = row._tr.get_or_add_trPr()
+            props.append(OxmlElement("w:cantSplit"))
+            if i == 0:
+                props.append(OxmlElement("w:tblHeader"))
     doc.save(docx_path)
     return len(doc.paragraphs), len(doc.tables)
 
 
 def main():
-    # 2026-10-03: 原 `docs/研究计划与报告/` 的中文 md 已并入研究总档，
-    # 该目录已移除（构建工具迁至 tools/docx_build/）。此处 base 指向 docs/ 根，
-    # 因为韩文版源仍需从此处读取（若已随总档并入则 jobs 全部为 @MASTER 虚拟源）。
-    base = r"E:\learnflow\docs"
-    out_dir = r"E:\learnflow\docs"
-    # 2026-10-03: 中文版计划/报告已合并入 docs/LearnFlow_研究总档.md 第一/二部，
-    # 源 md 不再单独存在；韩文版仍是独立文件。中文版改为从总档按部抽取后构建。
-    MASTER = os.path.join(out_dir, "LearnFlow_研究总档.md")
-    jobs = [
-        (r"@MASTER:第一部 · 研究计划", "研究计划_中文版.docx", "zh"),
-        (r"@MASTER:第三部 · 研究计划（韩文版）", "研究计划_韩文版.docx", "kr"),
-        (r"@MASTER:第二部 · 研究进展报告", "研究报告_中文版.docx", "zh"),
-        (r"@MASTER:第四部 · 研究进展报告（韩文版）", "研究报告_韩文版.docx", "kr"),
-    ]
-    log = []
-    tmpdir = os.path.join(out_dir, "_master_extract")
-    os.makedirs(tmpdir, exist_ok=True)
-    for src, dst, lang in jobs:
-        if src.startswith("@MASTER:"):
-            part = src.split(":", 1)[1]
-            sp = os.path.join(tmpdir, dst.replace(".docx", ".md"))
-            extract_master_part(MASTER, part, sp)
-        else:
-            sp = os.path.join(base, src)
-        dp = os.path.join(out_dir, dst)
-        try:
-            np_, nt_ = build_docx(sp, dp, lang)
-            log.append("OK  %s -> %s  (段落=%d, 表格=%d)" % (src, dst, np_, nt_))
-        except Exception as e:
-            log.append("ERR %s : %s" % (src, repr(e)))
-    io.open(r"E:\learnflow\_docx_build.txt", "w", encoding="utf-8", newline="").write("\n".join(log))
-    print("\n".join(log))
+    from pathlib import Path
+    import argparse
+    root = Path(__file__).resolve().parents[2]
+    ap = argparse.ArgumentParser(description="Build four documents from independent canonical Markdown sources")
+    ap.add_argument("--out-dir", default=str(root.parent / "learnflow_revision_20261007" / "documents"))
+    args = ap.parse_args()
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    base = root / "docs" / "研究计划与报告"
+    for stem, lang in [("研究计划_中文版", "zh"), ("研究计划_韩文版", "kr"),
+                       ("研究报告_中文版", "zh"), ("研究报告_韩文版", "kr")]:
+        np_, nt_ = build_docx(str(base / (stem + ".md")), str(out_dir / (stem + ".docx")), lang)
+        print(f"OK {stem}: paragraphs={np_}, tables={nt_}")
 
 
 if __name__ == "__main__":

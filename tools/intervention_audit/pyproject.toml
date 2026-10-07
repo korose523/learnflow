@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "learnflow-intervention-audit"
+version = "0.1.0"
+description = "Read-only intervention contract and Python literal evidence audit"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+intervention-audit = "intervention_audit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

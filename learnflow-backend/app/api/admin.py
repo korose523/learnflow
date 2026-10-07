@@ -1,4 +1,6 @@
 """管理端 API：内容审核、文案管理、风险告警配置"""
+from datetime import datetime, UTC
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -48,12 +50,12 @@ async def get_pending_tasks(
     user: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
     page: int = Query(1, ge=1),
-    page_size: int = Query(20, le=100),
+    page_size: int = Query(20, ge=1, le=100),
 ):
     """获取待审核的题目"""
     result = await db.execute(
         select(Task)
-        .where(Task.is_approved == False)
+        .where(Task.is_approved == False, Task.reviewed_at.is_(None))
         .order_by(Task.created_at.desc())
         .offset((page - 1) * page_size)
         .limit(page_size)
@@ -61,7 +63,7 @@ async def get_pending_tasks(
     tasks = result.scalars().all()
 
     total = await db.execute(
-        select(func.count(Task.id)).where(Task.is_approved == False)
+        select(func.count(Task.id)).where(Task.is_approved == False, Task.reviewed_at.is_(None))
     )
 
     return {
@@ -71,7 +73,9 @@ async def get_pending_tasks(
                 "title": t.title,
                 "topic": t.topic,
                 "difficulty": t.difficulty,
-                "content": t.content[:200] + "..." if len(t.content) > 200 else t.content,
+                "content": t.content,
+                "correct_answer": t.correct_answer,
+                "explanation": t.explanation,
                 "source": t.source,
                 "created_at": t.created_at.isoformat(),
             }
@@ -96,6 +100,9 @@ async def review_task(
         raise HTTPException(status_code=404, detail="题目不存在")
 
     task.is_approved = req.approved
+    task.reviewed_at = datetime.now(UTC)
+    task.reviewed_by = user.id
+    task.review_notes = req.review_notes
     await db.flush()
 
     return {

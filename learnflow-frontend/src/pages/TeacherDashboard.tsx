@@ -1,3 +1,4 @@
+import MathContent from '../components/content/MathContent';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { teacherApi } from '../services/api';
@@ -20,6 +21,11 @@ interface AlertItem {
   severity: string;
   title: string;
   created_at: string;
+}
+
+interface CreatedTask {
+  id: string; title?: string; topic: string; is_approved: boolean;
+  review_status?: string; review_notes?: string | null;
 }
 
 interface Suggestion {
@@ -46,6 +52,13 @@ export default function TeacherDashboard() {
     title: '', content: '', topic: '', difficulty: 5, correct_answer: '', explanation: '', time_estimate: 120,
   });
   const [createTaskMessage, setCreateTaskMessage] = useState('');
+  const [createdTasks, setCreatedTasks] = useState<CreatedTask[]>([]);
+  const [taskListError, setTaskListError] = useState('');
+  const loadTasks = async () => {
+    setTaskListError('');
+    try { setCreatedTasks((await teacherApi.listTasks()).data); }
+    catch { setTaskListError('题目审核状态加载失败，请重试。'); }
+  };
   const [activeTab, setActiveTab] = useState<'overview' | 'students' | 'alerts' | 'ai'>('overview');
 
   const loadDashboard = async () => {
@@ -64,6 +77,7 @@ export default function TeacherDashboard() {
 
   useEffect(() => {
     loadDashboard();
+    loadTasks();
   }, []);
 
   const openStudentDetail = async (id: string) => {
@@ -91,6 +105,7 @@ export default function TeacherDashboard() {
     try {
       await teacherApi.createTask(createTaskForm);
       setCreateTaskMessage('题目已创建，等待管理员审核');
+      await loadTasks();
       setCreateTaskForm({ title: '', content: '', topic: '', difficulty: 5, correct_answer: '', explanation: '', time_estimate: 120 });
     } catch (err) {
       setCreateTaskMessage('创建失败，请检查字段');
@@ -302,6 +317,20 @@ export default function TeacherDashboard() {
         </div>
       )}
 
+      <section className="lf-card" style={{ marginTop: 24 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2 style={{ fontSize: 18 }}>我的题目与审核状态</h2>
+          <button className="lf-btn" onClick={loadTasks}>刷新审核状态</button>
+        </div>
+        {taskListError && <p role="alert">{taskListError}</p>}
+        {!taskListError && createdTasks.length === 0 && <p>尚未创建题目。</p>}
+        {createdTasks.map(task => <div key={task.id} style={{ borderTop: '1px solid #e2e8f0', padding: '12px 0' }}>
+          <strong>{task.title || '未命名题目'}</strong> · {task.topic} ·
+          {task.review_status === 'approved' || task.is_approved ? '已通过' : task.review_status === 'rejected' ? '已拒绝' : '待审核'}
+          {task.review_notes && <p>审核意见：{task.review_notes}</p>}
+        </div>)}
+      </section>
+
       {/* 创建题目弹窗 */}
       {showCreateTask && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 50 }}>
@@ -313,6 +342,7 @@ export default function TeacherDashboard() {
             <form onSubmit={handleCreateTask} style={{ display: 'grid', gap: 12 }}>
               <input className="input" placeholder="标题" value={createTaskForm.title} onChange={(e) => setCreateTaskForm({ ...createTaskForm, title: e.target.value })} required />
               <textarea className="input" placeholder="题目内容" rows={3} value={createTaskForm.content} onChange={(e) => setCreateTaskForm({ ...createTaskForm, content: e.target.value })} required />
+              <div style={{ maxHeight: 140, overflowY: 'auto' }}><small>题目预览</small><div><MathContent content={createTaskForm.content} /></div></div>
               <input className="input" placeholder="知识点/主题" value={createTaskForm.topic} onChange={(e) => setCreateTaskForm({ ...createTaskForm, topic: e.target.value })} required />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                 <input className="input" type="number" min={1} max={10} placeholder="难度 1-10" value={createTaskForm.difficulty} onChange={(e) => setCreateTaskForm({ ...createTaskForm, difficulty: Number(e.target.value) })} required />

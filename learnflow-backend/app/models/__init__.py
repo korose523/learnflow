@@ -22,3 +22,5 @@ __all__ = [
     "AbilityEstimate", "AuditLog", "AuditKind",
     "SelfReportResponse",
 ]
+
+from app.models.research import (ResearchStudy, ResearchItem, ResearchParticipant, ResearchAllocation, ResearchSession, ResearchTrial)

@@ -875,8 +875,8 @@ async def explain_algorithm(
             "description": "系统从时间、认知、行为、社交四维度评估成瘾风险。",
             "key_parameters": {
                 "thresholds": "动态阈值，根据年龄和学科压力周期调整",
-                "update_frequency": "每24小时更新一次",
-                "human_review": "L3+级别需人工审核确认",
+                "update_frequency": "按需实时计算（无定时刷新）",
+                "human_review": "无强制人工审核环节",
             },
             "user_controls": "您可对风险评级提出申诉",
         },

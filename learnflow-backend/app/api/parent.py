@@ -217,24 +217,54 @@ async def update_child_consent(
 @router.get("/child/{child_id}/export")
 async def export_child_data(
     child_id: str,
+    limit: int | None = None,   # 单次导出 attempts 上限；None=全量（默认，符合「全部」语义）
+    offset: int = 0,            # 分页偏移，用于超大数据集分批导出
     user: User = Depends(require_parent),
     db: AsyncSession = Depends(get_db),
 ):
-    """导出孩子的全部学习数据（JSON格式）"""
+    """导出孩子的全部学习数据（JSON 格式）。
+
+    覆盖：作答记录 / 技能画像 / 宠物画像 / 同意记录历史 / 风险告警 / 每日时长上限。
+    权限：仅本人绑定家长或演示绑定家长可导出（与既有接口一致）。
+    分页：attempts 支持 limit/offset 分页以防单请求过大；默认 limit=None 即全量导出，
+         与「全部」语义保持一致。skills / pet / consents / alerts 体量小，直接全量返回。
+    """
     child_query = await db.execute(select(User).where(User.id == child_id))
     child = child_query.scalar_one_or_none()
     if not child or (child.parent_id != user.id and not _is_demo_child(user.email, child.email)):
         raise HTTPException(status_code=404, detail="未找到该孩子或无权操作")
 
-    attempts = await db.execute(
+    # ── 作答记录（支持分页；默认全量）──
+    attempts_q = (
         select(Attempt).where(Attempt.user_id == child.id).order_by(Attempt.created_at)
     )
-    all_attempts = attempts.scalars().all()
+    if limit is not None:
+        attempts_q = attempts_q.limit(limit).offset(offset)
+    all_attempts = (await db.execute(attempts_q)).scalars().all()
 
-    skills = await db.execute(
+    # ── 技能画像（全量）──
+    skills = (await db.execute(
         select(StudentSkillProfile).where(StudentSkillProfile.user_id == child.id)
-    )
-    all_skills = skills.scalars().all()
+    )).scalars().all()
+
+    # ── 宠物画像（全量，可能为空）──
+    pet = (await db.execute(
+        select(PetProfile).where(PetProfile.user_id == child.id)
+    )).scalar_one_or_none()
+
+    # ── 同意记录历史（全量）──
+    consents = (await db.execute(
+        select(ConsentRecord)
+        .where(ConsentRecord.user_id == child.id)
+        .order_by(ConsentRecord.consented_at.desc())
+    )).scalars().all()
+
+    # ── 风险告警（全量，含已解决）──
+    alerts = (await db.execute(
+        select(Alert)
+        .where(Alert.user_id == child.id)
+        .order_by(Alert.created_at.desc())
+    )).scalars().all()
 
     return {
         "export_date": datetime.now(UTC).isoformat(),
@@ -253,7 +283,37 @@ async def export_child_data(
             {"skill": s.skill_dim, "score": round(s.score, 1), "total_attempts": s.total_attempts}
             for s in all_skills
         ],
+        "pet": {
+            "name": pet.name,
+            "breed": pet.breed.value if pet and pet.breed else None,
+            "level": pet.level,
+            "mood": pet.mood.value if pet and pet.mood else None,
+            "total_score": round(pet.total_score, 1) if pet else None,
+        } if pet else None,
+        "consents": [
+            {
+                "type": c.consent_type.value,
+                "granted": c.revoked_at is None,
+                "granted_by": str(c.granted_by) if c.granted_by else None,
+                "granted_at": c.consented_at.isoformat(),
+                "revoked_at": c.revoked_at.isoformat() if c.revoked_at else None,
+            }
+            for c in consents
+        ],
+        "alerts": [
+            {
+                "id": str(a.id),
+                "type": a.alert_type.value,
+                "severity": a.severity.value,
+                "title": a.title,
+                "is_resolved": a.is_resolved,
+                "created_at": a.created_at.isoformat(),
+            }
+            for a in alerts
+        ],
+        "daily_limit_minutes": child.daily_limit_minutes,
         "total_records": len(all_attempts),
+        "pagination": {"limit": limit, "offset": offset, "returned": len(all_attempts)},
     }
 
 

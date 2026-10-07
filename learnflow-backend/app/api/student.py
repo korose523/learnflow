@@ -1,15 +1,18 @@
 """学生端 API：仪表盘、学习任务流、宠物、DDA、反馈、复习"""
 import logging
+import json
+from typing import Literal
+from datetime import datetime, UTC
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, or_, and_, update
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.models.pet import PetProfile
 from app.models.task import Task, Attempt, SpacedReview, StudentSkillProfile
 from app.models.analytics import AbilityEstimate
@@ -36,7 +39,7 @@ class TaskSubmitRequest(BaseModel):
 
 class RecoveryChoice(BaseModel):
     task_id: str
-    choice: str  # "watch_tutorial" | "retry" | "skip"
+    choice: Literal["watch_tutorial", "retry", "skip"]
 
 
 class ConsentUpdate(BaseModel):
@@ -77,7 +80,8 @@ async def get_dashboard(
     _correct_count = today_correct.scalar() or 0
 
     due_reviews = await db.execute(
-        select(func.count(SpacedReview.id)).where(
+        select(func.count(SpacedReview.id)).join(Task, Task.id == SpacedReview.task_id).where(
+            Task.is_approved == True,
             SpacedReview.user_id == user.id,
             SpacedReview.scheduled_date <= func.now(),
             SpacedReview.completed_date.is_(None),
@@ -132,17 +136,8 @@ async def get_next_task(
     except HTTPException:
         raise
     except Exception as e:
-        # 缺陷修复：原实现把**任意**异常一律映射为 404「暂无匹配难度的题目」，
-        # 且不写服务端日志。后果是编程错误（AttributeError / TypeError / 形状
-        # 不匹配等）与真实的「无匹配题目」在客户端完全无法区分，服务端也留不下
-        # 任何痕迹——故障只能靠用户反馈发现。
-        #
-        # 这里保留 404 语义（前端已按 404 处理空态，改动状态码会破坏兼容性），
-        # 但补上服务端完整堆栈，使被掩盖的缺陷可追溯。
-        logger.error(
-            "next-task 生成失败 (user=%s, topic=%r): %s", user.id, topic, e, exc_info=True
-        )
-        raise HTTPException(status_code=404, detail=str(e) or "暂无匹配难度的题目")
+        logger.error("next-task 生成失败 (user=%s, topic=%r)", user.id, topic, exc_info=True)
+        raise HTTPException(status_code=500, detail="题目服务暂时不可用，请稍后重试") from e
 
 
 @router.post("/submit-answer")
@@ -156,6 +151,8 @@ async def submit_answer(
     task = task_query.scalar_one_or_none()
     if not task:
         raise HTTPException(status_code=404, detail="题目不存在")
+    if not task.is_approved:
+        raise HTTPException(status_code=409, detail="题目尚未通过审核，暂不可作答")
 
     result = await LearningOrchestrator.process_submission(
         user, task, req.model_dump(), db
@@ -165,7 +162,7 @@ async def submit_answer(
 
 class AttemptRequest(BaseModel):
     task_id: str
-    correct: bool
+    answer: str
     rt_ms: int = 0
 
 
@@ -175,31 +172,18 @@ async def attempt(
     user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """提交作答（兼容前端 LearnPage 的 {task_id,correct,rt_ms} 契约）
-
-    内部复用 LearningOrchestrator.process_submission：写奖励/风险审计、失效 dashboard+ability 缓存。
-    """
+    """兼容作答接口：接收答案，正确性只由服务器判定。"""
     task_query = await db.execute(select(Task).where(Task.id == req.task_id))
     task = task_query.scalar_one_or_none()
     if not task:
         raise HTTPException(status_code=404, detail="题目不存在")
-
-    # 前端只给正确性，不直接给答案文本：按 correct 合成答案供 process_submission 判定
-    synthesized_answer = task.correct_answer if req.correct else "__incorrect__"
-    result = await LearningOrchestrator.process_submission(
+    if not task.is_approved:
+        raise HTTPException(status_code=409, detail="题目尚未通过审核，暂不可作答")
+    return await LearningOrchestrator.process_submission(
         user, task,
-        {
-            "answer": synthesized_answer,
-            "time_spent": max(1, req.rt_ms // 1000) if req.rt_ms else None,
-            "hints_used": 0,
-            "is_retry": False,
-            "is_creative": False,
-        },
-        db,
+        {"answer": req.answer, "time_spent": max(1, req.rt_ms // 1000),
+         "hints_used": 0, "is_retry": False, "is_creative": False}, db,
     )
-    fb = result.get("feedback")
-    feedback_text = fb.get("feedback_text") if isinstance(fb, dict) else (str(fb) if fb else "")
-    return {"feedback": feedback_text, "next": None}
 
 
 @router.get("/challenge")
@@ -267,23 +251,25 @@ async def recovery_choice(
     if not task:
         raise HTTPException(status_code=404, detail="题目不存在")
 
-    pet_query = await db.execute(select(PetProfile).where(PetProfile.user_id == user.id))
-    pet = pet_query.scalar_one_or_none()
+    if not task.is_approved:
+        raise HTTPException(status_code=409, detail="题目尚未通过审核，暂不可使用恢复流程")
+    latest = (await db.execute(
+        select(Attempt).where(Attempt.user_id == user.id, Attempt.task_id == task.id)
+        .order_by(Attempt.created_at.desc(), Attempt.id.desc()).limit(1)
+    )).scalar_one_or_none()
+    if latest is None or latest.is_correct:
+        raise HTTPException(status_code=409, detail="请先完成本题作答；恢复流程仅用于最近一次答错的题目")
 
-    if pet:
-        pet_event = PetService.calculate_wrong_answer(
-            difficulty=task.difficulty,
-            chosen_recovery=req.choice,
-        )
-        PetService.apply_update(pet, pet_event)
+    # Submission owns pet updates. Opening/retrying recovery must not award points.
+    pet = (await db.execute(select(PetProfile).where(PetProfile.user_id == user.id))).scalar_one_or_none()
 
     result = {"choice": req.choice, "pet_mood": pet.mood.value if pet else "happy"}
 
     if req.choice == "watch_tutorial":
         result["tutorial"] = task.explanation or "暂无讲解内容"
-        result["message"] = "从错误中学习是最有效的进步方式！"
+        result["message"] = "可以先阅读讲解，再尝试作答。"
     elif req.choice == "retry":
-        result["message"] = "勇于再试！这是坚持力在成长。"
+        result["message"] = "可以再试一次，检查刚才的解题步骤。"
         similar_query = await db.execute(
             select(Task)
             .where(
@@ -302,74 +288,64 @@ async def recovery_choice(
                 "difficulty": similar.difficulty,
             }
     elif req.choice == "skip":
-        result["message"] = "已标记为待突破，周末复习时再挑战！"
+        result["message"] = "可以继续下一题，之后再回来练习。"
 
     return result
 
 
 @router.get("/due-reviews")
-async def get_due_reviews(
-    cursor: str | None = None,
-    limit: int = 20,
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
-):
-    """获取到期复习列表（SQL 下推 + 游标分页，Spec P0 / AC4）
-
-    - WHERE user_id=? AND completed_date IS NULL AND scheduled_date<=now()
-    - 游标分页：cursor 为上一页最后一条的 scheduled_date(ISO)，返回 next_cursor
-    """
-    from datetime import datetime, timezone
-    from app.services.spaced_repetition import SpacedRepetitionService
-
+async def get_due_reviews(cursor: str | None = None, limit: int = 20, user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    """Approved, owned due reviews with a time-and-ID cursor."""
     limit = max(1, min(limit, 100))
-
-    query = (
-        select(SpacedReview)
-        .where(
-            SpacedReview.user_id == user.id,
-            SpacedReview.completed_date.is_(None),
-            SpacedReview.scheduled_date <= func.now(),
-        )
-        .order_by(SpacedReview.scheduled_date.asc(), SpacedReview.id.asc())
-    )
+    conditions = [SpacedReview.user_id == user.id, SpacedReview.completed_date.is_(None), SpacedReview.scheduled_date <= datetime.now(UTC), Task.is_approved == True]
+    total = (await db.execute(select(func.count(SpacedReview.id)).join(Task, Task.id == SpacedReview.task_id).where(*conditions))).scalar_one()
+    query = select(SpacedReview, Task).join(Task, Task.id == SpacedReview.task_id).where(*conditions)
     if cursor:
         try:
-            cursor_dt = datetime.fromisoformat(cursor)
-            if cursor_dt.tzinfo is None:
-                cursor_dt = cursor_dt.replace(tzinfo=timezone.utc)
-            query = query.where(SpacedReview.scheduled_date > cursor_dt)
-        except ValueError:
-            pass
+            stamp, row_id = json.loads(cursor)
+            cursor_dt = datetime.fromisoformat(stamp)
+            if not isinstance(row_id, str) or not row_id: raise ValueError('Invalid ID')
+        except (ValueError, TypeError, json.JSONDecodeError):
+            raise HTTPException(status_code=400, detail="复习分页标记无效")
+        query = query.where(or_(SpacedReview.scheduled_date > cursor_dt, and_(SpacedReview.scheduled_date == cursor_dt, SpacedReview.id > row_id)))
+    rows = (await db.execute(query.order_by(SpacedReview.scheduled_date, SpacedReview.id).limit(limit + 1))).all()
+    page = rows[:limit]
+    next_cursor = json.dumps([page[-1][0].scheduled_date.isoformat(), page[-1][0].id]) if len(rows) > limit and page else None
+    return {"due_reviews": [{"id":r.id,"task_id":t.id,"content":t.content,"topic":t.topic,"difficulty":t.difficulty,"review_number":r.review_number,"scheduled_date":r.scheduled_date.isoformat(),"next_interval_days":r.next_interval_days} for r,t in page], "total_due":total,"page_count":len(page),"next_cursor":next_cursor,"limit":limit}
 
-    query = query.limit(limit + 1)  # 多取一条判断是否有下一页
-    reviews = (await db.execute(query)).scalars().all()
 
-    has_next = len(reviews) > limit
-    page = reviews[:limit]
+class ReviewAnswerRequest(BaseModel):
+    answer: str = Field(min_length=1)
+    time_spent: int = Field(default=1, ge=1)
 
-    due = SpacedRepetitionService.get_due_reviews(list(page))
+    @field_validator('answer')
+    @classmethod
+    def nonblank_answer(cls, value: str) -> str:
+        if not value.strip(): raise ValueError('答案不能为空')
+        return value.strip()
 
-    next_cursor = None
-    if has_next and page:
-        last = page[-1]
-        next_cursor = last.scheduled_date.isoformat() if last.scheduled_date else None
 
-    return {
-        "due_reviews": [
-            {
-                "id": str(r.id),
-                "task_id": str(r.task_id),
-                "review_number": r.review_number,
-                "scheduled_date": r.scheduled_date.isoformat(),
-                "next_interval_days": r.next_interval_days,
-            }
-            for r in due
-        ],
-        "total_due": len(due),
-        "next_cursor": next_cursor,
-        "limit": limit,
-    }
+@router.post("/reviews/{review_id}/answer")
+async def answer_review(review_id: str, req: ReviewAnswerRequest, user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db)):
+    if user.role != UserRole.STUDENT:
+        raise HTTPException(status_code=403, detail="仅学生可提交复习")
+    row = (await db.execute(select(SpacedReview).where(SpacedReview.id == review_id, SpacedReview.user_id == user.id))).scalar_one_or_none()
+    if row is None: raise HTTPException(status_code=404, detail="复习记录不存在")
+    now = datetime.now(UTC)
+    scheduled = row.scheduled_date.replace(tzinfo=UTC) if row.scheduled_date.tzinfo is None else row.scheduled_date
+    if row.completed_date is not None or scheduled > now:
+        raise HTTPException(status_code=409, detail="该复习已完成或尚未到期")
+    task = await db.get(Task, row.task_id)
+    if task is None or not task.is_approved: raise HTTPException(status_code=409, detail="题目当前不可用于复习")
+    claimed = await db.execute(update(SpacedReview).where(SpacedReview.id == row.id, SpacedReview.user_id == user.id, SpacedReview.completed_date.is_(None), SpacedReview.scheduled_date <= now).values(completed_date=now).execution_options(synchronize_session=False))
+    if claimed.rowcount != 1: raise HTTPException(status_code=409, detail="该复习已被提交")
+    row.completed_date = now
+    result = await LearningOrchestrator.process_submission(user, task, {"answer":req.answer,"time_spent":req.time_spent}, db)
+    row.result = result['is_correct']
+    await db.flush()
+    result['review_id'] = row.id
+    result['review_explanation'] = task.explanation
+    return result
 
 
 # ─── 宠物 ──────────────────────────────────────

@@ -62,13 +62,16 @@ PAIRS = [
 ]
 
 
-# 四份计划/报告已并入 docs/LearnFlow_研究总档.md：
-#   第一部（中文计划书）/ 第二部（中文报告）/ 第三部（韩文计划书）/ 第四部（韩文报告）
-# 韩文部此前长期停在 936 / 54개 / 88개 / 25,795행，中文部已推进到 972 / 56 / 92 / 26,749
-# （2026-10-04 全量同步）。此处用同一套「指标等价判定」把中韩两侧钉住，防止再次漂移。
-MASTER = DOCS / "LearnFlow_研究总档.md"
-_MASTER_CN_RANGE = ("## 第一部", "## 第三部")
-_MASTER_KR_RANGE = ("## 第三部", "## 第五部")
+# 计划书·报告的中韩一致性来源。
+# 2026-10-07 起：docs/LearnFlow_研究总档.md 已降为「历史索引」（7 行），
+# 四份计划/报告的唯一源改为 docs/研究计划与报告/ 下的独立 md。
+# 本门禁随之改为读该目录下的四份文件，不再按「部」标题切分总档。
+#   旧口径（研究总档）：第一部 中文计划书 / 第二部 中文报告 / 第三部 韩文计划书 / 第四部 韩文报告
+#   韩文部此前长期停在 936 / 54개 / 88개 / 25,795행，中文部已推进到 972 / 56 / 92 / 26,749
+#   （2026-10-04 全量同步）。此处用同一套「指标等价判定」把中韩两侧钉住，防止再次漂移。
+PLAN_REPORT = DOCS / "研究计划与报告"
+_MASTER_CN_SOURCES = [PLAN_REPORT / "研究计划_中文版.md", PLAN_REPORT / "研究报告_中文版.md"]
+_MASTER_KR_SOURCES = [PLAN_REPORT / "研究计划_韩文版.md", PLAN_REPORT / "研究报告_韩文版.md"]
 
 # (指标名, 中文部定位正则, 韩文部定位正则)
 MASTER_METRICS = [
@@ -99,7 +102,7 @@ def _first(text: str, pat: str) -> str | None:
 
 def main() -> int:
     strict = "--strict" in sys.argv
-    rows, failures = [], []
+    rows, failures, notes = [], [], []
 
     for tag, cn_name, en_name, metrics in PAIRS:
         cn_path, en_path = DOCS / cn_name, DOCS / en_name
@@ -121,28 +124,44 @@ def main() -> int:
                 ok += 1
         rows.append((tag, ok, len(metrics)))
 
-    # 研究总档：中文部（第一/二部）↔ 韩文部（第三/四部）
-    if MASTER.exists():
-        mt = MASTER.read_text(encoding="utf-8")
-        cn_sec = _slice_master(mt, *_MASTER_CN_RANGE)
-        kr_sec = _slice_master(mt, *_MASTER_KR_RANGE)
+    # 计划书·报告：中文两份 ↔ 韩文两份（唯一源 = docs/研究计划与报告/）
+    def _read_all(paths):
+        return "\n".join(
+            p.read_text(encoding="utf-8") for p in paths if p.exists()
+        )
+
+    missing = [p.name for p in (_MASTER_CN_SOURCES + _MASTER_KR_SOURCES) if not p.exists()]
+    if not missing:
+        cn_sec = _read_all(_MASTER_CN_SOURCES)
+        kr_sec = _read_all(_MASTER_KR_SOURCES)
         ok = 0
         if not cn_sec or not kr_sec:
-            failures.append("研究总档: 未能按部标题切出中文段/韩文段")
+            failures.append("计划书·报告: 中文段/韩文段为空")
         else:
+            na = []
             for label, cn_pat, kr_pat in MASTER_METRICS:
                 a, b = _first(cn_sec, cn_pat), _first(kr_sec, kr_pat)
-                if a is None:
-                    failures.append(f"研究总档「{label}」: 中文部未定位到数值")
+                if a is None and b is None:
+                    # 2026-10-07 计划书·报告重写后不再承载该资产数字。
+                    # 「两侧都没有」与「一侧有一侧没有」必须分开处理：
+                    # 前者是不适用（记为 n/a），后者才是真正的中韩漂移。
+                    na.append(label)
+                    ok += 1
+                elif a is None:
+                    failures.append(f"计划书·报告「{label}」: 中文侧未定位到数值（韩文侧有 {b}）")
                 elif b is None:
-                    failures.append(f"研究总档「{label}」: 韩文部未定位到数值")
+                    failures.append(f"计划书·报告「{label}」: 韩文侧未定位到数值（中文侧有 {a}）")
                 elif a != b:
-                    failures.append(f"研究总档「{label}」: 数值不一致 中={a} 韩={b}")
+                    failures.append(f"计划书·报告「{label}」: 数值不一致 中={a} 韩={b}")
                 else:
                     ok += 1
-        rows.append(("总档中韩", ok, len(MASTER_METRICS)))
+            if na:
+                notes.append(
+                    "计划书·报告不再承载的指标（两侧均无，记为 n/a）: " + "、".join(na)
+                )
+        rows.append(("计划报告中韩", ok, len(MASTER_METRICS)))
     else:
-        failures.append(f"研究总档缺失: {MASTER}")
+        failures.append(f"计划书·报告源文件缺失: {', '.join(missing)}")
 
     print("=" * 74)
     print("跨语言数字一致性门禁（中文完整稿 ↔ 英文投稿件）")
@@ -153,6 +172,11 @@ def main() -> int:
         state = "✅ 一致" if ok == total else f"❌ {total - ok} 项不一致"
         print(f"{tag:<6}{f'{ok}/{total}':<12}{state}")
     print("-" * 74)
+
+    if notes:
+        print("\n说明（不构成失败）：")
+        for nt in notes:
+            print(f"  ℹ️  {nt}")
 
     if failures:
         print("\n不一致明细：")

@@ -45,7 +45,7 @@ const devDemoPassword = (role: string): string => {
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, register, oauthLogin, isAuthenticated, user } = useAuth();
+  const { login, register, isAuthenticated, user } = useAuth();
   const { showToast } = useToast();
   const [email, setEmail] = useState('student@learnflow.com');
   const [password, setPassword] = useState(() => devDemoPassword('student'));
@@ -106,22 +106,6 @@ export default function LoginPage() {
     }
   };
 
-  const handleOAuthLogin = async (provider: 'qq' | 'wechat') => {
-    const mockUid = `${provider}_demo_${Date.now()}`;
-    const mockName = provider === 'qq' ? `QQ演示用户` : `微信演示用户`;
-    setLoading(true);
-    setError('');
-    try {
-      await oauthLogin(provider, mockUid, mockName, selectedRole);
-      showToast('OAuth 登录成功，正在跳转...', 'success');
-    } catch (err: any) {
-      const detail = err.response?.data?.detail || 'OAuth登录失败';
-      setError(detail);
-      showToast(detail, 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="login-bg" style={{
@@ -248,7 +232,7 @@ export default function LoginPage() {
             </form>
           )}
 
-          {/* Social Login */}
+          {/* Provider verification is not configured; use email authentication. */}
           <div style={{ marginTop: 20 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
               <div style={{ flex: 1, height: 1, background: '#27273B' }} />
@@ -256,24 +240,25 @@ export default function LoginPage() {
               <div style={{ flex: 1, height: 1, background: '#27273B' }} />
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
-              <button type="button" onClick={() => handleOAuthLogin('qq')} disabled={loading}
+              <button type="button" disabled aria-describedby="social-login-status"
                 style={{
                   flex: 1, padding: '10px 0', borderRadius: 10, border: 'none', cursor: 'pointer',
                   background: '#27273B', color: '#94A3B8', fontSize: 13, fontFamily: "'Inter', sans-serif", fontWeight: 500,
                 }}>
-                🐧 QQ登录
+                🐧 QQ登录（未开放）
               </button>
-              <button type="button" onClick={() => handleOAuthLogin('wechat')} disabled={loading}
+              <button type="button" disabled aria-describedby="social-login-status"
                 style={{
                   flex: 1, padding: '10px 0', borderRadius: 10, border: 'none', cursor: 'pointer',
                   background: '#27273B', color: '#94A3B8', fontSize: 13, fontFamily: "'Inter', sans-serif", fontWeight: 500,
                 }}>
-                💬 微信登录
+                💬 微信登录（未开放）
               </button>
             </div>
           </div>
         </div>
 
+        <p id="social-login-status" style={{ color: '#94A3B8', fontSize: 12 }}>第三方登录尚未开放，请使用邮箱和密码登录。</p>
         {/* Demo hint */}
         <p style={{ textAlign: 'center', marginTop: 20, color: '#475569', fontSize: 12, fontFamily: "'Inter', sans-serif" }}>
           演示账号: student@learnflow.com

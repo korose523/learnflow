@@ -58,7 +58,7 @@ L1 mechanism_units
 
 L2 mechanism_unique
     语义去重后的唯一机制数，权威来源是
-    `docs/LearnFlow_研究总档.md（第六部·机制治理与落实方案）` 的 LF-M01..LF-Mnn 编号表。
+    `docs/机制治理_审计基线.md（第六部·机制治理与落实方案）` 的 LF-M01..LF-Mnn 编号表。
     本脚本**不重新做语义去重**（那是需要评分者间信度的人工判定，见治理方案
     §2.3 预注册规则 R1–R6），而是解析该文档并做三重交叉验证：
       - 编号表的唯一 LF-M ID 数
@@ -119,7 +119,7 @@ APP_DIR = BACKEND_ROOT / "app"
 ARTIFACTS_DIR = BACKEND_ROOT / "artifacts"
 JSON_OUT = ARTIFACTS_DIR / "count_verification.json"
 
-GOVERNANCE_DOC = PROJECT_ROOT / "docs/LearnFlow_研究总档.md"   # 合并入研究总档第四部（行级正则仍命中 LF-M 表与 ### 类别标题）
+GOVERNANCE_DOC = PROJECT_ROOT / "docs/机制治理_审计基线.md"   # 合并入研究总档第四部（行级正则仍命中 LF-M 表与 ### 类别标题）
 PRD_DOC = BACKEND_ROOT / "docs" / "incremental_prd.md"
 SKILLTREE_SRC = APP_DIR / "services" / "meta_learning_skilltree.py"
 GAMIFICATION_SRC = APP_DIR / "services" / "gamification_service.py"

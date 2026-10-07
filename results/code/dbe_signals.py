@@ -31,7 +31,8 @@ import math
 import zipfile
 from collections import defaultdict
 
-BASE = r"E:/learnflow"
+from pathlib import Path
+BASE = str(Path(__file__).resolve().parents[2])
 ZIP_PATH = BASE + "/data/dbe_kt22/2_DBE_KT22_datafiles_100102_csv.zip"
 NAMES = ["success_inverse", "hint_rate", "difficulty_fb", "trust_inverse", "duration"]
 

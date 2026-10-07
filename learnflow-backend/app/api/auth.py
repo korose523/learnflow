@@ -76,6 +76,8 @@ async def get_current_user(
 @router.post("/register", response_model=TokenResponse)
 async def register(req: RegisterRequest, db: AsyncSession = Depends(get_db)):
     """注册新用户"""
+    if req.role == UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="管理员账户不能通过公开注册创建")
     import traceback, logging
     logger = logging.getLogger(__name__)
     try:
@@ -150,7 +152,8 @@ class OAuthLoginRequest(BaseModel):
 
 @router.post("/login/oauth", response_model=TokenResponse)
 async def login_oauth(req: OAuthLoginRequest, db: AsyncSession = Depends(get_db)):
-    """OAuth登录（QQ/微信）- 自动创建账号"""
+    """OAuth登录：需先实现服务端令牌核验，不能信任客户端 UID。"""
+    raise HTTPException(status_code=501, detail="第三方登录尚未配置服务端令牌验证，请使用邮箱密码登录")
     # 用 oauth_uid + provider 查用户，不存在则自动注册
     lookup_email = f"{req.oauth_uid}@{req.provider}.oauth"
     result = await db.execute(select(User).where(User.email == lookup_email))

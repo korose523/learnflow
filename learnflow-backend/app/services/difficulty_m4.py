@@ -1,49 +1,23 @@
-"""M4：信度结构化的题目难度组合估计器（difficulty_fusion 的后续层，不改动前者）。
+"""Experimental rank-based difficulty fusion and residualization heuristics.
 
-位置：本项目四链的难度链上，M1/M3 分别回答"难度如何可公度"与"如何用难度做决策"，
-本模块回答夹在中间的第三个问题——**在只有日志、没有外部难度标签的冷启动条件下，
-多个难度信号应当如何组合**。既有 ``difficulty_fusion`` 的 fused6/signed7/srw7 是它的三个
-特例，本模块**不覆盖**它们的任何行为：既有函数的输出与调用方式一律保持不变。
+This module preserves the existing estimator outputs. The variants are alternatives
+for comparison; fused6, signed7 and srw7 are not mathematical special cases.
 
-────────────────────────────────────────────────────────────────────────
-既有估计器做了什么（M4-A/B/C/D 要改的就是这四点）
-────────────────────────────────────────────────────────────────────────
-srw7 = 符号校正 + 逐列折半信度权重 w_k ∝ ρ_k + 外部 λ(k) 收缩回成功率。三点可改进：
+For positive-definite V=Cov(z) and q=Cov(z,t), a population linear predictor with
+maximum squared correlation has beta proportional to V^{-1}q. With independent
+single-factor errors, V=qq^T+diag(1-rho), giving weights proportional to
+sign*sqrt(rho)/(1-rho). V=I instead gives beta=q. The implemented Spearman matrix,
+split-half reliability proxy and ridge are a heuristic and do not establish those
+population assumptions, validity, or optimal prediction of teacher difficulty.
 
-**M4-A：二阶结构在秩上估。** 组合权重依赖列间协方差 V 与每列对潜变量的载荷 q。
-在未经加工的 logit 值上用 Pearson 估计 V，会被 ecdf-logit 的尾部（ε=1e-4 ⇒ 极值
-±9.21）支配；改为**秩相关**后，既对尾部稳健，也完整保留 M1/O1 的"单调重参数化不变"。
+The absolute beta share is a diagnostic, not an optimized mixture coefficient.
+Residualizing auxiliary columns removes a fitted linear component but does not
+prove incremental validity. Coverage extrapolation assumes the Spearman-Brown
+model; informative missingness is not corrected by that formula.
 
-**M4-B：信度 ≠ 权重。** 在单因子指示模型 z_k = √ρ_k·t + √(1−ρ_k)·ε_k 下，对潜变量 t
-的最优线性组合权重是 β = V^{-1}q（q_k = sgn_k·√ρ_k），其中 V^{-1} **自动扣掉列间共线**。
-srw7 的 w_k ∝ ρ_k 既没有误差校正（√(ρ/(1−ρ)) 而非 ρ），也没有共线校正：两个高度相关
-的信号（如 attempt_count 与 duration 同在学生卡壳时膨胀）会被重复计入两次。
-注意符号校正也被吸收进 q：方向与成功难度相反的列自动得到负 β，不必分两步做。
-
-**M4-C：λ 不该是 k 的经验幂律。** 既有 λ_cf(k)=1/(1+(k/27.3)^0.895) 的两个常数是在
-Junyi 单数据集上用**内生判据**（留出错误率）拟合出来的。M4 直接令
-    λ = Σ_{k≠ref}|β_k| / Σ_k |β_k|
-成为**诊断量而非超参数**：辅助信号不可信时 β_aux→0、λ→0，自动退回纯成功率。
-这与 R1/R2 的教训同构——最优错误率（85%/31.73%）不是普适常数，而是**任务误差结构的
-函数**；同理，最优的"辅助信号预算"也不该是 k 的普适函数。
-
-**M4-D：部分可观测下的每题本地信度。** 真实系统里有些列只有部分学生会填（DBE-KT22 的
-difficulty_feedback / trust_feedback）。既有实现只能对已有行求均值，**不同题目的有效
-分母不同**，却仍用同一个全局权重。M4 允许传入每列每题的有效观测数 coverage，按
-Spearman–Brown 的一般形式 ρ(n)=n·ρ₁/(1+(n−1)ρ₁) 给每题一份本地信度，β 因此逐题不同。
-
-────────────────────────────────────────────────────────────────────────
-红线（与本项目其余部分一致）
-────────────────────────────────────────────────────────────────────────
-1. **组合的输出只是一个排序。** 本模块不回答"这些信号是否真的在测教师眼中的难度"——
-   那需要 exogenous 标签，属于 `results/code/run_m4.py` 的 P1 协议，不属于本模块。
-   信度（reliability）与效度（validity）是两件事：**高信度的辅助信号若效度为 0，
-   β 会把它加重而不是降权**。这是已知的理论边界，已在 M4 完整稿第 3.2 节证明并记录。
-2. **浮点纪律**：逐题求和一律走内置 ``sum()``（CPython ≥3.12 对浮点用 Neumaier 补偿
-   求和），任何"朴素就地累加"的改写都会在末位 ulp 发散；本项目红线是"文档里的每个
-   数字都能被机器复算"，故不做这种改写，也不引入 numpy（保持零第三方依赖）。
-
-实验出处：``results/code/run_m4.py``（产出 ``results/code/m4_results.json``）。
+Outputs are exploratory scores, not validated student difficulty or learning
+benefit. Current corrected methods and all-k results are in
+results/m4/m4_correction_evaluation.json and docs/M4_methods_correction_EN.md.
 """
 import math
 from typing import Dict, List, Mapping, Optional, Sequence

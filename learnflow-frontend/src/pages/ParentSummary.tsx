@@ -179,12 +179,10 @@ export default function ParentSummary() {
             </div>
             <div className="lf-card" style={{ textAlign: 'center' }}>
               <div style={{ fontSize: 36, marginBottom: 4 }}>
-                {data.risk_level === 'green' ? '🟢' : data.risk_level === 'yellow' ? '🟡' : '🔴'}
+                📋
               </div>
-              <div style={{ fontSize: 16, fontWeight: 700, color: data.risk_level === 'red' ? '#ef4444' : data.risk_level === 'yellow' ? '#f59e0b' : '#22c55e' }}>
-                {data.risk_level === 'green' ? '状态良好' : data.risk_level === 'yellow' ? '需要注意' : '需要关注'}
-              </div>
-              <div style={{ fontSize: 13, color: '#64748b' }}>风险等级</div>
+              <div style={{ fontSize: 16 }}>查看练习记录</div>
+              <div style={{ fontSize: 13, color: '#64748b' }}>不提供健康风险判断</div>
             </div>
           </div>
 

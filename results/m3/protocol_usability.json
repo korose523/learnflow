@@ -60,7 +60,7 @@
       "family": "F2_Llama",
       "scale_tier": "S2_7-30B",
       "parse_rate": 1.0,
-      "entropy_norm": 0.8973908383923171,
+      "entropy_norm": 0.8973908383923174,
       "modal_share": 0.5566037735849056,
       "e1b_coverage": 0.8611111111111112,
       "e1a_usable": true,

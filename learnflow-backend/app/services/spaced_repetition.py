@@ -1,6 +1,6 @@
 """间隔复习服务 (Spaced Repetition)
 
-基于艾宾浩斯遗忘曲线的简化实现。
+采用固定间隔与正误调整的规则式调度，未拟合个体遗忘曲线。
 - 答对：延长复习间隔（×2.5）
 - 答错：缩短复习间隔（÷2）
 - 最小间隔：1天，最大间隔：180天
@@ -78,13 +78,13 @@ class SpacedRepetitionService:
 
     @classmethod
     def estimate_mastery(cls, review_number: int, was_correct: bool) -> float:
-        """估算掌握度 (0-1)
+        """复习次数与最近正确性的启发式指标 (0-1)。
 
-        基于复习次数和最近正确性
+        不构成校准后的掌握度或记忆测量
         """
         if review_number == 0:
             return 0.0
-        base = min(1.0, review_number / 5)  # 5次复习 = 基本掌握
+        base = min(1.0, review_number / 5)  # Heuristic progress cap, not proof of mastery
         if was_correct:
             base = min(1.0, base + 0.15)
         else:

@@ -84,7 +84,8 @@ function cachedGet(url: string, config?: any): Promise<any> {
   const promise = run();
   if (shouldDedup) {
     inflight.set(key, promise);
-    promise.finally(() => inflight.delete(key));
+    // Handle both outcomes without leaving a rejected cleanup promise unobserved.
+    void promise.then(() => inflight.delete(key), () => inflight.delete(key));
   }
   return promise;
 }
@@ -154,10 +155,11 @@ export const studentApi = {
   updateConsent: (data: { consent_type: string; granted: boolean }) =>
     api.post('/student/consent', data),
   dueReviews: () => api.get('/student/due-reviews'),
+  answerReview: (id: string, data: { answer: string; time_spent: number }) => api.post(`/student/reviews/${encodeURIComponent(id)}/answer`, data),
   healthCheck: () => api.get('/student/health-check'),
 
   // ── Spec §4 新增端点（K12 自适应）──
-  submitAttempt: (data: { task_id: string; correct: boolean; rt_ms: number }) =>
+  submitAttempt: (data: { task_id: string; answer: string; rt_ms: number }) =>
     api.post('/student/attempt', data),
   challenge: () => api.get('/student/challenge', { cache: true }),
 };
@@ -315,4 +317,23 @@ export const classPetApi = {
   /** 老师视图：完整班级宠物园 + 逐生宠物明细 */
   teacher: (classId: string) =>
     api.get(`/class-pet/${classId}/teacher`, { cache: false }),
+};
+
+export interface ResearchStudyView {
+  id: string; title: string; protocol_version: string; protocol_hash: string;
+  consent_version: string; consent_text: string; mode: 'dry_run' | 'live';
+  status: string; topics: string[]; delay_days: number;
+}
+export interface ResearchNext {
+  complete: boolean; phase: 'pretest' | 'practice' | 'posttest' | 'delayed';
+  trial_id?: string; progress?: number; total?: number;
+  task?: { id: string; content: string; topic: string };
+}
+export const researchApi = {
+  study: (id: string) => api.get<ResearchStudyView>(`/research/studies/${id}`, { cache: false }),
+  consent: (id: string, version: string) => api.post(`/research/studies/${id}/consent`, { consent_version: version, accepted: true, adult_confirmed: true }),
+  start: (id: string, topic: string, phase: string) => api.post(`/research/studies/${id}/sessions`, { topic, phase }),
+  next: (id: string) => api.get<ResearchNext>(`/research/sessions/${id}/next`, { cache: false }),
+  answer: (id: string, answer: string, response_ms: number) => api.post(`/research/trials/${id}/answer`, { answer, response_ms }),
+  withdraw: (id: string) => api.post(`/research/studies/${id}/withdraw`),
 };

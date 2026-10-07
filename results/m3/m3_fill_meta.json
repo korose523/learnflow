@@ -1,5 +1,24 @@
 {
-  "ministral-3:3b": {"family": "Mistral", "params_b": 3, "architecture": "dense"},
-  "mixtral:8x7b": {"family": "Mistral", "params_b": 46.7, "architecture": "MoE"},
-  "deepseek-r1:32b": {"family": "DeepSeek", "params_b": 32.8, "architecture": "dense"}
+  "ministral-3:3b": {
+    "family": "Mistral",
+    "params_b": 3.8,
+    "architecture": "dense",
+    "quantization": "Q4_K_M",
+    "needs_remeasure": true,
+    "note": "params_b=3.8 沿用已发布矩阵 CSV 与稿件中的数值（保持论文↔产物一致）；⚠ 本文件原记 3，与 CSV 的 3.8 不一致。差异来源未定，定论须重跑 measure_model_meta.py 对本机 Ollama /api/show 实测（本机 2026-09-29 Ollama 未运行，无法当场重测，故不擅自改数，仅留痕）。无论 3 还是 3.8，scale_tier 均落 S1_<7B，档位不受影响。"
+  },
+  "mixtral:8x7b": {
+    "family": "Mistral",
+    "params_b": 46.7,
+    "architecture": "MoE",
+    "quantization": "Q4_0",
+    "note": "params_b=46.7 与已发布矩阵 CSV 一致；量化 Q4_0（非 Q4_K_M，与矩阵其余 Q4_K_M / 锚点 IQ3_S 错配，方案A §4 已知）。scale_tier 落 S3_30-70B。"
+  },
+  "deepseek-r1:32b": {
+    "family": "DeepSeek",
+    "params_b": 32.8,
+    "architecture": "dense",
+    "quantization": "Q4_K_M",
+    "note": "本条目较稀疏；local_matrix_meta_small.json 中的同名条目含实测 quantization 与 identity_caveat（R1-Distill-Qwen，families=[qwen2]），build_matrix_rows.py 的 load_meta 以后者覆盖本条目，血统警示不会丢失。"
+  }
 }

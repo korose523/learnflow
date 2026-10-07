@@ -1,0 +1,16 @@
+{
+  "mechanisms": [
+    {
+      "id": "DEMO-01",
+      "trigger": "illustrative_after_response",
+      "target_construct": "illustrative_engagement",
+      "direction": "approach",
+      "channel": "illustrative_banner",
+      "cost": 1.0,
+      "side_effect": [],
+      "precedence": 10,
+      "impl_ref": "engine.py:make_demo",
+      "expects_effect": true
+    }
+  ]
+}

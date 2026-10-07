@@ -11,7 +11,7 @@ M1 命题 C1「度量可公度性的不稳定性」数值实验
 
 有效权重定义（边界贡献法，向量和为 1）
   S = Z w ;  pi_k = w_k * Cov(z_k, S) / Var(S)
-  由 Cov(Zw,S)=Var(S) 得 sum_k pi_k = 1。当各源正交且离散度相等时 pi=w，
+  由 Cov(Zw,S)=Var(S) 得 sum_k pi_k = 1。当各源正交且方差相等时 pi_k=w_k²/sum(w²)，仅等权时与 w 相等，
   否则 pi 依赖各源的离散度与相关结构 —— 这正是漂移的来源。
 
 两种公制
@@ -19,7 +19,7 @@ M1 命题 C1「度量可公度性的不稳定性」数值实验
      - 对仿射重参数化 y'=a y+b 严格不变（min-max 吸收，解析恒等）；
      - 对非线性单调重参数化会漂移（分布形状改变 -> 离散度/相关结构变）。
   B. logit/IRT 公制：逐列用经验 CDF（阶跃）链接到 logit 潜尺度。
-     - 对 *任意* 严格单调重参数化严格不变（阶跃 CDF 的秩不变性，解析恒等）。
+     - 对 严格递增重参数化严格不变（阶跃 CDF 的秩不变性，解析恒等）。
 
 运行:  python m1_instability.py
 输出:  控制台 + m1_output.txt + m1_results.json
@@ -28,7 +28,8 @@ import json
 import numpy as np
 from scipy import stats
 
-OUTDIR = r"E:/learnflow\results"
+from pathlib import Path
+OUTDIR = Path(__file__).resolve().parent
 LOG = []
 SRC_NAMES = ["BKT掌握度", "间隔重复记忆难度", "Elo能力", "窗口成功率"]
 
@@ -91,7 +92,7 @@ def lin_metric_pi(X, w):
 
 
 def ecdf_logit(x, cal, eps=1e-6):
-    """阶跃经验 CDF 链接到 logit 公制（对任意严格单调变换严格不变）"""
+    """阶跃经验 CDF 链接到 logit 公制（对严格递增变换严格不变）"""
     s = np.sort(cal)
     n = len(s)
     r = np.searchsorted(s, x, side="right")          # = #{cal <= x}
@@ -221,7 +222,7 @@ def main():
                     rec[key]["rev"].append(rev)
                     rec[key]["sp"].append(sp)
 
-                    # ---- (B1) logit 公制，同校准、同一变换同步作用于 cal（应严格=0）----
+                    # ---- (B1) logit 公制，同校准、同步变换 cal；截断造成新并列时不满足严格递增前提----
                     Pc = np.column_stack([
                         ecdf_logit((tf(X[:, j], X[:, j]) if j == k else X[:, j]),
                                    (tf(Cal[:, j], X[:, k]) if j == k else Cal[:, j]))
@@ -291,6 +292,8 @@ def main():
             "baseline_pi_logit_mean": [round(float(v), 6) for v in base_pi_log.mean(0)],
             "baseline_pi_logit_sd": [round(float(v), 6) for v in base_pi_log.std(0, ddof=1)],
             "logit_common_cal_maxdev_overall": logit_common_maxdev,
+            "logit_common_cal_maxdev_per_transform": {f"src{k[0]}|{k[1]}": v for k,v in commondev.items()},
+            "invariance_scope": "Strictly increasing transformations preserving all evaluation/calibration order comparisons. logit_minmax clips outside the evaluation range and can introduce new ties, so it does not satisfy this premise globally.",
             "logit_common_cal_maxdev_worstkey": (
                 f"src{max(commondev, key=commondev.get)[0]}|"
                 f"{max(commondev, key=commondev.get)[1]}" if commondev else None),
@@ -352,11 +355,11 @@ def main():
     if not counterexamples:
         say("未找到反转（如实报告）")
 
-    with open(OUTDIR + r"\code\m1_results.json", "w", encoding="utf-8") as f:
+    with open(OUTDIR / "m1_results.json", "w", encoding="utf-8") as f:
         json.dump({"config": results, "counterexamples": counterexamples,
                    "settings": {"R": R, "N": N, "NCAL": NCAL}},
                   f, ensure_ascii=False, indent=2)
-    with open(OUTDIR + r"\code\m1_output.txt", "w", encoding="utf-8") as f:
+    with open(OUTDIR / "m1_output.txt", "w", encoding="utf-8") as f:
         f.write("\n".join(LOG))
     say("")
     say("[已写出] m1_results.json / m1_output.txt")

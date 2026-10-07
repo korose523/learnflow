@@ -305,7 +305,7 @@ class FlowChannel:
 
     FLOW_LOW = 0.75   # 心流下界（再容易就无聊）
     FLOW_HIGH = 0.90  # 心流上界（再难就焦虑）
-    OPTIMAL = 0.85    # 85% 规则最优线
+    OPTIMAL = 0.85    # 兼容默认目标；未验证为人类学习最优值
 
     @classmethod
     def success_to_elo_delta(cls, target_success: float) -> float:
@@ -314,13 +314,15 @@ class FlowChannel:
         P = 1/(1+10^((d-θ)/400))
         → d - θ = 400 · log₁₀((1-P)/P)
         """
+        if not math.isfinite(target_success) or not 0 < target_success < 1:
+            raise ValueError("target_success must be finite and strictly between 0 and 1")
         ratio = (1.0 - target_success) / max(target_success, 0.001)
         return 400.0 * math.log10(max(ratio, 0.001))
 
     @classmethod
-    def optimal_difficulty_elo(cls, theta: float) -> float:
+    def optimal_difficulty_elo(cls, theta: float, target_success: float = 0.85) -> float:
         """给定学生能力 θ，返回最优 Elo 难度"""
-        delta = cls.success_to_elo_delta(cls.OPTIMAL)
+        delta = cls.success_to_elo_delta(target_success)
         return theta + delta
 
     @classmethod
@@ -336,14 +338,14 @@ class FlowChannel:
             return DifficultyZone.ANXIETY
 
     @classmethod
-    def get_zone_boundaries_elo(cls, theta: float) -> dict:
+    def get_zone_boundaries_elo(cls, theta: float, target_success: float = 0.85) -> dict:
         """返回各区域的 Elo 难度边界"""
         return {
             "boredom_ceiling": theta + cls.success_to_elo_delta(cls.FLOW_HIGH),
             "flow_upper": theta + cls.success_to_elo_delta(cls.FLOW_HIGH),
             "flow_lower": theta + cls.success_to_elo_delta(cls.FLOW_LOW),
             "stretch_lower": theta + cls.success_to_elo_delta(0.50),
-            "optimal": theta + cls.success_to_elo_delta(cls.OPTIMAL),
+            "optimal": theta + cls.success_to_elo_delta(target_success),
         }
 
 
@@ -385,6 +387,7 @@ class OptimalDifficultyEngine:
         fsrs_w6: float = 0.2,
         fsrs_w7: float = 0.2,
     ):
+        FlowChannel.success_to_elo_delta(target_success)  # validate before constructing engine
         self.target_success = target_success
         self.rule85 = EightyFivePercentRule()
         self.elo = EloRating(k_base=elo_k_base, k_min=elo_k_min)
@@ -413,7 +416,7 @@ class OptimalDifficultyEngine:
         Returns:
             DifficultyResult: 包含推荐难度和解释
         """
-        # Step 1: 基本目标始终是85%
+        # Step 1: 使用调用方设置的目标，不将默认值视为最优结论
         target = self.target_success
 
         # Step 2: 从心流通道计算目标 Elo 难度
@@ -424,7 +427,9 @@ class OptimalDifficultyEngine:
         # 如果最近太容易（>85%）：增加 Elo 难度（更难）
         # 如果最近太难（<85%）：降低 Elo 难度（更简单）
         if recent_success_rate is not None and n_total_attempts >= 5:
-            actual_delta = self.flow.success_to_elo_delta(recent_success_rate)
+            # Observed samples can legitimately be all correct or all wrong.
+            observed = min(0.999, max(0.001, recent_success_rate))
+            actual_delta = self.flow.success_to_elo_delta(observed)
             actual_elo = student_theta + actual_delta
             # PID-like correction: 朝向85%调整
             # correction = (target_elo - actual_elo) * gain
@@ -580,13 +585,13 @@ class OptimalDifficultyEngine:
 
         zone_messages = {
             DifficultyZone.BOREDOM:
-                f"太容易（预期成功率{expected:.0%}），学习效率仅{lr_pct:.0f}%。建议升级难度。",
+                f"太容易（预期成功率{expected:.0%}），模型内难度匹配分{lr_pct:.0f}%。建议升级难度。",
             DifficultyZone.FLOW:
-                f"心流状态（预期成功率{expected:.0%}），学习效率{lr_pct:.0f}%。当前难度最优。",
+                f"心流状态（预期成功率{expected:.0%}），模型内难度匹配分{lr_pct:.0f}%。当前难度接近配置目标；学习增益尚待验证。",
             DifficultyZone.STRETCH:
-                f"拉伸区（预期成功率{expected:.0%}），学习效率{lr_pct:.0f}%。建议稍降难度。",
+                f"拉伸区（预期成功率{expected:.0%}），模型内难度匹配分{lr_pct:.0f}%。建议稍降难度。",
             DifficultyZone.ANXIETY:
-                f"过难（预期成功率{expected:.0%}），学习效率仅{lr_pct:.0f}%。建议大幅降难度。",
+                f"过难（预期成功率{expected:.0%}），模型内难度匹配分{lr_pct:.0f}%。建议大幅降难度。",
         }
         return zone_messages.get(zone, "")
 

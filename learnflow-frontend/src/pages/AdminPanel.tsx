@@ -1,3 +1,4 @@
+import MathContent from '../components/content/MathContent';
 import React, { useEffect, useState } from 'react';
 import { adminApi } from '../services/api';
 import { FileText, MessageSquare, BarChart3, Shield, CheckCircle2, XCircle, Plus, AlertTriangle } from 'lucide-react';
@@ -8,6 +9,8 @@ interface PendingTask {
   topic: string;
   difficulty: number;
   content: string;
+  correct_answer: string;
+  explanation?: string | null;
   source: string;
   created_at: string;
 }
@@ -198,7 +201,9 @@ export default function AdminPanel() {
                     </div>
                   </div>
                   <div style={{ fontSize: 13, color: '#475569', lineHeight: 1.5, background: '#f8fafc', padding: 10, borderRadius: 8 }}>
-                    {task.content}
+                    <MathContent content={task.content} />
+                    <p>正确答案：<MathContent content={task.correct_answer} /></p>
+                    {task.explanation && <p>解析：<MathContent content={task.explanation} /></p>}
                   </div>
                 </div>
               ))}

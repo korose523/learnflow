@@ -4,6 +4,7 @@ import asyncio
 import secrets
 from app.core.database import AsyncSessionLocal, init_db
 from app.core.config import settings
+from app.models.task import Task
 from app.models.user import User, UserRole
 from app.models.pet import PetProfile, PetBreed
 from app.core.security import hash_password
@@ -139,41 +140,14 @@ async def seed(force: bool = False):
             print(f"  管理员: admin@learnflow.com")
             print(f"  教师:   teacher@learnflow.com")
             print(f"  学生:   student@learnflow.com")
-            print(f"  家长:   parent@learnflow.com")
+            print(f"  家长:   parent_student@learnflow.com")
             print(f"  密码来源: {PW_SOURCE}")
 
-        # 补充示例题目（仅当不存在时）
-        existing_task_count = (await db.execute(select(func.count(Task.id)))).scalar() or 0
-        if existing_task_count == 0:
-            for t in SAMPLE_TASKS:
-                task = Task(
-                    topic=t["topic"],
-                    difficulty=t["difficulty"],
-                    content=t["content"],
-                    correct_answer=t["correct_answer"],
-                    explanation=t["explanation"],
-                    is_approved=True,
-                )
-                db.add(task)
-            await db.commit()
-            print(f"示例题目创建完成：{len(SAMPLE_TASKS)} 道")
-        else:
-            print(f"已有 {existing_task_count} 道题目，跳过示例题目")
-
-        # 补充默认反馈文案（仅当不存在时）
-        existing_script_count = (await db.execute(select(func.count(FeedbackScript.id)))).scalar() or 0
-        if existing_script_count == 0:
-            for s in DEFAULT_SCRIPTS:
-                script = FeedbackScript(
-                    category=s["category"],
-                    text=s["text"],
-                    review_status="approved",
-                )
-                db.add(script)
-            await db.commit()
-            print(f"默认反馈文案创建完成：{len(DEFAULT_SCRIPTS)} 条")
-        else:
-            print(f"已有 {existing_script_count} 条反馈文案，跳过")
+        # Reuse the same source as the optional application demo bootstrap.
+        task_count = await ensure_sample_tasks(db)
+        script_count = await ensure_feedback_scripts(db)
+        await db.commit()
+        print(f"新增示例题目: {task_count}; 默认反馈文案: {script_count}")
 
 
 if __name__ == "__main__":

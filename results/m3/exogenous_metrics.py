@@ -18,14 +18,9 @@ K2 当前已用 Spearman ρ + Cohen's κ 刻画"模型评级 vs 教师标签"的
 无需重跑 LLM。
 输出：exogenous_metrics.json + 控制台表
 
-⚠️ ordinal_auc 的语义修正（审阅意见 6.2 / 6.3，2026-09-29）。
-早期实现（见 §5.8 / §5.4 撤回记录）的说明写着"仅在教师标签不同的题对上比较"，但代码
-实际跳过的是**模型评级相同**的题对（`if x[i] == x[j]: continue`），并把**教师标签相同**
-的题对计入（`x[i]==x[j]` 跳过只删掉了模型同级的题对）。这导致 qwen3:1.7b（98.1% 预测
-集中在单一等级）的绝大部分题对被排除、得到虚高的 AUC=0.782，并非"保留难度顺序优于
-保留难度间距"的证据。本版已修正：跳过**教师标签相同**的题对，模型评级相同的题对计入
-并判为"未保持同序（discordant）"。修正后 qwen3:1.7b 的 ordinal AUC 落回 ~0.5 附近，
-与其等级塌缩（不可用）判定一致。
+Ordinal AUC compares only pairs with different teacher labels, with 0.5 credit
+for tied model ratings. Kendall tau-b excludes joint ties from one-variable tie counts.
+Jaccard@k is omitted because a three-level scale does not identify a unique top-k set.
 """
 import json
 import math
@@ -109,20 +104,15 @@ def kendall_tau_b(x, y):
                 d += 1
     cx = Counter(x)
     cy = Counter(y)
-    tx = sum(v * (v - 1) // 2 for v in cx.values())
-    ty = sum(v * (v - 1) // 2 for v in cy.values())
+    joint = sum(v * (v - 1) // 2 for v in Counter(zip(x, y)).values())
+    tx = sum(v * (v - 1) // 2 for v in cx.values()) - joint
+    ty = sum(v * (v - 1) // 2 for v in cy.values()) - joint
     denom = math.sqrt((c + d + tx) * (c + d + ty))
-    return 0.0 if denom == 0 else (c - d) / denom
+    return float("nan") if denom == 0 else (c - d) / denom
 
 
 def ordinal_auc(x, y):
-    """pairwise 顺序保持率：仅在**教师标签不同**的题对上比较模型评级是否同序。
-
-    修正（2026-09-29，审阅 §6.2/§6.3）：
-      - 跳过 y[i] == y[j]（教师标签相同：无顺序可比，跳过）——而不是旧的 x[i]==x[j]；
-      - 对"教师不同、模型评级相同"的题对，模型未保持顺序，计为 discordant（den+1、num 不增）。
-    含义：分子=在同序题对中被模型正确保持的同序数，分母=教师标签确实不同的题对数。
-    """
+    """Teacher-different pairs only; model ties receive 0.5 credit."""
     x = list(x)
     y = list(y)
     n = len(x)
@@ -132,7 +122,9 @@ def ordinal_auc(x, y):
             if y[i] == y[j]:        # 教师标签相同：无顺序可比，跳过（修正点）
                 continue
             den += 1
-            if (y[i] < y[j]) == (x[i] < x[j]):   # 模型评级是否保持教师顺序
+            if x[i] == x[j]:
+                num += 0.5
+            elif (y[i] < y[j]) == (x[i] < x[j]):
                 num += 1
     return float(num / den) if den > 0 else float("nan")
 
@@ -187,17 +179,17 @@ def main():
         oa = ordinal_auc(x, y)
         ga1 = graded_auc(x, y, {2, 3})        # 1-vs-{2,3}
         ga2 = graded_auc(x, y, {3})            # {1,2}-vs-3
-        ks = kscan(x, y, KS)
+        ks = {k: float("nan") for k in KS}
         rows[m] = {"n": len(items), "spearman_rho": round(rho, 4),
                    "kendall_tau_b": round(tau, 4), "ordinal_auc": round(oa, 4),
                    "graded_auc_1_vs_23": round(ga1, 4),
                    "graded_auc_12_vs_3": round(ga2, 4),
-                   "jaccard_at_k": {str(k): ks[k] for k in KS}}
+                   "jaccard_at_k": None, "jaccard_status": "omitted: top-k not identifiable under rating ties"}
         print(f"{m:18s} {len(items):4d} {rho:8.4f} {tau:8.4f} {oa:8.4f} "
               f"{ga1:12.4f} {ga2:12.4f} | " + " ".join(f"{ks[k]:7.4f}" for k in KS))
 
     with open("results/m3/exogenous_metrics.json", "w", encoding="utf-8") as f:
-        json.dump({"ks": KS, "rows": rows}, f, ensure_ascii=False, indent=2)
+        json.dump({"definitions": {"ordinal_auc": "teacher-different pairs; model ties = 0.5", "kendall_tau_b": "joint ties excluded from single-variable tie counts"}, "rows": rows}, f, ensure_ascii=False, indent=2)
     print("\n[已写出] results/m3/exogenous_metrics.json")
 
 

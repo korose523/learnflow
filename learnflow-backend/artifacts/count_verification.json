@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-10-05T11:24:51+09:00",
-  "git_commit": "01e0c8e62f101c4af36e9caaafa5673f2f131f9b",
+  "generated_at": "2026-10-08T08:33:47+09:00",
+  "git_commit": "fff758bfca7065d5c08eba5a92c7db8cc584ca72",
   "python_version": "3.13.12",
   "backend_root": "/Volumes/Untitled/learnflow/learnflow-backend",
   "counts": {
@@ -351,7 +351,7 @@
           ]
         },
         {
-          "location": "app/services/learning_orchestrator.py:995",
+          "location": "app/services/learning_orchestrator.py:974",
           "enclosing_function": "process_submission",
           "mechanism_labels": [
             "LF-M52"
@@ -497,7 +497,7 @@
       "actual": 2,
       "delta": 0,
       "strict": true,
-      "notes": "生产者位置：app/services/deep_addiction_engine.py:295; app/services/learning_orchestrator.py:995"
+      "notes": "生产者位置：app/services/deep_addiction_engine.py:295; app/services/learning_orchestrator.py:974"
     },
     "_overall": {
       "status": "verified",

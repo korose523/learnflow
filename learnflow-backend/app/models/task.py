@@ -29,6 +29,9 @@ class Task(Base):
     source = Column(String(100), default="system")   # system / teacher_upload
     created_by = Column(String(36), ForeignKey("users.id"), nullable=True)
     is_approved = Column(Boolean, default=False)
+    reviewed_at = Column(DateTime, nullable=True)
+    reviewed_by = Column(String(36), ForeignKey("users.id"), nullable=True)
+    review_notes = Column(Text, nullable=True)
     curriculum_node_id = Column(String(36), ForeignKey("curriculum_nodes.id"), nullable=True, index=True)
     created_at = Column(DateTime, default=lambda: datetime.now(UTC))
 

@@ -1,42 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""o13_llm_protocol_audit.py —— LLM 标注协议的**证据分级**与配对 bootstrap（审阅意见 5.2）
-=============================================================================
+"""Audit stored model protocol records and compute paired bootstrap intervals.
 
-问题
------------------------------------------------------------------------------
-M3 表 5 把四次数值并列（0.0295 / 0.046 / 0.1808 / 0.2195），并据此主张「同一模型、
-同一能力，仅因协议不同即得到四种答案」。审阅意见指出其中**两次是失败的实现**：
-  * 0.0295 是 num_predict=16 截断 <think> 块、从思考文本里读数字的结果；
-  * 0.046 是自由字符串排序（`A < C < B`）大量解析失败的结果。
-失败实现是工程压力测试，不是模型能力的估计值。可下结论的只有
-0.2195（锚定绝对评级）与 0.1808（枚举数组 + Bradley-Terry）两者，
-而这两者的差异**从未做过显著性检验**，且 E1-B 经过两两约束再拟合，
-简单的独立相关比较并不合适 —— 需要题目级重抽样的配对 bootstrap。
-
-本脚本做三件事
------------------------------------------------------------------------------
-1. **证据分级**：把存储记录按协议形态（自由字符串 / 枚举数组）与轮次切开，
-   逐组报告批次数、解析失败率、可行两两约束数、ρ —— 失败的实现单独列，
-   不给它任何能力解释。
-2. **配对 bootstrap**：以题目（DBE-KT22 的 212 道）为单位重抽样，对 E1-A 重算
-   Spearman、对 E1-B **在每个重抽样样本内重新拟合 Bradley-Terry**，得到
-   Δ = ρ_abs − ρ_BT 的 95% 区间与双侧 p 值。
-3. **可复现性核验**：检查稿件所写的「108 批中 60 批失败（55%）/ 676 约束 /
-   ρ = 0.046」是否能在现存产物中复现；不能则如实标记，不替它编数。
-
-输出
------------------------------------------------------------------------------
-    results/code/o13_llm_protocol_audit.json
-
-用法
------------------------------------------------------------------------------
-    python results/code/o13_llm_protocol_audit.py [--reps 200]
-
-退出码
------------------------------------------------------------------------------
-    0  审计完成（无论结论方向如何）
-    2  输入产物缺失或结构不符
+Primary comparison: anchored absolute ratings versus BT estimates from valid
+E1-B enum-array batches only (47/60). Mixed-protocol pooled estimates are
+implementation diagnostics and are not model capability estimates.
+Default: 2,000 bootstrap replicates. BC uses bias correction without BCa
+acceleration. Failed implementations remain separate from the primary table.
+Outputs results/code/o13_llm_protocol_audit.json; does not call any model API.
 """
 from __future__ import annotations
 
@@ -50,6 +21,7 @@ from typing import Any, Dict, List, Tuple
 
 import numpy as np
 from scipy import stats as st
+from scipy.stats import norm
 
 BASE = Path(__file__).resolve().parent.parent.parent
 CODE = BASE / "results" / "code"
@@ -164,7 +136,7 @@ def _spearman(x: np.ndarray, y: np.ndarray) -> float:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="LLM 标注协议证据分级与配对 bootstrap")
-    ap.add_argument("--reps", type=int, default=200, help="bootstrap 重抽样次数")
+    ap.add_argument("--reps", type=int, default=2000, help="bootstrap 重抽样次数")
     ap.add_argument("--seed", type=int, default=20260922)
     args = ap.parse_args()
 
@@ -270,12 +242,18 @@ def main() -> int:
                  "该叙事必须在 M3 5.2 节改正。"),
     }
 
+    # Main comparison uses only valid enumerated-array batches, never pooled formats.
+    valid_enum = [r for r in e1b if _rank_style(r.get("raw", "")) == "enum_array" and r.get("ok_parse")]
+    wins_boot, opp_boot = _constraints(valid_enum)
+    primary_bt = graded["enum_array"]["spearman"]
+    e1b_block["usable_as_capability_estimate"] = False
+    e1b_block["interpretation"] = "pooled return formats; diagnostic only"
     # ── 配对 bootstrap：题目级重抽样 + 每个重抽样内重新拟合 BT ──
     rng = np.random.default_rng(args.seed)
-    keys = [(a, b) for (a, b), w in wins_all.items() if opp_all.get((a, b), 0) > 0 and w > 0]
+    keys = [(a, b) for (a, b), w in wins_boot.items() if opp_boot.get((a, b), 0) > 0 and w > 0]
     I = np.array([idx[a] for a, _ in keys]); J = np.array([idx[b] for _, b in keys])
-    W0 = np.array([wins_all[k] for k in keys], dtype=float)
-    N0 = np.array([opp_all[k] for k in keys], dtype=float)
+    W0 = np.array([wins_boot[k] for k in keys], dtype=float)
+    N0 = np.array([opp_boot[k] for k in keys], dtype=float)
 
     d_abs, d_bt, deltas = [], [], []
     for _ in range(args.reps):
@@ -295,19 +273,33 @@ def main() -> int:
         if not (math.isnan(ra) or math.isnan(rb)):
             d_abs.append(ra); d_bt.append(rb); deltas.append(ra - rb)
 
+    def bias_corrected_ci(samples, point):
+        values = np.asarray(samples, dtype=float)
+        prop = (np.sum(values < point) + 0.5 * np.sum(values == point)) / len(values)
+        prop = np.clip(prop, 0.5 / len(values), 1 - 0.5 / len(values))
+        z0 = norm.ppf(prop)
+        return [round(float(v), 4) for v in np.quantile(values, norm.cdf(2 * z0 + norm.ppf([0.025, 0.975])))]
+
     if deltas:
         dl = np.array(deltas)
         lo, hi = np.percentile(dl, [2.5, 97.5])
         p_two = 2 * min(float((dl <= 0).mean()), float((dl >= 0).mean()))
         boot = {
             "reps_used": len(dl),
+            "bt_point": primary_bt,
+            "bt_subset": "enum_array; parse-success only (47/60 batches)",
+            "seed": args.seed,
+            "ci_method": "percentile and bias-corrected (BC, no acceleration); combined return formats are diagnostic only",
+            "bias_corrected_ci95_absolute": bias_corrected_ci(d_abs, e1a_block["spearman"]),
+            "bias_corrected_ci95_bt": bias_corrected_ci(d_bt, primary_bt),
+            "bias_corrected_ci95_delta": bias_corrected_ci(deltas, e1a_block["spearman"] - primary_bt),
             "rho_absolute": {"mean": round(float(np.mean(d_abs)), 4),
                              "ci95": [round(float(np.percentile(d_abs, 2.5)), 4),
                                       round(float(np.percentile(d_abs, 97.5)), 4)]},
             "rho_bt": {"mean": round(float(np.mean(d_bt)), 4),
                        "ci95": [round(float(np.percentile(d_bt, 2.5)), 4),
                                 round(float(np.percentile(d_bt, 97.5)), 4)]},
-            "delta_abs_minus_bt": {"point": round(e1a_block["spearman"] - e1b_block["spearman"], 4),
+            "delta_abs_minus_bt": {"point": round(e1a_block["spearman"] - primary_bt, 4),
                                    "mean": round(float(np.mean(dl)), 4),
                                    "ci95": [round(float(lo), 4), round(float(hi), 4)],
                                    "p_two_sided": round(p_two, 4),
@@ -331,7 +323,7 @@ def main() -> int:
             "可下结论的协议比较只有锚定绝对评级 ρ = %.4f 与枚举数组 + BT ρ = %.4f 两者；"
             "其差 Δ = %.4f，95%% 配对（题目级重抽样、BT 再拟合）区间 [%.4f, %.4f]，"
             "双侧 p = %.4f —— %s。"
-            % (e1a_block["spearman"], e1b_block["spearman"],
+            % (e1a_block["spearman"], primary_bt,
                boot["delta_abs_minus_bt"]["point"] if deltas else float("nan"),
                boot["delta_abs_minus_bt"]["ci95"][0] if deltas else float("nan"),
                boot["delta_abs_minus_bt"]["ci95"][1] if deltas else float("nan"),

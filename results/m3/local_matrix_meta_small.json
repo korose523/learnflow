@@ -63,7 +63,7 @@
     "family": "DeepSeek",
     "params_b": 15.7,
     "quantization": "Q4_0",
-    "architecture": "dense",
+    "architecture": "MoE-V2-Lite",
     "measured_parameter_size": "15.7B",
     "measured_families": [
       "deepseek2"

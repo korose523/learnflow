@@ -12,6 +12,11 @@ Base = declarative_base()
 # 延迟初始化，避免导入时就需要数据库驱动
 _engine: Optional = None
 _AsyncSessionLocal: Optional = None
+_fallback_database = False
+
+def using_fallback_database():
+    return _fallback_database
+
 
 
 def _get_engine():
@@ -143,7 +148,8 @@ async def init_db():
             else:
                 # 最后一次尝试失败 → 无条件回退到 SQLite
                 logger.warning("⚠️ 外部数据库连接失败，自动回退到 SQLite（内存数据库）")
-                global _engine, _AsyncSessionLocal
+                global _engine, _AsyncSessionLocal, _fallback_database
+                _fallback_database = True
                 _engine = create_async_engine(
                     "sqlite+aiosqlite:///./learnflow.db",
                     echo=settings.DEBUG,

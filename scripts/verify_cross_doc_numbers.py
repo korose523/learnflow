@@ -46,22 +46,16 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 REPO_ROOT = SCRIPT_DIR.parent
 DOCS = REPO_ROOT / "docs"
-# 2026-10-03: `docs/研究计划与报告/` 已移除（md 并入研究总档），
-# plan/report/split 三列现直接指向 MASTER。PLAN_REPORT 保留仅为向后兼容。
-PLAN_REPORT = DOCS   # 已废弃：原为 DOCS/"研究计划与报告"
-
-# (doc key, display label, path) ------------------------------------------------ #
-# 2026-10-03: plan / report / split 三份已合并入《LearnFlow_研究总档.md》
-# （第一/二/三部），改为指向总档；行级正则按内容匹配，合档后仍命中。
-MASTER = DOCS / "LearnFlow_研究总档.md"
+PLAN_REPORT = DOCS / "研究计划与报告"
+MASTER = DOCS / "LearnFlow_研究总档.md"  # Historical index only.
 DOCUMENTS = [
-    ("plan",   "计划书(计划)",  MASTER),
-    ("report", "计划书(报告)",  MASTER),
-    ("split",  "拆分方案",      MASTER),
-    ("M1",     "M1 完整稿",     DOCS / "M1_难度可公度性与最优错误率_完整稿.md"),
-    ("M2",     "M2 完整稿",     DOCS / "M2_多干预并存学习系统的冲突结构审计_完整稿.md"),
-    ("M3",     "M3 完整稿",     DOCS / "M3_有序难度决策与大模型先验边界_完整稿.md"),
-    ("M4",     "M4 完整稿",     DOCS / "M4_信度结构化组合难度估计_完整稿.md"),
+    ("plan", "计划书中文", PLAN_REPORT / "研究计划_中文版.md"),
+    ("plan_ko", "计划书韩文", PLAN_REPORT / "研究计划_韩文版.md"),
+    ("report", "报告中文", PLAN_REPORT / "研究报告_中文版.md"),
+    ("report_ko", "报告韩文", PLAN_REPORT / "研究报告_韩文版.md"),
+    ("M1",     "M1 投稿主稿",     DOCS / "M1_submission_EN_compressed.md"),
+    ("M2",     "M2 路线B章",     DOCS / "M2_路线B_内部静态审计章.md"),
+    ("M3",     "M3 投稿主稿",     DOCS / "M3_submission_EN_compressed.md"),
 ]
 
 # --------------------------------------------------------------------------- #
@@ -189,6 +183,14 @@ METRICS = [
 # --------------------------------------------------------------------------- #
 # Helpers
 # --------------------------------------------------------------------------- #
+# Only the existing count metrics are checked here; missing cells remain explicit.
+for metric_key, _, _, patterns in METRICS:
+    for doc_key in ("plan", "plan_ko", "report", "report_ko", "M2"):
+        if metric_key == "mechanisms":
+            patterns[doc_key] = [r"(?:登记|등록)\s*(\d+)"]
+        elif metric_key == "effect_producers_audit":
+            patterns[doc_key] = [r"(?:效果生产者?|효과\s*생산자)\s*(\d+)"]
+
 def _clean(value: str) -> str:
     """Normalise an extracted token for comparison (strip thousands separators)."""
     if value is None:
@@ -295,7 +297,7 @@ def main(argv=None) -> int:
 
     print("=" * 78)
     print("LearnFlow 跨文档数字一致性门禁  (审阅意见 §2.1)")
-    print("基准 tag: v1.1-submit (由 lead 在最终提交时打; 其后工作不进入提交件)")
+    print("工作稿检查：尚未冻结；v1.1-submit 是历史审阅基线，不代表当前修改")
     print("=" * 78)
     print()
 
@@ -310,10 +312,10 @@ def main(argv=None) -> int:
             print(p)
         print("-" * 78)
     else:
-        print("未发现任何指标分歧。")
+        print("未发现非缺失计数间的分歧；缺失项未验证，研究指标仍需人工与原始结果核对。")
 
     if ok:
-        print("门禁结果: PASS (所有 STRICT 指标在已陈述文档间一致)")
+        print("门禁结果: PASS (有限计数检查；缺失项不代表已验证)")
         return 0
     else:
         print("门禁结果: FAIL (存在 STRICT 指标分歧，须在提交前修正)")

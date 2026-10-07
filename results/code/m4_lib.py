@@ -1,28 +1,14 @@
 # -*- coding: utf-8 -*-
-"""M4：信度结构化 composition 难度估计器 —— 零依赖实现与严谨留出对比。
+"""Standard-library numerical helpers for historical cached M4 experiments.
 
-为什么写这个包
---------------
-本环境没有 numpy / scipy，但 results/code/difficulty_cache.npz 里已经缓存了
-Junyi（M=1234 题 × 7 字段 × K=500 蓄水池槽位）与 DBE-KT22（M=212 题 × 5 字段
-× K=500）。.npz 是 zip + .npy，可以用标准库直接读；于是**不必安装任何第三方包**
-就能在真实数据上复 flavor 出 O8/O11 的留出协议，并把 M4 与既有估计器放在同一
-共和协议下比较。
+Reliability weighting, covariance correction and residualization are distinct
+heuristics. srw7 is not a special case of covariance weighting. Under independent
+single-factor errors covariance-optimal weights are proportional to
+sign*sqrt(rho)/(1-rho); identity covariance instead gives sign*sqrt(rho).
 
-与本 Os={fused6, signed7, srw7} 的关系
---------------------------------------
-既有估计器不是被替换，而是被**包含**：
-    fused6  = 等权 + 别除 upgrade_rate            （M4-C 退化为固定 λ 时的一部分）
-    signed7 = 符号校正 + 等权                      （M4-A + M4-B 退化为等权）
-    srw7    = 符号校正 + 逐列信度 w_k ∝ ρ_k        （M4-B 忽略列间共线时的特例）
-M4 在此之上引入四个可独立剥离的模块，见 `run_m4.py` 的消融表。
-
-唯有红线（与本项目其余部分一致）
---------------------------------
-* 判定量不得与拟合量同统计量。故主判据一律为 **外生标签**（DBE 教师难度 `D_y`、
-  Junyi 平台难度 `J_y`）；既有 O7/O11 的"留出错误率"判据只作为 **同场对照**，
-  不承载任何"哪个更难"的因果/准确性主张。
-* 所有符号、信度、权重、**以及λ** 一律只在拟合块 A 内估计；B 块与外生标签只用于评价。
+This cache-based evaluator is separate from M1 full-transaction IRT reanalysis.
+Scores and response-resampling variability do not establish population validity
+or learning benefit. Label-tuned lambda and untuned estimators must be distinguished.
 """
 import array
 import ast

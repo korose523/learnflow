@@ -1,0 +1,22 @@
+{
+  "commit": "b82a900f2f4a43cea463853e36d6f8237c7f255e",
+  "repository": "https://github.com/ActiDoo/gamification-engine",
+  "files": {
+    "gengine/app/model.py": {
+      "url": "https://raw.githubusercontent.com/ActiDoo/gamification-engine/b82a900f2f4a43cea463853e36d6f8237c7f255e/gengine/app/model.py",
+      "sha256": "9f4a9905a5964ea5dbafa6d39bd7af313e0ac570d18813f1f6416e447975331d"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/ActiDoo/gamification-engine/b82a900f2f4a43cea463853e36d6f8237c7f255e/LICENSE",
+      "sha256": "25c999304a4b6b771698912f83b3f99ade4542cb418f164c2df7cf81b0f7b515"
+    },
+    "README.md": {
+      "url": "https://raw.githubusercontent.com/ActiDoo/gamification-engine/b82a900f2f4a43cea463853e36d6f8237c7f255e/README.md",
+      "sha256": "362928036daab37a584185db5c033f40afaa590d06487dd20919be326c1b701c"
+    },
+    "docs/concepts/index.rst": {
+      "url": "https://raw.githubusercontent.com/ActiDoo/gamification-engine/b82a900f2f4a43cea463853e36d6f8237c7f255e/docs/concepts/index.rst",
+      "sha256": "2fa684b3687e7a2759f5b837ee52f8b02be6529bb3d4d67540532966d6d4dae6"
+    }
+  }
+}

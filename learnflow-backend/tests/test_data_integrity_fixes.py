@@ -195,6 +195,16 @@ async def test_classroom_analysis_real_stats(harness):
     expected_ratio = round(weekend / len(_ATTEMPTS_SPEC), 2)
     expected_dist = {str(d): c for d, c in Counter(d for (_, _, d) in _ATTEMPTS_SPEC).items()}
 
+    from app.models.curriculum import Class
+    from sqlalchemy import select
+    async with sm() as db:
+        db.add(User(id="T1", email="t@lf.com", hashed_password="x", name="师", role=UserRole.TEACHER))
+        await db.flush()
+        db.add(Class(id="test-class", name="Test", teacher_id="T1"))
+        await db.flush()
+        for student in (await db.execute(select(User).where(User.role == UserRole.STUDENT))).scalars():
+            student.class_id = "test-class"
+        await db.commit()
     _set_user(User(id="T1", email="t@lf.com", hashed_password="x", name="师", role=UserRole.TEACHER))
     r = await ac.get("/api/v1/teacher/ai/classroom-analysis")
     assert r.status_code == 200, r.text
@@ -218,6 +228,16 @@ async def test_classroom_analysis_no_attempts_returns_none(harness):
     await _seed_user(sm, id="STU1", email="s1@lf.com", hashed_password="x", name="学1", role=UserRole.STUDENT)
     # 注意：不播种任何 Attempt
 
+    from app.models.curriculum import Class
+    from sqlalchemy import select
+    async with sm() as db:
+        db.add(User(id="T1", email="t@lf.com", hashed_password="x", name="师", role=UserRole.TEACHER))
+        await db.flush()
+        db.add(Class(id="test-class", name="Test", teacher_id="T1"))
+        await db.flush()
+        for student in (await db.execute(select(User).where(User.role == UserRole.STUDENT))).scalars():
+            student.class_id = "test-class"
+        await db.commit()
     _set_user(User(id="T1", email="t@lf.com", hashed_password="x", name="师", role=UserRole.TEACHER))
     r = await ac.get("/api/v1/teacher/ai/classroom-analysis")
     assert r.status_code == 200, r.text

@@ -1,0 +1,788 @@
+{
+  "katex_version": "0.19.0",
+  "compatible_items": 3209,
+  "math_segments": 10395,
+  "rendered_segments": 10395,
+  "syntax_errors": [],
+  "strict_warnings": [
+    {
+      "task_id": "xes-204",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-204",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-204",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-248",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-248",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-721",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-722",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-764",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-872",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-937",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2005",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2184",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2184",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2300",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2300",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2300",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2301",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2319",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2855",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-2855",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-3108",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-3251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4243",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4251",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4446",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "unknownSymbol"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-4745",
+      "code": "symbolNotInFont"
+    },
+    {
+      "task_id": "xes-4792",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4810",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4897",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4977",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4977",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4977",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-4977",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5249",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5284",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5296",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5356",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5458",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5654",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-5974",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6009",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6131",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6670",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6670",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6689",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6716",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-6790",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7023",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7268",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7487",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7642",
+      "code": "unicodeTextInMathMode"
+    },
+    {
+      "task_id": "xes-7642",
+      "code": "unicodeTextInMathMode"
+    }
+  ],
+  "strict_warning_item_count": 40,
+  "content_review_flags": [
+    {
+      "task_id": "xes-4",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-208",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-210",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-737",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-1508",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-1632",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-4109",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-4110",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-4113",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-4115",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-4435",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-6756",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-6767",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-6909",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-7341",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    },
+    {
+      "task_id": "xes-7432",
+      "reason": "source_mentions_table_or_figure_requires_content_review"
+    }
+  ],
+  "splitter_cases_passed": 7,
+  "source_hashes": {
+    "tokenizer": "3591936382881a1b64b79c7d6ca5ce6267648bdbf981e86763414ec067964d71",
+    "renderer": "4715cfec5bab8de02122da1810586d01b48d5ad3e1f9def12ef47be7068e4b51",
+    "package_lock": "3f57804b81da238122dcd413cf44508a4a170ea9d0052e4365e9fad2ab268fdc",
+    "bank": "0e884011e9ea0ebd4fb59fff59d0de906fc54f84b1b9a071a20ae5eacb401b9c"
+  },
+  "scope": "Delimited formula syntax only. No HTML/table reconstruction, image support, expert item review, correctness or calibrated difficulty."
+}

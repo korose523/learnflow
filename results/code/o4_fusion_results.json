@@ -45,7 +45,7 @@
  "optimized_tertile_accuracy": 0.5189,
  "optimized_tertile_kappa": 0.2786,
  "baselines": {
-  "raw_success_rate_O2": 0.2207,
+  "raw_success_rate_O2": 0.2204,
   "irt_1pl_O2": 0.23
  }
 }

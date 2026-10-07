@@ -1,7 +1,8 @@
+import MathContent from '../components/content/MathContent';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { studentApi } from '../services/api';
+import { studentApi, invalidateCache } from '../services/api';
 import Celebration from '../components/common/Celebration';
 import { Skeleton } from '../components/common/Skeleton';
 import { useMotionPref } from '../contexts/MotionContext';
@@ -50,6 +51,11 @@ export default function LearningSession() {
   const [celebrate, setCelebrate] = useState(false);
   const [celebrateComplete, setCelebrateComplete] = useState(false);
   const { reduced } = useMotionPref();
+  const [submitting, setSubmitting] = useState(false);
+  const [actionError, setActionError] = useState('');
+  const [isRetry, setIsRetry] = useState(false);
+  const [tutorial, setTutorial] = useState('');
+  const submissionLockRef = useRef(false);
   const recoveryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Cleanup timer on unmount
@@ -64,6 +70,9 @@ export default function LearningSession() {
   const fetchNextTask = useCallback(async () => {
     setPhase('loading');
     setFetchError(null);
+    setActionError('');
+    setIsRetry(false);
+    setTutorial('');
     try {
       const { data } = await studentApi.nextTask();
       setTaskData(data);
@@ -86,36 +95,53 @@ export default function LearningSession() {
   }, [phase]);
 
   const handleSubmit = async () => {
-    if (!taskData || !answer.trim()) return;
+    if (!taskData || !answer.trim() || submissionLockRef.current) return;
+    submissionLockRef.current = true;
+    setSubmitting(true);
+    setActionError('');
     const timeSpent = Math.round((Date.now() - startTime) / 1000);
 
     try {
       const { data } = await studentApi.submitAnswer({
         task_id: taskData.task.id,
         answer: answer.trim(),
-        time_spent: timeSpent,
+        time_spent: Math.max(1, timeSpent),
+        is_retry: isRetry,
       });
+      invalidateCache('/student');
       setFeedback(data);
       setCompletedCount(c => c + 1);
       if (data.is_correct) {
         setCorrectCount(c => c + 1);
-        setCelebrate(true); // 答对即庆祝「掌握」（正向能力反馈，非强迫回流）
+        setCelebrate(true); // Celebrate the recorded correct answer without inferring mastery.
       }
       setPhase('feedback');
     } catch (err) {
-      console.error('提交失败', err);
+      setActionError('提交失败，答案尚未确认保存。请重试。');
+    } finally {
+      submissionLockRef.current = false;
+      setSubmitting(false);
     }
   };
 
   const handleRecovery = async (choice: string) => {
     if (!taskData) return;
+    setActionError('');
     try {
-      await studentApi.recoveryChoice({ task_id: taskData.task.id, choice });
-      if (choice === 'watch_tutorial' || choice === 'skip') {
+      const { data } = await studentApi.recoveryChoice({ task_id: taskData.task.id, choice });
+      if (choice === 'watch_tutorial') setTutorial(data.tutorial || '暂无讲解内容');
+      if (choice === 'retry') {
+        setAnswer('');
+        setFeedback(null);
+        setIsRetry(true);
+        setStartTime(Date.now());
+        setPhase('task');
+      }
+      if (choice === 'skip') {
         recoveryTimerRef.current = setTimeout(fetchNextTask, 1500);
       }
     } catch (err) {
-      console.error('恢复操作失败', err);
+      setActionError('操作失败，请重试。');
     }
   };
 
@@ -235,7 +261,7 @@ export default function LearningSession() {
 
           {/* 题目内容 */}
           <div style={{ fontSize: 18, lineHeight: 1.7, marginBottom: 24, padding: '16px', background: 'var(--lf-neutral-50)', borderRadius: 'var(--lf-radius-md)' }}>
-            {taskData.task.content}
+            <MathContent content={taskData.task.content} />
           </div>
 
           {/* BKT 掌握度提示 */}
@@ -284,13 +310,15 @@ export default function LearningSession() {
           <button
             className="lf-btn lf-btn-primary"
             onClick={handleSubmit}
-            disabled={!answer.trim()}
+            disabled={!answer.trim() || submitting}
             style={{ width: '100%', padding: 14, fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}
           >
-            提交答案 <ArrowRight size={18} />
+            {submitting ? '提交中...' : '提交答案'} <ArrowRight size={18} />
           </button>
         </div>
       )}
+
+      {actionError && <p role="alert" style={{ color: '#b91c1c' }}>{actionError}</p>}
 
       {/* 反馈卡片 */}
       {phase === 'feedback' && feedback && (
@@ -359,6 +387,8 @@ export default function LearningSession() {
             </div>
           )}
 
+          {tutorial && <div role="status" className="lf-card"><strong>题目讲解</strong><p><MathContent content={tutorial} /></p></div>}
+
           {/* 错误恢复选项（温和引导，不羞辱、不强制） */}
           {!feedback.is_correct && feedback.feedback.recovery_options && (
             <div style={{ display: 'grid', gap: 8, marginBottom: 16 }}>
@@ -391,11 +421,11 @@ export default function LearningSession() {
             下一题 <ArrowRight size={16} />
           </button>
 
-          {/* 答对庆祝：即时正反馈（庆祝掌握，非损失厌恶） */}
+          {/* Feedback on this answer, without a claim about learning gain. */}
           <Celebration
             fire={celebrate}
             emoji="✨"
-            message={feedback.is_correct ? '掌握了一项新技能！大脑又长出了连接 🧠' : ''}
+            message={feedback.is_correct ? '回答正确，继续练习巩固。' : ''}
             onDone={() => setCelebrate(false)}
           />
         </motion.div>

@@ -1,0 +1,3685 @@
+{
+  "version": "0.1.0",
+  "scope": "structural_contract_and_literal_python_evidence",
+  "mechanisms": 54,
+  "findings": [
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M01",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M02",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M02",
+      "detail": "gamification_service.py:139",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M03",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M03",
+      "detail": "gamification_service.py:460",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M04",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M04",
+      "detail": "positive_addiction_engine.py:588",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M05",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M05",
+      "detail": "addiction_engine_v3.py:199",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M06",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M07",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M08",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M08",
+      "detail": "deep_addiction_engine.py:461",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M09",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M09",
+      "detail": "addiction_engine_v3.py:7",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M10",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M10",
+      "detail": "addiction_engine_v3.py:36",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M11",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M12",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M12",
+      "detail": "deep_addiction_engine.py:308",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M13",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M13",
+      "detail": "addiction_engine_v3.py:108",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M14",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M14",
+      "detail": "addiction_engine_v3.py:163",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M15",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M16",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M17",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M17",
+      "detail": "habit_addiction_engine.py:159",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M18",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M18",
+      "detail": "gamification_service.py:623,615",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M19",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M20",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M20",
+      "detail": "positive_addiction_engine.py:649",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M21",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M21",
+      "detail": "ux_addiction_engine.py:119",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M22",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "mechanism_id": "LF-M22",
+      "detail": "Expected relative file.py:QualifiedSymbol",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M23",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M23",
+      "detail": "gamification_service.py:659",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M24",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M24",
+      "detail": "positive_addiction_engine.py:506",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M25",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M25",
+      "detail": "deep_addiction_engine.py:292",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M26",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M26",
+      "detail": "positive_addiction_engine.py:538",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M27",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M28",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M28",
+      "detail": "social_addiction_engine.py:55",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M29",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M29",
+      "detail": "social_addiction_engine.py:411",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M30",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M31",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M31",
+      "detail": "team_competition_engine.py:103,288,389,487,556,651",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M32",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M32",
+      "detail": "social_addiction_engine.py:288",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M33",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M33",
+      "detail": "positive_addiction_engine.py:67",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M34",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M34",
+      "detail": "positive_addiction_engine.py:262",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M35",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M35",
+      "detail": "positive_addiction_engine.py:322",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M36",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M36",
+      "detail": "habit_addiction_engine.py:27",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M37",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M37",
+      "detail": "habit_addiction_engine.py:80",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M38",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M38",
+      "detail": "habit_addiction_engine.py:109",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M39",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M40",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M40",
+      "detail": "meta_learning_skilltree.py:157",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M41",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M41",
+      "detail": "deep_addiction_engine.py:388",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M42",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M42",
+      "detail": "addiction_engine_v3.py:51",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M43",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M43",
+      "detail": "deep_addiction_engine.py:25",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M44",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M44",
+      "detail": "deep_addiction_engine.py:238",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M45",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M45",
+      "detail": "deep_addiction_engine.py:542",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M46",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M46",
+      "detail": "positive_addiction_engine.py:348",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M47",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M47",
+      "detail": "ux_addiction_engine.py:24",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M48",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M48",
+      "detail": "ux_addiction_engine.py:210",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M49",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M49",
+      "detail": "ux_addiction_engine.py:290",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M50",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M50",
+      "detail": "ux_addiction_engine.py:345,482,524",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M51",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "LINE_REFERENCE_UNVERIFIED",
+      "mechanism_id": "LF-M51",
+      "detail": "feedback_service.py:198",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M52",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M53",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "mechanism_id": "LF-M53",
+      "detail": "Expected relative file.py:QualifiedSymbol",
+      "severity": "unknown"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "trigger",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "target_construct",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "direction",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "channel",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "cost",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "side_effect",
+      "severity": "error"
+    },
+    {
+      "code": "MISSING_FIELD",
+      "mechanism_id": "LF-M54",
+      "detail": "precedence",
+      "severity": "error"
+    },
+    {
+      "code": "UNRESOLVED_REFERENCE",
+      "mechanism_id": "LF-M54",
+      "detail": "Expected relative file.py:QualifiedSymbol",
+      "severity": "unknown"
+    }
+  ],
+  "source_evidence": {
+    "files": {
+      "__init__.py": "98e48f3ed230372570512b6e21aafe2ccd652b6ca2b6f92db698fa0210e1ef86",
+      "_ml_utils.py": "c0e48e9119f7a87114a4f257af3fb9a9396ab67586b9806cacfdf32527d7b2f6",
+      "ab_test_framework.py": "f4207c811adecbcbbd44a0a90069ff37fc20ae20d3ea12bcca1afc3d148a53a9",
+      "addiction_engine_v3.py": "98b2188700c376c1e8a0b7c36ef73a025510e2acb5d9e1251afa08fe62d00152",
+      "advanced_methods_engine.py": "706b03d931749e5b0866552a9f0cfb4017ebabd3c6fad8932b3cd619612165f3",
+      "advanced_methods_v2.py": "2a597868ae319bf3e2f5cea7b317e01f40e6104dbde12491d7b22786489ef23f",
+      "anti_addiction.py": "adec3cdf823ca6cfe66e2200e3191091e6cb9fff5016bdd1c3571ceaefa6f22c",
+      "anti_addiction_compliance.py": "9b49d7e62fd7005ae094be2471f7560237f02e7a6ce674a2631d827523e8513e",
+      "arbitration_ledger.py": "36558ba14937b6dc60aa78e91259ae0647db891b67bb8ff775b2526ca6c3ff9a",
+      "audit.py": "c7b844237e0b08a6d3464e21536850021391e03a1a04038eb5f839204e53a040",
+      "cache.py": "cc207cfcf779d5b9ef1515758074c6a68c53d5cf82b4b25106533cc59c000ca4",
+      "causal_effects.py": "0740662ef734a9d30c4ce81aad5331ac10fc294c1924918a70b98a829973fe26",
+      "class_pet_service.py": "209addd5fd16a6f27b82198220a3e621ed95dc193e46280100ab33b1e15060ff",
+      "dda.py": "7125f9286eeb6df5238ec073b8404705a6e526e48cb14e0bb13c73e0cb4d3b86",
+      "deep_addiction_engine.py": "fe77dd8a62247d8d7fce39162e0fc4cb8a24fedef4716f2d62c815f4fa51e8af",
+      "difficulty_fusion.py": "4a661bf98c448b55612e601e3a0c863458298fd9960efc7778ba61c4de128251",
+      "difficulty_m4.py": "631173d6c374aa951253a50dcacf11c0a4d2dd8d4d63be320d33ec52c09e059e",
+      "duolingo_addiction_engine.py": "c01751554bead47aa17fd11f223514d034c06f735791884eff0d2fab2b77560a",
+      "experiment_power.py": "ee403ba42c2064ace528079a033f6d8a3e06cc661ca54ec74cb6e5a2de436322",
+      "feature_store.py": "a5f1cce3fe87a04e6a8cdb9f0644797a38f5450142090d72206f1a61f56b61c6",
+      "feedback_service.py": "c7fe614dd3ccbf5165720a0bdfc0e28dbe544c32b8f54056b465582501255465",
+      "gamification_service.py": "e1364afc8e2e01d83c44f134f6248b4f8244667576575c21c1443ce4ca3fe6ca",
+      "habit_addiction_engine.py": "2cf32400a7dbbbcbc8c2da35713c2b1609946ddce95b82c2340475a9f9112b6c",
+      "instrument_catalog.py": "e856873751af269c6f71f90d422c8e1d5578261b95935d332553fc656aa59120",
+      "intervention_reward.py": "27cac81fa690da57a2f65b54d2facebe1da9a5dc474196adcbe23338e59a6437",
+      "knowledge_tracing.py": "352037c00c04c17bc351e11622c778714a64324cda2bf063ae2d823a2d66c093",
+      "learning_addiction_index.py": "509c69938f19d0ac96a7ae756534363e1201255d54f4c0039b15020234e0d130",
+      "learning_event_builder.py": "c7a50fde5120ff385999fba92aef6386633ea2befdc4619856498b39623e428a",
+      "learning_methods_engine.py": "05686dcb20bbfe441d52ad9b49033132a0d1e2e86abaff71080023885c9997ab",
+      "learning_methods_engine_v3.py": "11dc2c42ca9aa410c3e020917d61087ec162403369a9edf05701c7b05af0be48",
+      "learning_orchestrator.py": "634cc57635b9ad4d6e52bf4c79370e86e3524b09d622c307ab4587ad7cf73278",
+      "llm_intervention.py": "5eca78d19acbc922e46f1b388ab904810fd3d4e8855d70d38d0d128157b264c4",
+      "mechanism_arbitrator.py": "3828521a58d0adaa1655ee483b663958318c6b9e68c02436b509602819d62a52",
+      "mechanism_registry.py": "595d8b1b04ea6913903245df707439b8b81bf339765c384bfdf3bf304bcfcd19",
+      "memory_science_engine.py": "d9467cc4663364f338d9a239712248eb9c6b281f41b052f648cf25be5d70d52b",
+      "meta_learning_skilltree.py": "3c8ce8991c7ac14db7e74b94a43a6d54fd8da138ff3204017484e7f2f2fa8503",
+      "method_registry.py": "e2906a2d1255451d601076bde1aff4082c29a2e61342ae3f4df8b07c17707516",
+      "ml_risk_model.py": "118d6aec87c6212621d963e4d50d6ac0bca6fa75fd10284ec79ab022e0d36ff2",
+      "ollama_client.py": "706710f59b168bd8ee1aeb8ce438301190008975676945e77f8dd984ab827537",
+      "onboarding_engine.py": "4458df2cd87fc50d247ddde4cb7779a2c137e83648f2032baf5e1004f8b1651e",
+      "onboarding_service.py": "2398cad1a961d3b77860d2eca3a969276bdb9fc557488b8011c28bce6b0b2c05",
+      "optimal_difficulty.py": "1546a3f8c48da2d08abfc4954d5108b24aace70a07df5e9489329349e979935c",
+      "pet_service.py": "c4bf5b7ed4910bbde814e071f9c2bd6949ec8656fec4073e212000a854af151b",
+      "placement_test_engine.py": "a0d6b333ee149770da9bf336f624660a2af6261fc6ceaf7ee344d554595d0d1c",
+      "positive_addiction_engine.py": "f77d5830944b864962dbe9fed3e190383b353b123e60535f479da20d863c2e48",
+      "progression_repository.py": "329a9b7160c30720556ec6dceefdeee12612df9a6a546f12ba9fe92c80d34cea",
+      "research_consent.py": "a19dd35a07e552f937f729d1c6c63ec9ec9e39685b3c99712ec05bca7e110f74",
+      "research_study.py": "dae85459186b51aa5e4b027c0afea9ad01f442a60c074dc68a6568bafadcfd06",
+      "risk_monitor.py": "0a93b2306522db71141855fa3076b8355086e67706ce2690cb92b337da1e88a0",
+      "rl_arbitrator.py": "d88d9590f0ac24f3f12b438b6e933f0fc2a88323507c56581a86e23a0c503cae",
+      "seed_data.py": "3ec38ff0621689869af203b219ea8c18be074199ae8d6f935f77dba33f5ab8c4",
+      "self_report_service.py": "7148e06aa16c2ce63b416d7e372de339dca4b56b1151e65926b650d405714758",
+      "social_addiction_engine.py": "2a6321508b0478946aa9ef63fbf8af72a4434f90ac366b34c79ada2b2291009a",
+      "spaced_repetition.py": "d8022a3570ccea4f888684a8eb2071f3288b3b3be3afc12d91e0d89898ac5fa8",
+      "state_store.py": "01a23fc3847a8caa86003b2514db9460a022b99747a1fded4b8da6a82f339b47",
+      "teacher_ai_assistant.py": "b1bbcff8088c0c36db7c632b3078936dc8f7d992027c51d1a78aa9ddf122f11e",
+      "team_competition_engine.py": "9c5c3183c545e06c3a70b131ec30c4aa8d67b0d2df9bd5e88c3366d468db7c0c",
+      "thompson_sampling.py": "703df1c0a6933d321a22ce1924f8b8ac86dad638738794d3eac25d24884bd4ee",
+      "ux_addiction_engine.py": "3d211448b2c052fcc8ae33e40b8d37200c8aebacad2eb9ac1dafa9e30298d98a"
+    },
+    "sites": [
+      {
+        "path": "deep_addiction_engine.py",
+        "line": 295,
+        "mechanism_id": "LF-M44",
+        "evidence": "literal_construction_site_not_runtime_exposure"
+      },
+      {
+        "path": "learning_orchestrator.py",
+        "line": 974,
+        "mechanism_id": "LF-M52",
+        "evidence": "literal_construction_site_not_runtime_exposure"
+      }
+    ],
+    "unknown_calls": [],
+    "symbols": {
+      "_ml_utils.py": {
+        "dot": 16,
+        "matvec": 23,
+        "transpose": 27,
+        "matmul": 33,
+        "add_bias": 38,
+        "sigmoid": 43,
+        "tanh": 51,
+        "clip": 60,
+        "_inv": 64,
+        "ols": 83,
+        "auc": 99,
+        "auc.rank_count": 109,
+        "accuracy": 118,
+        "mean": 124,
+        "std": 128
+      },
+      "ab_test_framework.py": {
+        "ExperimentPhase": 86,
+        "MetricCategory": 96,
+        "ExperimentMetric": 104,
+        "ExperimentMetric.to_dict": 112,
+        "ExperimentMetric.from_dict": 122,
+        "ExperimentResult": 133,
+        "ExperimentResult.to_dict": 141,
+        "ExperimentResult.from_dict": 151,
+        "Experiment": 162,
+        "Experiment.to_dict": 202,
+        "Experiment.to_json": 229,
+        "Experiment.from_json": 239,
+        "ExperimentStore": 277,
+        "ExperimentStore.save_experiment": 281,
+        "ExperimentStore.load_experiment": 284,
+        "ExperimentStore.list_experiments": 287,
+        "ExperimentStore.delete_experiment": 290,
+        "ExperimentStore.save_assignment": 293,
+        "ExperimentStore.load_assignments": 297,
+        "ExperimentStore.close": 302,
+        "MemoryExperimentStore": 305,
+        "MemoryExperimentStore.__init__": 308,
+        "MemoryExperimentStore.save_experiment": 312,
+        "MemoryExperimentStore.load_experiment": 315,
+        "MemoryExperimentStore.list_experiments": 318,
+        "MemoryExperimentStore.delete_experiment": 321,
+        "MemoryExperimentStore.save_assignment": 325,
+        "MemoryExperimentStore.load_assignments": 332,
+        "MemoryExperimentStore.close": 335,
+        "JSONFileExperimentStore": 339,
+        "JSONFileExperimentStore.__init__": 348,
+        "JSONFileExperimentStore._load": 356,
+        "JSONFileExperimentStore._flush": 372,
+        "JSONFileExperimentStore.save_experiment": 382,
+        "JSONFileExperimentStore.load_experiment": 386,
+        "JSONFileExperimentStore.list_experiments": 389,
+        "JSONFileExperimentStore.delete_experiment": 392,
+        "JSONFileExperimentStore.save_assignment": 397,
+        "JSONFileExperimentStore.load_assignments": 405,
+        "JSONFileExperimentStore.close": 408,
+        "_strip_tz": 475,
+        "_normalize_dt": 484,
+        "_create_engine": 493,
+        "SQLExperimentStore": 508,
+        "SQLExperimentStore.__init__": 521,
+        "SQLExperimentStore._ensure_schema": 526,
+        "SQLExperimentStore._to_row": 536,
+        "SQLExperimentStore._to_experiment": 569,
+        "SQLExperimentStore.save_experiment": 603,
+        "SQLExperimentStore.load_experiment": 630,
+        "SQLExperimentStore.list_experiments": 646,
+        "SQLExperimentStore.delete_experiment": 657,
+        "SQLExperimentStore.save_assignment": 675,
+        "SQLExperimentStore.load_assignments": 720,
+        "SQLExperimentStore.close": 742,
+        "default_experiment_store": 751,
+        "ABTestFramework": 782,
+        "ABTestFramework.__init__": 789,
+        "ABTestFramework.create_experiment": 793,
+        "ABTestFramework.get_experiment": 834,
+        "ABTestFramework.assign_user": 837,
+        "ABTestFramework.get_parameter_value": 871,
+        "ABTestFramework.record_result": 887,
+        "ABTestFramework.get_mechanism_toggles": 909,
+        "ABTestFramework.is_mechanism_enabled": 926,
+        "ABTestFramework.toggles_for_category": 938,
+        "ABTestFramework.set_required_n": 963,
+        "ABTestFramework._check_safety_rules": 975,
+        "ABTestFramework._trigger_safety_stop": 1000,
+        "ABTestFramework.advance_phase": 1008,
+        "ABTestFramework.get_experiment_summary": 1040,
+        "ABTestFramework.list_experiments": 1105,
+        "ABTestFramework._default_metrics": 1109,
+        "ABTestFramework._generate_id": 1123,
+        "ABTestFramework.cohens_d": 1133,
+        "ABTestFramework.design_effect": 1147,
+        "ABTestFramework.required_n_per_group": 1157
+      },
+      "addiction_engine_v3.py": {
+        "LossAversionEngine": 7,
+        "LossAversionEngine.get_streak_shield": 20,
+        "LossAversionEngine.get_sunk_cost_reminder": 36,
+        "FreshStartEngine": 51,
+        "FreshStartEngine.check_fresh_start": 70,
+        "FreshStartEngine.get_weekly_reset": 95,
+        "ZeigarnikEngine": 108,
+        "ZeigarnikEngine.get_incomplete_reminder": 121,
+        "ZeigarnikEngine.get_progress_bar": 135,
+        "PeakEndRuleEngine": 163,
+        "PeakEndRuleEngine.generate_session_end_summary": 176,
+        "SurpriseDelightEngine": 199,
+        "SurpriseDelightEngine.roll_surprise": 219,
+        "SurpriseDelightEngine.check_achievements": 234
+      },
+      "advanced_methods_engine.py": {
+        "PretestingEngine": 111,
+        "PretestingEngine.generate_pre_test": 118,
+        "PretestingEngine.generate_post_pretest_feedback": 129,
+        "SelfExplanationEngine": 139,
+        "SelfExplanationEngine.should_trigger": 154,
+        "SelfExplanationEngine.generate_prompt": 159,
+        "AnalogyBridgeEngine": 174,
+        "AnalogyBridgeEngine.generate_analogy": 209,
+        "GodModeEngine": 230,
+        "GodModeEngine.activate_godmode": 238,
+        "GodModeEngine.check_godmode_available": 263,
+        "StrategyRecommender": 275,
+        "StrategyRecommender.recommend_for_topic": 282
+      },
+      "advanced_methods_v2.py": {
+        "WorkedExamplesEngine": 28,
+        "WorkedExamplesEngine.build_faded_sequence": 32,
+        "KeywordMnemonicEngine": 77,
+        "KeywordMnemonicEngine.build_mnemonic": 81,
+        "ProductiveFailureEngine": 119,
+        "ProductiveFailureEngine.build_session": 123,
+        "SummarizationEngine": 163,
+        "SummarizationEngine.build_prompt": 167,
+        "VariedPracticeEngine": 200,
+        "VariedPracticeEngine.generate_variants": 204
+      },
+      "anti_addiction.py": {
+        "infer_age_band": 26,
+        "is_minor": 42,
+        "variable_ratio_probability": 47,
+        "session_reset_decision": 54,
+        "reward_cooldown_decision": 76,
+        "hook_habit_orchestrator": 103,
+        "to_age_group": 151,
+        "minor_protection_decision": 161
+      },
+      "anti_addiction_compliance.py": {
+        "AgeGroup": 13,
+        "SessionStatus": 21,
+        "MinorProtectionConfig": 30,
+        "UsageQuota": 75,
+        "MinorProtectionEngine": 89,
+        "MinorProtectionEngine.get_age_group": 101,
+        "MinorProtectionEngine.get_daily_limit": 114,
+        "MinorProtectionEngine.get_consecutive_limit": 131,
+        "MinorProtectionEngine.get_rest_duration": 145,
+        "MinorProtectionEngine.check_session": 159,
+        "MinorProtectionEngine.record_rest": 241,
+        "MinorProtectionEngine.record_usage_minute": 248,
+        "MinorProtectionEngine.is_minor": 254,
+        "MinorProtectionEngine._is_night_time": 259,
+        "MinorProtectionEngine._get_rest_activities": 288,
+        "MinorProtectionEngine.generate_parent_report": 298,
+        "MinorProtectionEngine._get_parent_recommendation": 312
+      },
+      "arbitration_ledger.py": {
+        "_connect": 43,
+        "LedgerTraceSink": 49,
+        "LedgerTraceSink.__init__": 55,
+        "LedgerTraceSink.__call__": 58,
+        "run_consistency_checks": 85
+      },
+      "audit.py": {
+        "get_audit_stats": 49,
+        "reset_audit_stats": 75,
+        "_record": 83,
+        "write_audit": 94
+      },
+      "cache.py": {
+        "_now_ts": 32,
+        "_get_redis": 37,
+        "_memory_get": 62,
+        "_memory_set": 72,
+        "get_json": 77,
+        "set_json": 89,
+        "delete": 102,
+        "_ability_key": 116,
+        "cache_ability": 120,
+        "get_ability": 124,
+        "invalidate_ability": 132,
+        "_dashboard_key": 138,
+        "cache_dashboard": 142,
+        "get_dashboard": 146,
+        "invalidate_dashboard": 150,
+        "_hot_key": 156,
+        "cache_hot": 160,
+        "get_hot": 164,
+        "invalidate_user": 173
+      },
+      "causal_effects.py": {
+        "_residuals": 14,
+        "dml_ate": 21,
+        "estimate_mechanism_effect": 47
+      },
+      "class_pet_service.py": {
+        "BehaviorPointEvent": 65,
+        "ClassPetService": 74,
+        "ClassPetService.morphology_stage": 78,
+        "ClassPetService.morphology_label": 83,
+        "ClassPetService.feed_pet_with_points": 88,
+        "ClassPetService.starvation_risk": 121,
+        "ClassPetService.build_garden_view": 132,
+        "ClassPetService.class_weekly_report": 200,
+        "ClassPetService.connection_quality_feedback": 223,
+        "ClassPetService._clamp": 237
+      },
+      "dda.py": {
+        "DDADirection": 16,
+        "PetReaction": 23,
+        "DDAResult": 31,
+        "DDAEngine": 41,
+        "DDAEngine.__init__": 47,
+        "DDAEngine.calculate": 57,
+        "DDAEngine.calculate_with_time": 139
+      },
+      "deep_addiction_engine.py": {
+        "CuriosityEngine": 26,
+        "CuriosityEngine.generate_teaser": 56,
+        "CuriosityEngine.generate_mystery_unlock": 71,
+        "CuriosityEngine.generate_cliffhanger": 88,
+        "CollectionState": 108,
+        "CollectionEngine": 117,
+        "CollectionEngine.check_and_award": 153,
+        "CollectionEngine._check_condition": 187,
+        "CollectionEngine.generate_collection_summary": 209,
+        "FOMOEngine": 239,
+        "FOMOEngine.get_active_challenges": 259,
+        "FOMOEngine.generate_fomo_nudge": 278,
+        "FOMOEngine.generate_peer_progress_nudge": 307,
+        "StreakSanctificationEngine": 323,
+        "StreakSanctificationEngine.get_daily_ritual": 344,
+        "StreakSanctificationEngine._generate_ceremony": 368,
+        "StreakSanctificationEngine.generate_streak_worship_message": 380,
+        "AppointmentState": 396,
+        "AppointmentEngine": 403,
+        "AppointmentEngine.create_appointment": 411,
+        "AppointmentEngine.get_upcoming_appointments": 433,
+        "AppointmentEngine.mark_completed": 438,
+        "AppointmentEngine.get_appointment_nudge": 452,
+        "ScarcityEngine": 476,
+        "ScarcityEngine.check_unlock": 508,
+        "ScarcityEngine.generate_daily_rarity_drop": 538,
+        "SerendipityEngine": 557,
+        "SerendipityEngine.roll_serendipity": 583,
+        "SerendipityEngine._get_celebration": 599
+      },
+      "difficulty_fusion.py": {
+        "_rank_average": 64,
+        "ecdf_logit": 84,
+        "fuse_signals": 111,
+        "logit_to_fsrs": 159,
+        "lambda_closed_form": 210,
+        "estimate_o8_difficulty": 222,
+        "_pearson": 303,
+        "_pearson_vs_fixed": 316,
+        "_spearman": 336,
+        "split_half_reliability": 341,
+        "estimate_optimized_difficulty": 350
+      },
+      "difficulty_m4.py": {
+        "ranks": 49,
+        "_pearson": 67,
+        "spearman": 80,
+        "standardize_columns": 85,
+        "spearman_brown": 100,
+        "unit_reliability_from_half": 106,
+        "coverage_reliability": 114,
+        "_rank_covariance": 122,
+        "_m4_beta_from_ranks": 140,
+        "m4_beta": 159,
+        "_solve": 184,
+        "derived_lambda": 208,
+        "_z_columns": 224,
+        "incremental_columns": 235,
+        "estimate_m4_difficulty": 278
+      },
+      "duolingo_addiction_engine.py": {
+        "XPEventType": 32,
+        "XPState": 45,
+        "XPEngine": 57,
+        "XPEngine.award_xp": 76,
+        "XPEngine.activate_boost": 115,
+        "XPEngine.tick_boost": 134,
+        "XPEngine.get_xp_summary": 142,
+        "XPEngine._event_for_attempt": 155,
+        "XPEngine.build_state_from_attempts": 163,
+        "LeagueTier": 184,
+        "LeagueState": 198,
+        "LeagueEngine": 210,
+        "LeagueEngine.get_league_standings": 232,
+        "LeagueEngine.process_weekly_promotion": 251,
+        "LeagueEngine._get_ranking_message": 290,
+        "DuolingoStreakState": 306,
+        "DuolingoStreakEngine": 318,
+        "DuolingoStreakEngine.check_in": 322,
+        "DuolingoStreakEngine._build_streak_result": 367,
+        "DuolingoStreakEngine.generate_reminder": 409,
+        "FriendQuest": 444,
+        "FriendQuestEngine": 457,
+        "FriendQuestEngine.create_quest": 477,
+        "FriendQuestEngine.contribute_xp": 497,
+        "FriendQuestEngine._get_nudge": 533,
+        "TimeBasedBonusEngine": 546,
+        "TimeBasedBonusEngine.check_time_bonus": 550,
+        "MonthlyChallengeEngine": 589,
+        "MonthlyChallengeEngine.get_current_challenge": 604,
+        "MonthlyChallengeEngine.check_completion": 614,
+        "MonthlyChallengeEngine._days_left_in_month": 636,
+        "DuolingoNotificationEngine": 649,
+        "DuolingoNotificationEngine.generate_notification": 681,
+        "DuolingoNotificationEngine._get_icon": 697,
+        "DailyXPGoalEngine": 711,
+        "DailyXPGoalEngine.set_goal": 723,
+        "DailyXPGoalEngine.check_goal_completion": 734
+      },
+      "experiment_power.py": {
+        "design_effect": 24,
+        "required_n_per_group": 34,
+        "required_n_two_proportion": 48,
+        "PowerPlan": 69,
+        "PowerPlan.to_dict": 83,
+        "plan_experiment": 99
+      },
+      "feature_store.py": {
+        "hour_of": 41,
+        "is_night_hour": 53,
+        "_norm": 58,
+        "FeatureStore": 64,
+        "FeatureStore.__init__": 65,
+        "FeatureStore._now": 81,
+        "FeatureStore.ingest": 84,
+        "FeatureStore._window": 97,
+        "FeatureStore.sequence": 104,
+        "FeatureStore.feature_vector": 107,
+        "FeatureStore._aggregate": 110,
+        "FeatureStore.users": 178,
+        "FeatureStore.clear": 181
+      },
+      "feedback_service.py": {
+        "FeedbackCategory": 20,
+        "FeedbackContext": 32,
+        "FeedbackService": 110,
+        "FeedbackService.generate_task_feedback": 121,
+        "FeedbackService._correct_feedback": 129,
+        "FeedbackService._incorrect_feedback": 157,
+        "FeedbackService.generate_session_feedback": 181,
+        "FeedbackService.generate_rest_reminder": 201,
+        "FeedbackService.generate_relaxation_guide": 210,
+        "FeedbackService.generate_identity_reinforcement": 215,
+        "FeedbackService._get_streak_badge": 234,
+        "FeedbackService._get_learning_method_tip": 249,
+        "FeedbackService._get_encouragement": 291,
+        "FeedbackService.generate_near_miss_feedback": 302,
+        "FeedbackService.generate_dopamine_rhythm": 321
+      },
+      "gamification_service.py": {
+        "RewardType": 28,
+        "ProximalGoals": 98,
+        "StreakState": 120,
+        "TreasureBoxState": 130,
+        "NearMissDetector": 141,
+        "NearMissDetector.is_near_miss": 145,
+        "GamificationService": 198,
+        "GamificationService.get_box_state_for_user": 210,
+        "GamificationService.open_box_for_user": 218,
+        "GamificationService.get_box_status_for_user": 226,
+        "GamificationService.should_open_box": 239,
+        "GamificationService.open_box": 247,
+        "GamificationService.get_goal_progress": 300,
+        "GamificationService.record_question_completion": 317,
+        "GamificationService.get_endowed_progress": 356,
+        "GamificationService.update_streak": 385,
+        "GamificationService.get_loss_aversion_nudge": 429,
+        "GamificationService._get_proximal_badge": 438,
+        "GamificationService._weighted_choice": 455,
+        "DopamineRhythm": 470,
+        "DopamineRhythm.for_correct": 477,
+        "DopamineRhythm.for_incorrect": 486,
+        "SessionMemory": 508,
+        "PeakEndEngine": 517,
+        "PeakEndEngine.start_session": 524,
+        "PeakEndEngine.record_answer": 530,
+        "PeakEndEngine.end_session": 552,
+        "UnfinishedTask": 577,
+        "UnfinishedTask.should_remind": 586,
+        "ZeigarnikEngine": 606,
+        "ZeigarnikEngine.save_unfinished": 613,
+        "ZeigarnikEngine.get_reminder": 623,
+        "ZeigarnikEngine.clear_unfinished": 639,
+        "CustomizationState": 648,
+        "IKEAEngine": 656,
+        "IKEAEngine.customize_pet_name": 658,
+        "IKEAEngine.set_personal_goal": 665,
+        "IKEAEngine.get_ownership_summary": 673,
+        "SocialProofEngine": 692,
+        "SocialProofEngine.get_class_mastery_nudge": 694,
+        "SocialProofEngine.get_active_learners_nudge": 702,
+        "SocialProofEngine.get_help_prompt": 708,
+        "AutonomyEngine": 716,
+        "AutonomyEngine.offer_choice": 724,
+        "AutonomyEngine.provide_rationale": 749
+      },
+      "habit_addiction_engine.py": {
+        "HabitStackingEngine": 29,
+        "HabitStackingEngine.suggest_stack": 44,
+        "HabitStackingEngine.build_routine_chain": 61,
+        "TemptationBundlingEngine": 82,
+        "TemptationBundlingEngine.suggest_bundle": 94,
+        "ImplementationIntentionsEngine": 111,
+        "ImplementationIntentionsEngine.generate_if_then": 130,
+        "ImplementationIntentionsEngine.generate_setback_recovery_plan": 146,
+        "AutonomySupportEngine": 161,
+        "AutonomySupportEngine.provide_choice": 165,
+        "AutonomySupportEngine.explain_rationale": 177,
+        "AutonomySupportEngine.acknowledge_feelings": 188,
+        "SelfRegulationGoal": 204,
+        "SelfRegulationEngine": 215,
+        "SelfRegulationEngine.set_goal": 224,
+        "SelfRegulationEngine.monitor_progress": 252,
+        "SelfRegulationEngine.reflect_on_session": 272,
+        "HabitAddictionOrchestrator": 297,
+        "HabitAddictionOrchestrator.build_personal_habit_plan": 301
+      },
+      "instrument_catalog.py": {
+        "InstrumentItemSpec": 57,
+        "InstrumentSpec": 68,
+        "InstrumentSpec.item_count": 88,
+        "InstrumentSpec.max_total": 92,
+        "InstrumentSpec.to_dict": 95,
+        "all_instruments": 206,
+        "get_instrument": 211,
+        "instruments_for_dimension": 216,
+        "scoring_method": 221,
+        "score": 229,
+        "item_type_out_of_range": 285,
+        "catalog_fingerprint": 290
+      },
+      "intervention_reward.py": {
+        "InterventionSignals": 52,
+        "compute_reward": 68,
+        "describe_reward_weights": 109
+      },
+      "knowledge_tracing.py": {
+        "SkillState": 25,
+        "KnowledgeState": 40,
+        "BKTEngine": 47,
+        "BKTEngine.__init__": 62,
+        "BKTEngine.get_or_create_skill": 65,
+        "BKTEngine.update": 78,
+        "BKTEngine.batch_update": 108,
+        "BKTEngine.recommend_difficulty": 116,
+        "BKTEngine.get_skill_report": 145,
+        "BKTEngine._mastery_level": 174,
+        "BKTEngine.adapt_parameters": 187
+      },
+      "learning_addiction_index.py": {
+        "LAIRiskTier": 22,
+        "LAIDimensionScore": 31,
+        "LAIAssessment": 44,
+        "LAIAssessment.to_dict": 59,
+        "LearningAddictionIndex": 84,
+        "LearningAddictionIndex.assess": 114,
+        "LearningAddictionIndex._score_time_dimension": 330,
+        "LearningAddictionIndex._score_motivation_dimension": 364,
+        "LearningAddictionIndex._score_control_dimension": 379,
+        "LearningAddictionIndex._score_cognition_dimension": 393,
+        "LearningAddictionIndex._score_function_dimension": 418,
+        "LearningAddictionIndex._generate_recommendations": 429
+      },
+      "learning_event_builder.py": {
+        "build_submission_events": 13
+      },
+      "learning_methods_engine.py": {
+        "ground_topic": 225,
+        "LearningMethodEngine": 246,
+        "LearningMethodEngine._ground": 256,
+        "LearningMethodEngine.render_tip": 270,
+        "LearningMethodEngine.get_loading_tip": 298,
+        "LearningMethodEngine.get_post_question_tip": 311,
+        "LearningMethodEngine.get_reflection_trigger": 339,
+        "LearningMethodEngine.get_daily_method_challenge": 358,
+        "MemoryPalace": 399,
+        "MemoryPalaceEngine": 408,
+        "MemoryPalaceEngine.create_palace": 426,
+        "MemoryPalaceEngine.place_knowledge": 438,
+        "MemoryPalaceEngine.recall_walkthrough": 467,
+        "MemoryPalaceEngine._generate_walkthrough": 486,
+        "MetacognitionDashboard": 497,
+        "MetacognitionDashboard.generate_learning_profile": 505,
+        "MetacognitionDashboard._detect_best_method": 521,
+        "MetacognitionDashboard._generate_insight": 528,
+        "MethodQuizEngine": 543,
+        "MethodQuizEngine.generate_quiz": 568,
+        "MethodQuizEngine.check_answer": 581
+      },
+      "learning_methods_engine_v3.py": {
+        "MindMappingEngine": 6,
+        "MindMappingEngine.generate_knowledge_map": 19,
+        "MindMappingEngine.generate_concept_bridge": 39,
+        "DualCodingEngine": 50,
+        "DualCodingEngine.get_visual_prompt": 70,
+        "DualCodingEngine.generate_visual_card": 81,
+        "InterleavingEngine": 91,
+        "InterleavingEngine.generate_interleaved_plan": 103,
+        "InterleavingEngine.get_adaptive_interleave": 119,
+        "ElaborationEngine": 143,
+        "ElaborationEngine.get_elaboration_prompt": 155,
+        "ElaborationEngine.generate_analogy": 174,
+        "GenerationEffectEngine": 192,
+        "GenerationEffectEngine.generate_fill_blank": 204,
+        "GenerationEffectEngine.free_recall_prompt": 220,
+        "LearningMethodOrchestratorV3": 230,
+        "LearningMethodOrchestratorV3.recommend_for_mastery_level": 234,
+        "LearningMethodOrchestratorV3.get_loading_tip": 264
+      },
+      "learning_orchestrator.py": {
+        "_build_fomo_arbitrator": 187,
+        "_EvalContext": 220,
+        "_mech_output": 236,
+        "_evaluate_secondary_mechanisms": 249,
+        "_skilltree_repo_format": 441,
+        "_skilltree_repo_format._pack": 445,
+        "LearningOrchestrator": 478,
+        "LearningOrchestrator._schedule_review": 492,
+        "LearningOrchestrator._select_approved_task": 507,
+        "LearningOrchestrator.build_next_task": 516,
+        "LearningOrchestrator.process_submission": 686,
+        "LearningOrchestrator._load_ability": 1176,
+        "LearningOrchestrator._save_ability": 1194,
+        "LearningOrchestrator._compute_fused_difficulty": 1207,
+        "LearningOrchestrator._build_risk_snapshot": 1215,
+        "LearningOrchestrator._build_bkt_state": 1286,
+        "LearningOrchestrator._ensure_skill_profile": 1301,
+        "LearningOrchestrator._ensure_pet": 1326,
+        "LearningOrchestrator._compare_answer": 1332,
+        "LearningOrchestrator._compare_answer.normalize": 1338,
+        "LearningOrchestrator._task_to_dict": 1352
+      },
+      "llm_intervention.py": {
+        "generate_intervention": 29,
+        "personalize_intervention_message": 52
+      },
+      "mechanism_arbitrator.py": {
+        "BudgetPolicy": 49,
+        "ArbitrationTrace": 61,
+        "MemoryBudgetStore": 84,
+        "MemoryBudgetStore.__init__": 91,
+        "MemoryBudgetStore.incr": 95,
+        "MemoryBudgetStore.record_ignore": 103,
+        "MemoryBudgetStore.ignored_count": 107,
+        "MechanismArbitrator": 111,
+        "MechanismArbitrator.__init__": 135,
+        "MechanismArbitrator.arbitrate": 151,
+        "MechanismArbitrator._risk_tier": 284,
+        "MechanismArbitrator.report_lai_feedback": 298,
+        "MechanismArbitrator.report_reward": 332,
+        "MechanismArbitrator._resolve_conflicts": 367,
+        "MechanismArbitrator._apply_budget": 400,
+        "lai_risk_from_overall": 434
+      },
+      "mechanism_registry.py": {
+        "MechanismDisabledError": 96,
+        "EffectType": 105,
+        "Effect": 117,
+        "MechanismContext": 137,
+        "registry_fingerprint": 145,
+        "ABTestToggleProvider": 157,
+        "ABTestToggleProvider.__init__": 165,
+        "ABTestToggleProvider.get_toggles": 169,
+        "ABTestToggleProvider.is_enabled": 172,
+        "ABTestToggleProvider.framework": 181,
+        "MechanismSpec": 191,
+        "MechanismSpec.as_row": 206,
+        "_validate_spec": 233,
+        "_make_spec": 257,
+        "all_mechanisms": 530,
+        "get": 535,
+        "get_by_id": 543,
+        "by_stage": 551,
+        "by_category": 558,
+        "by_disposition": 565,
+        "count": 572,
+        "keys": 577,
+        "ids": 582,
+        "catalog_rows": 587,
+        "is_enabled": 597,
+        "set_enabled": 603,
+        "disabled_keys": 612,
+        "enabled_mechanisms": 617
+      },
+      "memory_science_engine.py": {
+        "FSRSMemoryState": 28,
+        "FSRSSpacedRepetitionEngine": 37,
+        "FSRSSpacedRepetitionEngine.retrievability": 53,
+        "FSRSSpacedRepetitionEngine.recommended_interval": 60,
+        "FSRSSpacedRepetitionEngine.update_after_review": 74,
+        "FSRSSpacedRepetitionEngine.schedule_next": 116,
+        "MemoryConsolidationEngine": 135,
+        "MemoryConsolidationEngine.get_sleep_recommendation": 142,
+        "MemoryConsolidationEngine.get_exercise_recommendation": 160,
+        "MemoryConsolidationEngine.consolidation_plan": 171,
+        "MnemonicEngine": 188,
+        "MnemonicEngine.acronym": 196,
+        "MnemonicEngine.keyword_method": 208,
+        "MnemonicEngine.peg_system": 220,
+        "ConcreteExamplesEngine": 242,
+        "ConcreteExamplesEngine.generate_example": 275,
+        "DesirableDifficultiesOrchestrator": 303,
+        "DesirableDifficultiesOrchestrator.recommend_methods": 310,
+        "DesirableDifficultiesOrchestrator.forgetting_curve_alert": 360,
+        "MemoryScienceOrchestrator": 381,
+        "MemoryScienceOrchestrator.get_review_plan": 385,
+        "MemoryScienceOrchestrator.generate_memory_aid": 421
+      },
+      "meta_learning_skilltree.py": {
+        "SkillCategory": 31,
+        "LearningSkill": 40,
+        "SkillTreeEngine": 159,
+        "SkillTreeEngine.init_player_skills": 173,
+        "SkillTreeEngine.use_skill": 208,
+        "SkillTreeEngine._check_unlocks": 261,
+        "SkillTreeEngine.get_skill_tree": 273,
+        "SkillTreeEngine._calculate_meta_level": 309,
+        "SkillTreeEngine._get_meta_title": 314,
+        "SkillTreeEngine._get_next_bonus": 326,
+        "SkillTreeEngine._calculate_combo": 333,
+        "MethodQuestEngine": 373,
+        "MethodQuestEngine._stable_user_seed": 394,
+        "MethodQuestEngine.generate_daily_quests": 399,
+        "MethodQuestEngine.complete_quest": 416,
+        "ProficiencyEngine": 437,
+        "ProficiencyEngine.get_proficiency_badge": 450,
+        "ProficiencyEngine.get_global_proficiency": 458,
+        "ProficiencyEngine._most_used": 479
+      },
+      "method_registry.py": {
+        "MethodDisabledError": 101,
+        "MethodVariant": 111,
+        "MethodSpec": 124,
+        "MethodSpec.variant_refs": 140,
+        "MethodSpec.as_row": 144,
+        "_validate_spec": 165,
+        "_make_spec": 202,
+        "resolve_impl_ref": 584,
+        "spec_tip": 624,
+        "all_methods": 634,
+        "get": 639,
+        "get_by_id": 647,
+        "by_category": 655,
+        "by_delivery": 662,
+        "count": 669,
+        "keys": 674,
+        "ids": 683,
+        "catalog_rows": 688,
+        "is_enabled": 698,
+        "set_enabled": 703,
+        "disabled_keys": 712,
+        "enabled_methods": 717,
+        "render": 727
+      },
+      "ml_risk_model.py": {
+        "TemporalRiskModel": 25,
+        "TemporalRiskModel.__init__": 26,
+        "TemporalRiskModel._hidden_act": 42,
+        "TemporalRiskModel._forward": 45,
+        "TemporalRiskModel.online_update": 50,
+        "TemporalRiskModel.predict": 59,
+        "TemporalRiskModel.risk_tier": 65,
+        "TemporalRiskModel.train_batch": 75,
+        "TemporalRiskModel.evaluate": 105,
+        "TemporalRiskModel.save": 117,
+        "TemporalRiskModel.load": 124
+      },
+      "ollama_client.py": {
+        "OllamaError": 16,
+        "OllamaClient": 20,
+        "OllamaClient.__init__": 21,
+        "OllamaClient.generate": 26,
+        "OllamaClient.available": 41,
+        "MockOllama": 50,
+        "MockOllama.generate": 53,
+        "MockOllama.available": 56,
+        "get_ollama": 63
+      },
+      "onboarding_engine.py": {
+        "OnboardingStep": 24,
+        "OnboardingEngine": 341,
+        "OnboardingEngine.get_onboarding": 358,
+        "OnboardingEngine.get_current_step": 387,
+        "OnboardingEngine.complete_step": 415,
+        "OnboardingEngine.skip_onboarding": 428,
+        "OnboardingEngine._estimate_time": 437,
+        "ContextualHelpEngine": 453,
+        "ContextualHelpEngine.get_help_for_trigger": 487,
+        "FeatureDiscoveryEngine": 510,
+        "FeatureDiscoveryEngine.check_new_features": 540
+      },
+      "onboarding_service.py": {
+        "OnboardingService": 18,
+        "OnboardingService.ensure_default_pet": 36,
+        "OnboardingService.ensure_default_skill_profile": 61,
+        "OnboardingService.ensure_default_consents": 83,
+        "OnboardingService.bind_demo_parent": 115,
+        "OnboardingService.onboard": 147
+      },
+      "optimal_difficulty.py": {
+        "DifficultyZone": 25,
+        "StudentAbility": 34,
+        "StudentAbility.confidence": 42,
+        "TaskDifficulty": 48,
+        "TaskDifficulty.elo_difficulty": 55,
+        "DifficultyResult": 61,
+        "EightyFivePercentRule": 76,
+        "EightyFivePercentRule.learning_rate_factor": 100,
+        "EightyFivePercentRule.optimal_difficulty_signal": 124,
+        "EightyFivePercentRule._erfinv": 140,
+        "FSRSStyleDifficulty": 165,
+        "FSRSStyleDifficulty.__init__": 187,
+        "FSRSStyleDifficulty.initial_difficulty": 196,
+        "FSRSStyleDifficulty.update_difficulty": 210,
+        "EloRating": 229,
+        "EloRating.__init__": 244,
+        "EloRating.expected_score": 252,
+        "EloRating.k_factor": 257,
+        "EloRating.update": 261,
+        "FlowChannel": 289,
+        "FlowChannel.success_to_elo_delta": 311,
+        "FlowChannel.optimal_difficulty_elo": 323,
+        "FlowChannel.classify_zone": 329,
+        "FlowChannel.get_zone_boundaries_elo": 341,
+        "OptimalDifficultyEngine": 356,
+        "OptimalDifficultyEngine.__init__": 380,
+        "OptimalDifficultyEngine.compute_optimal_difficulty": 401,
+        "OptimalDifficultyEngine.update_student_ability": 479,
+        "OptimalDifficultyEngine.update_task_difficulty": 504,
+        "OptimalDifficultyEngine._slowness": 528,
+        "OptimalDifficultyEngine._evidence_score": 537,
+        "OptimalDifficultyEngine.rank_tasks": 551,
+        "OptimalDifficultyEngine._elo_to_fsrs_difficulty": 572,
+        "OptimalDifficultyEngine._fsrs_to_elo_difficulty": 576,
+        "OptimalDifficultyEngine._generate_explanation": 580
+      },
+      "pet_service.py": {
+        "PetUpdateEvent": 16,
+        "PetService": 26,
+        "PetService.calculate_correct_answer": 47,
+        "PetService.calculate_wrong_answer": 85,
+        "PetService.calculate_collaboration": 116,
+        "PetService.apply_update": 144,
+        "PetService.get_weekly_summary": 160,
+        "PetService._clamp": 177
+      },
+      "placement_test_engine.py": {
+        "DifficultyLevel": 27,
+        "PlacementState": 36,
+        "AdaptivePlacementEngine": 63,
+        "AdaptivePlacementEngine.start_test": 91,
+        "AdaptivePlacementEngine._get_start_message": 108,
+        "AdaptivePlacementEngine.get_next_question": 117,
+        "AdaptivePlacementEngine.submit_answer": 146,
+        "AdaptivePlacementEngine._check_convergence": 178,
+        "AdaptivePlacementEngine.generate_result": 189,
+        "AdaptivePlacementEngine._select_topic": 236,
+        "AdaptivePlacementEngine._difficulty_name": 253,
+        "AdaptivePlacementEngine._get_question_message": 261,
+        "AdaptivePlacementEngine._get_answer_encouragement": 268,
+        "AdaptivePlacementEngine._get_level_description": 277,
+        "AdaptivePlacementEngine._get_growth_potential": 296,
+        "AdaptivePlacementEngine._get_result_message": 304,
+        "AdaptiveQuestionSelector": 316,
+        "AdaptiveQuestionSelector.select_initial_questions": 323,
+        "PlacementTestGuide": 354,
+        "PlacementTestGuide.get_placement_guide_step": 361
+      },
+      "positive_addiction_engine.py": {
+        "TriggerType": 27,
+        "RewardVariability": 36,
+        "HookState": 44,
+        "HookEngine": 67,
+        "HookEngine.trigger": 71,
+        "HookEngine.action": 118,
+        "HookEngine.reward": 141,
+        "HookEngine.investment": 213,
+        "HabitState": 251,
+        "HabitLoopEngine": 262,
+        "HabitLoopEngine.set_habit_cue": 269,
+        "HabitLoopEngine.record_session": 292,
+        "HabitLoopEngine.get_cue_prompt": 321,
+        "IdentityEngine": 347,
+        "IdentityEngine.assess_identity": 390,
+        "CommitmentState": 421,
+        "CommitmentEscalator": 431,
+        "CommitmentEscalator.offer_next_commitment": 453,
+        "CommitmentEscalator.accept_commitment": 470,
+        "CommitmentEscalator.celebrate_fulfillment": 489,
+        "SocialContagionEngine": 505,
+        "SocialContagionEngine.get_social_proof_moment": 514,
+        "SocialContagionEngine.get_friendly_competition_nudge": 537,
+        "SocialContagionEngine.get_ripple_effect_message": 571,
+        "InstantGratificationEngine": 587,
+        "InstantGratificationEngine.generate_instant_feedback": 597,
+        "ProgressVisualizationEngine": 648,
+        "ProgressVisualizationEngine.generate_weekly_growth_report": 656,
+        "ProgressVisualizationEngine.generate_knowledge_map": 690
+      },
+      "progression_repository.py": {
+        "_start_of_day": 30,
+        "_start_of_week": 34,
+        "load_xp_state": 40,
+        "to_xp_state": 97,
+        "save_xp_state": 111,
+        "load_skill_tree": 128,
+        "save_skill_tree": 143,
+        "record_learning_event": 166,
+        "load_recent_events": 224
+      },
+      "research_consent.py": {
+        "ResearchConsentStatus": 64,
+        "judge_research_consent": 79,
+        "resolve_research_consent": 144
+      },
+      "research_study.py": {
+        "utc": 16,
+        "now": 20,
+        "expected_success": 24,
+        "allocated_targets": 29,
+        "participant_for": 45,
+        "allocation_for": 60,
+        "owned_session": 70,
+        "session_progress": 83
+      },
+      "risk_monitor.py": {
+        "RiskLevel": 13,
+        "ZoneLevel": 20,
+        "UsageSnapshot": 27,
+        "RiskAssessment": 46,
+        "RiskMonitor": 58,
+        "RiskMonitor.assess": 75,
+        "RiskMonitor.check_consecutive_usage": 144,
+        "RiskMonitor.check_repeated_skill": 152,
+        "RiskMonitor.check_consecutive_failure": 162,
+        "RiskMonitor.is_night_time": 168
+      },
+      "rl_arbitrator.py": {
+        "_ctx_bucket": 33,
+        "BanditPolicy": 37,
+        "BanditPolicy.__init__": 38,
+        "BanditPolicy._ensure": 45,
+        "BanditPolicy.choose": 51,
+        "BanditPolicy.update": 60,
+        "BanditPolicy.trained": 66,
+        "BanditPolicy.ready": 73,
+        "BanditPolicy.save": 85,
+        "BanditPolicy.load": 91,
+        "RLArbitrator": 99,
+        "RLArbitrator.__init__": 102,
+        "RLArbitrator.select_mechanism": 106,
+        "RLArbitrator.observe": 121,
+        "RLArbitrator.trained": 124,
+        "RLArbitrator.ready": 127
+      },
+      "seed_data.py": {
+        "ensure_sample_tasks": 49,
+        "ensure_feedback_scripts": 67
+      },
+      "self_report_service.py": {
+        "_self_report_inputs": 71,
+        "latest_self_report_inputs": 76,
+        "_dimension_measured": 121,
+        "measured_dimensions": 130,
+        "coverage_report": 141,
+        "lai_inputs_from_self_report": 201
+      },
+      "social_addiction_engine.py": {
+        "BusinessCard": 23,
+        "BusinessCardEngine": 55,
+        "BusinessCardEngine.create_card": 80,
+        "BusinessCardEngine.update_from_stats": 86,
+        "BusinessCardEngine.to_display_json": 119,
+        "SocialProfile": 152,
+        "SocialAddictionEngine": 166,
+        "SocialAddictionEngine.cheer_peer": 176,
+        "SocialAddictionEngine.thank_peer": 207,
+        "SocialAddictionEngine.calculate_social_score": 216,
+        "SocialAddictionEngine.get_peer_suggestions": 231,
+        "ParentMessage": 274,
+        "ParentPortalEngine": 288,
+        "ParentPortalEngine.generate_weekly_digest": 295,
+        "ParentPortalEngine.generate_teacher_message_template": 310,
+        "ParentPortalEngine._build_summary": 338,
+        "ParentPortalEngine._build_highlights": 356,
+        "ParentPortalEngine._build_growth": 371,
+        "ParentPortalEngine._build_addiction_report": 381,
+        "ParentPortalEngine._build_parent_actions": 391,
+        "ParentPortalEngine._build_next_week": 401,
+        "GiftEconomyEngine": 411,
+        "GiftEconomyEngine.can_send_gift": 428,
+        "GiftEconomyEngine.send_gift": 452
+      },
+      "spaced_repetition.py": {
+        "SpacedRepetitionService": 12,
+        "SpacedRepetitionService.calculate_next_review": 21,
+        "SpacedRepetitionService.get_due_reviews": 67,
+        "SpacedRepetitionService.estimate_mastery": 80
+      },
+      "state_store.py": {
+        "StateStore": 35,
+        "StateStore.get": 39,
+        "StateStore.set": 44,
+        "StateStore.delete": 49,
+        "StateStore.keys": 54,
+        "StateStore.close": 59,
+        "StateStore.mutate": 74,
+        "MemoryStateStore": 98,
+        "MemoryStateStore.__init__": 101,
+        "MemoryStateStore.get": 104,
+        "MemoryStateStore.set": 107,
+        "MemoryStateStore.delete": 110,
+        "MemoryStateStore.keys": 113,
+        "MemoryStateStore.close": 116,
+        "JSONFileStateStore": 120,
+        "JSONFileStateStore.__init__": 131,
+        "JSONFileStateStore._load": 138,
+        "JSONFileStateStore._flush": 147,
+        "JSONFileStateStore.get": 153,
+        "JSONFileStateStore.set": 156,
+        "JSONFileStateStore.delete": 160,
+        "JSONFileStateStore.keys": 164,
+        "JSONFileStateStore.close": 167,
+        "DataclassJSONStateStore": 171,
+        "DataclassJSONStateStore.__init__": 202,
+        "DataclassJSONStateStore._to_jsonable": 207,
+        "DataclassJSONStateStore._from_jsonable": 238,
+        "DataclassJSONStateStore.set": 310,
+        "DataclassJSONStateStore.get": 329,
+        "_resolve_hints": 336,
+        "_coerce_to_hint": 351,
+        "_safe_state_name": 444,
+        "_state_dir": 457,
+        "default_state_store": 471
+      },
+      "teacher_ai_assistant.py": {
+        "StudentAnalysisReport": 19,
+        "ClassAnalysisReport": 57,
+        "max_risk": 83,
+        "_count_consecutive_fails": 88,
+        "TeacherAIAssistant": 99,
+        "TeacherAIAssistant.analyze_student": 108,
+        "TeacherAIAssistant.analyze_classroom": 172,
+        "TeacherAIAssistant.suggest_difficulty_adjustment": 223,
+        "TeacherAIAssistant.batch_adjust_difficulty": 265,
+        "TeacherAIAssistant._count_consecutive_fails": 281,
+        "TeacherAIAssistant._detect_trend": 286,
+        "TeacherAIAssistant._assess_risk": 301,
+        "TeacherAIAssistant._calculate_engagement": 333,
+        "TeacherAIAssistant._assess_addiction_stage": 346,
+        "TeacherAIAssistant._generate_recommendation": 355,
+        "TeacherAIAssistant._generate_class_suggestions": 380,
+        "TeacherAIAssistant._generate_group_suggestions": 402
+      },
+      "team_competition_engine.py": {
+        "RankTier": 31,
+        "RankDivision": 44,
+        "SubjectRank": 52,
+        "TeamMember": 69,
+        "Team": 80,
+        "SoloRankEngine": 104,
+        "SoloRankEngine.record_game": 117,
+        "SoloRankEngine._start_promotion_series": 159,
+        "SoloRankEngine._handle_promotion_game": 173,
+        "SoloRankEngine._promote": 196,
+        "SoloRankEngine._fail_promotion": 230,
+        "SoloRankEngine._demote": 242,
+        "SoloRankEngine.get_rank_display": 263,
+        "TeamManagementEngine": 289,
+        "TeamManagementEngine.create_team": 302,
+        "TeamManagementEngine.join_team": 317,
+        "TeamManagementEngine.leave_team": 337,
+        "TeamManagementEngine.get_team_info": 359,
+        "TeamManagementEngine.list_teams": 381,
+        "TeamLeagueEngine": 400,
+        "TeamLeagueEngine.record_team_contribution": 408,
+        "TeamLeagueEngine.get_subject_leaderboard": 432,
+        "TeamLeagueEngine.get_global_leaderboard": 449,
+        "TeamLeagueEngine.weekly_settlement": 463,
+        "MVPEngine": 502,
+        "MVPEngine.calculate_mvp": 506,
+        "MVPEngine.get_mvp_badge": 536,
+        "TeamMatch": 556,
+        "TeamMatchEngine": 571,
+        "TeamMatchEngine.create_match": 580,
+        "TeamMatchEngine.contribute_to_match": 604,
+        "TeamMatchEngine.get_match_status": 639,
+        "SeasonEngine": 673,
+        "SeasonEngine.get_season_info": 694,
+        "SeasonEngine.get_season_reward": 708,
+        "SeasonEngine.end_season": 713
+      },
+      "thompson_sampling.py": {
+        "_gamma_sample": 39,
+        "beta_sample": 66,
+        "thompson_sample": 80,
+        "update_posterior": 109
+      },
+      "ux_addiction_engine.py": {
+        "MicroInteractionEngine": 22,
+        "MicroInteractionEngine.get_interaction_spec": 62,
+        "MicroInteractionEngine.generate_loading_anticipation": 86,
+        "ProgressiveDisclosureEngine": 117,
+        "ProgressiveDisclosureEngine.get_disclosure_state": 137,
+        "ProgressiveDisclosureEngine.generate_reveal_moment": 156,
+        "ColorPsychologyEngine": 208,
+        "ColorPsychologyEngine.get_theme_for_context": 256,
+        "ColorPsychologyEngine.generate_gradient_pair": 261,
+        "ColorPsychologyEngine.get_emotional_palette": 273,
+        "SpatialAnchoringEngine": 288,
+        "SpatialAnchoringEngine.get_layout_spec": 318,
+        "SpatialAnchoringEngine.get_gesture_spec": 328,
+        "HapticRhythmEngine": 343,
+        "HapticRhythmEngine.get_haptic_for_event": 391,
+        "HapticRhythmEngine.get_idle_haptic": 398,
+        "EmptyStateEngine": 410,
+        "EmptyStateEngine.get_empty_state": 418,
+        "EmptyStateEngine.get_almost_there_state": 450,
+        "SonicBrandingEngine": 480,
+        "SonicBrandingEngine.get_sound_for_event": 501,
+        "SonicBrandingEngine.get_silent_mode_alternative": 508,
+        "TypographyKineticEngine": 522,
+        "TypographyKineticEngine.get_animated_text_spec": 530,
+        "TypographyKineticEngine.get_feedback_text_animation": 562,
+        "AddictionUxOrchestrator": 576,
+        "AddictionUxOrchestrator.generate_answer_ux_spec": 584,
+        "AddictionUxOrchestrator.generate_session_complete_ux_spec": 613,
+        "AddictionUxOrchestrator._check_almost_there": 630,
+        "AddictionUxOrchestrator._inject_serendipity": 637,
+        "AddictionUxOrchestrator.generate_idle_ux_spec": 642
+      }
+    },
+    "parse_errors": []
+  },
+  "limits": [
+    "not a reachability or semantic verifier",
+    "no runtime exposure or learning-effect inference",
+    "line-only references remain unknown",
+    "factories, star imports and dynamic imports are not resolved"
+  ],
+  "case": "current_working_services_tree",
+  "registry_summary": {
+    "count": 54,
+    "maturity": {
+      "complete": 9,
+      "partial": 37,
+      "placeholder": 8
+    }
+  },
+  "finding_counts": {
+    "MISSING_FIELD": 378,
+    "LINE_REFERENCE_UNVERIFIED": 40,
+    "UNRESOLVED_REFERENCE": 3
+  },
+  "adapter_note": "Seven intervention contract fields absent from literal registry; runtime Effect fields and separate ledgers do not establish per-declaration contract coverage."
+}

@@ -35,7 +35,7 @@ from typing import Dict, List, Tuple
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "LearnFlow_研究总档.md"))
+SCHEME_DOC = os.path.normpath(os.path.join(HERE, "..", "..", "docs", "研究计划与报告", "研究计划_中文版.md"))
 TEMPLATE_CSV = os.path.join(HERE, "m1_criteria_template.csv")
 
 
@@ -316,7 +316,7 @@ def _validate_external_results(path: str) -> List[str]:
             problems.append(f"外部结果缺块 {block}")
             continue
         blk = data[block] or {}
-        for field in ("spearman_fusion", "spearman_success"):
+        for field in (("spearman_fusion_vs_bj", "spearman_successrate_vs_bj") if block == "a1" else ("spearman_fusion", "spearman_success")):
             if field not in blk:
                 problems.append(f"外部结果 {block} 缺字段 {field}")
     return problems
