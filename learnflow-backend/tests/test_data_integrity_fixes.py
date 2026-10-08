@@ -403,3 +403,28 @@ async def test_daily_limit_requires_parent_role(harness):
     _set_user(User(id="STRANGER", email="st@lf.com", hashed_password="x", name="路人", role=UserRole.STUDENT))
     r = await ac.get("/api/v1/parent/child/CH/daily-limit")
     assert r.status_code == 403, r.text
+
+
+def test_demo_parent_binding_requires_explicit_local_demo(monkeypatch):
+    from app.api.parent import _is_demo_child
+    from app.core.config import settings
+    monkeypatch.setattr(settings,'DEMO_DATA_ENABLED',False)
+    assert not _is_demo_child('parent@learnflow.com','student@learnflow.com')
+    monkeypatch.setattr(settings,'DEMO_DATA_ENABLED',True)
+    monkeypatch.setattr(settings,'ENVIRONMENT','production')
+    assert not _is_demo_child('parent@learnflow.com','student@learnflow.com')
+    monkeypatch.setattr(settings,'ENVIRONMENT','development')
+    assert _is_demo_child('parent@learnflow.com','student@learnflow.com')
+    assert not _is_demo_child('parent_student@evil.test','student@learnflow.com')
+
+
+async def test_parent_children_only_current_active_student_bindings(harness):
+    ac, sm = harness
+    await _seed_user(sm,id='P',email='p@example.test',hashed_password='x',name='P',role=UserRole.PARENT)
+    await _seed_user(sm,id='child',email='child@example.test',hashed_password='x',name='child',role=UserRole.STUDENT,parent_id='P')
+    await _seed_user(sm,id='inactive',email='inactive@example.test',hashed_password='x',name='inactive',role=UserRole.STUDENT,parent_id='P',is_active=False)
+    await _seed_user(sm,id='wrong-role',email='t@example.test',hashed_password='x',name='T',role=UserRole.TEACHER,parent_id='P')
+    await _seed_user(sm,id='unbound',email='u@example.test',hashed_password='x',name='U',role=UserRole.STUDENT)
+    _set_user(User(id='P',email='p@example.test',hashed_password='x',name='P',role=UserRole.PARENT))
+    r=await ac.get('/api/v1/parent/children');assert r.status_code==200,r.text
+    assert [child['id'] for child in r.json()['children']]==['child']

@@ -10,7 +10,7 @@ from enum import Enum
 from typing import List
 
 from sqlalchemy import (
-    Column, String, DateTime, ForeignKey, JSON, UniqueConstraint,
+    Column, String, Integer, DateTime, ForeignKey, JSON, UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
 
@@ -109,3 +109,38 @@ class Assignment(Base):
     __table_args__ = (
         UniqueConstraint("class_id", "node_id", name="uq_class_node"),
     )
+
+
+class AssignmentResponse(Base):
+    """First server-graded answer explicitly associated with an assignment."""
+    __tablename__ = 'assignment_responses'
+    id = Column(String(36), primary_key=True, default=_new_id)
+    assignment_id = Column(String(36), ForeignKey('assignments.id'), nullable=False, index=True)
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    task_id = Column(String(36), ForeignKey('tasks.id'), nullable=False)
+    attempt_id = Column(String(36), ForeignKey('attempts.id'), nullable=True, unique=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    __table_args__ = (UniqueConstraint('assignment_id','user_id','task_id',name='uq_assignment_user_task'),)
+
+
+class AssignmentVersion(Base):
+    """Immutable published task snapshots; legacy assignments may have none."""
+    __tablename__ = 'assignment_versions'
+    id = Column(String(36), primary_key=True, default=_new_id)
+    assignment_id = Column(String(36), ForeignKey('assignments.id'), nullable=False, index=True)
+    number = Column(Integer, nullable=False)
+    tasks = Column(JSON, nullable=False)
+    sha256 = Column(String(64), nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    __table_args__ = (UniqueConstraint('assignment_id','number',name='uq_assignment_version'),)
+
+
+class AssignmentVersionResponse(Base):
+    __tablename__ = 'assignment_version_responses'
+    id = Column(String(36), primary_key=True, default=_new_id)
+    version_id = Column(String(36), ForeignKey('assignment_versions.id'), nullable=False, index=True)
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False, index=True)
+    task_id = Column(String(36), ForeignKey('tasks.id'), nullable=False)
+    attempt_id = Column(String(36), ForeignKey('attempts.id'), nullable=True, unique=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC), nullable=False)
+    __table_args__ = (UniqueConstraint('version_id','user_id','task_id',name='uq_version_user_task'),)

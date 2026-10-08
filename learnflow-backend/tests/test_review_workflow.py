@@ -149,15 +149,21 @@ async def test_teacher_assignment_ownership_validation_and_repeated_update(revie
     assert (await c.post('/api/v1/teacher/assignments',json={'class_id':'own','node_ids':[]})).status_code==422
     assert (await c.post('/api/v1/teacher/assignments',json={'class_id':'own','node_ids':['n','missing']})).status_code==400
     async with factory() as db:assert (await db.execute(select(func.count(Assignment.id)))).scalar_one()==0
+    async with factory() as db:
+        (await db.get(Task,'item')).curriculum_node_id='n';await db.commit()
     payload={'class_id':'own','node_ids':['n','n'],'due_at':'2026-12-01T10:00:00+00:00'}
     first=await c.post('/api/v1/teacher/assignments',json=payload);assert first.status_code==200,first.text
     assert first.json()['created']==1
-    payload['due_at']='2026-12-02T10:00:00+00:00'
+    payload['due_at']='2026-12-02T10:00:00+09:00'
     again=await c.post('/api/v1/teacher/assignments',json=payload);assert again.status_code==200,again.text
     assert first.json()['assignment_id']==again.json()['assignment_id']
     assert again.json()['created']==0 and again.json()['updated']==1
     listing=(await c.get('/api/v1/teacher/assignments',params={'class_id':'own'})).json()['assignments']
-    assert len(listing)==1 and listing[0]['due_at'].startswith('2026-12-02')
+    assert len(listing)==1 and listing[0]['due_at']=='2026-12-02T01:00:00+00:00'
+    payload['due_at']='2026-12-03T10:00:00'
+    assert (await c.post('/api/v1/teacher/assignments',json=payload)).status_code==400
+    listing=(await c.get('/api/v1/teacher/assignments',params={'class_id':'own'})).json()['assignments']
+    assert listing[0]['due_at']=='2026-12-02T01:00:00+00:00'
 
 async def test_teacher_classroom_and_mastery_exclude_other_class(review_app):
     from app.models.curriculum import Class, GradeLevel, Subject, CurriculumNode
@@ -166,7 +172,7 @@ async def test_teacher_classroom_and_mastery_exclude_other_class(review_app):
     selected['user']=teacher
     async with factory() as db:
         db.add_all([teacher,GradeLevel(id='g',code='G3',label='G3'),Subject(id='s',code='math',name='Math')]);await db.flush()
-        db.add_all([Class(id='own',name='Own',grade_id='g',teacher_id='teacher'),Class(id='foreign',name='Foreign',grade_id='g'),CurriculumNode(id='n',title='Addition',subject_id='s',grade_id='g')]);await db.flush()
+        db.add_all([Class(id='own',name='Own',grade_id='g',teacher_id='teacher'),Class(id='foreign',name='Foreign',grade_id='g'),CurriculumNode(id='empty-node',title='Unattempted',subject_id='s',grade_id='g'),CurriculumNode(id='n',title='Addition',subject_id='s',grade_id='g')]);await db.flush()
         a=await db.get(User,users[0].id);a.class_id='own'
         b=await db.get(User,users[1].id);b.class_id='foreign'
         task=await db.get(Task,'item');task.curriculum_node_id='n'
@@ -174,7 +180,9 @@ async def test_teacher_classroom_and_mastery_exclude_other_class(review_app):
     dashboard=(await c.get('/api/v1/teacher/classroom')).json()
     assert dashboard['total_students']==1 and dashboard['students'][0]['id']==users[0].id
     heat=(await c.get('/api/v1/teacher/class-mastery',params={'class_id':'own'})).json()
-    assert heat['nodes'][0]['mastery']==100.0
+    nodes={row['id']:row for row in heat['nodes']}
+    assert nodes['n']['mastery']==100.0 and nodes['n']['attempt_count']==1
+    assert nodes['empty-node']['mastery'] is None and nodes['empty-node']['attempt_count']==0
 
 async def test_remaining_teacher_routes_scope_reads_and_writes(review_app):
     from app.models.curriculum import Class
@@ -214,3 +222,104 @@ async def test_remaining_teacher_routes_scope_reads_and_writes(review_app):
     async with factory() as db:assert (await db.get(User,users[0].id)).difficulty_bias==3
     teacher.role=UserRole.ADMIN
     assert (await c.get(f'/api/v1/teacher/student/{users[1].id}')).status_code==200
+
+async def test_teacher_activity_counts_people_and_observed_week_window(review_app):
+    from app.models.curriculum import Class
+    c,selected,users,factory=review_app
+    teacher=User(id='teacher',email='teacher@example.test',name='teacher',hashed_password='fixture',role=UserRole.TEACHER)
+    selected['user']=teacher
+    async with factory() as db:
+        db.add(teacher);await db.flush();db.add(Class(id='own',name='Own',teacher_id='teacher'));await db.flush()
+        (await db.get(User,users[0].id)).class_id='own'
+        for i in range(105):
+            db.add(Attempt(user_id=users[0].id,task_id='item',answer='7',is_correct=True,created_at=datetime.now(UTC)-timedelta(days=10)))
+        for i in range(3):db.add(Attempt(user_id=users[0].id,task_id='item',answer='7',is_correct=True,created_at=datetime.now(UTC)))
+        await db.commit()
+    r=await c.get('/api/v1/teacher/ai/student-analysis/'+users[0].id);assert r.status_code==200,r.text
+    assert r.json()['weekly_attempts']==3
+    assert r.json()['skip_ratio'] is None
+    r=await c.get('/api/v1/teacher/ai/classroom-analysis');assert r.status_code==200,r.text
+    assert r.json()['active_students']==1
+
+async def test_student_assignments_are_current_class_only(review_app):
+    from app.models.curriculum import Class, GradeLevel, Subject, CurriculumNode, Assignment
+    c,selected,users,factory=review_app
+    async with factory() as db:
+        db.add_all([GradeLevel(id='g',code='G3',label='G3'),Subject(id='s',code='math',name='Math')]);await db.flush()
+        db.add_all([Class(id='own',name='Own'),Class(id='foreign',name='Foreign'),CurriculumNode(id='n',title='Addition',subject_id='s',grade_id='g')]);await db.flush()
+        db.add_all([Assignment(id='own-a',class_id='own',node_id='n'),Assignment(id='foreign-a',class_id='foreign',node_id='n')])
+        (await db.get(User,users[0].id)).class_id='own'
+        task=await db.get(Task,'item');task.curriculum_node_id='n';await db.commit()
+    r=await c.get('/api/v1/student/assignments');assert r.status_code==200,r.text
+    assert r.json()['total']==1 and r.json()['assignments'][0]['id']=='own-a'
+    assert r.json()['assignments'][0]['available_task_count']==1
+    assert 'correct_answer' not in r.text and 'completed' not in r.text
+    tasks=await c.get('/api/v1/student/assignments/own-a/tasks');assert tasks.status_code==200,tasks.text
+    assert tasks.json()['total']==1 and tasks.json()['tasks'][0]['id']=='item'
+    assert 'correct_answer' not in tasks.text and 'explanation' not in tasks.text
+    assert (await c.get('/api/v1/student/assignments/foreign-a/tasks')).status_code==404
+    foreign=await c.post('/api/v1/student/assignments/foreign-a/answer',json={'task_id':'item','answer':'7'})
+    assert foreign.status_code==404
+    answer=await c.post('/api/v1/student/assignments/own-a/answer',json={'task_id':'item','answer':'x=7'})
+    assert answer.status_code==200,answer.text
+    assert answer.json()['is_correct'] is True
+    persisted=await c.get('/api/v1/student/assignments/own-a/tasks')
+    assert persisted.json()['tasks'][0]['submitted'] is True
+    duplicate=await c.post('/api/v1/student/assignments/own-a/answer',json={'task_id':'item','answer':'7'})
+    assert duplicate.status_code==409
+    from app.models.curriculum import AssignmentResponse
+    async with factory() as db:
+        response=(await db.execute(select(AssignmentResponse))).scalar_one()
+        assert response.attempt_id==answer.json()['attempt_id']
+        assert (await db.execute(select(func.count(Attempt.id)))).scalar_one()==1
+
+    async with factory() as db:
+        (await db.get(Task,'item')).is_approved=False;await db.commit()
+    assert (await c.get('/api/v1/student/assignments/own-a/tasks')).json()['total']==0
+
+    selected['user']=users[1]
+    assert (await c.get('/api/v1/student/assignments')).json()['total']==0
+    selected['user']=users[0];users[0].role=UserRole.TEACHER
+    assert (await c.get('/api/v1/student/assignments')).status_code==403
+
+
+async def test_teacher_assignment_results_use_only_explicit_links(review_app):
+    from app.models.curriculum import Class, GradeLevel, Subject, CurriculumNode, Assignment, AssignmentResponse
+    c, selected, users, factory = review_app
+    teacher = User(id='teacher-result',email='teacher-result@example.test',name='Teacher',hashed_password='fixture',role=UserRole.TEACHER)
+    async with factory() as db:
+        db.add(teacher)
+        db.add_all([GradeLevel(id='rg',code='RG',label='RG'),Subject(id='rs',code='rs',name='Result')]);await db.flush()
+        db.add_all([Class(id='rc',name='Own',teacher_id=teacher.id),Class(id='rf',name='Other'),CurriculumNode(id='rn',title='Result',subject_id='rs',grade_id='rg')]);await db.flush()
+        db.add_all([Assignment(id='ra',class_id='rc',node_id='rn'),Assignment(id='fa',class_id='rf',node_id='rn')]);await db.flush()
+        for u in users:(await db.get(User,u.id)).class_id='rc'
+        (await db.get(Task,'item')).curriculum_node_id='rn'
+        # Unrelated practice, even on the same task, cannot imply assignment submission.
+        db.add(Attempt(user_id=users[1].id,task_id='item',answer='7',is_correct=True))
+        await db.commit()
+    selected['user']=users[0]
+    answer=await c.post('/api/v1/student/assignments/ra/answer',json={'task_id':'item','answer':'0'})
+    assert answer.status_code==200,answer.text
+    assert answer.json()['is_correct'] is False
+    assert (await c.get('/api/v1/teacher/assignments/ra/results')).status_code==403
+    selected['user']=teacher
+    assert (await c.get('/api/v1/teacher/assignments/fa/results')).status_code==404
+    response=await c.get('/api/v1/teacher/assignments/ra/results')
+    assert response.status_code==200,response.text
+    data=response.json();assert data['total_students']==2 and data['available_task_count']==1
+    by_id={r['student_id']:r for r in data['students']}
+    assert by_id[users[0].id]['submitted_count']==1
+    assert by_id[users[0].id]['accuracy_percent']==0
+    assert by_id[users[0].id]['last_submitted_at'].endswith('+00:00')
+    assert by_id[users[1].id]['submitted_count']==0 and by_id[users[1].id]['accuracy_percent'] is None
+    assert 'correct_answer' not in response.text and 'completed' not in response.text
+    paged=(await c.get('/api/v1/teacher/assignments/ra/results?limit=1')).json()
+    assert len(paged['students'])==1 and paged['has_more'] is True
+    assert (await c.get('/api/v1/teacher/assignments/ra/results?limit=0')).status_code==422
+    async with factory() as db:
+        (await db.get(User,users[0].id)).class_id='rf'
+        (await db.get(Task,'item')).is_approved=False
+        await db.commit()
+    changed=(await c.get('/api/v1/teacher/assignments/ra/results')).json()
+    assert changed['total_students']==1 and changed['available_task_count']==0
+    assert changed['students'][0]['student_id']==users[1].id

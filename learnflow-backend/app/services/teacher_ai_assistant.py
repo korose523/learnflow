@@ -32,7 +32,7 @@ class StudentAnalysisReport:
     current_streak: int
     weekly_attempts: int
     avg_difficulty: float
-    skip_ratio: float
+    skip_ratio: float | None
     help_others_count: int
 
     # 风险标记
@@ -151,7 +151,7 @@ class TeacherAIAssistant:
             current_streak=stats.get("current_streak", 0),
             weekly_attempts=stats.get("weekly_attempts", 0),
             avg_difficulty=stats.get("avg_difficulty", 5),
-            skip_ratio=stats.get("skip_ratio", 0),
+            skip_ratio=stats.get("skip_ratio"),
             help_others_count=stats.get("help_others", 0),
             risk_level=risk,
             risk_reasons=risk_reasons,
@@ -311,7 +311,7 @@ class TeacherAIAssistant:
             reasons.append("近期掌握度下降")
             risk = "red" if risk != "red" else "red"
 
-        if stats.get("skip_ratio", 0) > 0.4:
+        if stats.get("skip_ratio") is not None and stats["skip_ratio"] > 0.4:
             reasons.append("跳过率偏高")
             risk = max_risk(risk, "yellow")
 

@@ -3,7 +3,7 @@
 Use a separate local development database. This does not create a live study,
 mark expert review, or claim calibrated IRT difficulty.
 """
-import argparse,asyncio,json,sys
+import argparse,asyncio,json,sys,os
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'learnflow-backend'))
@@ -32,16 +32,22 @@ async def apply(items,admin_id):
             p=item['train_smoothed_success']
             level=3 if p is None else min(5,max(1,int((1-p)*5)+1))
             db.add(Task(id=item['task_id'],title=f"XES3G5M #{item['source_item_id']}",content=item['content'],topic=topic,
-                difficulty=level,correct_answer=item['normalized_numeric_answer'],source='XES3G5M_MIT',
+                difficulty=level,correct_answer=item['normalized_numeric_answer'],explanation=item.get('analysis') or None,source='XES3G5M_MIT',
                 is_approved=False,created_by=user.id))
             await db.flush();added+=1
         await db.commit();print(json.dumps({'added':added,'expert_reviewed':False,'difficulty':'coarse_observed_rate_bin_not_IRT'}))
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--apply',action='store_true');p.add_argument('--admin-id')
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--apply',action='store_true');p.add_argument('--admin-id');p.add_argument('--database-file',type=Path,help='Existing local SQLite database; required for --apply')
     a=p.parse_args();items=compatible()
     if a.apply:
         if not a.admin_id:p.error('--apply requires --admin-id')
+        if a.database_file is None:p.error('--apply requires --database-file; implicit project database is not accepted')
+        target=a.database_file.expanduser().resolve()
+        if not target.is_file():p.error('--database-file must refer to an existing local SQLite database')
+        with target.open('rb') as handle:
+            if handle.read(16)!=b'SQLite format 3\x00':p.error('--database-file is not a SQLite database')
+        os.environ['DATABASE_URL']='sqlite+aiosqlite:///'+str(target)
         asyncio.run(apply(items,a.admin_id))
     else:print(json.dumps({'mode':'PREVIEW_NO_DATABASE_WRITES','compatible_items':len(items),'source':'XES3G5M','license':'MIT','expert_reviewed':False},ensure_ascii=False,indent=2))

@@ -15,7 +15,7 @@ from docx.oxml import OxmlElement
 EA_FONT = {"zh": "Noto Sans CJK SC", "kr": "Noto Sans CJK KR", "en": "Times New Roman"}
 LAT_FONT = "Liberation Serif"
 CODE_FONT = "Liberation Mono"
-BODY_SIZE = 10.5
+BODY_SIZE = 11
 HEAD_SIZES = {1: 22, 2: 16, 3: 13.5, 4: 12, 5: 11}
 TOC_TITLE = {"zh": "目录", "kr": "목차", "en": "Contents"}
 
@@ -189,8 +189,8 @@ def build_docx(md_path, docx_path, lang):
         "en": ("Doctoral dissertation supporting paper (English submission manuscript) — "
                "Measurability and governability of difficulty in adaptive learning"),
     }[lang]
-    cp.comments = ("LearnFlow artifact 配套文档；数字口径由 learnflow-backend/scripts/ 下门禁脚本复算。"
-                   "本文件由 Markdown 源经 tools/docx_build/_md_to_docx.py 生成；未冻结工作稿。")
+    cp.comments = ("本文件由唯一 Markdown 源经 tools/docx_build/_md_to_docx.py 生成；未冻结工作稿。"
+                   "统计与工程验证范围见正文，不代表作者已完成最终审阅或投稿。")
 
     sec = doc.sections[0]
     sec.page_width = Pt(595.28)
@@ -411,7 +411,7 @@ def main():
     import argparse
     root = Path(__file__).resolve().parents[2]
     ap = argparse.ArgumentParser(description="Build four documents from independent canonical Markdown sources")
-    ap.add_argument("--out-dir", default=str(root.parent / "learnflow_revision_20261007" / "documents"))
+    ap.add_argument("--out-dir", default=str(root / "docs" / "研究计划与报告" / "Word"))
     args = ap.parse_args()
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)

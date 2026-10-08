@@ -7,6 +7,7 @@ from sqlalchemy import select, func, case
 from sqlalchemy.orm import selectinload
 
 from app.core.database import get_db
+from app.core.config import settings
 from app.api.auth import get_current_user
 from app.models.user import User, UserRole
 from app.models.task import Attempt, StudentSkillProfile
@@ -30,6 +31,10 @@ def _is_demo_child(parent_email: str, child_email: str) -> bool:
     - parent_student@learnflow.com ↔ student@learnflow.com
     - parent@learnflow.com 作为通用演示家长，可查看 student@learnflow.com
     """
+    if not settings.DEMO_DATA_ENABLED or settings.ENVIRONMENT.strip().lower() == "production":
+        return False
+    if not parent_email.endswith("@learnflow.com"):
+        return False
     local = parent_email.split("@")[0]
     if local.startswith("parent_"):
         expected_child = f"{local.replace('parent_', '')}@learnflow.com"
@@ -412,7 +417,7 @@ async def list_children(
     """列出当前家长绑定的孩子（供前端解析 child_id）"""
     rows = (
         await db.execute(
-            select(User).where(User.parent_id == user.id, User.is_active == True)
+            select(User).where(User.parent_id == user.id, User.is_active == True, User.role == UserRole.STUDENT)
         )
     ).scalars().all()
     return {"children": [{"id": c.id, "name": c.name, "grade": c.grade} for c in rows]}

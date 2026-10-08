@@ -211,6 +211,7 @@ export default function StudentDashboard() {
 
           {/* 学习入口网格（移动端 2 列，平板/桌面 3 列） */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <GridCard icon={<BookOpen size={24} color="var(--lf-primary-low)" />} title="教师作业" desc="查看班级知识点作业与可用题目" onClick={() => navigate('/student/assignments')} />
             <GridCard icon={<BookOpen size={24} color="var(--lf-primary-low)" />} title="开始今日任务" desc="DDA 自适应难度，维持心流状态" onClick={() => navigate('/learn')} />
             <GridCard icon={<RefreshCw size={24} color="var(--lf-subject-science)" />} title="到期复习" desc={data.pending_reviews > 0 ? `${data.pending_reviews} 道待复习` : '当前没有到期复习'} onClick={() => navigate('/student/reviews')} />
             <GridCard icon={<TrendingUp size={24} color="var(--lf-sem-success)" />} title="专题深入" desc="选择感兴趣的知识点深度学习" onClick={() => navigate('/curriculum')} />

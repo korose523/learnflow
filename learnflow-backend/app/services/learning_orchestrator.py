@@ -1141,6 +1141,7 @@ class LearningOrchestrator:
         await invalidate_ability(user.id)
 
         return {
+            "attempt_id": attempt.id,
             "is_correct": is_correct,
             "correct_answer": task.correct_answer if not is_correct else None,
             "explanation": task.explanation if not is_correct else None,

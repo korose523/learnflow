@@ -147,6 +147,9 @@ export default function TeacherDashboard() {
           <button className="lf-btn lf-btn-primary" onClick={() => setShowCreateTask(true)} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <Plus size={18} /> 创建题目
           </button>
+          <button className="lf-btn" onClick={() => navigate('/teacher/assign')} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <BookOpen size={18} /> 作业布置与提交记录
+          </button>
           <button className="lf-btn" onClick={() => navigate('/teacher/class-pet')} style={{ display: 'flex', alignItems: 'center', gap: 6, background: '#EAF6FB', color: '#2C6E8F' }}>
             🐾 班级宠物园
           </button>

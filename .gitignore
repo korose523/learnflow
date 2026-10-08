@@ -101,3 +101,6 @@ learnflow-backend/artifacts/experiments.json
 
 # A4: 外部系统源码临时快照（第三方 GPL 代码，不入库）
 _src_snippets/*.php
+
+# Local review evidence, historical third-party snapshots and draft responses
+/交付与证据/

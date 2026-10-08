@@ -1,5 +1,7 @@
 # LearnFlow
 
+> **唯一工作目录（2026-10-09 整理）**：项目、论文与证据已收敛到本目录。请从 [最终入口](最终入口.md) 查找当前稿件、Word、验证记录和剩余事项；不再使用同级旧 round 目录。
+
 > **为「适应性学习中难度的可测量化与可治理化」提供可测量、可审计、可复现的系统与测量底座。**
 > 平台以游戏化自适应学习为载体，同时作为**实证研究可复现性 artifact** 发布。
 
@@ -8,7 +10,7 @@
 > **附属且未经心理测量学验证的模块**（见 §附属模块：学习成瘾指数）。同一产物不得同时
 > 声明两个研究主线。
 
-[![tests](https://img.shields.io/badge/tests-1017%20passed-brightgreen)](#测试)
+[![validation](https://img.shields.io/badge/validation-see%20records-blue)](#测试)
 [![mechanisms](https://img.shields.io/badge/mechanisms-54%20registered%20%C2%B7%202%20effect--producers%20%C2%B7%209%2F37%2F8-blue)](#可复现性)
 [![instruments](https://img.shields.io/badge/self--report%20instruments-4-orange)](learnflow-backend/app/services/instrument_catalog.py)
 [![license](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -217,11 +219,11 @@ cd learnflow-frontend && cp .env.example .env.local
 cd learnflow-backend
 
 # 全量测试（历史审阅基线 972 passed；当前结果见修订包验证记录）
-PYTEST_DEBUG_TEMPROOT=<绝对路径>/pytest_tmp .venv/Scripts/python -m pytest tests/ -q
+# 先激活已安装项目依赖的 Python 3.11 环境
+python -m pytest tests/ -q
 ```
 
-> **注意**：`PYTEST_DEBUG_TEMPROOT` 必须指向一个**已存在的**目录，且必须是绝对路径。
-> 否则依赖 `tmp_path` 夹具的用例会抛出 `FileNotFoundError`，表现为大批量失败，实为环境问题而非代码回归。
+> 通常无需设置 `PYTEST_DEBUG_TEMPROOT`。若环境已设置该变量，应确认它指向已存在的绝对路径；错误路径会使 `tmp_path` 用例失败。Windows 可使用 `.venv/Scripts/python`，macOS/Linux 可使用 `.venv/bin/python`，以实际环境位置为准。
 
 前端质量门：
 
@@ -343,7 +345,7 @@ learnflow/
 | `docs/因果侧识别策略.md` | f43e2a7 冻结原件 |
 | `docs/因果侧识别策略_v2_未冻结草案.md` | 执行前讨论草案 |
 
-修订 Word、答复与日志位于仓库外 `/Volumes/Untitled/learnflow_revision_20261007/`；旧材料备份位于 `/Volumes/Untitled/learnflow_revision_archive_20261007/`。当前移出文件不清除 Git 历史。最近本地后端全量测试991项通过，随后相关回归85项通过；这不表示人类实验已经实施。
+当前 Word 位于 `docs/研究计划与报告/Word/`；审阅答复草稿、日志和历史证据已统一收敛到 `交付与证据/`，详见 [最终入口](最终入口.md)。原同级修订与备份目录已清理。最近作业版本功能验证为后端全量 1023 项、专项 13 项和浏览器 6 项；范围以原验证记录为准，未实施人类实验。
 
 ---
 
@@ -393,3 +395,5 @@ learnflow/
 ## 许可证
 
 [MIT](LICENSE)。
+
+K12 导入、临时数据库验收及待复核材料命令见 [K12 题库运行说明](docs/K12题库导入与复核运行说明.md)。

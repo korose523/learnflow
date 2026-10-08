@@ -8,6 +8,7 @@ import { Skeleton } from './components/common/Skeleton';
 // 路由懒加载（Spec AC8：首屏仅登录，其余按需加载）
 const ResearchSessionPage = lazy(() => import('./pages/ResearchSessionPage'));
 const StudentDashboard = lazy(() => import('./pages/StudentDashboard'));
+const AssignmentsPage = lazy(() => import('./pages/AssignmentsPage'));
 const ReviewPage = lazy(() => import('./pages/ReviewPage'));
 const LearningSession = lazy(() => import('./pages/LearningSession'));
 const LearnPage = lazy(() => import('./pages/LearnPage'));
@@ -57,6 +58,7 @@ function App() {
 
           {/* 学生端 */}
           <Route path="student" element={<ProtectedRoute allowedRoles={['student']}><StudentDashboard /></ProtectedRoute>} />
+          <Route path="student/assignments" element={<ProtectedRoute allowedRoles={['student']}><AssignmentsPage /></ProtectedRoute>} />
           <Route path="student/reviews" element={<ProtectedRoute allowedRoles={['student']}><ReviewPage /></ProtectedRoute>} />
           <Route path="student/learn" element={<ProtectedRoute allowedRoles={['student']}><LearningSession /></ProtectedRoute>} />
           <Route path="learn" element={<ProtectedRoute allowedRoles={['student']}><LearnPage /></ProtectedRoute>} />

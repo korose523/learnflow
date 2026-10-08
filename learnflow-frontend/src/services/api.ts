@@ -154,6 +154,9 @@ export const studentApi = {
   relaxationGuide: () => api.get('/student/relaxation-guide'),
   updateConsent: (data: { consent_type: string; granted: boolean }) =>
     api.post('/student/consent', data),
+  answerAssignment: (id: string, data: { task_id: string; answer: string; version_id?: string | null }) => api.post(`/student/assignments/${encodeURIComponent(id)}/answer`, data),
+  assignmentTasks: (id: string, offset = 0) => api.get(`/student/assignments/${encodeURIComponent(id)}/tasks`, { params: { offset, limit: 50 } }),
+  assignments: (offset = 0) => api.get('/student/assignments', { params: { offset, limit: 50 } }),
   dueReviews: () => api.get('/student/due-reviews'),
   answerReview: (id: string, data: { answer: string; time_spent: number }) => api.post(`/student/reviews/${encodeURIComponent(id)}/answer`, data),
   healthCheck: () => api.get('/student/health-check'),
@@ -201,8 +204,10 @@ export const teacherApi = {
 
   // ── Spec §4 新增端点（作业布置 + 班级掌握）──
   listAssignments: (classId?: string) =>
-    api.get('/teacher/assignments', { params: { class_id: classId }, cache: true }),
-  createAssignment: (data: { class_id: string; node_ids: string[]; due_at: string }) =>
+    api.get('/teacher/assignments', { params: { class_id: classId } }),
+  assignmentVersions: (id: string) => api.get(`/teacher/assignments/${encodeURIComponent(id)}/versions`),
+  assignmentResults: (id: string, offset = 0, versionId?: string) => api.get(`/teacher/assignments/${encodeURIComponent(id)}/results`, { params: { offset, limit: 50, version_id: versionId || undefined } }),
+  createAssignment: (data: { class_id: string; node_ids: string[]; due_at: string; new_version?: boolean }) =>
     api.post('/teacher/assignments', data),
   classMastery: (classId: string) =>
     api.get('/teacher/class-mastery', { params: { class_id: classId }, cache: true }),

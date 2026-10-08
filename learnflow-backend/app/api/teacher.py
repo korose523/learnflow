@@ -1,11 +1,12 @@
 """教师端 API：班级仪表盘、任务管理、AI建议、风险告警"""
-from datetime import datetime, UTC
+from datetime import datetime, timedelta, UTC
 from typing import List
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, case
 from sqlalchemy.orm import selectinload
+from sqlalchemy.exc import IntegrityError
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
@@ -14,7 +15,8 @@ from app.models.task import Task, Attempt, StudentSkillProfile
 from app.models.pet import PetProfile
 from app.models.consent import Alert
 from app.services.teacher_ai_assistant import TeacherAIAssistant
-from app.models.curriculum import Class, Assignment, CurriculumNode
+from app.services.assignment_versions import latest_versions, new_version, progress
+from app.models.curriculum import Class, Assignment, AssignmentResponse, AssignmentVersion, AssignmentVersionResponse, CurriculumNode
 
 router = APIRouter(prefix="/api/v1/teacher", tags=["教师端"])
 
@@ -429,6 +431,11 @@ async def get_ai_classroom_analysis(
     all_attempts = attempts_query.scalars().all()
 
     today = datetime.now(UTC).strftime("%Y-%m-%d")
+    day_start = datetime.now(UTC).replace(hour=0, minute=0, second=0, microsecond=0)
+    active_today = (await db.execute(select(func.count(func.distinct(Attempt.user_id))).where(
+        Attempt.user_id.in_(student_ids), Attempt.created_at >= day_start,
+        Attempt.created_at < day_start + timedelta(days=1)
+    ))).scalar_one()
 
     student_summaries = []
     for student in students:
@@ -486,7 +493,7 @@ async def get_ai_classroom_analysis(
 
     class_stats = {
         "total_students": len(students),
-        "active_today": sum(1 for a in all_attempts if a.created_at.strftime("%Y-%m-%d") == today),
+        "active_today": active_today,
         "class_avg_mastery": sum(s["overall_mastery"] for s in student_summaries) / max(len(student_summaries), 1),
         "topic_mastery": topic_mastery,
         "topic_difficulty": topic_difficulty,
@@ -532,17 +539,24 @@ async def get_ai_student_analysis(
         else:
             break
 
+    window_end = datetime.now(UTC)
+    weekly_count = (await db.execute(select(func.count(Attempt.id)).where(
+        Attempt.user_id == student_id, Attempt.created_at >= window_end - timedelta(days=7),
+        Attempt.created_at <= window_end
+    ))).scalar_one()
+    total_count = (await db.execute(select(func.count(Attempt.id)).where(Attempt.user_id == student_id))).scalar_one()
+
     stats = {
         "avg_mastery": avg_mastery,
         "skill_scores": skill_scores,
         "recent_accuracy": recent_accuracy_list,
         "current_streak": current_streak,
-        "weekly_attempts": len(attempts),
+        "weekly_attempts": weekly_count,
         "avg_difficulty": sum(a.difficulty_at_time or 5 for a in attempts) / max(len(attempts), 1),
-        "skip_ratio": 0.1,
+        "skip_ratio": None,
         "help_others": 0,
         "hook_loops": len(attempts),
-        "total_attempts": len(attempts),
+        "total_attempts": total_count,
         "consecutive_failures": TeacherAIAssistant._count_consecutive_fails(recent_acc) if recent_acc else 0,
         "identity_labels": [],
         "identity_count": 0,
@@ -664,7 +678,8 @@ async def get_intervention_plan(
 class CreateAssignmentRequest(BaseModel):
     class_id: str
     node_ids: List[str] = Field(min_length=1, max_length=200)
-    due_at: str | None = None  # ISO datetime
+    due_at: str | None = None  # ISO datetime with explicit timezone
+    new_version: bool = False
 
 
 @k12_router.post("/assignments")
@@ -674,14 +689,24 @@ async def create_assignments(
     db: AsyncSession = Depends(get_db),
 ):
     """教师布置作业（班级 + 若干课标知识点 + 截止时间）"""
+    async def flush_or_conflict():
+        try:
+            await db.flush()
+        except IntegrityError as exc:
+            await db.rollback()
+            raise HTTPException(status_code=409,detail="作业版本发生并发修改，请重新读取后重试") from exc
+
     klass = await owned_class(req.class_id, user, db)
 
     due_at = None
     if req.due_at:
         try:
-            due_at = datetime.fromisoformat(req.due_at)
+            parsed = datetime.fromisoformat(req.due_at)
+            if parsed.tzinfo is None or parsed.utcoffset() is None:
+                raise ValueError('timezone required')
+            due_at = parsed.astimezone(UTC).replace(tzinfo=None)
         except ValueError:
-            raise HTTPException(status_code=400, detail="due_at 格式应为 ISO datetime")
+            raise HTTPException(status_code=400, detail="due_at 必须是包含时区的 ISO datetime")
 
     node_ids = list(dict.fromkeys(req.node_ids))
     nodes = (await db.execute(select(CurriculumNode).where(CurriculumNode.id.in_(node_ids)))).scalars().all()
@@ -692,6 +717,16 @@ async def create_assignments(
     existing = {row.node_id: row for row in (await db.execute(
         select(Assignment).where(Assignment.class_id == klass.id, Assignment.node_id.in_(node_ids))
     )).scalars().all()}
+    versions = await latest_versions(db, [a.id for a in existing.values()])
+    tasks_by_node = {}
+    for node_id in node_ids:
+        old = existing.get(node_id)
+        if old is None or old.id not in versions or req.new_version:
+            tasks = (await db.execute(select(Task).where(Task.curriculum_node_id == node_id,
+                Task.is_approved == True).order_by(Task.id))).scalars().all()
+            if not tasks:
+                raise HTTPException(status_code=400, detail="知识点没有已审核题目，未布置作业")
+            tasks_by_node[node_id] = tasks
     created_ids = []
     new_count = 0
     for node_id in node_ids:
@@ -702,10 +737,13 @@ async def create_assignments(
             new_count += 1
         else:
             assignment.due_at = due_at
-        await db.flush()
+        await flush_or_conflict()
+        if node_id in tasks_by_node:
+            previous = versions.get(assignment.id)
+            db.add(new_version(assignment.id, previous.number + 1 if previous else 1, tasks_by_node[node_id]))
         created_ids.append(str(assignment.id))
 
-    await db.flush()
+    await flush_or_conflict()
     return {"assignment_id": created_ids[0] if created_ids else None, "created": new_count, "updated": len(created_ids) - new_count}
 
 
@@ -733,12 +771,79 @@ async def list_assignments(
                 "class_id": str(a.class_id),
                 "node_id": str(a.node_id),
                 "node_title": nodes_index.get(str(a.node_id)).title if nodes_index.get(str(a.node_id)) else None,
-                "due_at": a.due_at.isoformat() if a.due_at else None,
+                "due_at": a.due_at.replace(tzinfo=UTC).isoformat() if a.due_at else None,
                 "created_at": a.created_at.isoformat(),
             }
             for a in assignments
         ]
     }
+
+
+@k12_router.get("/assignments/{assignment_id}/versions")
+async def assignment_versions(assignment_id: str, user: User = Depends(require_teacher), db: AsyncSession = Depends(get_db)):
+    assignment = await db.get(Assignment, assignment_id)
+    if assignment is None:
+        raise HTTPException(status_code=404,detail="作业不存在")
+    await owned_class(assignment.class_id,user,db)
+    versions = (await db.execute(select(AssignmentVersion).where(AssignmentVersion.assignment_id == assignment.id)
+        .order_by(AssignmentVersion.number.desc()))).scalars().all()
+    return {'versions':[{'id':v.id,'number':v.number,'task_count':len(v.tasks),'sha256':v.sha256,
+        'created_at':v.created_at.replace(tzinfo=UTC).isoformat()} for v in versions]}
+
+
+@k12_router.get("/assignments/{assignment_id}/results")
+async def assignment_results(
+    assignment_id: str,
+    version_id: str | None = None,
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    user: User = Depends(require_teacher),
+    db: AsyncSession = Depends(get_db),
+):
+    assignment = await db.get(Assignment, assignment_id)
+    if assignment is None:
+        raise HTTPException(status_code=404, detail="作业不存在")
+    await owned_class(assignment.class_id, user, db)
+    conditions = [User.class_id == assignment.class_id, User.role == UserRole.STUDENT, User.is_active == True]
+    total = (await db.execute(select(func.count(User.id)).where(*conditions))).scalar_one()
+    students = (await db.execute(select(User).where(*conditions).order_by(User.name, User.id)
+        .offset(offset).limit(limit))).scalars().all()
+    if version_id:
+        version = (await db.execute(select(AssignmentVersion).where(AssignmentVersion.id == version_id,
+            AssignmentVersion.assignment_id == assignment.id))).scalar_one_or_none()
+        if version is None:
+            raise HTTPException(status_code=404,detail="作业版本不存在")
+    else:
+        version = (await latest_versions(db, [assignment.id])).get(assignment.id)
+    response_model = AssignmentVersionResponse if version else AssignmentResponse
+    scope = response_model.version_id == version.id if version else response_model.assignment_id == assignment.id
+    rows = (await db.execute(select(response_model.user_id,
+        func.count(Attempt.id), func.sum(case((Attempt.is_correct == True, 1), else_=0)),
+        func.max(response_model.created_at))
+        .join(Attempt, Attempt.id == response_model.attempt_id)
+        .where(scope, response_model.user_id.in_([student.id for student in students]))
+        .group_by(response_model.user_id))).all()
+    version_submissions = {}
+    if version:
+        for uid, tid in (await db.execute(select(response_model.user_id,response_model.task_id).where(
+            scope,response_model.attempt_id.is_not(None),response_model.user_id.in_([student.id for student in students])))).all():
+            version_submissions.setdefault(uid,set()).add(tid)
+    approved_ids = set((await db.execute(select(Task.id).where(Task.is_approved == True,Task.id.in_([item['id'] for item in version.tasks] if version else [])))).scalars().all())
+    stats = {row[0]: row[1:] for row in rows}
+    available = (await db.execute(select(func.count(Task.id)).where(
+        Task.curriculum_node_id == assignment.node_id, Task.is_approved == True))).scalar_one()
+    output = []
+    for student in students:
+        count, correct, last = stats.get(student.id, (0, 0, None))
+        output.append({'student_id': student.id, 'student_name': student.name,
+            'submitted_count': count, 'correct_count': int(correct),
+            'accuracy_percent': round(100 * correct / count, 1) if count else None,
+            'last_submitted_at': last.replace(tzinfo=UTC).isoformat() if last else None,
+            **(progress(version, version_submissions.get(student.id,set()), approved_ids) if version else {'submission_state':'legacy_unversioned'})})
+    return {'assignment_id': assignment.id, 'version_id':version.id if version else None,
+        'version_number':version.number if version else None, 'task_count':len(version.tasks) if version else None,
+        'available_task_count': available,
+        'students': output, 'total_students': total, 'has_more': offset + len(students) < total}
 
 
 @k12_router.get("/class-mastery")
@@ -768,7 +873,7 @@ async def class_mastery(
     for node in nodes:
         node_tasks = [tid for tid, nid in task_to_node.items() if nid == str(node.id)]
         if not node_tasks:
-            mastery_out.append({"id": str(node.id), "title": node.title, "mastery": 0.0})
+            mastery_out.append({"id": str(node.id), "title": node.title, "mastery": None, "attempt_count": 0})
             continue
         agg = (await db.execute(
             select(
@@ -780,6 +885,6 @@ async def class_mastery(
         )).first()
         total, correct = agg
         pct = round((correct or 0) / max(total or 1, 1) * 100, 1)
-        mastery_out.append({"id": str(node.id), "title": node.title, "mastery": pct})
+        mastery_out.append({"id": str(node.id), "title": node.title, "mastery": pct if total else None, "attempt_count": total or 0})
 
     return {"nodes": mastery_out}

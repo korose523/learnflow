@@ -2541,6 +2541,7 @@
       "anti_addiction.py": "adec3cdf823ca6cfe66e2200e3191091e6cb9fff5016bdd1c3571ceaefa6f22c",
       "anti_addiction_compliance.py": "9b49d7e62fd7005ae094be2471f7560237f02e7a6ce674a2631d827523e8513e",
       "arbitration_ledger.py": "36558ba14937b6dc60aa78e91259ae0647db891b67bb8ff775b2526ca6c3ff9a",
+      "assignment_versions.py": "e3507f9eabf6031262cbebefff1ba6858f901c0c9d4ae0c8edefbb9a26636201",
       "audit.py": "c7b844237e0b08a6d3464e21536850021391e03a1a04038eb5f839204e53a040",
       "cache.py": "cc207cfcf779d5b9ef1515758074c6a68c53d5cf82b4b25106533cc59c000ca4",
       "causal_effects.py": "0740662ef734a9d30c4ce81aad5331ac10fc294c1924918a70b98a829973fe26",
@@ -2562,7 +2563,7 @@
       "learning_event_builder.py": "c7a50fde5120ff385999fba92aef6386633ea2befdc4619856498b39623e428a",
       "learning_methods_engine.py": "05686dcb20bbfe441d52ad9b49033132a0d1e2e86abaff71080023885c9997ab",
       "learning_methods_engine_v3.py": "11dc2c42ca9aa410c3e020917d61087ec162403369a9edf05701c7b05af0be48",
-      "learning_orchestrator.py": "634cc57635b9ad4d6e52bf4c79370e86e3524b09d622c307ab4587ad7cf73278",
+      "learning_orchestrator.py": "987c13a707c6d258f145a18614e033268381c06eaec1c67e589d0e5e89ab3144",
       "llm_intervention.py": "5eca78d19acbc922e46f1b388ab904810fd3d4e8855d70d38d0d128157b264c4",
       "mechanism_arbitrator.py": "3828521a58d0adaa1655ee483b663958318c6b9e68c02436b509602819d62a52",
       "mechanism_registry.py": "595d8b1b04ea6913903245df707439b8b81bf339765c384bfdf3bf304bcfcd19",
@@ -2587,7 +2588,7 @@
       "social_addiction_engine.py": "2a6321508b0478946aa9ef63fbf8af72a4434f90ac366b34c79ada2b2291009a",
       "spaced_repetition.py": "d8022a3570ccea4f888684a8eb2071f3288b3b3be3afc12d91e0d89898ac5fa8",
       "state_store.py": "01a23fc3847a8caa86003b2514db9460a022b99747a1fded4b8da6a82f339b47",
-      "teacher_ai_assistant.py": "b1bbcff8088c0c36db7c632b3078936dc8f7d992027c51d1a78aa9ddf122f11e",
+      "teacher_ai_assistant.py": "f8c81504bca130d719d48db6fdcaca5c9d490bd23a86cc2d4ebe358348e19090",
       "team_competition_engine.py": "9c5c3183c545e06c3a70b131ec30c4aa8d67b0d2df9bd5e88c3366d468db7c0c",
       "thompson_sampling.py": "703df1c0a6933d321a22ce1924f8b8ac86dad638738794d3eac25d24884bd4ee",
       "ux_addiction_engine.py": "3d211448b2c052fcc8ae33e40b8d37200c8aebacad2eb9ac1dafa9e30298d98a"
@@ -2782,6 +2783,13 @@
         "LedgerTraceSink.__init__": 55,
         "LedgerTraceSink.__call__": 58,
         "run_consistency_checks": 85
+      },
+      "assignment_versions.py": {
+        "latest_versions": 9,
+        "snapshot": 18,
+        "new_version": 23,
+        "snapshot_task": 29,
+        "progress": 34
       },
       "audit.py": {
         "get_audit_stats": 49,
@@ -3148,16 +3156,16 @@
         "LearningOrchestrator._select_approved_task": 507,
         "LearningOrchestrator.build_next_task": 516,
         "LearningOrchestrator.process_submission": 686,
-        "LearningOrchestrator._load_ability": 1176,
-        "LearningOrchestrator._save_ability": 1194,
-        "LearningOrchestrator._compute_fused_difficulty": 1207,
-        "LearningOrchestrator._build_risk_snapshot": 1215,
-        "LearningOrchestrator._build_bkt_state": 1286,
-        "LearningOrchestrator._ensure_skill_profile": 1301,
-        "LearningOrchestrator._ensure_pet": 1326,
-        "LearningOrchestrator._compare_answer": 1332,
-        "LearningOrchestrator._compare_answer.normalize": 1338,
-        "LearningOrchestrator._task_to_dict": 1352
+        "LearningOrchestrator._load_ability": 1177,
+        "LearningOrchestrator._save_ability": 1195,
+        "LearningOrchestrator._compute_fused_difficulty": 1208,
+        "LearningOrchestrator._build_risk_snapshot": 1216,
+        "LearningOrchestrator._build_bkt_state": 1287,
+        "LearningOrchestrator._ensure_skill_profile": 1302,
+        "LearningOrchestrator._ensure_pet": 1327,
+        "LearningOrchestrator._compare_answer": 1333,
+        "LearningOrchestrator._compare_answer.normalize": 1339,
+        "LearningOrchestrator._task_to_dict": 1353
       },
       "llm_intervention.py": {
         "generate_intervention": 29,

@@ -40,7 +40,7 @@ def main():
     parser.add_argument('--chrome', help='Existing Chromium/Chrome executable; otherwise use Playwright installed browser')
     parser.add_argument('--node-path', help='Node modules directory containing playwright')
     parser.add_argument('--output', required=True)
-    parser.add_argument('--scenario', choices=['content_learning','reviews'], default='content_learning')
+    parser.add_argument('--scenario', choices=['content_learning','reviews','assignments'], default='content_learning')
     args = parser.parse_args()
     if not args.python or not args.node: parser.error('Python and Node executables are required')
     out = Path(args.output).resolve(); out.mkdir(parents=True, exist_ok=True)
@@ -65,6 +65,16 @@ def main():
                         stamp = datetime.now(UTC).replace(tzinfo=None)
                         connection.execute("INSERT INTO tasks (id,title,content,topic,difficulty,correct_answer,explanation,source,is_approved,created_at) VALUES (?,?,?,?,?,?,?,?,?,?)", ('acceptance-review-task','Review fixture','求解 $$x+3=10$$。','review-fixture',5,'7','两边减去3，得到 $$x=7$$。','acceptance_fixture',1,stamp.isoformat(sep=' ')))
                         connection.execute("INSERT INTO spaced_reviews (id,user_id,task_id,review_number,scheduled_date,next_interval_days,created_at) VALUES (?,?,?,?,?,?,?)", ('acceptance-review-row',student_id,'acceptance-review-task',1,(stamp-timedelta(days=1)).isoformat(sep=' '),1,stamp.isoformat(sep=' ')))
+                if args.scenario == 'assignments':
+                    with sqlite3.connect(Path(temporary)/'runtime.sqlite') as connection:
+                        teacher_id = connection.execute("SELECT id FROM users WHERE email=?", ('teacher@learnflow.com',)).fetchone()[0]
+                        stamp = datetime.now(UTC).replace(tzinfo=None).isoformat(sep=' ')
+                        connection.execute("INSERT INTO subjects (id,name,code,created_at) VALUES (?,?,?,?)", ('assignment-subject','Assignment fixture','assignment-fixture',stamp))
+                        connection.execute("INSERT INTO grade_levels (id,code,label,band,created_at) VALUES (?,?,?,?,?)", ('assignment-grade','ACC','Acceptance grade','other',stamp))
+                        connection.execute("INSERT INTO curriculum_nodes (id,subject_id,grade_id,title,created_at) VALUES (?,?,?,?,?)", ('assignment-node','assignment-subject','assignment-grade','作业验收知识点',stamp))
+                        connection.execute("INSERT INTO classes (id,name,grade_id,teacher_id,created_at) VALUES (?,?,?,?,?)", ('assignment-class','作业验收班','assignment-grade',teacher_id,stamp))
+                        connection.execute("UPDATE users SET class_id=? WHERE email=?", ('assignment-class','student@learnflow.com'))
+                        connection.execute("INSERT INTO tasks (id,title,content,topic,difficulty,correct_answer,explanation,source,is_approved,curriculum_node_id,created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)", ('assignment-task','Assignment fixture','求解 $$x+3=10$$。','assignment-fixture',5,'7','两边减去3，得到 $$x=7$$。','acceptance_fixture',1,'assignment-node',stamp))
                 test_env = {**os.environ,'ACCEPTANCE_UI_URL':ui,'ACCEPTANCE_API_URL':api,'ACCEPTANCE_FIXTURE_PASSWORD':password,'ACCEPTANCE_OUTPUT':str(out)}
                 if args.chrome: test_env['ACCEPTANCE_CHROME'] = args.chrome
                 if args.node_path: test_env['NODE_PATH'] = args.node_path

@@ -4,8 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, RadialBarChart, RadialBar,
 } from 'recharts';
 import { CalendarDays, Clock, ShieldAlert, ShieldCheck, Gauge } from 'lucide-react';
-import { parentApi, laiApi } from '../services/api';
-import LAIHealthCard from '../components/common/LAIHealthCard';
+import { parentApi } from '../services/api';
 import MascotBubble from '../components/common/MascotBubble';
 import { useMotionPref } from '../contexts/MotionContext';
 import { EASE_SOFT, subjectColor, subjectMeta } from '../theme/tokens';
@@ -34,7 +33,6 @@ const RISK_META: Record<string, { label: string; color: string; icon: JSX.Elemen
 export default function ParentPage() {
   const { reduced } = useMotionPref();
   const [report, setReport] = useState<WeeklyReport | null>(null);
-  const [lai, setLai] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   // 孩子 id 解析状态：resolved 表示已尝试解析（成功或失败），hasChild 表示存在孩子账号
@@ -42,32 +40,30 @@ export default function ParentPage() {
   const [hasChild, setHasChild] = useState(true);
   // 家长端：真实孩子 id（统一使用 localStorage 单一规范键 'parent_child_id'）
   const [childId, setChildId] = useState('');
-  // 每日使用时长上限（分钟）：默认 40，真实值从后端加载；后端返回 null 时保留默认显示，不静默持久化
+  // 40 is an editable proposal; savedLimit represents the server state.
   const [limit, setLimit] = useState<number>(40);
+  const [savedLimit, setSavedLimit] = useState<number | null | undefined>(undefined);
   const [limitSaved, setLimitSaved] = useState(false);
   const [limitSaving, setLimitSaving] = useState(false);
   const [limitError, setLimitError] = useState('');
 
-  // 解析真实孩子 id：优先读取已存储的 'parent_child_id'，否则取 /parent/children 的第一个孩子
+  // Cached selection must be confirmed by the server's current binding list.
   useEffect(() => {
     let alive = true;
     const stored = localStorage.getItem('parent_child_id');
-    if (stored) {
-      setChildId(stored);
-      setResolved(true);
-      return;
-    }
     parentApi.children()
       .then(({ data }) => {
         if (!alive) return;
         const children = data?.children || [];
         if (children.length === 0) {
+          localStorage.removeItem('parent_child_id');
+          setChildId('');
           setHasChild(false);
           setLoading(false);
           setResolved(true);
           return;
         }
-        const firstId = children[0].id;
+        const firstId = children.some((child: { id: string }) => child.id === stored) ? stored! : children[0].id;
         localStorage.setItem('parent_child_id', firstId);
         setChildId(firstId);
         setResolved(true);
@@ -85,19 +81,24 @@ export default function ParentPage() {
   useEffect(() => {
     if (!resolved || !hasChild || !childId) return;
     let alive = true;
+    setSavedLimit(undefined);
+    setLimitError('');
     Promise.all([
       parentApi.weeklyReport({ student_id: childId }).then(({ data }) => data),
-      laiApi.dashboard(childId).then(({ data }) => data),
-      // 每日时长上限：失败时静默回退到默认显示值，不阻断整页加载
+      // Preserve missing settings and request failures as distinct states.
       parentApi.dailyLimit(childId)
-        .then(({ data }) => (data?.daily_limit_minutes ?? null))
-        .catch(() => null),
+        .then(({ data }) => ({ ok: true as const, value: data.daily_limit_minutes as number | null }))
+        .catch(() => ({ ok: false as const })),
     ])
-      .then(([rep, laiData, dailyLimit]) => {
+      .then(([rep, dailyLimit]) => {
         if (!alive) return;
         setReport(rep);
-        setLai(laiData);
-        if (dailyLimit !== null) setLimit(dailyLimit);
+        if (dailyLimit.ok) {
+          setSavedLimit(dailyLimit.value);
+          if (dailyLimit.value !== null) setLimit(dailyLimit.value);
+        } else {
+          setLimitError('无法读取已保存的时长设置；当前数值仅为待保存选择。');
+        }
         setLoading(false);
       })
       .catch((err: any) => {
@@ -108,13 +109,14 @@ export default function ParentPage() {
     return () => { alive = false; };
   }, [resolved, hasChild, childId]);
 
-  const saveLimit = async () => {
+  const saveLimit = async (value: number | null = limit) => {
     if (!childId) return; // 尚未解析到孩子 id：no-op，避免写入虚无
     setLimitSaving(true);
     setLimitError('');
     setLimitSaved(false);
     try {
-      await parentApi.setDailyLimit(childId, limit);
+      const { data } = await parentApi.setDailyLimit(childId, value);
+      setSavedLimit(data.daily_limit_minutes);
       setLimitSaved(true);
       setTimeout(() => setLimitSaved(false), 2000);
     } catch (err: any) {
@@ -166,7 +168,6 @@ export default function ParentPage() {
       </div>
 
       {/* 孩子的学习健康分（LAI）— 论文核心构念，数据驱动自真实行为日志 */}
-      {lai && <LAIHealthCard data={lai} />}
 
       {/* 难度曲线 */}
       <motion.div className="lf-card" style={{ marginTop: 16 }} initial={reduced ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE_SOFT }}>
@@ -221,15 +222,22 @@ export default function ParentPage() {
             disabled={!childId}
           />
           <span style={{ fontSize: 18, fontWeight: 800, color: '#2C6E8F', minWidth: 70 }}>{limit} 分钟</span>
-          <button className="lf-btn lf-btn-primary" onClick={saveLimit} disabled={!childId || limitSaving}>
+          <button className="lf-btn lf-btn-primary" onClick={() => saveLimit()} disabled={!childId || limitSaving}>
             {limitSaving ? '保存中…' : limitSaved ? '已保存 ✓' : '保存'}
           </button>
         </div>
+        <p style={{ fontSize: 12, color: '#64748b', margin: '8px 0 0' }} aria-live="polite">
+          {savedLimit === undefined ? '已保存设置：尚未确认' : savedLimit === null ? '已保存设置：未设置上限' : `已保存设置：${savedLimit} 分钟`}
+          {' · 当前滑块值需点击保存后才会写入'}
+        </p>
+        <button className="lf-btn" onClick={() => saveLimit(null)} disabled={!childId || limitSaving || savedLimit == null}>
+          清除已保存设置
+        </button>
         {limitError && (
           <p style={{ fontSize: 12, color: '#E0533D', margin: '8px 0 0' }}>{limitError}</p>
         )}
         <p style={{ fontSize: 11, color: '#94A3B8', margin: '8px 0 0' }}>
-          该上限会保存到 LearnFlow 服务端，并在孩子端生效；达到上限后 LearnFlow 会温柔提醒休息，保护孩子的用眼与专注健康。
+          该设置会保存到服务端。当前版本尚未根据此设置限制孩子的学习时长，请由家长安排休息。
         </p>
       </motion.div>
     </div>

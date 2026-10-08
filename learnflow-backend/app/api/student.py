@@ -4,19 +4,22 @@ import json
 from typing import Literal
 from datetime import datetime, UTC
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_, and_, update
 from sqlalchemy.orm import selectinload
+from sqlalchemy.exc import IntegrityError
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
 from app.models.user import User, UserRole
 from app.models.pet import PetProfile
+from app.models.curriculum import Assignment, CurriculumNode, AssignmentResponse, AssignmentVersionResponse
 from app.models.task import Task, Attempt, SpacedReview, StudentSkillProfile
 from app.models.analytics import AbilityEstimate
 from app.services.pet_service import PetService
+from app.services.assignment_versions import latest_versions, snapshot_task, progress
 from app.services.feedback_service import FeedbackService
 from app.services.risk_monitor import RiskMonitor
 from app.services.learning_orchestrator import LearningOrchestrator
@@ -29,6 +32,7 @@ router = APIRouter(prefix="/api/v1/student", tags=["学生端"])
 
 
 class TaskSubmitRequest(BaseModel):
+    version_id: str | None = None
     task_id: str
     answer: str
     time_spent: int | None = None  # 秒
@@ -447,3 +451,134 @@ async def health_check(
         "consecutive_minutes": int(snapshot.total_minutes),
         "alerts": assessment.alerts,
     }
+
+
+@router.get('/assignments')
+async def get_student_assignments(
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Read current class assignments; do not infer completion from arbitrary attempts."""
+    if user.role != UserRole.STUDENT:
+        raise HTTPException(status_code=403, detail='仅学生可访问')
+    current = await db.get(User, user.id)
+    if current is None or not current.is_active:
+        raise HTTPException(status_code=403, detail='学生账号不可用')
+    if current.class_id is None:
+        return {'assignments': [], 'total': 0, 'has_more': False}
+    conditions = [Assignment.class_id == current.class_id]
+    total = (await db.execute(select(func.count(Assignment.id)).where(*conditions))).scalar_one()
+    rows = (await db.execute(select(Assignment, CurriculumNode.title)
+        .join(CurriculumNode, CurriculumNode.id == Assignment.node_id)
+        .where(*conditions).order_by(Assignment.created_at.desc(), Assignment.id.desc())
+        .offset(offset).limit(limit))).all()
+    node_ids = [a.node_id for a, _ in rows]
+    available = dict((await db.execute(select(Task.curriculum_node_id, func.count(Task.id))
+        .where(Task.is_approved == True, Task.curriculum_node_id.in_(node_ids))
+        .group_by(Task.curriculum_node_id))).all())
+    versions = await latest_versions(db, [a.id for a, _ in rows])
+    submitted_by_version = {}
+    for vid, tid in (await db.execute(select(AssignmentVersionResponse.version_id,AssignmentVersionResponse.task_id)
+        .where(AssignmentVersionResponse.version_id.in_([v.id for v in versions.values()]),
+               AssignmentVersionResponse.user_id == current.id, AssignmentVersionResponse.attempt_id.is_not(None)))).all():
+        submitted_by_version.setdefault(vid,set()).add(tid)
+    snapshot_ids = [item['id'] for version in versions.values() for item in version.tasks]
+    approved_ids = set((await db.execute(select(Task.id).where(Task.id.in_(snapshot_ids),Task.is_approved == True))).scalars().all())
+    states = {aid:progress(v,submitted_by_version.get(v.id,set()),approved_ids) for aid,v in versions.items()}
+    return {'assignments': [{'id': a.id, 'node_id': a.node_id, 'node_title': title,
+        'due_at': a.due_at.replace(tzinfo=UTC).isoformat() if a.due_at else None,
+        'available_task_count': available.get(a.node_id, 0),
+        **states.get(a.id,{'version_id':None,'submission_state':'legacy_unversioned'})} for a, title in rows],
+        'total': total, 'has_more': offset + len(rows) < total}
+
+
+@router.get('/assignments/{assignment_id}/tasks')
+async def get_assignment_tasks(
+    assignment_id: str,
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+    user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    if user.role != UserRole.STUDENT:
+        raise HTTPException(status_code=403, detail='仅学生可访问')
+    current = await db.get(User, user.id)
+    assignment = await db.get(Assignment, assignment_id)
+    if current is None or not current.is_active or assignment is None or current.class_id != assignment.class_id:
+        raise HTTPException(status_code=404, detail='未找到当前班级作业')
+    version = (await latest_versions(db, [assignment.id])).get(assignment.id)
+    if version:
+        ids = [item['id'] for item in version.tasks]
+        approved = set((await db.execute(select(Task.id).where(Task.id.in_(ids),Task.is_approved == True))).scalars().all())
+        submitted = set((await db.execute(select(AssignmentVersionResponse.task_id).where(
+            AssignmentVersionResponse.version_id == version.id, AssignmentVersionResponse.user_id == current.id,
+            AssignmentVersionResponse.attempt_id.is_not(None)))).scalars().all())
+        visible = [item for item in version.tasks if item['id'] in approved]
+        page = visible[offset:offset+limit]
+        return {'assignment_id':assignment.id, **progress(version,submitted,approved),
+            'tasks':[{**LearningOrchestrator._task_to_dict(snapshot_task(item)), 'submitted':item['id'] in submitted} for item in page],
+            'total':len(visible),'has_more':offset+len(page)<len(visible)}
+    conditions = [Task.curriculum_node_id == assignment.node_id, Task.is_approved == True]
+    total = (await db.execute(select(func.count(Task.id)).where(*conditions))).scalar_one()
+    tasks = (await db.execute(select(Task).where(*conditions).order_by(Task.id).offset(offset).limit(limit))).scalars().all()
+    submitted = set((await db.execute(select(AssignmentResponse.task_id).where(
+        AssignmentResponse.assignment_id == assignment.id,
+        AssignmentResponse.user_id == current.id,
+        AssignmentResponse.attempt_id.is_not(None),
+    ))).scalars().all())
+    return {'assignment_id': assignment.id,
+            'tasks': [{**LearningOrchestrator._task_to_dict(task), 'submitted': task.id in submitted} for task in tasks],
+            'total': total, 'has_more': offset + len(tasks) < total}
+
+
+@router.post('/assignments/{assignment_id}/answer')
+async def answer_assignment(
+    assignment_id: str, req: TaskSubmitRequest,
+    user: User = Depends(get_current_user), db: AsyncSession = Depends(get_db),
+):
+    if user.role != UserRole.STUDENT:
+        raise HTTPException(status_code=403, detail='仅学生可访问')
+    current = await db.get(User, user.id)
+    assignment = await db.get(Assignment, assignment_id)
+    if current is None or not current.is_active or assignment is None or current.class_id != assignment.class_id:
+        raise HTTPException(status_code=404, detail='未找到当前班级作业')
+    version = (await latest_versions(db, [assignment.id])).get(assignment.id)
+    live_task = await db.get(Task, req.task_id)
+    if version:
+        if req.version_id != version.id:
+            raise HTTPException(status_code=409, detail='作业版本已变化，请重新读取作业')
+        item = next((item for item in version.tasks if item['id'] == req.task_id), None)
+        if item is None:
+            raise HTTPException(status_code=404, detail='题目不属于该作业版本')
+        task = snapshot_task(item)
+        response = AssignmentVersionResponse(version_id=version.id,user_id=user.id,task_id=task.id)
+    else:
+        if req.version_id is not None:
+            raise HTTPException(status_code=409, detail='作业版本不存在，请重新读取作业')
+        task = live_task
+        if task is None or task.curriculum_node_id != assignment.node_id:
+            raise HTTPException(status_code=404, detail='题目不属于该作业')
+        response = AssignmentResponse(assignment_id=assignment.id,user_id=user.id,task_id=task.id)
+    if live_task is None or not live_task.is_approved:
+        raise HTTPException(status_code=409, detail='题目当前未通过审核')
+    if not req.answer.strip():
+        raise HTTPException(status_code=422, detail='答案不能为空')
+    db.add(response)
+    try:
+        await db.flush()
+    except IntegrityError as exc:
+        await db.rollback()
+        raise HTTPException(status_code=409, detail='本题作业答案已记录，请勿重复提交') from exc
+    result = await LearningOrchestrator.process_submission(current, task, req.model_dump(), db)
+    response.attempt_id = result['attempt_id']
+    await db.flush()
+    state = {}
+    if version:
+        submitted = (await db.execute(select(AssignmentVersionResponse.task_id).where(
+            AssignmentVersionResponse.version_id == version.id,AssignmentVersionResponse.user_id == current.id,
+            AssignmentVersionResponse.attempt_id.is_not(None)))).scalars().all()
+        approved = (await db.execute(select(Task.id).where(Task.id.in_([item['id'] for item in version.tasks]),Task.is_approved == True))).scalars().all()
+        state = progress(version,submitted,approved)
+    return {**result, **state, 'assignment_id': assignment.id, 'version_id':version.id if version else None, 'assignment_response_id': response.id}
